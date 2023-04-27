@@ -4,7 +4,7 @@
     ViewData["Title"] = "膳糧";
 }
 
-<h1>人氣餐廳</h1>
+<h1>新進餐廳</h1>
 
 @*<p>
     <a asp-action="Create">Create New</a>
@@ -37,12 +37,13 @@
     <tbody>
         @{
             int count = 0;
-            foreach (var item in Model) {
+            foreach (var item in Model)
+            {
                 count++;
                 <tr>
-            <td>
+                    <td>
                         @count
-            </td>
+                    </td>
                     <td>
                         @Html.ActionLink(item.RestaurantName,"Restaurant",new {  id=item.StoreId  },null)
                     </td>
@@ -61,12 +62,12 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Rating)
                     </td>
-            <td>
-                @Html.ActionLink("分享", "Share", new {  id=item.StoreId  }) |
-                @Html.ActionLink("收藏", "AddToKeep", new {  id=item.StoreId  })
-            </td>
-        </tr>
-}
-}
+                    <td>
+                        @Html.ActionLink("分享", "Share", new {  id=item.StoreId  }) |
+                        @Html.ActionLink("收藏", "AddToKeep", new {  id=item.StoreId  })
+                    </td>
+                </tr>
+            }
+        }
     </tbody>
 </table>
