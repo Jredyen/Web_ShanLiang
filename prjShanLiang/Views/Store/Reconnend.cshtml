@@ -1,0 +1,72 @@
+﻿@model IEnumerable<prjShanLiang.Models.Store>
+
+@{
+    ViewData["Title"] = "膳糧";
+}
+
+<h1>人氣餐廳</h1>
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+                @Html.DisplayNameFor(model => model.RestaurantName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RestaurantAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RestaurantPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpeningTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClosingTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rating)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int count = 0;
+            foreach (var item in Model) {
+                count++;
+        <tr>
+            <td>
+                        @count
+            </td>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.RestaurantName)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.RestaurantAddress)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.RestaurantPhone)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.OpeningTime)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.ClosingTime)
+                    </th>
+                    <th>
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </th>
+            <td>
+                @Html.ActionLink("分享", "Share", new {  id=item.StoreId  }) |
+                @Html.ActionLink("收藏", "AddToKeep", new {  id=item.StoreId  })
+            </td>
+        </tr>
+}
+}
+    </tbody>
+</table>
