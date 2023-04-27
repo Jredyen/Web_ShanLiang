@@ -1,0 +1,97 @@
+﻿@model prjShanLiang.ViewModels.CCreateStoreAccountViewModel
+
+@{
+    ViewData["Title"] = "SignupStore";
+}
+
+<h1>註冊店家</h1>
+
+<h4>請輸入店家基本資料</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SignupStore">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="AccountName" class="control-label"></label>
+                <input asp-for="AccountName" class="form-control" />
+                <span asp-validation-for="AccountName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountPassword" class="control-label"></label>
+                <input asp-for="AccountPassword" class="form-control" />
+                <span asp-validation-for="AccountPassword" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TaxID" class="control-label"></label>
+                <input asp-for="TaxID" class="form-control" />
+                <span asp-validation-for="TaxID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RestaurantName" class="control-label"></label>
+                <input asp-for="RestaurantName" class="form-control" />
+                <span asp-validation-for="RestaurantName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RestaurantPhone" class="control-label"></label>
+                <input asp-for="RestaurantPhone" class="form-control" />
+                <span asp-validation-for="RestaurantPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RestaurantAddress" class="control-label"></label>
+                <input asp-for="RestaurantAddress" class="form-control" />
+                <span asp-validation-for="RestaurantAddress" class="text-danger"></span>
+            </div>
+
+            <div>
+                <select>
+                    <option>請選擇縣市</option>
+                    @{
+                        ShanLiang21Context db = new ShanLiang21Context();
+                        IQueryable cDatas = db.Cities.Select(c => c.CityName);
+                        foreach (string item in cDatas)
+                        {
+                            <option>@item</option>
+                        }
+                    }
+                </select>
+                <select>
+                    <option>請選擇行政區</option>
+                    @{
+                        IQueryable<string> dDatas = from d in db.Districts
+                                                    join c in db.Cities on d.CityId equals c.CityId
+                                                    //where c.CityName == City.SelectedItem
+                                                    select d.DistrictName;
+                        foreach (string item in dDatas)
+                        {
+                            <option>@item</option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DistrictId" class="control-label"></label>
+                <input asp-for="DistrictId" class="form-control" />
+                <span asp-validation-for="DistrictId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Seats" class="control-label"></label>
+                <input asp-for="Seats" class="form-control" />
+                <span asp-validation-for="Seats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StoreMail" class="control-label"></label>
+                <input asp-for="StoreMail" class="form-control" />
+                <span asp-validation-for="StoreMail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="註冊" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

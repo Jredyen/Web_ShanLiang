@@ -4,74 +4,15 @@
     ViewData["Title"] = "Restaurant";
 }
 
-<h1>Restaurant</h1>
+@foreach (var item in Model) {
+    <h1>@Html.DisplayFor(modelItem => item.RestaurantName)</h1>
 
 <p>
     <a asp-action="Reconnend">回到列表</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StoreId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccountName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TaxId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RestaurantName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RestaurantAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RestaurantPhone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DistrictId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Seats)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OpeningTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClosingTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Website)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StoreMail)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
     <tbody>
-@foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.StoreId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AccountName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TaxId)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RestaurantName)
             </td>
@@ -82,16 +23,7 @@
                 @Html.DisplayFor(modelItem => item.RestaurantPhone)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DistrictId)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Seats)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitude)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitude)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OpeningTime)
@@ -100,7 +32,7 @@
                 @Html.DisplayFor(modelItem => item.ClosingTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Website)
+                <a href="@Html.DisplayFor(modelItem => item.Website)">個人網站</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Rating)
@@ -109,11 +41,10 @@
                 @Html.DisplayFor(modelItem => item.StoreMail)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("我要訂位", "Reserve", new { id=item.StoreId })
             </td>
         </tr>
-}
     </tbody>
 </table>
+}
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1278.101707603652!2d121.54386081424009!3d25.033478882048225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abd379a5ec97%3A0xedc006d25a9e35df!2z6LOH5bGV5ZyL6Zqb6IKh5Lu95pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1682580771029!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
