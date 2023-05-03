@@ -7,19 +7,21 @@ public partial class Member
 {
     public int MemberId { get; set; }
 
-    public string AccountName { get; set; } = null!;
+    public string? AccountName { get; set; }
 
     public string? Memberphone { get; set; }
 
     public string? MemberName { get; set; }
 
-    public string? Email { get; set; }
+    public string Email { get; set; } = null!;
 
     public DateTime? BrithDate { get; set; }
 
     public string? Address { get; set; }
 
     public int? CustomerLevel { get; set; }
+
+    public string Password { get; set; } = null!;
 
     public virtual ICollection<MemberAction> MemberActions { get; set; } = new List<MemberAction>();
 

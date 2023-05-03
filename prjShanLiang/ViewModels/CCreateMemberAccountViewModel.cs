@@ -18,5 +18,6 @@ namespace prjShanLiang.ViewModels
         public string Address { get; set; }
         [DisplayName("密碼")]
         public string AccountPassword { get; set; }
+        public string AccountPassword2 { get; set; }
     }
 }

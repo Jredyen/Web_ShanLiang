@@ -3,6 +3,7 @@ using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
 using System.Net;
 using System.Runtime.Intrinsics.X86;
+using System.Text.Json;
 
 namespace prjShanLiang.Controllers
 {
@@ -16,10 +17,20 @@ namespace prjShanLiang.Controllers
         public IActionResult Login(CAccountPasswordViewModel vm)
         {
             ShanLiang21Context db = new ShanLiang21Context();
-            Account acc = db.Accounts.FirstOrDefault(a => a.AccountName == vm.AccountName && a.AccountPassword == vm.AccountPassword);
-            if (acc == null)
+            Store sto = db.Stores.FirstOrDefault(a => a.AccountName == vm.AccountName && a.Password == vm.AccountPassword);
+            Member mem = db.Members.FirstOrDefault(a => a.Email == vm.AccountName && a.Password == vm.AccountPassword);
+            //Account acc = db.Accounts.FirstOrDefault(a => a.AccountName == vm.AccountName && a.AccountPassword == vm.AccountPassword);
+            if (sto != null || mem != null)
+            {
+                string json;
+                if (sto != null)
+                    json = JsonSerializer.Serialize(sto);
+                else
+                    json = JsonSerializer.Serialize(mem);
+                HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER, json);
+                return RedirectToAction("Index", "Home");
+            }
                 return View("Login");
-            return RedirectToAction("Index", "Home");
         }
         public IActionResult MemberManager(string? account)
         {
@@ -76,16 +87,17 @@ namespace prjShanLiang.Controllers
                 Email = vm.Email,
                 BrithDate = vm.BrithDate,
                 Address = vm.Address,
-                CustomerLevel = 0
+                CustomerLevel = 0,
+                Password = vm.AccountPassword
             };
-            Account acc = new Account()
-            {
-                AccountName = vm.AccountName,
-                AccountPassword = vm.AccountPassword,
-                Identification = 1
-            };
+            //Account acc = new Account()
+            //{
+            //    AccountName = vm.AccountName,
+            //    AccountPassword = vm.AccountPassword,
+            //    Identification = 1
+            //};
             db.Add(mem);
-            db.Add(acc);
+            //db.Add(acc);
             db.SaveChanges();
             return RedirectToAction("Login");
         }
@@ -106,17 +118,24 @@ namespace prjShanLiang.Controllers
                 RestaurantPhone = vm.RestaurantPhone,
                 DistrictId = vm.DistrictId,
                 Seats = vm.Seats,
-                StoreMail = vm.StoreMail
+                StoreMail = vm.StoreMail,
+                Password = vm.AccountPassword
             };
-            Account acc = new Account()
-            {
-                AccountName = vm.AccountName,
-                AccountPassword = vm.AccountPassword,
-                Identification = 2
-            };
+            //Account acc = new Account()
+            //{
+            //    AccountName = vm.AccountName,
+            //    AccountPassword = vm.AccountPassword,
+            //    Identification = 2
+            //};
             db.Add(sto);
-            db.Add(acc);
+            //db.Add(acc);
             db.SaveChanges();
+            return RedirectToAction("Login");
+        }
+        public IActionResult Mypage()
+        {
+            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USER))
+                return View();
             return RedirectToAction("Login");
         }
     }

@@ -54,10 +54,10 @@ public partial class ShanLiang21Context : DbContext
     public virtual DbSet<StoreType> StoreTypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-#warning 為了保護連接字符串中的潛在敏感訊息，您應該將其移出原始碼。 您可以使用 Name= 語法從配置中讀取連接字符串，從而避免構建連接字符串 - 請參閱 https://go.microsoft.com/fwlink/?linkid=2131148。 有關存儲連接字符串的更多指導，請參閱 http://go.microsoft.com/fwlink/?LinkId=723263。
-        => optionsBuilder.UseSqlServer("Data Source=tcp:karamucho.asuscomm.com,1433;Initial Catalog=ShanLiang2.1;User ID=ispan_304_a;Password=aaaa1111bbbb2222;TrustServerCertificate=true");
-
+    {
+        var builder = WebApplication.CreateBuilder();
+        optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("ShanLiangConnection"));
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("A_Member");
@@ -143,6 +143,7 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.Email).HasMaxLength(20);
             entity.Property(e => e.MemberName).HasMaxLength(10);
             entity.Property(e => e.Memberphone).HasMaxLength(20);
+            entity.Property(e => e.Password).HasMaxLength(50);
         });
 
         modelBuilder.Entity<MemberAction>(entity =>
@@ -284,6 +285,7 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.DistrictId).HasColumnName("DistrictID");
             entity.Property(e => e.Latitude).HasColumnType("decimal(10, 6)");
             entity.Property(e => e.Longitude).HasColumnType("decimal(10, 6)");
+            entity.Property(e => e.Password).HasMaxLength(50);
             entity.Property(e => e.RestaurantAddress).HasMaxLength(40);
             entity.Property(e => e.RestaurantName).HasMaxLength(30);
             entity.Property(e => e.RestaurantPhone).HasMaxLength(20);

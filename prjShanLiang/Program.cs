@@ -1,7 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using prjShanLiang.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddSession();
+
+builder.Services.AddDbContext<ShanLiang21Context>(
+ options => options.UseSqlServer(
+ builder.Configuration.GetConnectionString("ShanLiangConnection")
+));
 
 var app = builder.Build();
 
@@ -15,6 +24,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 
 app.UseRouting();
 
