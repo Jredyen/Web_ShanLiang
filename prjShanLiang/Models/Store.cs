@@ -39,7 +39,15 @@ public partial class Store
 
     public string Password { get; set; } = null!;
 
+    public int? AccountStatus { get; set; }
+
+    public virtual AccountStatus? AccountStatusNavigation { get; set; }
+
     public virtual District? District { get; set; }
+
+    public virtual ICollection<MealMenu> MealMenus { get; set; } = new List<MealMenu>();
+
+    public virtual ICollection<MealOrder> MealOrders { get; set; } = new List<MealOrder>();
 
     public virtual ICollection<MemberAction> MemberActions { get; set; } = new List<MemberAction>();
 
@@ -48,6 +56,8 @@ public partial class Store
     public virtual ICollection<StoreEvaluate> StoreEvaluates { get; set; } = new List<StoreEvaluate>();
 
     public virtual ICollection<StoreImage> StoreImages { get; set; } = new List<StoreImage>();
+
+    public virtual ICollection<StoreReserved> StoreReserveds { get; set; } = new List<StoreReserved>();
 
     public virtual ICollection<StoreType> StoreTypes { get; set; } = new List<StoreType>();
 }

@@ -38,4 +38,6 @@ public partial class Order
     public virtual PaymentMethod? PaymentMethod { get; set; }
 
     public virtual Store? Store { get; set; }
+
+    public virtual ICollection<StoreReserved> StoreReserveds { get; set; } = new List<StoreReserved>();
 }

@@ -23,6 +23,12 @@ public partial class Member
 
     public string Password { get; set; } = null!;
 
+    public int? AccountStatus { get; set; }
+
+    public virtual AccountStatus? AccountStatusNavigation { get; set; }
+
+    public virtual ICollection<MealOrder> MealOrders { get; set; } = new List<MealOrder>();
+
     public virtual ICollection<MemberAction> MemberActions { get; set; } = new List<MemberAction>();
 
     public virtual ICollection<MemberCoupon> MemberCoupons { get; set; } = new List<MemberCoupon>();

@@ -17,6 +17,8 @@ public partial class ShanLiang21Context : DbContext
 
     public virtual DbSet<Account> Accounts { get; set; }
 
+    public virtual DbSet<AccountStatus> AccountStatuses { get; set; }
+
     public virtual DbSet<Action> Actions { get; set; }
 
     public virtual DbSet<City> Cities { get; set; }
@@ -28,6 +30,12 @@ public partial class ShanLiang21Context : DbContext
     public virtual DbSet<EatTypeMethod> EatTypeMethods { get; set; }
 
     public virtual DbSet<Identification> Identifications { get; set; }
+
+    public virtual DbSet<MealMenu> MealMenus { get; set; }
+
+    public virtual DbSet<MealOrder> MealOrders { get; set; }
+
+    public virtual DbSet<MealOrderDetail> MealOrderDetails { get; set; }
 
     public virtual DbSet<Member> Members { get; set; }
 
@@ -51,13 +59,14 @@ public partial class ShanLiang21Context : DbContext
 
     public virtual DbSet<StoreImage> StoreImages { get; set; }
 
+    public virtual DbSet<StoreReserved> StoreReserveds { get; set; }
+
     public virtual DbSet<StoreType> StoreTypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var builder = WebApplication.CreateBuilder();
-        optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("ShanLiangConnection"));
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Data Source=tcp:karamucho.asuscomm.com,1433;Initial Catalog=ShanLiang2.1;User ID=ispan_304_a;Password=aaaa1111bbbb2222;TrustServerCertificate=true");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("A_Member");
@@ -73,6 +82,16 @@ public partial class ShanLiang21Context : DbContext
             entity.HasOne(d => d.IdentificationNavigation).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.Identification)
                 .HasConstraintName("FK_Account_Identification1");
+        });
+
+        modelBuilder.Entity<AccountStatus>(entity =>
+        {
+            entity.HasKey(e => e.StatusId);
+
+            entity.ToTable("AccountStatus", "dbo");
+
+            entity.Property(e => e.StatusId).HasColumnName("StatusID");
+            entity.Property(e => e.StatusName).HasMaxLength(10);
         });
 
         modelBuilder.Entity<Action>(entity =>
@@ -132,6 +151,71 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.IdentificationName).HasMaxLength(10);
         });
 
+        modelBuilder.Entity<MealMenu>(entity =>
+        {
+            entity.HasKey(e => e.MealId);
+
+            entity.ToTable("Meal_Menu", "dbo");
+
+            entity.Property(e => e.MealId).HasColumnName("MealID");
+            entity.Property(e => e.MealImagePath).HasMaxLength(50);
+            entity.Property(e => e.MealName).HasMaxLength(50);
+            entity.Property(e => e.MealPrice).HasColumnType("money");
+            entity.Property(e => e.Recommendation)
+                .HasMaxLength(50)
+                .HasColumnName("recommendation");
+            entity.Property(e => e.StoreId).HasColumnName("StoreID");
+
+            entity.HasOne(d => d.Store).WithMany(p => p.MealMenus)
+                .HasForeignKey(d => d.StoreId)
+                .HasConstraintName("FK_Meal_Menu_Store");
+        });
+
+        modelBuilder.Entity<MealOrder>(entity =>
+        {
+            entity.HasKey(e => e.OrderId);
+
+            entity.ToTable("Meal_Order", "dbo");
+
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.MemberId).HasColumnName("MemberID");
+            entity.Property(e => e.OrderDate).HasColumnType("date");
+            entity.Property(e => e.Remark).HasMaxLength(50);
+            entity.Property(e => e.StoreId).HasColumnName("StoreID");
+            entity.Property(e => e.Total).HasColumnType("money");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.MealOrders)
+                .HasForeignKey(d => d.MemberId)
+                .HasConstraintName("FK_Meal_Order_Member");
+
+            entity.HasOne(d => d.OrderStatusNavigation).WithMany(p => p.MealOrders)
+                .HasForeignKey(d => d.OrderStatus)
+                .HasConstraintName("FK_Meal_Order_Status");
+
+            entity.HasOne(d => d.Store).WithMany(p => p.MealOrders)
+                .HasForeignKey(d => d.StoreId)
+                .HasConstraintName("FK_Meal_Order_Store");
+        });
+
+        modelBuilder.Entity<MealOrderDetail>(entity =>
+        {
+            entity.HasKey(e => e.Key);
+
+            entity.ToTable("Meal_Order_Details", "dbo");
+
+            entity.Property(e => e.Key).HasColumnName("key");
+            entity.Property(e => e.MealId).HasColumnName("MealID");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+
+            entity.HasOne(d => d.Meal).WithMany(p => p.MealOrderDetails)
+                .HasForeignKey(d => d.MealId)
+                .HasConstraintName("FK_Meal_Order_Details_Meal_Menu");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.MealOrderDetails)
+                .HasForeignKey(d => d.OrderId)
+                .HasConstraintName("FK_Meal_Order_Details_Meal_Order");
+        });
+
         modelBuilder.Entity<Member>(entity =>
         {
             entity.ToTable("Member", "dbo", tb => tb.HasTrigger("memberAccountInsert"));
@@ -144,6 +228,10 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.MemberName).HasMaxLength(10);
             entity.Property(e => e.Memberphone).HasMaxLength(20);
             entity.Property(e => e.Password).HasMaxLength(50);
+
+            entity.HasOne(d => d.AccountStatusNavigation).WithMany(p => p.Members)
+                .HasForeignKey(d => d.AccountStatus)
+                .HasConstraintName("FK_Member_AccountStatus");
         });
 
         modelBuilder.Entity<MemberAction>(entity =>
@@ -294,6 +382,10 @@ public partial class ShanLiang21Context : DbContext
                 .HasMaxLength(8)
                 .HasColumnName("TaxID");
 
+            entity.HasOne(d => d.AccountStatusNavigation).WithMany(p => p.Stores)
+                .HasForeignKey(d => d.AccountStatus)
+                .HasConstraintName("FK_Store_AccountStatus");
+
             entity.HasOne(d => d.District).WithMany(p => p.Stores)
                 .HasForeignKey(d => d.DistrictId)
                 .HasConstraintName("FK_Store_District");
@@ -331,6 +423,26 @@ public partial class ShanLiang21Context : DbContext
             entity.HasOne(d => d.Store).WithMany(p => p.StoreImages)
                 .HasForeignKey(d => d.StoreId)
                 .HasConstraintName("FK_Meals_Menu_Store");
+        });
+
+        modelBuilder.Entity<StoreReserved>(entity =>
+        {
+            entity.HasKey(e => e.ReservationNo);
+
+            entity.ToTable("Store_Reserved", "dbo");
+
+            entity.Property(e => e.ReservationNo).HasColumnName("ReservationNo.");
+            entity.Property(e => e.Date).HasColumnType("date");
+            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+            entity.Property(e => e.StoreId).HasColumnName("StoreID");
+
+            entity.HasOne(d => d.Order).WithMany(p => p.StoreReserveds)
+                .HasForeignKey(d => d.OrderId)
+                .HasConstraintName("FK_Store_Reserved_Order");
+
+            entity.HasOne(d => d.Store).WithMany(p => p.StoreReserveds)
+                .HasForeignKey(d => d.StoreId)
+                .HasConstraintName("FK_Store_Reserved_Store");
         });
 
         modelBuilder.Entity<StoreType>(entity =>

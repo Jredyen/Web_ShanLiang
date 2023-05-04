@@ -5,6 +5,10 @@
 }
 
 <h1>餐廳一覽</h1>
+
+    <input type="text" class="form-control mb-3" id="txtKeyword" placeholder="搜尋餐廳">
+    <div class="list-group mb-2"></div>
+
 <table class="table table-hover">
     <thead>
         <tr>
@@ -67,3 +71,27 @@
         }
     </tbody>
 </table>
+
+@section Scripts{
+    <script>
+        const Keyword = document.querySelector('#txtKeyword');
+        const divList = document.querySelector('.list-group');
+        Keyword.addEventListener('input', async () => {
+            const response = await fetch('@Url.Content("~/Store/GetStore")?keyword=' + Keyword.value);
+            const datas = await response.json();
+            //讀出JSON格式的資料
+            const products = datas.map(data => {
+                return (
+                    `<button onclick="read(event)"  type="button" class="list-group-item list-group-item-action">${data}</button>`
+                )
+            })
+            divList.innerHTML = products.join("");
+        })
+
+        function read(evt) {
+            txtKeyword.value = evt.target.textContent;
+            divList.innerHTML = "";
+        }
+
+    </script>
+}
