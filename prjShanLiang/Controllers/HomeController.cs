@@ -7,16 +7,21 @@ namespace prjShanLiang.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        ShanLiang21Context db = new ShanLiang21Context(); 
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
 
-        public IActionResult Index()
-        {
-                return View();
-        }
+       
+            public IActionResult Index()
+            {
+                var Image = db.Stores.ToList();
+                var Evaluates = db.StoreEvaluates.ToList();
+                var model = new Tuple<List<Store>, List<StoreEvaluate>>(Image, Evaluates);
+                return View(model);
+            }
+        
 
         public IActionResult Privacy()
         {
