@@ -1,0 +1,15 @@
+﻿@model IEnumerable<prjShanLiang.Models.MealMenu>
+@{
+    ViewData["Title"] = "訂餐頁面";
+}
+<img src="~/images/膳糧食堂.jpg" width=100% height=100%/>
+<h1>膳糧食堂 大安店</h1>
+<p>台北市大安區復興南路一段390號2樓</p>
+<p>(02)6631-6588</p>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        @Html.Partial( "_ColPartial",item)
+    }
+        </div>

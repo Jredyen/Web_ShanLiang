@@ -1,0 +1,16 @@
+﻿@model prjShanLiang.Models.MealMenu
+@{
+    string imgName = Model.MealImagePath;
+}
+
+   <div class="col-12 col-md-4" style="margin-top:10px;">
+       <div class="img-thumbnail">
+           <img src="~/images/@imgName" width="200" height="200" />
+           
+           <h2>@Model.MealName</h2>
+           <p>NT:@Model.MealPrice</p>
+           <p>@Model.Recommendation</p>
+
+       </div>
+   </div>
+
