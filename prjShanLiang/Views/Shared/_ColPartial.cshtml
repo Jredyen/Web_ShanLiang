@@ -3,14 +3,20 @@
     string imgName = Model.MealImagePath;
 }
 
-   <div class="col-12 col-md-4" style="margin-top:10px;">
+   <div class="col-12 col-md-4" style="margin-top:20px;">
        <div class="img-thumbnail">
-           <img src="~/images/@imgName" width="200" height="200" />
+           <img src="~/images/@imgName" width=100%  />
            
            <h2>@Model.MealName</h2>
            <p>NT:@Model.MealPrice</p>
-           <p>@Model.Recommendation</p>
 
+           <button data-cy="substract" class="w-1/4 h-full leading-0 rounded-l border border-grey-200 font-medium text-2xl disabled:text-grey-300 disabled:bg-grey-100" disabled="">−</button>
+           <span class="w-1/2 h-full border-t border-b border-grey-200 text-center font-medium text-lg" style="line-height: 48px;">1</span>
+           <button data-cy="add" class="w-1/4 h-full leading-0 rounded-r border border-grey-200 font-medium text-2xl disabled:text-grey-300 disabled:bg-grey-100">+</button>
+           <button>加入購物車</button>
+
+           <p>@Model.Recommendation</p>
+          
        </div>
    </div>
 
