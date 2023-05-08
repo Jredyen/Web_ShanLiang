@@ -166,12 +166,12 @@
         }
 
         .search table tr td.image {
-            width: 50px;
+            width: 150px;
         }
 
         .search table tr td img {
-            width: 50px;
-            height: 50px;
+            width: 100%;
+            height: 100%;
         }
 
         .search table tr td.rate {
@@ -349,7 +349,7 @@
 
 
                             <div class="col-md-9">
-                                <h2><i class="fa fa-file-o"></i> 結果</h2>
+                                <h2><i class='fas fa-utensils'></i> 搜尋結果</h2>
                                 <hr>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="txtSearch" placeholder="輸入關鍵字搜尋" list="searchResule">
@@ -387,11 +387,11 @@
 
                                 <div class="table-responsive">
                                     <table class="table table-hover">
-                                        <tbody>
+                                        <tbody id="storeList">
                                             <tr>
                                                 <td class="number text-center">1</td>
                                                 <td class="image"><img src="https://www.bootdey.com/image/400x300/FF8C00" alt=""></td>
-                                                <td class="product"><strong>Product 1</strong><br>This is the product description.</td>
+                                                <td class="product"><a href="Restaurant/59"><strong>Product 1</strong><br>This is the product description.</a></td>
                                                 <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>
                                                 @*<td class="price text-right">$350</td>*@
                                                 <td class="price text-right">@Html.ActionLink("我要訂位", "Reserve"/*, new { id=item.StoreId }*/)</td>
@@ -401,7 +401,7 @@
                                                 <td class="image"><img src="https://www.bootdey.com/image/400x300/5F9EA0" alt=""></td>
                                                 <td class="product"><strong>Product 2</strong><br>This is the product description.</td>
                                                 <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></span></td>
-                                                <td class="price text-right">$1,050</td>
+                                                <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
                                             </tr>
                                             <tr>
                                                 <td class="number text-center">3</td>
@@ -471,6 +471,7 @@
     </div>
     <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    @*<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>*@
     <script type="text/javascript">
 
     </script>
@@ -483,6 +484,7 @@
         const SerachButton = document.querySelector('#serachButton');
         const StoreType = document.querySelector('#storeType');
         const CAD = document.querySelector('#cityAndDistrict');
+        const StoreList = document.querySelector('#storeList');
 
         Keyword.addEventListener('input', async () => {
             const response = await fetch('@Url.Content("~/Store/GetStore")?keyword=' + Keyword.value);
@@ -496,11 +498,25 @@
         })
 
         SerachButton.addEventListener('click', async () => {
-            //TODO:將篩選的範圍與關鍵字帶入搜尋
+            try {
+                const response = await fetch('@Url.Content("~/Store/SerachStore")?keyword=' + Keyword.value);
+                const datas = await response.json();
+                const shop = datas.map((data, index) => {
+                    return `<tr>
+                        <td class="number text-center">${index + 1}</td>
+                        <td class="image"><a href="Restaurant/${data.storeId}"><img src="../../images/store/decoration/${data.imagePath}" alt="${data.restaurantName}"></a></td>
+                        <td class="product"><a href="Restaurant/${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}</a></td>
+                        <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></span></td>
+                        <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
+                      </tr>`;
+                });
+                StoreList.innerHTML = shop.join("");
+                KeywordResult.innerHTML = `顯示所有 "${Keyword.value}" 的結果`;
+            } catch (error) {
+                console.error(error);
+            }
+        });
 
-
-            KeywordResult.innerHTML = `顯示所有 "${Keyword.value}" 的結果`
-        })
 
         getType();
         async function getType(){
@@ -523,5 +539,9 @@
                 )
             })
         }
+        //TODO:搜尋結果需要帶入評分
+        //<i class="fa fa-star"></i> 1
+        //< i class="fa fa-star-half-o" ></i> 0.5
+        // < i class="fa fa-star-o" ></i> 0
     </script>
 }
