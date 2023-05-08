@@ -55,7 +55,11 @@ public partial class Store
 
     public virtual ICollection<StoreAdImage> StoreAdImages { get; set; } = new List<StoreAdImage>();
 
+    public virtual ICollection<StoreDecorationImage> StoreDecorationImages { get; set; } = new List<StoreDecorationImage>();
+
     public virtual ICollection<StoreEvaluate> StoreEvaluates { get; set; } = new List<StoreEvaluate>();
+
+    public virtual ICollection<StoreMealImage> StoreMealImages { get; set; } = new List<StoreMealImage>();
 
     public virtual ICollection<StoreReserved> StoreReserveds { get; set; } = new List<StoreReserved>();
 

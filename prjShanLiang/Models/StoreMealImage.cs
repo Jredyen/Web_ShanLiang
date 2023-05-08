@@ -10,4 +10,6 @@ public partial class StoreMealImage
     public int? StoreId { get; set; }
 
     public string? ImagePath { get; set; }
+
+    public virtual Store? Store { get; set; }
 }

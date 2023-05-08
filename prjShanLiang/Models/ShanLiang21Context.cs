@@ -411,15 +411,17 @@ public partial class ShanLiang21Context : DbContext
 
         modelBuilder.Entity<StoreDecorationImage>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Store_Decoration_Image", "dbo");
+            entity.HasKey(e => e.ImageId);
 
-            entity.Property(e => e.ImageId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("ImageID");
+            entity.ToTable("Store_Decoration_Image", "dbo");
+
+            entity.Property(e => e.ImageId).HasColumnName("ImageID");
             entity.Property(e => e.ImagePath).HasMaxLength(50);
             entity.Property(e => e.StoreId).HasColumnName("StoreID");
+
+            entity.HasOne(d => d.Store).WithMany(p => p.StoreDecorationImages)
+                .HasForeignKey(d => d.StoreId)
+                .HasConstraintName("FK_Store_Decoration_Image_Store");
         });
 
         modelBuilder.Entity<StoreEvaluate>(entity =>
@@ -444,15 +446,17 @@ public partial class ShanLiang21Context : DbContext
 
         modelBuilder.Entity<StoreMealImage>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Store_Meal_Image", "dbo");
+            entity.HasKey(e => e.ImageId);
 
-            entity.Property(e => e.ImageId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("ImageID");
+            entity.ToTable("Store_Meal_Image", "dbo");
+
+            entity.Property(e => e.ImageId).HasColumnName("ImageID");
             entity.Property(e => e.ImagePath).HasMaxLength(50);
             entity.Property(e => e.StoreId).HasColumnName("StoreID");
+
+            entity.HasOne(d => d.Store).WithMany(p => p.StoreMealImages)
+                .HasForeignKey(d => d.StoreId)
+                .HasConstraintName("FK_Store_Meal_Image_Store");
         });
 
         modelBuilder.Entity<StoreReserved>(entity =>

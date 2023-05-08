@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using prjShanLiang.Models;
 
 namespace prjShanLiang.Controllers
@@ -30,7 +31,7 @@ namespace prjShanLiang.Controllers
         {
             if (id == null)
                 return RedirectToAction("Reconnend");
-            IQueryable datas = from s in _db.Stores 
+            IQueryable datas = from s in _db.Stores.Include(s => s.StoreDecorationImages)
                         where s.StoreId == id 
                         select s;
             if (datas == null)
