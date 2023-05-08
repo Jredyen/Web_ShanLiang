@@ -45,7 +45,7 @@
         {
             <div class="item @(advertisement == Model.Item1.First() ? "active" : "")">
 
-                <a href="@advertisement.Website" target="_self"><img src="data:image/jpeg;base64,@(System.Convert.ToBase64String(advertisement.StoreImage))" /></a>
+                <a href="@advertisement.Website" target="_self">@*<img src="data:image/jpeg;base64,@(System.Convert.ToBase64String(advertisement.StoreImage))" />*@</a>
                 <div class="carousel-caption">
                     <h3>@advertisement.RestaurantName</h3>
                     <p>@advertisement.RestaurantPhone</p>

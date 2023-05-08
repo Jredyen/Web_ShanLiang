@@ -1,0 +1,60 @@
+﻿@model IEnumerable<prjShanLiang.Models.Store>
+
+@{
+    ViewData["Title"] = "BuyAdv";
+}
+
+<h2>購買廣告</h2>
+
+<p>
+    @Html.ActionLink("檢視購物車", "CartView")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            序
+        </th>
+        <th>
+            廣告範例圖
+        </th>
+        <th>
+            價錢
+        </th>
+        <th></th>
+    </tr>
+
+    @{
+        int count = 0;
+
+        foreach (var item in Model)
+        {
+            count++;
+            <tr>
+                <td>
+                    @count
+                </td>
+                <td>
+                   
+                    <br />
+                    <h2>
+                        @Html.DisplayFor(modelItem => item.RestaurantName)
+                        
+                    </h2>
+                </td>
+                <td>
+                   
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RestaurantPhone)
+                </td>
+                <td>
+                    @Html.ActionLink("加入購物車", "AddToCart", new { id = item.StoreId }) 
+
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+
