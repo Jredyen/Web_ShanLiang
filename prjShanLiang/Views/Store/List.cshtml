@@ -1,4 +1,4 @@
-﻿@model IEnumerable<prjShanLiang.Models.Store>
+﻿@*@model IEnumerable<prjShanLiang.Models.Store>
 
 @{
     ViewData["Title"] = "膳糧";
@@ -6,8 +6,26 @@
 
 <h1>餐廳一覽</h1>
 
+<div class="col-2"></div>
+<div class="col-2"></div>
+<div class="col-6"></div>
+<div class="col-2"></div>
+
+<label for="exampleDataList" class="form-label">搜尋</label>
+<input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="輸入關鍵字搜尋">
+<datalist id="datalistOptions"></datalist>
+
     <input type="text" class="form-control mb-3" id="txtKeyword" placeholder="搜尋餐廳">
     <div class="list-group mb-2"></div>
+
+<div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+</div>
 
 <table class="table table-hover">
     <thead>
@@ -71,10 +89,13 @@
         }
     </tbody>
 </table>
-
 @section Scripts{
     <script>
-        const Keyword = document.querySelector('#txtKeyword');
+
+        const datalistOptions = document.querySelector('#datalistOptions');
+        const Keyword = document.querySelector('#exampleDataList');
+
+        //const Keyword = document.querySelector('#txtKeyword');
         const divList = document.querySelector('.list-group');
         Keyword.addEventListener('input', async () => {
             const response = await fetch('@Url.Content("~/Store/GetStore")?keyword=' + Keyword.value);
@@ -82,10 +103,12 @@
             //讀出JSON格式的資料
             const products = datas.map(data => {
                 return (
-                    `<button onclick="read(event)"  type="button" class="list-group-item list-group-item-action">${data}</button>`
+                    //`<button onclick="read(event)"  type="button" class="list-group-item list-group-item-action">${data}</button>`
+                    `<option value="${data}"></option>`
                 )
             })
-            divList.innerHTML = products.join("");
+            //divList.innerHTML = products.join("");
+            datalistOptions.innerHTML = products.join("");
         })
 
         function read(evt) {
@@ -93,5 +116,412 @@
             divList.innerHTML = "";
         }
 
+    </script>
+}*@
+
+@{
+    ViewData["Title"] = "膳糧";
+}
+
+<head>
+    <meta charset="utf-8">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        /*body {
+            margin-top: 20px;
+            background: #eee;
+        }*/
+
+        .btn {
+            margin-bottom: 5px;
+        }
+
+        .grid {
+            position: relative;
+            width: 100%;
+            background: #fff;
+            color: #666666;
+            border-radius: 2px;
+            margin-bottom: 25px;
+            box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+            .grid .grid-body {
+                padding: 15px 20px 15px 20px;
+                font-size: 0.9em;
+                line-height: 1.9em;
+                margin-bottom: 100px;
+            }
+
+        .search table tr td.rate {
+            color: #f39c12;
+            line-height: 50px;
+        }
+
+        .search table tr:hover {
+            cursor: pointer;
+        }
+
+        .search table tr td.image {
+            width: 50px;
+        }
+
+        .search table tr td img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .search table tr td.rate {
+            color: #f39c12;
+            line-height: 50px;
+        }
+
+        .search table tr td.price {
+            font-size: 1.5em;
+            line-height: 50px;
+        }
+
+        .search #price1,
+        .search #price2 {
+            display: inline;
+            font-weight: 600;
+        }
+
+        /*=============================================*/
+        /*.card {
+            width: 350px;
+            border: none;
+            box-shadow: 5px 6px 6px 2px #e9ecef;
+            border-radius: 12px;
+        }*/
+
+        .circle-image img {
+            border: 6px solid #fff;
+            border-radius: 100%;
+            padding: 0px;
+            top: -28px;
+            position: relative;
+            width: 70px;
+            height: 70px;
+            border-radius: 100%;
+            z-index: 1;
+            background: #e7d184;
+            cursor: pointer;
+        }
+
+        .dot {
+            height: 18px;
+            width: 18px;
+            background-color: blue;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            border: 3px solid #fff;
+            top: -48px;
+            left: 186px;
+            z-index: 1000;
+        }
+
+        .name {
+            margin-top: -21px;
+            font-size: 18px;
+        }
+
+        .fw-500 {
+            font-weight: 500 !important;
+        }
+
+        .start {
+            color: green;
+        }
+
+        .stop {
+            color: red;
+        }
+
+        .rate {
+            border-bottom-right-radius: 12px;
+            border-bottom-left-radius: 12px;
+        }
+
+        .rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center
+        }
+
+            .rating > input {
+                display: none
+            }
+
+            .rating > label {
+                position: relative;
+                width: 1em;
+                font-size: 30px;
+                font-weight: 300;
+                color: #FFD600;
+                cursor: pointer
+            }
+
+                .rating > label::before {
+                    content: "\2605";
+                    position: absolute;
+                    opacity: 0
+                }
+
+                .rating > label:hover:before,
+                .rating > label:hover ~ label:before {
+                    opacity: 1 !important
+                }
+
+            .rating > input:checked ~ label:before {
+                opacity: 1
+            }
+
+            .rating:hover > input:checked ~ label:before {
+                opacity: 0.4
+            }
+
+        .buttons {
+            top: 36px;
+            position: relative;
+        }
+
+        .rating-submit {
+            border-radius: 15px;
+            color: #fff;
+            height: 49px;
+        }
+
+            .rating-submit:hover {
+                color: #fff;
+            }
+    </style>
+</head>
+
+<body>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="grid search">
+                    <div class="grid-body">
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <h2 class="grid-title"><i class="fa fa-filter"></i> 條件篩選</h2>
+                                <hr>
+
+                                <h4>類別</h4>
+                                <p>
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseType" role="button" aria-expanded="false" aria-controls="collapseType">展開</a>
+                                </p>
+                                <div class="collapse" id="collapseType">
+                                    <div class="card card-body" id="storeType">
+                                            @*會在剛載入網頁時使用 ShowType() 獲得所有類型*@
+                                    </div>
+                                </div>
+
+                                <div class="padding"></div>
+
+                                <h4>地區</h4>
+                                <p>
+                                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCAD" role="button" aria-expanded="false" aria-controls="collapseCAD">展開</a>
+                                </p>
+                                <div class="collapse" id="collapseCAD">
+                                    <div class="card card-body" id="cityAndDistrict">
+                                        @*會在剛載入網頁時使用 ShowCity() 獲得所有城市與行政區*@
+                                    </div>
+                                </div>
+
+                                <div class="padding"></div>
+
+                                <h4>評價</h4>
+                                <div class="rating">
+                                    <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label> <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label> <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label> <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label> <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-9">
+                                <h2><i class="fa fa-file-o"></i> 結果</h2>
+                                <hr>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="txtSearch" placeholder="輸入關鍵字搜尋" list="searchResule">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-primary" type="button" id="serachButton"><i class="fa fa-search"></i></button>
+                                    </span>
+                                    <datalist id="searchResule"></datalist>
+                                </div>
+
+                                <p id="searchTxtResult"></p>
+                                <div class="padding"></div>
+                                <div class="row">
+
+                                    <div class="col-sm-6">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                                排序 <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="#">評價</a></li>
+                                                <li><a href="#">距離</a></li>
+                                                <li><a href="#">新到舊</a></li>
+                                                <li><a href="#">舊到新</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6 text-right">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-default active"><i class="fa fa-list"></i></button>
+                                            <button type="button" class="btn btn-default"><i class="fa fa-th"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <tbody>
+                                            <tr>
+                                                <td class="number text-center">1</td>
+                                                <td class="image"><img src="https://www.bootdey.com/image/400x300/FF8C00" alt=""></td>
+                                                <td class="product"><strong>Product 1</strong><br>This is the product description.</td>
+                                                <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>
+                                                @*<td class="price text-right">$350</td>*@
+                                                <td class="price text-right">@Html.ActionLink("我要訂位", "Reserve"/*, new { id=item.StoreId }*/)</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="number text-center">2</td>
+                                                <td class="image"><img src="https://www.bootdey.com/image/400x300/5F9EA0" alt=""></td>
+                                                <td class="product"><strong>Product 2</strong><br>This is the product description.</td>
+                                                <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></span></td>
+                                                <td class="price text-right">$1,050</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="number text-center">3</td>
+                                                <td class="image"><img src="https://www.bootdey.com/image/400x300" alt=""></td>
+                                                <td class="product"><strong>Product 3</strong><br>This is the product description.</td>
+                                                <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></span></td>
+                                                <td class="price text-right">$550</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="number text-center">4</td>
+                                                <td class="image"><img src="https://www.bootdey.com/image/400x300/8A2BE2" alt=""></td>
+                                                <td class="product"><strong>Product 4</strong><br>This is the product description.</td>
+                                                <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i></span></td>
+                                                <td class="price text-right">$330</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="number text-center">5</td>
+                                                <td class="image"><img src="https://www.bootdey.com/image/400x300" alt=""></td>
+                                                <td class="product"><strong>Product 5</strong><br>This is the product description.</td>
+                                                <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span></td>
+                                                <td class="price text-right">$540</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="number text-center">6</td>
+                                                <td class="image"><img src="https://www.bootdey.com/image/400x300/6495ED" alt=""></td>
+                                                <td class="product"><strong>Product 6</strong><br>This is the product description.</td>
+                                                <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>
+                                                <td class="price text-right">$870</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="number text-center">7</td>
+                                                <td class="image"><img src="https://www.bootdey.com/image/400x300/DC143C" alt=""></td>
+                                                <td class="product"><strong>Product 7</strong><br>This is the product description.</td>
+                                                <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i></span></td>
+                                                <td class="price text-right">$620</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="number text-center">8</td>
+                                                <td class="image"><img src="https://www.bootdey.com/image/400x300/9932CC" alt=""></td>
+                                                <td class="product"><strong>Product 8</strong><br>This is the product description.</td>
+                                                <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i></span></td>
+                                                <td class="price text-right">$1,550</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+
+                                <ul class="pagination">
+                                    <li class="disabled"><a href="#">«</a></li>
+                                    <li class="active"><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#">4</a></li>
+                                    <li><a href="#">5</a></li>
+                                    <li><a href="#">»</a></li>
+                                </ul>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</body>
+@section Scripts{
+    <script>
+        const Keyword = document.querySelector('#txtSearch');
+        const KeywordResult = document.querySelector('#searchTxtResult');
+        const SearchResule = document.querySelector('#searchResule');
+        const SerachButton = document.querySelector('#serachButton');
+        const StoreType = document.querySelector('#storeType');
+        const CAD = document.querySelector('#cityAndDistrict');
+
+        Keyword.addEventListener('input', async () => {
+            const response = await fetch('@Url.Content("~/Store/GetStore")?keyword=' + Keyword.value);
+            const datas = await response.json();
+            const shop = datas.map(data => {
+                return (
+                    `<option value="${data}"></option>`
+                )
+            })
+            SearchResule.innerHTML = shop.join("");
+        })
+
+        SerachButton.addEventListener('click', async () => {
+            //TODO:將篩選的範圍與關鍵字帶入搜尋
+
+
+            KeywordResult.innerHTML = `顯示所有 "${Keyword.value}" 的結果`
+        })
+
+        getType();
+        async function getType(){
+            const response = await fetch('@Url.Content("~/Store/ShowType")')
+            const datas = await response.json();
+            const shop = datas.map(data => {
+                return (
+                   StoreType.innerHTML += `<div class="checkbox"><label><input type="checkbox" class="icheck"> ${data}</label></div>`
+                )
+            })
+        }
+
+        getCAD();
+        async function getCAD(){
+            const response = await fetch('@Url.Content("~/api/District")')
+            const datas = await response.json();
+            const shop = datas.map(data => {
+                return (
+                    CAD.innerHTML += `<div class="checkbox"><label><input type="checkbox" class="icheck"> ${data.districtName}</label></div>`
+                )
+            })
+        }
     </script>
 }

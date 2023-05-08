@@ -42,5 +42,15 @@ namespace prjShanLiang.Controllers
             IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword)).Select(s => s.RestaurantName);
             return Json(storeList);
         }
+        public IActionResult ShowType()
+        {
+            IQueryable datas = _db.RestaurantTypes.Select(r => r.TypeName);
+            return Json(datas);
+        }
+        public IActionResult SerachStore(string keyword)
+        {
+            IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword)).Select(n => n);
+            return Json(storeList);
+        }
     }
 }
