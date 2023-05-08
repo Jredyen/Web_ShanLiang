@@ -1,0 +1,56 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@model IEnumerable<prjShanLiang.Models.Admin>
+@section Styles{
+    <style>
+        .container{
+           padding:50px;
+        }
+    </style>
+}
+
+<div class="container">
+    <p1>管理員資料一覽表</p1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.AdminId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AdminName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Passwoed)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Identification)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdminId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AdminName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Passwoed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Identification)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>

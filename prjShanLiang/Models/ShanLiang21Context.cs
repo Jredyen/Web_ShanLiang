@@ -21,6 +21,8 @@ public partial class ShanLiang21Context : DbContext
 
     public virtual DbSet<Action> Actions { get; set; }
 
+    public virtual DbSet<Admin> Admins { get; set; }
+
     public virtual DbSet<City> Cities { get; set; }
 
     public virtual DbSet<Coupon> Coupons { get; set; }
@@ -55,9 +57,13 @@ public partial class ShanLiang21Context : DbContext
 
     public virtual DbSet<Store> Stores { get; set; }
 
+    public virtual DbSet<StoreAdImage> StoreAdImages { get; set; }
+
+    public virtual DbSet<StoreDecorationImage> StoreDecorationImages { get; set; }
+
     public virtual DbSet<StoreEvaluate> StoreEvaluates { get; set; }
 
-    public virtual DbSet<StoreImage> StoreImages { get; set; }
+    public virtual DbSet<StoreMealImage> StoreMealImages { get; set; }
 
     public virtual DbSet<StoreReserved> StoreReserveds { get; set; }
 
@@ -86,9 +92,9 @@ public partial class ShanLiang21Context : DbContext
 
         modelBuilder.Entity<AccountStatus>(entity =>
         {
-            entity.HasKey(e => e.StatusId);
+            entity.HasKey(e => e.StatusId).HasName("PK_AccountStatus");
 
-            entity.ToTable("AccountStatus", "dbo");
+            entity.ToTable("Account_Status", "dbo");
 
             entity.Property(e => e.StatusId).HasColumnName("StatusID");
             entity.Property(e => e.StatusName).HasMaxLength(10);
@@ -100,6 +106,19 @@ public partial class ShanLiang21Context : DbContext
 
             entity.Property(e => e.ActionId).HasColumnName("ActionID");
             entity.Property(e => e.ActionName).HasMaxLength(8);
+        });
+
+        modelBuilder.Entity<Admin>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Admin", "dbo");
+
+            entity.Property(e => e.AdminId)
+                .ValueGeneratedOnAdd()
+                .HasColumnName("AdminID");
+            entity.Property(e => e.AdminName).HasMaxLength(50);
+            entity.Property(e => e.Passwoed).HasMaxLength(50);
         });
 
         modelBuilder.Entity<City>(entity =>
@@ -161,9 +180,7 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.MealImagePath).HasMaxLength(50);
             entity.Property(e => e.MealName).HasMaxLength(50);
             entity.Property(e => e.MealPrice).HasColumnType("money");
-            entity.Property(e => e.Recommendation)
-                .HasMaxLength(50)
-                .HasColumnName("recommendation");
+            entity.Property(e => e.Recommendation).HasColumnName("recommendation");
             entity.Property(e => e.StoreId).HasColumnName("StoreID");
 
             entity.HasOne(d => d.Store).WithMany(p => p.MealMenus)
@@ -366,7 +383,7 @@ public partial class ShanLiang21Context : DbContext
 
         modelBuilder.Entity<Store>(entity =>
         {
-            entity.ToTable("Store", "dbo");
+            entity.ToTable("Store", "dbo", tb => tb.HasTrigger("storeAccountInsert"));
 
             entity.Property(e => e.StoreId).HasColumnName("StoreID");
             entity.Property(e => e.AccountName).HasMaxLength(20);
@@ -391,6 +408,37 @@ public partial class ShanLiang21Context : DbContext
                 .HasConstraintName("FK_Store_District");
         });
 
+        modelBuilder.Entity<StoreAdImage>(entity =>
+        {
+            entity.HasKey(e => e.ImageNo).HasName("PK_Meals_Menu");
+
+            entity.ToTable("Store_AD_Image", "dbo");
+
+            entity.Property(e => e.Adimage)
+                .HasMaxLength(50)
+                .HasColumnName("ADImage");
+            entity.Property(e => e.StoreId).HasColumnName("StoreID");
+
+            entity.HasOne(d => d.Store).WithMany(p => p.StoreAdImages)
+                .HasForeignKey(d => d.StoreId)
+                .HasConstraintName("FK_Meals_Menu_Store");
+        });
+
+        modelBuilder.Entity<StoreDecorationImage>(entity =>
+        {
+            entity.HasKey(e => e.ImageId);
+
+            entity.ToTable("Store_Decoration_Image", "dbo");
+
+            entity.Property(e => e.ImageId).HasColumnName("ImageID");
+            entity.Property(e => e.ImagePath).HasMaxLength(50);
+            entity.Property(e => e.StoreId).HasColumnName("StoreID");
+
+            entity.HasOne(d => d.Store).WithMany(p => p.StoreDecorationImages)
+                .HasForeignKey(d => d.StoreId)
+                .HasConstraintName("FK_Store_Decoration_Image_Store");
+        });
+
         modelBuilder.Entity<StoreEvaluate>(entity =>
         {
             entity.HasKey(e => e.EvaluateNo);
@@ -411,18 +459,19 @@ public partial class ShanLiang21Context : DbContext
                 .HasConstraintName("FK_Store_Evaluate_Store");
         });
 
-        modelBuilder.Entity<StoreImage>(entity =>
+        modelBuilder.Entity<StoreMealImage>(entity =>
         {
-            entity.HasKey(e => e.ImageNo).HasName("PK_Meals_Menu");
+            entity.HasKey(e => e.ImageId);
 
-            entity.ToTable("Store_Image", "dbo");
+            entity.ToTable("Store_Meal_Image", "dbo");
 
+            entity.Property(e => e.ImageId).HasColumnName("ImageID");
+            entity.Property(e => e.ImagePath).HasMaxLength(50);
             entity.Property(e => e.StoreId).HasColumnName("StoreID");
-            entity.Property(e => e.StoreImage1).HasColumnName("StoreImage");
 
-            entity.HasOne(d => d.Store).WithMany(p => p.StoreImages)
+            entity.HasOne(d => d.Store).WithMany(p => p.StoreMealImages)
                 .HasForeignKey(d => d.StoreId)
-                .HasConstraintName("FK_Meals_Menu_Store");
+                .HasConstraintName("FK_Store_Meal_Image_Store");
         });
 
         modelBuilder.Entity<StoreReserved>(entity =>
