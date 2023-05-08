@@ -43,7 +43,9 @@
         }
 
     /*=================================================*/
-
+    .form-group .form-control {
+        margin-bottom: 10px;
+    }
 
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -76,23 +78,40 @@
     @foreach (var item in Model)
     {      
         string imgName = item.MealImagePath; //照片路徑轉字串
-
-        
+       
         <div class="col-12 col-md-4" style="margin-top:20px;">
             <div class="img-thumbnail">
-
-                <img src="~/images/@imgName" width=100%  />  @*圖片*@
-                <h2>@item.MealName</h2>                      @*名稱*@                       
-                <p>NT$:@item.MealPrice</p>                   @*價格*@
+                <img src="~/images/@imgName" width=100% />   @*餐點圖片*@
+                <h2>@item.MealName</h2>                      @*餐點名稱*@
+                <p>NT$:@item.MealPrice</p>                   @*餐點價格*@
                 <div class="form-group">
-                    @Html.ActionLink("加入購物車", "AddToCart","Shopping", new { id = item.MealId },new { @class = "btn btn-primary" })
-                </div> 
-                <p>@item.Recommendation</p>                 @*介紹*@
+                    @*@Html.ActionLink("加入購物車", "AddToCart","Shopping", new { id = item.MealId },new { @class = "btn btn-primary" })*@
+                    @using (Html.BeginForm("AddToCart", "Shopping", FormMethod.Post))
+                    {
+                        <input type="hidden" name="txtMealId" value="@item.MealId" />
 
+
+                        <div class="form-group">
+                            <div class="col-md-offset-0 col-md-10">
+                                數量
+                            </div>
+                            <div class="col-md-10">
+                                @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9,10 }), new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-0 col-md-10">
+                                <input type="submit" value="加入購物車" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    }
+                </div> 
+                <p>@item.Recommendation</p>                 @*餐點介紹*@
             </div>
         </div>
     }
 </div>
+
 
 
 

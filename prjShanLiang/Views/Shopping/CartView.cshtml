@@ -41,24 +41,19 @@
             <tr>
                 <td>@count</td>
                 <td>
-
+                   
                     @Html.DisplayFor(modelItem => item.mealmenu.MealName)
                 </td>
                 <td>
-
                     @Html.DisplayFor(modelItem => item.count)
                 </td>
                 <td>
-
-                    @Html.DisplayFor(modelItem => item.price)
+                  NT$ @Html.DisplayFor(modelItem => item.price)
                 </td>
                 <td>
-
-                    @Html.DisplayFor(modelItem => item.小計)
+                  NT$ @Html.DisplayFor(modelItem => item.小計)
                 </td>
                 <td>
-                    @Html.ActionLink("修改數量", "EditToSession", "Shopping", new {  id=item.mealmenu.MealId , count=item.count},new { @class = "btn btn-primary" } ) |
-
                     @Html.ActionLink("刪除", "Delete","Shopping", new {  id=item.mealmenu.MealId  }, new { onclick = "return confirm('確定要刪除嗎?')", Class = "btn btn-danger" })
                 </td>
             </tr>
