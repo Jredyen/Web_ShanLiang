@@ -8238,6 +8238,19 @@ button.close {
     display: none !important;
 }
 
+.mid-flex {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.shopBook {
+    box-shadow: 0 0 5px #ddd;
+    margin: 0 0 20px 0;
+    background: #fff;
+}
+
 @media print {
     .visible-print-block {
         display: block !important;

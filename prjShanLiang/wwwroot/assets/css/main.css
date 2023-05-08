@@ -61,7 +61,7 @@ h6 {
 --------------------------------------------------------------*/
 section {
     overflow: hidden;
-/*    padding: 80px 0;*/
+    /*    padding: 80px 0;*/
 }
 
 .section-bg {
@@ -299,6 +299,7 @@ section {
     border-radius: 50px;
     transition: 0.3s;
 }
+
 .header .button-book-a-table {
     font-size: 14px;
     color: #fff;
@@ -633,7 +634,7 @@ section {
         font-size: 20px;
         left: 0;
         top: -3px;
-        color: var(--color-primary);
+        /*        color: var(--color-primary);*/
     }
 
 .about .content p:last-child {
@@ -741,18 +742,19 @@ section {
     .why-us .why-box .more-btn {
         display: inline-block;
         background: rgba(255, 255, 255, 0.3);
-        padding: 6px 30px 8px 30px;
+        padding: 6px 10px 8px 10px;
         color: #fff;
         border-radius: 50px;
         transition: all ease-in-out 0.4s;
+        margin: 0 2px;
     }
 
         .why-us .why-box .more-btn i {
-            font-size: 14px;
+            margin: 0 5px;
         }
 
         .why-us .why-box .more-btn:hover {
-            color: var(--color-primary);
+            /*color: var(--color-primary);*/
             background: #fff;
         }
 
@@ -791,6 +793,19 @@ section {
         font-size: 15px;
         color: #6c757d;
     }
+
+.mid-flex {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.shopBook {
+    box-shadow: 0 0 5px #ddd;
+    margin: 0 0 20px 0;
+    background: #fff;
+}
 
 @media (min-width: 1200px) {
     .why-us .icon-box:hover {

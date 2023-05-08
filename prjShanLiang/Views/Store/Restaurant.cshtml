@@ -86,11 +86,24 @@
 
                     <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="300">
                         <div class="content ps-0 ps-lg-5 why-us">
-                            <div class="why-box">
-                                <a class="more-btn" asp-area="" asp-controller="Store" asp-action="Share">分享<i class="bx bx-chevron-right"></i></a>
-                                <a class="more-btn" asp-area="" asp-controller="Store" asp-action="Comment">評論<i class="bx bx-chevron-right"></i></a>
-                                <a class="more-btn" asp-area="" asp-controller="Store" asp-action="Favorate">收藏<i class="bx bx-chevron-right"></i></a>
+                            <div class="why-box mid-flex">
+                                <div class="more-btn">
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="Share"><i class="bi bi-share"></i>分享<i class="bx bx-chevron-right"></i></a>
+                                </div>
+                                <div class="more-btn">
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="Comment"><i class="bi bi-chat-left"></i>評論<i class="bx bx-chevron-right"></i></a>
+                                </div>
+                                <div class="more-btn">
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="Favorate"><i class="bi bi-suit-heart"></i>@*<i class="bi bi-suit-heart-fill"></i>*@收藏<i class="bx bx-chevron-right"></i></a>
+                                </div>
                             </div>
+
+                            <div class="why-box mid-flex shopBook">
+                                <div class="more-btn">
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="Reserve"><i class="bi bi-calendar-event"></i>線上預訂<i class="bx bx-chevron-right"></i></a>
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
