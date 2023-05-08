@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - 不需要懂米，只需要懂吃。</title>
     
-    @*原CSS
+    <!-- 原CSS -->
+    @*
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/prjShanLiang.styles.css" asp-append-version="true" />
@@ -71,18 +72,22 @@
                 </ul>
             </nav>
 
-            <a class="btn-book-a-table" href="#book-a-table">搜尋</a>
+            <div>
+                <input type="text" class="textbox-book-a-table" id="txtKeyword" placeholder="搜尋餐廳">
+                <a class="button-book-a-table" href="#book-a-table">搜尋</a>
+            </div>
+
+
+            
             <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
             <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 
         </div>
     </header><!-- End Header -->
 
-    <div class="container">
-        <main role="main" class="pb-3">
+
             @RenderBody()
-        </main>
-    </div>
+
 
     <!-- ======= Footer ======= -->
     <footer id="footer" class="footer">

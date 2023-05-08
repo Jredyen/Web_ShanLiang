@@ -3,48 +3,81 @@
 @{
     ViewData["Title"] = "Restaurant";
 }
+@foreach (var item in Model)
+    {
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="hero d-flex align-items-center section-bg">
+    <div class="container">
+      <div class="row justify-content-between gy-5">
+        <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
+                    <h2 data-aos="fade-up">@Html.DisplayFor(modelItem => item.RestaurantName)</h2>
+          <p data-aos="fade-up" data-aos-delay="100">Sed autem laudantium dolores. Voluptatem itaque ea consequatur eveniet. Eum quas beatae cumque eum quaerat.</p>
+        </div>
+        <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
+          <img src="~/assets/img/hero-img.png" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300">
+                    <img src="../../Images/@item.StoreD" width="200" />
+        </div>
+      </div>
+    </div>
+  </section><!-- End Hero Section -->
+<main id="main">
+    
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs">
+        <div class="container">
 
-@foreach (var item in Model) {
-    <h1>@Html.DisplayFor(modelItem => item.RestaurantName)</h1>
+            <div class="d-flex justify-content-between align-items-center">
+                <ol>
+                    <li><a asp-controller="Store" asp-action="List">Store</a></li>
+                        <li>@Html.DisplayFor(modelItem => item.StoreId)</li>
+                </ol>
+            </div>
 
-<p>
-    <a asp-action="Reconnend">回到列表</a>
-</p>
-<table class="table">
-    <tbody>
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RestaurantName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RestaurantAddress)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RestaurantPhone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Seats)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.OpeningTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClosingTime)
-            </td>
-            <td>
-                <a href="@Html.DisplayFor(modelItem => item.Website)">個人網站</a>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StoreMail)
-            </td>
-            <td>
-                @Html.ActionLink("我要訂位", "Reserve", new { id=item.StoreId })
-            </td>
-        </tr>
-    </tbody>
-</table>
+        </div>
+    </div><!-- End Breadcrumbs -->
+    
+        
+        <p>
+            <a asp-action="Reconnend">回到列表</a>
+        </p>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <td>
+                                    @Html.DisplayFor(modelItem => item.RestaurantName)
+                    </td>
+                    <td>
+                                    @Html.DisplayFor(modelItem => item.RestaurantAddress)
+                    </td>
+                    <td>
+                                    @Html.DisplayFor(modelItem => item.RestaurantPhone)
+                    </td>
+                    <td>
+                                    @Html.DisplayFor(modelItem => item.Seats)
+                    </td>
+                    <td>
+                                    @Html.DisplayFor(modelItem => item.OpeningTime)
+                    </td>
+                    <td>
+                                    @Html.DisplayFor(modelItem => item.ClosingTime)
+                    </td>
+                    <td>
+                        <a href="@Html.DisplayFor(modelItem => item.Website)">個人網站</a>
+                    </td>
+                    <td>
+                                    @Html.DisplayFor(modelItem => item.Rating)
+                    </td>
+                    <td>
+                                    @Html.DisplayFor(modelItem => item.StoreMail)
+                    </td>
+                    <td>
+                                    @Html.ActionLink("我要訂位", "Reserve", new { id=item.StoreId })
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+                
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1278.101707603652!2d121.54386081424009!3d25.033478882048225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abd379a5ec97%3A0xedc006d25a9e35df!2z6LOH5bGV5ZyL6Zqb6IKh5Lu95pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1682580771029!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+</main>
+
 }
-<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1278.101707603652!2d121.54386081424009!3d25.033478882048225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abd379a5ec97%3A0xedc006d25a9e35df!2z6LOH5bGV5ZyL6Zqb6IKh5Lu95pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1682580771029!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>

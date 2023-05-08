@@ -53,9 +53,9 @@ public partial class Store
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
-    public virtual ICollection<StoreEvaluate> StoreEvaluates { get; set; } = new List<StoreEvaluate>();
+    public virtual ICollection<StoreAdImage> StoreAdImages { get; set; } = new List<StoreAdImage>();
 
-    public virtual ICollection<StoreImage> StoreImages { get; set; } = new List<StoreImage>();
+    public virtual ICollection<StoreEvaluate> StoreEvaluates { get; set; } = new List<StoreEvaluate>();
 
     public virtual ICollection<StoreReserved> StoreReserveds { get; set; } = new List<StoreReserved>();
 

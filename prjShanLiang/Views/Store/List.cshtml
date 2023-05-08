@@ -1,98 +1,118 @@
 ﻿@model IEnumerable<prjShanLiang.Models.Store>
 
 @{
-    ViewData["Title"] = "膳糧";
+    ViewData["Title"] = "餐廳一覽";
 }
 
-<h1>餐廳一覽</h1>
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>@ViewData["Title"]</h2>
+                <ol>
+                    <li>Store</li>
+                    <li></li>
+                </ol>
+            </div>
+
+        </div>
+    </div><!-- End Breadcrumbs -->
 
     <input type="text" class="form-control mb-3" id="txtKeyword" placeholder="搜尋餐廳">
     <div class="list-group mb-2"></div>
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th></th>
-            <th>
-                @Html.DisplayNameFor(model => model.RestaurantName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RestaurantAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RestaurantPhone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OpeningTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClosingTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @{
-            int count = 0;
-            foreach (var item in Model)
-            {
-                count++;
-                <tr>
-                    <td>
-                        @count
-                    </td>
-                    <td>
-                        @Html.ActionLink(item.RestaurantName,"Restaurant",new {  id=item.StoreId  },null)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RestaurantAddress)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RestaurantPhone)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.OpeningTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ClosingTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Rating)
-                    </td>
-                    <td>
-                        @Html.ActionLink("分享", "Share", new {  id=item.StoreId  }) |
-                        @Html.ActionLink("評論", "Comment", new {  id=item.StoreId  }) |
-                        @Html.ActionLink("收藏", "AddToKeep", new {  id=item.StoreId  })
-                    </td>
-                </tr>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th></th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RestaurantName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RestaurantAddress)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RestaurantPhone)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OpeningTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ClosingTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Rating)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int count = 0;
+                foreach (var item in Model)
+                {
+                    count++;
+                    <tr>
+                        <td>
+                            @count
+                        </td>
+                        <td>
+                            @Html.ActionLink(item.RestaurantName,"Restaurant",new {  id=item.StoreId  },null)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RestaurantAddress)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RestaurantPhone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.OpeningTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClosingTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Rating)
+                        </td>
+                        <td>
+                            @Html.ActionLink("分享", "Share", new {  id=item.StoreId  }) |
+                            @Html.ActionLink("評論", "Comment", new {  id=item.StoreId  }) |
+                            @Html.ActionLink("收藏", "AddToKeep", new {  id=item.StoreId  })
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </tbody>
-</table>
+        </tbody>
+    </table>
 
-@section Scripts{
-    <script>
-        const Keyword = document.querySelector('#txtKeyword');
-        const divList = document.querySelector('.list-group');
-        Keyword.addEventListener('input', async () => {
-            const response = await fetch('@Url.Content("~/Store/GetStore")?keyword=' + Keyword.value);
-            const datas = await response.json();
-            //讀出JSON格式的資料
-            const products = datas.map(data => {
-                return (
-                    `<button onclick="read(event)"  type="button" class="list-group-item list-group-item-action">${data}</button>`
-                )
+    @section Scripts{
+        <script>
+            const Keyword = document.querySelector('#txtKeyword');
+            const divList = document.querySelector('.list-group');
+            Keyword.addEventListener('input', async () => {
+                const response = await fetch('@Url.Content("~/Store/GetStore")?keyword=' + Keyword.value);
+                const datas = await response.json();
+                //讀出JSON格式的資料
+                const products = datas.map(data => {
+                    return (
+                        `<button onclick="read(event)"  type="button" class="list-group-item list-group-item-action">${data}</button>`
+                    )
+                })
+                divList.innerHTML = products.join("");
             })
-            divList.innerHTML = products.join("");
-        })
 
-        function read(evt) {
-            txtKeyword.value = evt.target.textContent;
-            divList.innerHTML = "";
-        }
+            function read(evt) {
+                txtKeyword.value = evt.target.textContent;
+                divList.innerHTML = "";
+            }
 
-    </script>
-}
+        </script>
+    }
+</main>
+
+
+
+
