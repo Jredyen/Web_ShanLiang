@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
+using System.Linq;
 using System.Net;
 using System.Runtime.Intrinsics.X86;
 using System.Text.Json;
@@ -138,5 +140,52 @@ namespace prjShanLiang.Controllers
                 return View();
             return RedirectToAction("Login");
         }
+
+        public IActionResult memberManagement()
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            //CAccountPasswordViewModel vm = new CAccountPasswordViewModel();
+            string logginedUser = null;
+            logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member datas = JsonSerializer.Deserialize<Member>(logginedUser);
+            var data = sl.Members.Where(t => t.Email.Contains(datas.Email));
+            ViewBag.MemberName = datas.MemberName;
+            return View(data);
+        }
+
+        public IActionResult memberDataRevision(string? Email)
+        {
+
+            ShanLiang21Context sl = new ShanLiang21Context();
+            //CAccountPasswordViewModel vm = new CAccountPasswordViewModel();
+            Member mem = sl.Members.FirstOrDefault(m => m.Email == Email);
+            if (mem == null)
+                return RedirectToAction("memberManagement");
+            return View(mem);
+            
+            
+        }
+        
+        public IActionResult memberDataRevision2(Member m)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            Member mem = sl.Members.FirstOrDefault(p => p.Email == m.Email);
+            if (mem != null) {
+                
+                mem.Memberphone =  m.Memberphone;
+                mem.MemberName = m.MemberName;
+                mem.Address = m.Address;
+                mem.Password = m.Password;
+
+            }
+            sl.SaveChanges();
+
+            return RedirectToAction("memberDataRevision");
+
+        }
+       
+
+
+
     }
 }
