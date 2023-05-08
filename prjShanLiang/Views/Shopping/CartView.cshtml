@@ -5,7 +5,7 @@
 }
 
 
-<h2>購物車</h2>
+<h2><img src="~/images/購物車.png" /></h2>
 
 <table class="table">
     <tr>
@@ -28,7 +28,7 @@
             編輯
         </th>
     </tr>
-    @*    @{
+    @{
         int count = 0;
         decimal pay = 0;
         decimal tax = 0;
@@ -38,50 +38,40 @@
         {
             count++;
             pay += item.小計;
-                                    <tr>
-                                        <td>@count</td>
-                                        <td>
+            <tr>
+                <td>@count</td>
+                <td>
 
-                            @Html.DisplayFor(modelItem => item.mealmenu.MealName)
-                                        </td>
-                                        <td>
+                    @Html.DisplayFor(modelItem => item.mealmenu.MealName)
+                </td>
+                <td>
 
-                            @Html.DisplayFor(modelItem => item.count)
-                                        </td>
-                                        <td>
+                    @Html.DisplayFor(modelItem => item.count)
+                </td>
+                <td>
 
-                            @Html.DisplayFor(modelItem => item.price)
-                                        </td>
-                                        <td>
+                    @Html.DisplayFor(modelItem => item.price)
+                </td>
+                <td>
 
-                            @Html.DisplayFor(modelItem => item.小計)
-                                        </td>
-                                        <td>
+                    @Html.DisplayFor(modelItem => item.小計)
+                </td>
+                <td>
                     @Html.ActionLink("修改數量", "EditToSession", "Shopping", new {  id=item.mealmenu.MealId , count=item.count},new { @class = "btn btn-primary" } ) |
 
                     @Html.ActionLink("刪除", "Delete","Shopping", new {  id=item.mealmenu.MealId  }, new { onclick = "return confirm('確定要刪除嗎?')", Class = "btn btn-danger" })
-                                        </td>
-                                    </tr>
+                </td>
+            </tr>
         }
-        tax = pay * 0.05M;
+        tax = pay * 0.1M;
         sum = pay + tax;
-    }*@
-    <tr>
-           <td>1</td>
-           <td>豆沙小籠包</td>
-           <td>2</td>
-           <td>190</td>
-           <td>380</td>
-           <td>
-            @Html.ActionLink("刪除", "CartView","Shopping", new { /*id=item.product.Fid*/ }, new { onclick = "return confirm('確定要刪除嗎?')", Class = "btn btn-danger" })
-           </td>
-     </tr>
+    }
+   
 </table>
-<li>總計:380 元</li>
-@*<li>交易金額:@pay.ToString("###,###,##0")</li>
-<li>稅    額:@tax.ToString("###,###,##0")</li>
-<li>應付金額:@sum.ToString("###,###,##0")</li>*@
+<li>餐點金額:NT$@pay.ToString("###,###,##0")</li>
+<li>服 務 費:NT$@tax.ToString("###,###,##0")</li>
+<li>應付金額:NT$@sum.ToString("###,###,##0")</li>
 <p>
     @Html.ActionLink("前往結帳", "CheckoutCart", "Shopping", null, new { @class = "btn btn-primary" })
-    @Html.ActionLink("繼續購物", "RestaurantMenu", "Shopping", null, new { @class = "btn btn-primary" })
+    @Html.ActionLink("繼續點餐", "Menu", "Shopping", null, new { @class = "btn btn-primary" })
 </p>
