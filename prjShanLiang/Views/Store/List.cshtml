@@ -64,6 +64,7 @@
                     </td>
                     <td>
                         @Html.ActionLink("分享", "Share", new {  id=item.StoreId  }) |
+                        @Html.ActionLink("評論", "Comment", new {  id=item.StoreId  }) |
                         @Html.ActionLink("收藏", "AddToKeep", new {  id=item.StoreId  })
                     </td>
                 </tr>
