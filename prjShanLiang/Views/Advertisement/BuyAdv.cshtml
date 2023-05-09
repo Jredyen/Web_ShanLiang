@@ -1,18 +1,42 @@
-﻿@model IEnumerable<prjShanLiang.Models.Store>
-
+﻿@model Tuple<List<prjShanLiang.Models.Store>, List<prjShanLiang.Models.StoreAdImage>>
 @{
     ViewData["Title"] = "BuyAdv";
 }
 
-<h2>購買廣告</h2>
+
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>購買廣告方案</h2>
+                <ol>
+                    <li><a a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li>Index</li>
+                </ol>
+            </div>
+
+        </div>
+    </div><!-- End Breadcrumbs -->
+
+    <section class="sample-page">
+        <div class="container" data-aos="fade-up">
+            <!--==============================================-->
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+
+
 
 <p>
     @Html.ActionLink("檢視購物車", "CartView")
 </p>
+
 <table class="table">
     <tr>
         <th>
-            序111
+            序
         </th>
         <th>
             廣告範例圖
@@ -21,40 +45,66 @@
             價錢
         </th>
         <th></th>
+       <th></th>
     </tr>
 
     @{
         int count = 0;
 
-        foreach (var item in Model)
+        foreach (var item in Model.Item1)
         {
+            
             count++;
             <tr>
                 <td>
                     @count
                 </td>
                 <td>
-                   
-                    <br />
-                    <h2>
-                        @Html.DisplayFor(modelItem => item.RestaurantName)
-                        
-                    </h2>
-                </td>
-                <td>
-                   
+                                @foreach (var adImage in Model.Item2.Where(ai => ai.StoreId == item.StoreId))
+                                {
 
+                                    string imgName = adImage.Adimage;
+                                    <img src="~/images/store/@imgName" width=100% />
+
+                                }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.RestaurantPhone)
                 </td>
+                <td></td>
+                <td></td>
                 <td>
-                    @Html.ActionLink("加入購物車", "AddToCart", new { id = item.StoreId }) 
-
+                    @using (Html.BeginForm("AddToAdvCart", "Advertisement", FormMethod.Post))
+                    {
+                        <input type="hidden" name="txtStoreId" value="@item.StoreId" />
+                        <div class="form-group">
+                            <div class="col-md-offset-0 col-md-10">
+                                數量
+                            </div>
+                            <div class="col-md-10">
+                                @Html.TextBox("txtCount", "1", new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-0 col-md-10">
+                                <input type="submit" value="加入購物車" class="btn btn-default" />
+                            </div>
+                        </div>
+                    }
                 </td>
             </tr>
         }
     }
 
 </table>
+
+            <!--==============================================-->
+
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<button type="button" id="BackTop" class="toTop-arrow"></button>
 
