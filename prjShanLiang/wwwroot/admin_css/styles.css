@@ -7631,10 +7631,6 @@ textarea.form-control-lg {
   margin-top: 3rem !important;
 }
 
-.mt-auto {
-  margin-top: auto !important;
-}
-
 .me-0 {
   margin-right: 0 !important;
 }
@@ -7791,11 +7787,6 @@ textarea.form-control-lg {
 .py-3 {
   padding-top: 1rem !important;
   padding-bottom: 1rem !important;
-}
-
-.py-4 {
-  padding-top: 1.5rem !important;
-  padding-bottom: 1.5rem !important;
 }
 
 .py-5 {
@@ -8169,11 +8160,6 @@ textarea.form-control-lg {
 .bg-danger {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-danger-rgb), var(--bs-bg-opacity)) !important;
-}
-
-.bg-light {
-  --bs-bg-opacity: 1;
-  background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
 }
 
 .bg-dark {
@@ -10843,7 +10829,10 @@ textarea.form-control-lg {
 }
 html,
 body {
-  height: 100%;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 #layoutAuthentication {
