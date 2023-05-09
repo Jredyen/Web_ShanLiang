@@ -85,7 +85,7 @@ namespace prjShanLiang.Controllers
             }
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "2")
             {
-                return RedirectToAction("memberManagement");
+                return RedirectToAction("storeManagement");
             }
             else
                 return RedirectToAction("Login");
@@ -178,6 +178,20 @@ namespace prjShanLiang.Controllers
             return View(data);
         }
 
+
+
+        public IActionResult storeManagement()
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            //CAccountPasswordViewModel vm = new CAccountPasswordViewModel();
+            string logginedUser = null;
+            logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Store datas = JsonSerializer.Deserialize<Store>(logginedUser);
+            var data = sl.Stores.Where(t => t.AccountName.Contains(datas.AccountName));
+            ViewBag.storeName = datas.AccountName;
+            return View(data);
+        }
+
         public IActionResult memberDataRevision(string? Email)
         {
 
@@ -190,7 +204,18 @@ namespace prjShanLiang.Controllers
             
             
         }
-        
+        public IActionResult storeDataRevision(string? AccountName)
+        {
+
+            ShanLiang21Context sl = new ShanLiang21Context();
+            //CAccountPasswordViewModel vm = new CAccountPasswordViewModel();
+            Store sto = sl.Stores.FirstOrDefault(s => s.AccountName == AccountName);
+            if (sto == null)
+                return RedirectToAction("stoManagement");
+            return View(sto);
+
+
+        }
         public IActionResult memberDataRevision2(CMemberWrap m)
         {
             ShanLiang21Context sl = new ShanLiang21Context();
@@ -210,12 +235,8 @@ namespace prjShanLiang.Controllers
                     mem.Address = m.Address;
                 }
             }
-
-
             sl.SaveChanges();
-
             return RedirectToAction("memberDataRevision");
-
         }
        
     }

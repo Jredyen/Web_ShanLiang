@@ -1,0 +1,30 @@
+﻿@model IEnumerable<prjShanLiang.Models.Store>
+
+@{
+    ViewData["Title"] = "storeManagement";
+}
+
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>會員中心</h2>
+                <ul>
+                    <p>你好,@ViewBag.storeName</p>
+                    @Html.ActionLink("修改資料", "storeDataRevision" ,new {  Model.FirstOrDefault().AccountName  })
+                </ul>
+            </div>
+
+        </div>
+    </div><!-- End Breadcrumbs -->
+
+    <section class="sample-page">
+        <div class="container" data-aos="fade-up">
+            <!--==============================================-->
+        </div>
+    </section>
+
+</main><!-- End #main -->
