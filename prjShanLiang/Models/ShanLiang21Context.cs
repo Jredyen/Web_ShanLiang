@@ -23,6 +23,8 @@ public partial class ShanLiang21Context : DbContext
 
     public virtual DbSet<Admin> Admins { get; set; }
 
+    public virtual DbSet<Blog> Blogs { get; set; }
+
     public virtual DbSet<City> Cities { get; set; }
 
     public virtual DbSet<Coupon> Coupons { get; set; }
@@ -119,6 +121,13 @@ public partial class ShanLiang21Context : DbContext
                 .HasColumnName("AdminID");
             entity.Property(e => e.AdminName).HasMaxLength(50);
             entity.Property(e => e.Passwoed).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<Blog>(entity =>
+        {
+            entity.ToTable("Blog");
+
+            entity.Property(e => e.BlogHeader).HasMaxLength(50);
         });
 
         modelBuilder.Entity<City>(entity =>
