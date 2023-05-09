@@ -22,14 +22,33 @@ namespace prjShanLiang.Controllers
             Store sto = db.Stores.FirstOrDefault(a => a.AccountName == vm.AccountName && a.Password == vm.AccountPassword);
             Member mem = db.Members.FirstOrDefault(a => a.Email == vm.AccountName && a.Password == vm.AccountPassword);
             //Account acc = db.Accounts.FirstOrDefault(a => a.AccountName == vm.AccountName && a.AccountPassword == vm.AccountPassword);
-            if (sto != null || mem != null)
+            Admin admin = db.Admins.FirstOrDefault(a => a.AdminName == vm.AccountName && a.Passwoed == vm.AccountPassword);
+            if (sto != null || mem != null || admin !=null)
             {
                 string json;
                 if (sto != null)
+                {
                     json = JsonSerializer.Serialize(sto);
-                else
+                    HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "2");
+                }
+
+                else if (mem != null)
+                {
                     json = JsonSerializer.Serialize(mem);
+                    HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "1");
+                }
+                else  {
+
+                    json = JsonSerializer.Serialize(admin);
+                    HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "0");
+                }
+
                 HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER, json);
+                if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "0")
+                {
+                    return RedirectToAction("Index", "Admin");
+                }
+
                 return RedirectToAction("Index", "Home");
             }
                 return View("Login");
@@ -54,14 +73,20 @@ namespace prjShanLiang.Controllers
                 return RedirectToAction("Index", "Home");
             return View(sto);
         }
-        public IActionResult Mypage(Account x/*這裡要帶入使用者身分*/)
+        public IActionResult Mypage(/*Account x*//*這裡要帶入使用者身分*/)  //5/8併完後，註解掉
         {
-            if (x.Identification == 0)
-                return RedirectToAction("AmdinManager");
-            if (x.Identification == 1)
-                return RedirectToAction("MemberManager");
-            if (x.Identification == 2)
-                return RedirectToAction("StoreManager");
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "1")
+            {
+                return RedirectToAction("memberManagement");
+            }
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "0")
+            {
+                return RedirectToAction("Index","Admin");
+            }
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "2")
+            {
+                return RedirectToAction("memberManagement");
+            }
             else
                 return RedirectToAction("Login");
         }
@@ -134,12 +159,12 @@ namespace prjShanLiang.Controllers
             db.SaveChanges();
             return RedirectToAction("Login");
         }
-        public IActionResult Mypage()
-        {
-            if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USER))
-                return View();
-            return RedirectToAction("Login");
-        }
+        //public IActionResult Mypage()
+        //{
+        //    if (HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USER))
+        //        return RedirectToAction("memberManagement");
+        //    return RedirectToAction("Login");
+        //}
 
         public IActionResult memberManagement()
         {
@@ -171,21 +196,27 @@ namespace prjShanLiang.Controllers
             ShanLiang21Context sl = new ShanLiang21Context();
             Member mem = sl.Members.FirstOrDefault(p => p.Email == m.Email);
             if (mem != null) {
+                if (m.Password != null)
+                {
+                    mem.Memberphone =  m.Memberphone;
+                    mem.MemberName = m.MemberName;
+                    mem.Address = m.Address;
+                    mem.Password = m.Password;
+                }
                 
-                mem.Memberphone =  m.Memberphone;
-                mem.MemberName = m.MemberName;
-                mem.Address = m.Address;
-                mem.Password = m.Password;
-
+                if (m.Password == null) {
+                    mem.Memberphone = m.Memberphone;
+                    mem.MemberName = m.MemberName;
+                    mem.Address = m.Address;
+                }
             }
+
+
             sl.SaveChanges();
 
             return RedirectToAction("memberDataRevision");
 
         }
        
-
-
-
     }
 }

@@ -1,8 +1,31 @@
-﻿@model prjShanLiang.Models.Member
+﻿
+
+@model prjShanLiang.Models.Member
 
 @{
     ViewData["Title"] = "edit";
 }
+
+
+<div class="breadcrumbs">
+    <div class="container">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>首頁</h2>
+            <ol>
+                <li><a a asp-controller="Home" asp-action="Index">Home</a></li>
+                <li>Index</li>
+            </ol>
+        </div>
+
+    </div>
+</div><!-- End Breadcrumbs -->
+
+<section class="sample-page">
+    <div class="container" data-aos="fade-up">
+
+
+
 
 <h1>edit</h1>
 
@@ -14,49 +37,52 @@
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" value="@Model.Email" name="Email" />
-            
-           
+           <div class="form-group">
+                <label asp-for="MemberName" class="control-label" placeholder="">會員名稱</label>
+                <input asp-for="MemberName" class="form-control" />
+                <span asp-validation-for="MemberName" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="Memberphone" class="control-label" placeholder="">電話</label>
                 <input asp-for="Memberphone" class="form-control" />
                 <span asp-validation-for="Memberphone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MemberName" class="control-label" placeholder="">會員名稱</label>
-                <input asp-for="MemberName" class="form-control" />
-                <span asp-validation-for="MemberName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BrithDate" class="control-label" placeholder="">生日</label>
-                <input asp-for="BrithDate" class="form-control" />
-                <span asp-validation-for="BrithDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Address" class="control-label" placeholder="">地址</label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
+                <label asp-for="BrithDate" class="control-label" placeholder="">生日</label>
+                        <input asp-for="BrithDate" readonly class="form-control" />
+                <span asp-validation-for="BrithDate" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" readonly class="form-control"  />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div><div class="form-group">
                 <label asp-for="CustomerLevel" class="control-label" placeholder="">會員分級</label>
                 <input readonly asp-for="CustomerLevel" class="form-control" />
                 <span asp-validation-for="CustomerLevel" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label" placeholder="">密碼</label>
-                <input asp-for="Password" class="form-control" id="memberPassword" value=""/>
+                <label asp-for="Password" class="control-label" placeholder="" for="memberPassword" >新密碼</label>
+                 <label>
+                            <input type="checkbox" name="showPassword" id="rdoShowPassword" />顯示密碼
+                  </label>
+                        <input asp-for="Password" class="form-control" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" type="password" id="memberPassword" value="" maxlength="16"  />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             
             <div class="form-group">
-                <label class="control-label">密碼確認</label>
-                <input type="text" name="passwordChecking" id="memberPasswordChecking"  class="form-control" />
+                        <label for="memberPasswordChecking" class="control-label" >密碼確認</label>
+                        <input type="password" name="passwordChecking" placeholder= "請再次輸入密碼"id="memberPasswordChecking" class="form-control" maxlength="16" />
+                
             </div>
-
+            
             <div class="form-group">
                 <input id = "btnDataRevision" type="submit" value="送出" class="btn btn-primary" />
             </div>
@@ -76,173 +102,90 @@
         const Password2 = document.getElementById('memberPasswordChecking');
         const errorMessage = document.getElementById('errorMessage1');
         const btnDataRevision = document.getElementById('btnDataRevision');
-
+        const rdoShowPassword = document.getElementById('rdoShowPassword');
         const memberDataRevision = document.getElementById('memberDataRevision');
+        
+
         let errorString = '';
-        btnDataRevision.disabled = "true"
+        btnDataRevision.disabled = false
+        let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
+        let result = false
+
+       
+                
         Password1.addEventListener('input',
            function (event) {
                 // 錯誤訊息用字串
+              if (Password1.value){
+                         errorString = ''
+                    result = pattern.test(Password1.value)
+                    if (!Password1.value) {
+                                errorString += ' 密碼沒填' 
+                    }
+                    if (!Password2.value) {
+                        errorString += ' 密碼確認沒填'
+                    }
+                    if (Password1.value !== Password2.value) {
+                        errorString += ' 兩次輸入的密碼不同'
+                    }
+                    if (!result) {
+                        errorString += ' 密碼強度不足'
+                    }
+                    errorMessage.innerText = (errorString) ? errorString : '密碼一致'
                 
-                let errorString = ''
-                if (!Password1.value) {
-                    errorString += ' 密碼沒填'
-                }
-                if (!Password2.value) {
-                    errorString += ' 密碼確認沒填'
-                }
-                if (Password1.value !== Password2.value) {
-                    errorString += ' 兩次輸入的密碼不同'
-                }
-                errorMessage.innerText = (errorString) ? errorString : '密碼一致'
-                if (!errorString) {
-                    btnDataRevision.disabled = false
-                }
+                    if (!errorString) {
+                        btnDataRevision.disabled = false
+                    }
+                    if (errorString) {
+                        btnDataRevision.disabled = true
+                    }
+              }   
         })
         Password2.addEventListener('input',
             function (event) {
                 // 錯誤訊息用字串
+                  if (Password1.value){
+                         errorString = ''
+                    result = pattern.test(Password1.value)
+                    if (!Password1.value) {
+                                errorString += ' 密碼沒填' 
+                    }
+                    if (!Password2.value) {
+                        errorString += ' 密碼確認沒填'
+                    }
+                    if (Password1.value !== Password2.value) {
+                        errorString += ' 兩次輸入的密碼不同'
+                    }
+                    if (!result) {
+                        errorString += ' 密碼強度不足'
+                    }
+                    errorMessage.innerText = (errorString) ? errorString : '密碼一致'
                 
-                if (!Password1.value) {
-                    errorString += ' 密碼沒填'
-                }
-                if (!Password2.value) {
-                    errorString += ' 密碼確認沒填'
-                }
-                if (Password1.value !== Password2.value) {
-                    errorString += ' 兩次輸入的密碼不同'
-                }
-                errorMessage.innerText = (errorString) ? errorString : '密碼一致'
-                if (!errorString) {
-                    btnDataRevision.disabled = false
-                }
-
+                    if (!errorString) {
+                        btnDataRevision.disabled = false
+                    }
+                    if (errorString) {
+                        btnDataRevision.disabled = true
+                    }
+              }
             })
         //await Html.RenderPartialAsync("_ValidationScriptsPartial");
-
-
-
-        memberDataRevision.addEventListener('submit', function (event) {
-           
-            event.preventDefault()
-            if (!errorString) {
-                btnDataRevision
-            }
-
-            console.log(errorString)
-
-            // 用三元運算子取代if...else
-            errorMessage.innerText = (errorString) ? errorString : '表單驗証通過'
-
-            // if(errorString){
-            //     errorMessage.innerText = errorString
-            // }else{
-            //     errorMessage.innerText = '表單驗証通過'
-            // }
-
-
-
-            // 3. 通過驗証後作自訂的送出行為(fetch/ajax...)
-
-        })
-
-
-
-
-
+                rdoShowPassword.addEventListener('change', (event) => {
+                    if (event.currentTarget.checked) {
+                        Password1.type = "text"
+                        Password2.type = "text"
+                    }
+                    else {
+                        Password1.type = "password"
+                        Password2.type = "password"
+                    }
+                })
     </script>
-        
-    
 }
+    </div>
+</section>
+
+</main><!-- End #main -->
 
 
-
-@*
-
-@model IEnumerable<prjShanLiang.Models.Member>
-
-@{
-    ViewData["Title"] = "memberDataRevision";
-}
-
-<h1>memberDataRevision</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.MemberId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccountName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Memberphone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MemberName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BrithDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomerLevel)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccountStatus)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MemberId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AccountName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Memberphone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MemberName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.BrithDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Address)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CustomerLevel)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Password)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AccountStatus)
-                </td>
-                <td>
-                    @Html.ActionLink("修改資料", "memberDataRevision", new { /* id=item.PrimaryKey */ }) |
-
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-*@
+              
