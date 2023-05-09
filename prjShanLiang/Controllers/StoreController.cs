@@ -29,14 +29,15 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult Restaurant(int? id)
         {
+            ViewBag.Id = id;
             if (id == null)
                 return RedirectToAction("Reconnend");
-            IQueryable datas = from s in _db.Stores.Include(s => s.StoreDecorationImages)
-                        where s.StoreId == id 
-                        select s;
+            IQueryable datas = from s in _db.Stores.Include(s => s.StoreDecorationImages).Include(s => s.StoreEvaluates).Include(s => s.MemberActions)
+                               where s.StoreId == id
+                               select s;
             if (datas == null)
                 return RedirectToAction("Reconnend");
-            return View(datas);
+            return View(datas);  
         }
         public IActionResult GetStore(string keyword)
         {

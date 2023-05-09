@@ -1,60 +1,74 @@
 ﻿@model IEnumerable<prjShanLiang.Models.Store>
 
 @{
-    ViewData["Title"] = "BuyAdv";
+    ViewData["Title"] = "購買廣告";
 }
+<main id="main">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs">
+            <div class="container">
 
-<h2>購買廣告</h2>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>@ViewData["Title"]</h2>
+                    <ol>
+                        <li><a asp-controller="Advertisement" asp-action="BuyAdv">Advertisement</a></li>
+                        <li>BuyAdv</li>
+                    </ol>
+                </div>
 
-<p>
-    @Html.ActionLink("檢視購物車", "CartView")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            序111
-        </th>
-        <th>
-            廣告範例圖
-        </th>
-        <th>
-            價錢
-        </th>
-        <th></th>
-    </tr>
+            </div>
+        </div><!-- End Breadcrumbs -->
 
-    @{
-        int count = 0;
-
-        foreach (var item in Model)
-        {
-            count++;
+        <hr />
+        <p>
+            @Html.ActionLink("檢視購物車", "CartView")
+        </p>
+        <table class="table">
             <tr>
-                <td>
-                    @count
-                </td>
-                <td>
-                   
-                    <br />
-                    <h2>
-                        @Html.DisplayFor(modelItem => item.RestaurantName)
-                        
-                    </h2>
-                </td>
-                <td>
-                   
-
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RestaurantPhone)
-                </td>
-                <td>
-                    @Html.ActionLink("加入購物車", "AddToCart", new { id = item.StoreId }) 
-
-                </td>
+                <th>
+                    序111
+                </th>
+                <th>
+                    廣告範例圖
+                </th>
+                <th>
+                    價錢
+                </th>
+                <th></th>
             </tr>
-        }
-    }
 
-</table>
+            @{
+                int count = 0;
 
+                foreach (var item in Model)
+                {
+                    count++;
+                    <tr>
+                        <td>
+                            @count
+                        </td>
+                        <td>
+
+                            <br />
+                            <h2>
+                                @Html.DisplayFor(modelItem => item.RestaurantName)
+
+                            </h2>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RestaurantPhone)
+                        </td>
+                        <td>
+                            @Html.ActionLink("加入購物車", "AddToCart", new { id = item.StoreId })
+
+                        </td>
+                    </tr>
+                }
+            }
+
+        </table>
+    </div>
+</main>

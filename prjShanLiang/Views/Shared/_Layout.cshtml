@@ -4,13 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - 不需要懂米，只需要懂吃。</title>
-    
+
     <!-- 原CSS -->
     @*
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/prjShanLiang.styles.css" asp-append-version="true" />
-    *@
+    *@    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/Content/bootstrap.css" />
 
     <!-- Favicons -->
@@ -85,15 +87,13 @@
             </div>
 
 
-            
+
             <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
             <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
 
         </div>
     </header><!-- End Header -->
-
-
-            @RenderBody()
+    @RenderBody()
 
 
     <!-- ======= Footer ======= -->
@@ -107,7 +107,7 @@
                         <h4>地址</h4>
                         <p>
                             台北市復興南路一段390號2樓<br>
-                            (大安捷運站4號、6號出口) 
+                            (大安捷運站4號、6號出口)
                         </p>
                     </div>
 
