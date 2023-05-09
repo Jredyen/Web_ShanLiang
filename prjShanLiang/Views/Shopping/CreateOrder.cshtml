@@ -1,16 +1,16 @@
 ﻿@model List<prjShanLiang.Models.CShoppingCartItem>
 
 @{
-    ViewBag.Title = "確認訂單";
+    ViewBag.Title = "完成訂單";
 }
 <style>
     .marg {
         margin: 10px;
     }
-    .texbox{
+
+    .texbox {
         width: 150px;
     }
-    
 </style>
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
@@ -81,6 +81,7 @@
                     <li>服  務  費:NT$@tax.ToString("###,###,##0")</li>
 
                     <li>應付金額:NT$@sum.ToString("###,###,##0")</li>
+
                 </div>
 
 
@@ -92,7 +93,7 @@
             <div class="card" style="background-color:orange;">
                 <h2 class=text-center style="margin:20px; font-size:40px;">訂單資料</h2>
                 <div class="card-body" style="">
-                   
+
                     <hr>
 
                     <div style="display:flex;">
@@ -122,33 +123,13 @@
                     <div style="display:flex; ">
                         <div class="marg">
                             <h2>訂單狀態</h2>
-                            <h4>訂單尚未成立</h4>
+                            <h4>付款完成</h4>
                         </div>
                         <div class="marg" style="margin-left:50px;">
                             <h2>付款方式</h2>
-                            @Html.RadioButton("paymentMethod", "creditCard")
-                            @Html.Label("paymentMethod", "信用卡")
-
-                            @Html.RadioButton("paymentMethod", "cash")
-                            @Html.Label("paymentMethod", "現金付款")
+                            <h4> @Html.Label("paymentMethod", "現金付款")</h4>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-15 col-md-10 col-lg-4 " style="margin:10px;">
-            <div class="card">
-                <div class="card-body" style="background-color:orange;">
-                    <h1>
-                        優惠碼
-                        @Html.TextBox("coupon")
-                        @Html.ActionLink("輸入", "CheckoutCart", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
-                    </h1>
-                    <br>
-                    
-                    @Html.ActionLink("前往付款", "CreateOrder", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
-                    @Html.ActionLink("取消", "Menu", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
                 </div>
             </div>
         </div>

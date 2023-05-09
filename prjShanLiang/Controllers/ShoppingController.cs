@@ -110,7 +110,26 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult CheckoutCart()
         {   //確認訂單
-            return View();
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
+                return RedirectToAction("Menu");
+            string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
+
+            List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
+            if (cart == null || cart.Count == 0)
+                return RedirectToAction("Menu");  //如果購物車是空的 回到Menu繼續點餐
+            return View(cart);            
+        }
+        public IActionResult CreateOrder() 
+        {   //付款後完成訂單
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
+                return RedirectToAction("Menu");
+            string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
+
+            List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
+            if (cart == null || cart.Count == 0)
+                return RedirectToAction("Menu");  //如果購物車是空的 回到Menu繼續點餐
+            return View(cart);
+            
         }
     }
 }

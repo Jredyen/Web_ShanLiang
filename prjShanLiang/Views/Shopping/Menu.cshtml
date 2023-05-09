@@ -45,31 +45,31 @@
     /*=================================================*/
     .form-group .form-control {
         margin-bottom: 10px;
-        
     }
 
     .Top-image {
         display: block;
-        margin:  auto;
+        margin: auto;
         max-width: 100%;
         max-height: 100%;
     }
 
-    .Meal-image{
+    .Meal-image {
         display: block;
-        margin:  auto;
+        margin: auto;
         max-width: 100%;
         max-height: 100%;
     }
+
     .row {
         display: block;
         margin: auto;
         max-width: 100%;
         max-height: 100%;
     }
-    
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 <button type="button" id="BackTop" class="toTop-arrow"></button>
 <script>
     //回到最頂端功能
@@ -85,6 +85,10 @@
             }
         }).scroll();
     });
+
+    function handleAddToCartSuccess(result) {
+        // 處理添加購物車成功的回應，例如更新購物車總金額
+    }
 </script>
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
@@ -109,8 +113,8 @@
             <p>台北市大安區復興南路一段390號2樓</p>
             <p>(02)6631-6588</p>
         </div>
-        
-        
+
+
         <div class="row">
             @foreach (var item in Model)
             {
@@ -123,16 +127,17 @@
                             <h1 class=text-center>@item.MealName</h1>
                             <br>
                             <p>@item.Recommendation</p>
-                            <h2 >NT$:@item.MealPrice</h2>
+                            <h2>NT$:@item.MealPrice</h2>
                             @using (Html.BeginForm("AddToCart", "Shopping", FormMethod.Post))
                             {
                                 <div class=text-center>
-                                        <input type="hidden" name="txtMealId" value="@item.MealId" />
-                                        <br>
-                                        @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control" })
-                                        <br>
-                                        <input type="submit" value="加入購物車" class="btn btn-danger" />
-                                </div>   
+                                    <input type="hidden" name="txtMealId" value="@item.MealId" />
+                                    <br>
+                                    @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control" })
+                                    <br>
+                                    
+                                    <input type="submit" value="加入購物車" class="btn btn-danger" />
+                                </div>
                             }
                         </div>
                     </div>
