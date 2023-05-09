@@ -1,59 +1,78 @@
 ﻿@model prjShanLiang.ViewModels.CCreateMemberAccountViewModel
 
 @{
-    ViewData["Title"] = "Signup";
+    ViewData["Title"] = "註冊會員";
 }
+<main id="main">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs">
+            <div class="container">
 
-<h1>註冊會員</h1>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>@ViewData["Title"]</h2>
+                    <ol>
+                        <li><a asp-controller="User" asp-action="Login">User</a></li>
+                        <li>Signup</li>
+                    </ol>
+                </div>
 
-<h4>請輸入會員基本資料</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Signup">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="AccountPassword" class="control-label"></label>
-                <input asp-for="AccountPassword" class="form-control" />
-                <span asp-validation-for="AccountPassword" class="text-danger"></span>
+        </div><!-- End Breadcrumbs -->
+
+        <hr />
+        <h4>請輸入會員基本資料</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="Signup">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Email" class="control-label"></label>
+                        <input asp-for="Email" class="form-control" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AccountPassword" class="control-label"></label>
+                        <input asp-for="AccountPassword" class="form-control" />
+                        <span asp-validation-for="AccountPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="AccountPassword2" class="control-label"></label>
+                        <input asp-for="AccountPassword2" class="form-control" />
+                        <span asp-validation-for="AccountPassword2" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Memberphone" class="control-label"></label>
+                        <input asp-for="Memberphone" class="form-control" />
+                        <span asp-validation-for="Memberphone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MemberName" class="control-label"></label>
+                        <input asp-for="MemberName" class="form-control" />
+                        <span asp-validation-for="MemberName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BrithDate" class="control-label"></label>
+                        <input asp-for="BrithDate" class="form-control" />
+                        <span asp-validation-for="BrithDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="送出" class="btn btn-primary" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="AccountPassword2" class="control-label"></label>
-                <input asp-for="AccountPassword2" class="form-control" />
-                <span asp-validation-for="AccountPassword2" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Memberphone" class="control-label"></label>
-                <input asp-for="Memberphone" class="form-control" />
-                <span asp-validation-for="Memberphone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MemberName" class="control-label"></label>
-                <input asp-for="MemberName" class="form-control" />
-                <span asp-validation-for="MemberName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="BrithDate" class="control-label"></label>
-                <input asp-for="BrithDate" class="form-control" />
-                <span asp-validation-for="BrithDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="送出" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+
+        @section Scripts {
+            @{
+                await Html.RenderPartialAsync("_ValidationScriptsPartial");
+            }
+        }
     </div>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+</main>
