@@ -4,8 +4,8 @@
 }
 <style>
     .toTop-arrow {
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 3.5rem;
+        height: 3.5rem;
         padding: 0;
         margin: 0;
         border: 0;
@@ -45,8 +45,29 @@
     /*=================================================*/
     .form-group .form-control {
         margin-bottom: 10px;
+        
     }
 
+    .Top-image {
+        display: block;
+        margin:  auto;
+        max-width: 100%;
+        max-height: 100%;
+    }
+
+    .Meal-image{
+        display: block;
+        margin:  auto;
+        max-width: 100%;
+        max-height: 100%;
+    }
+    .row {
+        display: block;
+        margin: auto;
+        max-width: 100%;
+        max-height: 100%;
+    }
+    
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <button type="button" id="BackTop" class="toTop-arrow"></button>
@@ -65,56 +86,58 @@
         }).scroll();
     });
 </script>
+<main id="main">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs">
+            <div class="container">
 
-<img src="~/images/膳糧食堂.jpg" width=100% height=100% />
-<h1>膳糧食堂 大安店</h1>
-<p>台北市大安區復興南路一段390號2樓</p>
-<p>(02)6631-6588</p>
-<div>
-    @Html.ActionLink("檢視購物車","CartView","Shopping",null,new { @class = "btn btn-primary" })
-    <img src="~/images/購物車.png" />
-</div>
-<div class="row">
-    @foreach (var item in Model)
-    {      
-        string imgName = item.MealImagePath; //照片路徑轉字串
-       
-        <div class="col-12 col-md-4" style="margin-top:20px;">
-            <div class="img-thumbnail">
-                <img src="~/images/@imgName" width=100% />   @*餐點圖片*@
-                <h2>@item.MealName</h2>                      @*餐點名稱*@
-                <p>NT$:@item.MealPrice</p>                   @*餐點價格*@
-                <div class="form-group">
-                    @*@Html.ActionLink("加入購物車", "AddToCart","Shopping", new { id = item.MealId },new { @class = "btn btn-primary" })*@
-                    @using (Html.BeginForm("AddToCart", "Shopping", FormMethod.Post))
-                    {
-                        <input type="hidden" name="txtMealId" value="@item.MealId" />
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>@ViewData["Title"]</h2>
+                    <ol>
+                        <li><a asp-controller="Store" asp-action="List">Store</a></li>
+                        <li>Latest</li>
+                    </ol>
+                </div>
 
-
-                        <div class="form-group">
-                            <div class="col-md-offset-0 col-md-10">
-                                數量
-                            </div>
-                            <div class="col-md-10">
-                                @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9,10 }), new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-0 col-md-10">
-                                <input type="submit" value="加入購物車" class="btn btn-primary" />
-                            </div>
-                        </div>
-                    }
-                </div> 
-                <p>@item.Recommendation</p>                 @*餐點介紹*@
             </div>
+        </div><!-- End Breadcrumbs -->
+
+        <img src="~/images/Menu/膳糧食堂.jpg" class="Top-image" />
+        <div>
+            <h1>膳糧食堂 大安店</h1>
+            <p>台北市大安區復興南路一段390號2樓</p>
+            <p>(02)6631-6588</p>
         </div>
-    }
-</div>
+        
+        
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                string imgName = item.MealImagePath; //照片路徑轉字串
 
-
-
-
-
-
-
+                <div class="col-12 col-md-6 col-lg-4 " style="margin-top:20px;">
+                    <div class="card">
+                        <img src="~/images/Menu/@imgName" class="Meal-image">
+                        <div class="card-body">
+                            <h1 class=text-center>@item.MealName</h1>
+                            <br>
+                            <p>@item.Recommendation</p>
+                            <h2 >NT$:@item.MealPrice</h2>
+                            @using (Html.BeginForm("AddToCart", "Shopping", FormMethod.Post))
+                            {
+                                <div class=text-center>
+                                        <input type="hidden" name="txtMealId" value="@item.MealId" />
+                                        <br>
+                                        @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control" })
+                                        <br>
+                                        <input type="submit" value="加入購物車" class="btn btn-danger" />
+                                </div>   
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</main><!-- End #main -->

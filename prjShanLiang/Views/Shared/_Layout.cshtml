@@ -74,7 +74,7 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Advertisement" asp-action="BuyAdv">廣告行銷方案</a>
                     </li>
                     <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Shopping" asp-action="List">訂餐</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Shopping" asp-action="Menu">訂餐</a>
                     </li>
                 </ul>
             </nav>
@@ -82,7 +82,12 @@
             <div>
                 <input type="text" class="textbox-book-a-table" id="txtKeyword" placeholder="搜尋餐廳">
                 <a class="button-book-a-table" href="#book-a-table">搜尋</a>
+                <a href="@Url.Action("CartView", "Shopping")" >
+                    <img src="~/images/Menu/購物車.png" style="width:30px;" />
+                </a>
+
             </div>
+
 
 
             
