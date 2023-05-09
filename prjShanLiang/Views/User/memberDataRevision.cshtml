@@ -10,23 +10,19 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="memberDataRevision2">
+        <form asp-action="memberDataRevision2" id="memberDataRevision">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" value="@Model.Email" name="Email" />
             
+           
             <div class="form-group">
-                <label asp-for="AccountName" class="control-label"></label>
-                <input readonly asp-for="AccountName" class="form-control" />
-                <span asp-validation-for="AccountName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Memberphone" class="control-label"></label>
+                <label asp-for="Memberphone" class="control-label" placeholder="">電話</label>
                 <input asp-for="Memberphone" class="form-control" />
                 <span asp-validation-for="Memberphone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="MemberName" class="control-label"></label>
+                <label asp-for="MemberName" class="control-label" placeholder="">會員名稱</label>
                 <input asp-for="MemberName" class="form-control" />
                 <span asp-validation-for="MemberName" class="text-danger"></span>
             </div>
@@ -36,30 +32,36 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BrithDate" class="control-label"></label>
+                <label asp-for="BrithDate" class="control-label" placeholder="">生日</label>
                 <input asp-for="BrithDate" class="form-control" />
                 <span asp-validation-for="BrithDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
+                <label asp-for="Address" class="control-label" placeholder="">地址</label>
                 <input asp-for="Address" class="form-control" />
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CustomerLevel" class="control-label"></label>
+                <label asp-for="CustomerLevel" class="control-label" placeholder="">會員分級</label>
                 <input readonly asp-for="CustomerLevel" class="form-control" />
                 <span asp-validation-for="CustomerLevel" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input asp-for="Password" class="form-control" value=""/>
+                <label asp-for="Password" class="control-label" placeholder="">密碼</label>
+                <input asp-for="Password" class="form-control" id="memberPassword" value=""/>
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label class="control-label">密碼確認</label>
+                <input type="text" name="passwordChecking" id="memberPasswordChecking"  class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <input id = "btnDataRevision" type="submit" value="送出" class="btn btn-primary" />
             </div>
         </form>
+        <div id="errorMessage1" >aaa</div>
     </div>
 </div>
 
@@ -68,9 +70,89 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <script>
+        
+        const Password1 = document.getElementById('memberPassword');
+        const Password2 = document.getElementById('memberPasswordChecking');
+        const errorMessage = document.getElementById('errorMessage1');
+        const btnDataRevision = document.getElementById('btnDataRevision');
+
+        const memberDataRevision = document.getElementById('memberDataRevision');
+        let errorString = '';
+        btnDataRevision.disabled = "true"
+        Password1.addEventListener('input',
+           function (event) {
+                // 錯誤訊息用字串
+                
+                let errorString = ''
+                if (!Password1.value) {
+                    errorString += ' 密碼沒填'
+                }
+                if (!Password2.value) {
+                    errorString += ' 密碼確認沒填'
+                }
+                if (Password1.value !== Password2.value) {
+                    errorString += ' 兩次輸入的密碼不同'
+                }
+                errorMessage.innerText = (errorString) ? errorString : '密碼一致'
+                if (!errorString) {
+                    btnDataRevision.disabled = false
+                }
+        })
+        Password2.addEventListener('input',
+            function (event) {
+                // 錯誤訊息用字串
+                
+                if (!Password1.value) {
+                    errorString += ' 密碼沒填'
+                }
+                if (!Password2.value) {
+                    errorString += ' 密碼確認沒填'
+                }
+                if (Password1.value !== Password2.value) {
+                    errorString += ' 兩次輸入的密碼不同'
+                }
+                errorMessage.innerText = (errorString) ? errorString : '密碼一致'
+                if (!errorString) {
+                    btnDataRevision.disabled = false
+                }
+
+            })
+        //await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
+
+        memberDataRevision.addEventListener('submit', function (event) {
+           
+            event.preventDefault()
+            if (!errorString) {
+                btnDataRevision
+            }
+
+            console.log(errorString)
+
+            // 用三元運算子取代if...else
+            errorMessage.innerText = (errorString) ? errorString : '表單驗証通過'
+
+            // if(errorString){
+            //     errorMessage.innerText = errorString
+            // }else{
+            //     errorMessage.innerText = '表單驗証通過'
+            // }
+
+
+
+            // 3. 通過驗証後作自訂的送出行為(fetch/ajax...)
+
+        })
+
+
+
+
+
+    </script>
+        
+    
 }
 
 

@@ -166,7 +166,7 @@ namespace prjShanLiang.Controllers
             
         }
         
-        public IActionResult memberDataRevision2(Member m)
+        public IActionResult memberDataRevision2(CMemberWrap m)
         {
             ShanLiang21Context sl = new ShanLiang21Context();
             Member mem = sl.Members.FirstOrDefault(p => p.Email == m.Email);
