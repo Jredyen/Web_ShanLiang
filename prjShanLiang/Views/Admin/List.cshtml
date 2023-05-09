@@ -1,56 +1,70 @@
-﻿@{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
-}
-@model IEnumerable<prjShanLiang.Models.Admin>
-@section Styles{
-    <style>
-        .container{
-           padding:50px;
-        }
-    </style>
+﻿@model IEnumerable<prjShanLiang.Models.Admin>
+
+@{
+    ViewData["Title"] = "List";
 }
 
-<div class="container">
-    <p1>管理員資料一覽表</p1>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.AdminId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AdminName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Passwoed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Identification)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdminId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AdminName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Passwoed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Identification)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-    </tbody>
-</table>
+
+
+<h1>管理員資料一覽表</h1>
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        DataTable Example
+    </div>
+    <div class="card-body">
+
+        <table id="datatablesSimple">
+            <a asp-action="Create">新增帳號</a>
+            <thead>
+                <tr>
+                    <th>管理員編號</th>
+                    <th>管理員帳號</th>
+                    <th>管理員權限</th>
+                    <th>設定</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int count = 0;
+                    foreach (var item in Model){
+                        count++;
+                        <tr>
+                            <td>@count</td>
+                            <td>@Html.DisplayFor(modelItem => item.AdminName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Identification)</td>
+                            <td>
+                                @Html.ActionLink("Edit", "修改", new { /* id=item.PrimaryKey */ }) |
+                                @Html.ActionLink("Delete", "刪除", new { /* id=item.PrimaryKey */ })
+                            </td>
+                        </tr>
+                      }}
+                    </tbody>
+        </table>
+    </div>
 </div>
+
+@*@section Scripts{
+<script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+        });
+
+</script>
+}*@
+
+@section Scripts{
+<script>
+        $(document).ready(function () {
+            $('#datatablesSimple').DataTable({
+
+                "language": {
+                    "infoEmpty": "顯示第 0 至 0 項結果，共 0 項"
+                }
+            });
+        });
+</script>
+}
