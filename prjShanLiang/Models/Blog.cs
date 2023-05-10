@@ -11,5 +11,5 @@ public partial class Blog
 
     public string? BlogContent { get; set; }
 
-    public byte[]? BlogPic { get; set; }
+    public string? BlogPic { get; set; }
 }

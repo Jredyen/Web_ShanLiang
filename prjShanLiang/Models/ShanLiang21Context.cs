@@ -128,6 +128,7 @@ public partial class ShanLiang21Context : DbContext
             entity.ToTable("Blog");
 
             entity.Property(e => e.BlogHeader).HasMaxLength(50);
+            entity.Property(e => e.BlogPic).HasMaxLength(50);
         });
 
         modelBuilder.Entity<City>(entity =>
@@ -426,6 +427,9 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.Adimage)
                 .HasMaxLength(50)
                 .HasColumnName("ADImage");
+            entity.Property(e => e.Eximage)
+                .HasMaxLength(50)
+                .HasColumnName("EXImage");
             entity.Property(e => e.StoreId).HasColumnName("StoreID");
 
             entity.HasOne(d => d.Store).WithMany(p => p.StoreAdImages)
