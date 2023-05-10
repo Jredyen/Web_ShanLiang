@@ -68,28 +68,54 @@
         max-height: 100%;
     }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-<button type="button" id="BackTop" class="toTop-arrow"></button>
-<script>
-    //回到最頂端功能
-    $(function () {
-        $('#BackTop').click(function () {
-            $('html,body').animate({ scrollTop: 0 }, 333);
+@section Scripts{
+    <script>
+        //回到最頂端功能
+        $(function () {
+            $('#BackTop').click(function () {
+                $('html,body').animate({ scrollTop: 0 }, 333);
+            });
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 300) {
+                    $('#BackTop').fadeIn(222);
+                } else {
+                    $('#BackTop').stop().fadeOut(222);
+                }
+            }).scroll();
         });
-        $(window).scroll(function () {
-            if ($(this).scrollTop() > 300) {
-                $('#BackTop').fadeIn(222);
-            } else {
-                $('#BackTop').stop().fadeOut(222);
-            }
-        }).scroll();
-    });
 
-    function handleAddToCartSuccess(result) {
-        // 處理添加購物車成功的回應，例如更新購物車總金額
-    }
-</script>
+        $(function () {
+            $(".product").click(function () {
+                var mealId = $("#txtMealId").val();
+                var count = $("#txtCount").val();
+                console.log(mealId)
+                $.ajax({
+                    url: "/api/shoppingcart/add-to-cart",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        mealId: mealId,
+                        count: count
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            alert("商品已成功加入購物車");
+                        } else {
+                            alert(data.message);
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        alert("加入購物車失敗");
+                    }
+                });
+            });
+        });
+    </script>
+
+}
+<button type="button" id="BackTop" class="toTop-arrow"></button>
+
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <!-- ======= Breadcrumbs ======= -->
@@ -128,7 +154,7 @@
                             <br>
                             <p>@item.Recommendation</p>
                             <h2>NT$:@item.MealPrice</h2>
-                            @using (Html.BeginForm("AddToCart", "Shopping", FormMethod.Post))
+                            @using (Html.BeginForm("AddToCart", "Shopping", FormMethod.Post, new { onsubmit = "return false" }))
                             {
                                 <div class=text-center>
                                     <input type="hidden" name="txtMealId" value="@item.MealId" />

@@ -27,6 +27,7 @@ namespace prjShanLiang.Controllers
             return View();
         }
         [HttpPost]
+        [Route("api/shoppingcart/add-to-cart")]
         public ActionResult AddToCart(CAddToCartViewModel vm)
         {   //增加到購物車
             MealMenu menu = _db.MealMenus.FirstOrDefault(t => t.MealId == vm.txtMealId);
