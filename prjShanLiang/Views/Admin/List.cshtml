@@ -8,16 +8,16 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-
+<h1>管理員資料一覽表</h1>
 <div class="card mb-4">
     <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        管理員資料一覽表
+        <i class="fa-solid fa-user-shield"></i>
+        管理員資料
     </div>
     <div class="card-body">
 
-        <table id="adminDataTables" class="hover cell-border">
-            <a asp-action="Create" >新增帳號</a>
+        <table id="adminDataTables" class="hover cell-border order-column order-column">
+            <a asp-action="Create" >+新增管理員帳號</a>
             <thead>
                 <tr>
                     <th>管理員編號</th>
