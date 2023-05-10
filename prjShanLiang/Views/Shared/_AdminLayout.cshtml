@@ -7,10 +7,24 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>@ViewData["Title"] - 不需要懂米，只需要懂吃。</title>
-    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    @*可能刪除*@
+    @*<link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />*@
     <link href="~/admin_css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
  <style>
+        .card{
+        width:90%;
+        margin:0 auto;
+        }
+
+        table.dataTable thead tr th{
+            text-align:center;
+        }
+
+        table.dataTable{
+            text-align: center;
+        }
+
         .sb-sidenav .sb-sidenav-menu .nav .nav-link  {
             padding-top: 2rem;
             padding-bottom: 2rem;
@@ -22,6 +36,7 @@
         }
  </style>
     @await RenderSectionAsync("Styles", required: false)
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -308,8 +323,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
     <script src="~/admin_assets/demo/chart-area-demo.js"></script>
     <script src="~/admin_assets/demo/chart-bar-demo.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <!--可能刪除-->
+    @*<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>*@
     <script src="~/admin_js/datatables-simple-demo.js"></script>
+    <!--JQuery 連結-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <!--DataTable js連結-->
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+    <script src="~/admin_js/datatables.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

@@ -9,16 +9,15 @@
 }
 
 
-<h1>管理員資料一覽表</h1>
 <div class="card mb-4">
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
-        DataTable Example
+        管理員資料一覽表
     </div>
     <div class="card-body">
 
-        <table id="datatablesSimple">
-            <a asp-action="Create">新增帳號</a>
+        <table id="adminDataTables" class="hover cell-border">
+            <a asp-action="Create" >新增帳號</a>
             <thead>
                 <tr>
                     <th>管理員編號</th>
@@ -37,8 +36,8 @@
                             <td>@Html.DisplayFor(modelItem => item.AdminName)</td>
                             <td>@Html.DisplayFor(modelItem => item.Identification)</td>
                             <td>
-                                @Html.ActionLink("Edit", "修改", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("Delete", "刪除", new { /* id=item.PrimaryKey */ })
+                                @Html.ActionLink("修改", "Edit", new { id = item.AdminId }, new {Class="btn btn-primary"}) |
+                                @Html.ActionLink("刪除", "Delete","Admin", new {  id=item.AdminId },new {onclick="return confirm('確定刪除嗎?')", Class="btn btn-danger"})
                             </td>
                         </tr>
                       }}
@@ -46,25 +45,3 @@
         </table>
     </div>
 </div>
-
-@*@section Scripts{
-<script>
-        $(document).ready(function () {
-            $('#dataTable').DataTable();
-        });
-
-</script>
-}*@
-
-@section Scripts{
-<script>
-        $(document).ready(function () {
-            $('#datatablesSimple').DataTable({
-
-                "language": {
-                    "infoEmpty": "顯示第 0 至 0 項結果，共 0 項"
-                }
-            });
-        });
-</script>
-}
