@@ -84,12 +84,12 @@
                 }
             }).scroll();
         });
-
+        //使用Ajax非同步(無法使用)
         $(function () {
             $(".product").click(function () {
-                var mealId = $("#txtMealId").val();
+                var mealId = $(".txtMealId").val();
                 var count = $("#txtCount").val();
-                console.log(mealId)
+                
                 $.ajax({
                     url: "/api/shoppingcart/add-to-cart",
                     type: "POST",
@@ -154,15 +154,15 @@
                             <br>
                             <p>@item.Recommendation</p>
                             <h2>NT$:@item.MealPrice</h2>
-                            @using (Html.BeginForm("AddToCart", "Shopping", FormMethod.Post, new { onsubmit = "return false" }))
+                            @using (Html.BeginForm("AddToCart", "Shopping", FormMethod.Post))
                             {
                                 <div class=text-center>
-                                    <input type="hidden" name="txtMealId" value="@item.MealId" />
+                                <input class="txtMealId" type="hidden" name="txtMealId" value="@item.MealId" />
                                     <br>
                                     @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control" })
                                     <br>
                                     
-                                    <input type="submit" value="加入購物車" class="btn btn-danger" />
+                                    <input type="submit" value="加入購物車" class="btn btn-danger " />
                                 </div>
                             }
                         </div>
