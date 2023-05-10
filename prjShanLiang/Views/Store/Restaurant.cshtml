@@ -26,12 +26,12 @@
     <main id="main">
         <!-- ======= About Section ======= -->
         <section id="about" class="about">
-            <div class="container" data-aos="fade-up">
+            <div class="container content-r" data-aos="fade-up">
 
                 <div class="row gy-4">
-                    <div class="col-lg-8 position-relative about-img" @*style="background: url('@Url.Content("~/assets/img/about.jpg")') ;"*@ data-aos="fade-up" data-aos-delay="150">
+                    <div class="col-lg-8 position-relative about-img main-block" @*style="background: url('@Url.Content("~/assets/img/about.jpg")') ;"*@ data-aos="fade-up" data-aos-delay="150">
                         <div class="st1">
-                            <div class="rating">
+                            <div class="rating" style="font-size:2rem">
                                 <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><span>@item.MemberActions.Where(x => x.ActionId == 2 && x.StoreId == ViewBag.Id).Count()</span></div>
                                 <div class="vertical"><i class="bi bi-chat-left ic-t"></i><span>@item.StoreEvaluates.Where(x => x.StoreId == ViewBag.Id).Count()</span></div>
                                 <div class="vertical rating"><label id="star"></label></div>
@@ -58,44 +58,47 @@
                             <label class="t1">電子郵件</label>
                             <label>@Html.DisplayFor(modelItem => item.StoreMail)</label>
                         </div>
-
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Seats)
-                                    </td>
-                                    <td>
-                                        <a href="@Html.DisplayFor(modelItem => item.Website)">個人網站</a>
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Rating)
-                                    </td>
-                                    <td>
-                                        @Html.ActionLink("我要訂位", "Reserve", new { id=item.StoreId })
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <hr>  <!-- 分隔線 -->
+                        <div class="st1">
+                            <label class="t1">官方網站</label>
+                            <label><a href="@Html.DisplayFor(modelItem => item.Website)">@Html.DisplayFor(modelItem => item.Website)</a></label>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 position-relative about-img main-block" @*style="background: url('@Url.Content("~/assets/img/about.jpg")') ;"*@ data-aos="fade-up" data-aos-delay="150">
+                    
                     </div>
 
                     <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="300">
-                        <div class="content ps-0 ps-lg-5 why-us">
-                            <div class="why-box mid-flex">
-                                <div class="more-btn">
-                                    <a class="" asp-area="" asp-controller="Store" asp-action="Share"><i class="bi bi-share"></i>分享<i class="bx bx-chevron-right"></i></a>
+                        <div class="content ps-0 ps-lg-5 why-us mobiled">
+
+                            <div class="btn-group d-flex" role="group" aria-label="Button group with nested dropdown">
+
+                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="Share"><i class="bi bi-share ic-t"></i>分享</a>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <a class="dropdown-item" href="#">Facebook</a>
+                                    <a class="dropdown-item" href="#">Line</a>
+                                    <a class="dropdown-item" href="#">E-mail</a>
+                                    <a class="dropdown-item" href="#">複製連結</a>
                                 </div>
-                                <div class="more-btn">
-                                    <a class="" asp-area="" asp-controller="Store" asp-action="Comment"><i class="bi bi-chat-left"></i>評論<i class="bx bx-chevron-right"></i></a>
-                                </div>
-                                <div class="more-btn">
-                                    <a class="" asp-area="" asp-controller="Store" asp-action="Favorate"><i class="bi bi-suit-heart"></i>@*<i class="bi bi-suit-heart-fill"></i>*@收藏<i class="bx bx-chevron-right"></i></a>
-                                </div>
+
+                                <button type="button" class="btn btn-secondary">
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="Comment"><i class="bi bi-chat-left ic-t"></i>評論</a>
+                                </button>
+                                <button type="button" class="btn btn-secondary">
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="Favorate"><i class="bi bi-suit-heart ic-t"></i>@*<i class="bi bi-suit-heart-fill"></i>*@收藏</a>
+                                </button>
+
+
                             </div>
 
-                            <div class="why-box mid-flex shopBook">
+                            <div class="why-box d-flex shopBook">
                                 <div class="more-btn">
-                                    <a class="" asp-area="" asp-controller="Store" asp-action="Reserve"><i class="bi bi-calendar-event"></i>線上預訂<i class="bx bx-chevron-right"></i></a>
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="Reserve"><i class="bi bi-calendar-event ic-t"></i>@Html.ActionLink("線上訂位", "Reserve","Store", new { id=item.StoreId })<i class="bx bx-chevron-right"></i></a>
+                                </div>
+                                <div class="more-btn">
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="Reserve"><i class="bi bi-cart ic-t"></i>@Html.ActionLink("線上訂餐", "Menu","Shopping", new { id=item.StoreId })<i class="bx bx-chevron-right"></i></a>
                                 </div>
                             </div>
 
@@ -119,21 +122,21 @@
         </div>
     </section>
 
-    <button onclick="topFunction()" id="myBtn" title="回頁首">^</button>
+    <button onclick="topFunction()" id="myBtn" title="回頁首"><i class="bi bi-chevron-double-up"></i></button>
     <script src="~/js/Restaurant.js"></script>
 
     @section Scripts{
     <script>
         const star = document.querySelector('#star');
-        function getStar(){
+        function getStar() {
             for (let i = 1; i <= @Html.DisplayFor(modelItem => item.Rating) ; i++) {
                 star.innerHTML += "★";
             }
-            for (let i = 1; i <= (5-@Html.DisplayFor(modelItem => item.Rating)) ; i++) {
+            for (let i = 1; i <= (5 - @Html.DisplayFor(modelItem => item.Rating)); i++) {
                 star.innerHTML += "☆";
             }
         }
-        getStar();        
+        getStar();
     </script>
 }
 
