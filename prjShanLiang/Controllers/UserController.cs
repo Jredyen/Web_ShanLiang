@@ -299,10 +299,16 @@ namespace prjShanLiang.Controllers
             ShanLiang21Context sl = new ShanLiang21Context();
             var cities = sl.Cities.Select(p => p.CityName);
             return Json(cities);
-
-
-
         }
+
+        public IActionResult GetDistricts(string storeCity)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            var districts = sl.Districts.Where(p => p.City.CityName == storeCity).Select(d => d.DistrictName);
+
+            return Json(districts);
+        }
+        
 
 
 

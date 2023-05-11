@@ -49,13 +49,16 @@
                     <div class="form-group">
                         <label asp-for="RestaurantAddress" class="control-label">縣市</label>
                         <select class="form-control" id="storeCity"></select>
-                        
                         <span asp-validation-for="RestaurantAddress" class="text-danger"></span>
                     </div>
-
+                    <div class="form-group">
+                        <label asp-for="RestaurantAddress" class="control-label">地區</label>
+                        <select class="form-control" id="storeDistrict"></select>
+                        <span asp-validation-for="RestaurantAddress" class="text-danger"></span>
+                    </div>
             <div class="form-group">
                 <label asp-for="RestaurantAddress" class="control-label">餐廳地址</label>
-                <input asp-for="RestaurantAddress" class="form-control" />
+                <input asp-for="RestaurantAddress" id="storeAddress" class="form-control" />
                 <span asp-validation-for="RestaurantAddress" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -141,8 +144,10 @@
         const chkShowPassword = document.getElementById('chkShowPassword');
         const storeDataRevision = document.getElementById('storeDataRevision');
         const storeCity = document.getElementById('storeCity');
+        const storeDistrict = document.getElementById('storeDistrict');
+                const storeAddress = document.getElementById('storeAddress');
 
-        let errorString = '';
+                let errorString = '';
         btnDataRevision.disabled = false
         let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
         let result = false
@@ -216,27 +221,56 @@
                 Password2.type = "password"
             }
         })
-        storeCity.addEventListener('click',async ()=>{
+        storeCity.addEventListener('mousedown',async ()=>{
            const response = await fetch('@Url.Content("~/User/GetCities")')
            const datas = await response.json();
-           console.log(datas)
            const cities = datas.map(data=>{
                return(
-                    `<option>${data}111</option>`
-                                    
+                    `<option value=${data}>${data}</option>`
                )
-           })        
-            storeCity.innerHTML = cities.join("");
-
            })
-
-
-
-
-
-
-
+                    storeCity.innerHTML = cities.join("");
         })
+
+        storeDistrict.addEventListener('mousedown', async () => {
+             let num = storeCity.selectedIndex
+             let chosenCity= storeCity.options[num].text
+
+                    const response = await fetch('@Url.Content("~/User/GetDistricts")?storeCity=' + chosenCity)
+             const datas = await response.json();
+                   
+             const districts = datas.map(data=>{
+                 return(
+                    `<option value=${data}>${data}</option>`
+                 )
+            })
+            storeDistrict.innerHTML = districts.join("");
+        })
+
+        let addressString=""
+
+            storeCity.addEventListener('change', function(){
+                    addressString = ""
+                    let num = storeCity.selectedIndex
+                    let chosenCity = storeCity.options[num].text
+                    addressString += chosenCity
+                    storeAddress.value = addressString
+                    console.log(chosenCity)
+                })
+
+                storeDistrict.addEventListener('change', function () {
+                   
+                    let num = storeDistrict.selectedIndex
+                    let chosenDistrict = storeDistrict.options[num].text
+                    
+                    addressString += chosenDistrict
+                    storeAddress.value = addressString
+                    
+                })
+
+
+
+        
 
 
 
