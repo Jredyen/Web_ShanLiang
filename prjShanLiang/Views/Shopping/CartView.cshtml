@@ -3,75 +3,93 @@
 @{
     ViewBag.Title = "購物車";
 }
+<style>
+    
+    
+</style>
+<main id="main">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs">
+            <div class="container">
 
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>@ViewData["Title"]</h2>
+                    <ol>
+                        <li><a asp-controller="Store" asp-action="List">Store</a></li>
+                        <li>Latest</li>
+                    </ol>
+                </div>
 
-<h2><img src="~/images/購物車.png" /></h2>
+            </div>
+        </div><!-- End Breadcrumbs -->       
+        <div style="margin:20px; font-size:16px;">
+            <table class="table">
+                <tr>
+                    <th>
+                        序號
+                    </th>
+                    <th>
+                        餐點
+                    </th>
+                    <th>
+                        數量
+                    </th>
+                    <th>
+                        售價
+                    </th>
+                    <th>
+                        小計
+                    </th>
+                    <th>
+                        編輯
+                    </th>
+                </tr>
+                @{
+                    int count = 0;
+                    decimal pay = 0;
+                    decimal tax = 0;
+                    decimal sum = 0;
 
-<table class="table">
-    <tr>
-        <th>
-            序號
-        </th>
-        <th>
-            餐點
-        </th>
-        <th>
-            數量
-        </th>
-        <th>
-            售價
-        </th>
-        <th>
-            小計
-        </th>
-        <th>
-            編輯
-        </th>
-    </tr>
-    @{
-        int count = 0;
-        decimal pay = 0;
-        decimal tax = 0;
-        decimal sum = 0;
+                    foreach (var item in Model)
+                    {
+                        count++;
+                        pay += item.小計;
+                        <tr>
+                            <td>@count</td>
+                            <td>
 
-        foreach (var item in Model)
-        {
-            count++;
-            pay += item.小計;
-            <tr>
-                <td>@count</td>
-                <td>
+                                @Html.DisplayFor(modelItem => item.mealmenu.MealName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.count)
+                            </td>
+                            <td>
+                                NT$ @Html.DisplayFor(modelItem => item.price)
+                            </td>
+                            <td>
+                                NT$ @Html.DisplayFor(modelItem => item.小計)
+                            </td>
+                            <td>
+                                @Html.ActionLink("刪除", "Delete","Shopping", new {  id=item.mealmenu.MealId  }, new { onclick = "return confirm('確定要刪除嗎?')", Class = "btn btn-danger" })
+                            </td>
+                        </tr>
+                    }
+                    tax = pay * 0.1M;
+                    sum = pay + tax;
+                }
 
-                    @Html.DisplayFor(modelItem => item.mealmenu.MealName)
-                </td>
-                <td>
-
-                    @Html.DisplayFor(modelItem => item.count)
-                </td>
-                <td>
-
-                    @Html.DisplayFor(modelItem => item.price)
-                </td>
-                <td>
-
-                    @Html.DisplayFor(modelItem => item.小計)
-                </td>
-                <td>
-                    @Html.ActionLink("修改數量", "EditToSession", "Shopping", new {  id=item.mealmenu.MealId , count=item.count},new { @class = "btn btn-primary" } ) |
-
-                    @Html.ActionLink("刪除", "Delete","Shopping", new {  id=item.mealmenu.MealId  }, new { onclick = "return confirm('確定要刪除嗎?')", Class = "btn btn-danger" })
-                </td>
-            </tr>
-        }
-        tax = pay * 0.1M;
-        sum = pay + tax;
-    }
-   
-</table>
-<li>餐點金額:NT$@pay.ToString("###,###,##0")</li>
-<li>服 務 費:NT$@tax.ToString("###,###,##0")</li>
-<li>應付金額:NT$@sum.ToString("###,###,##0")</li>
-<p>
-    @Html.ActionLink("前往結帳", "CheckoutCart", "Shopping", null, new { @class = "btn btn-primary" })
-    @Html.ActionLink("繼續點餐", "Menu", "Shopping", null, new { @class = "btn btn-primary" })
-</p>
+            </table>
+            <br />
+            <li>餐點金額:NT$@pay.ToString("###,###,##0")</li>
+            <li>服 務 費:NT$@tax.ToString("###,###,##0")</li>
+            <li>應付金額:NT$@sum.ToString("###,###,##0")</li>
+            <br />
+            <p>
+                @Html.ActionLink("確認訂單", "CheckoutCart", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("繼續點餐", "Menu", "Shopping", null, new { @class = "btn btn-primary" })
+            </p>
+        </div>
+        
+    </div>
+</main><!-- End #main -->
