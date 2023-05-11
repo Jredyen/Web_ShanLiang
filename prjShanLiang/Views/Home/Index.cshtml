@@ -4,9 +4,7 @@
 }
 
     <head>
-    @section Styles{
-    
-        <style>
+         <style>
       
 
         .image-container {
@@ -41,25 +39,7 @@
             width: 150%;
         }
 
-        .left-img {
-            position: absolute;
-            top: 145px;
-            left: 0;
-            height:300px;
-            width:200px;
-            z-index: 5; /* 設置較高的 z-index 值 */
-            float:none;
-        }
-
-        .right-img {
-            position: absolute;
-            top: 145px;
-            right: 0;
-            height: 200px;
-            width: 300px;
-            z-index: 5; /* 設置較高的 z-index 值 */
-            float: none;
-        }
+       
        .carousel-example-generic{
            width:90%;
        }
@@ -67,9 +47,20 @@
             .carousel-indicators{
                 width:70%;
             }
+
+        #left-img {
+            position: absolute;
+           
+        }
+
+       #right-img{
+            position: absolute;
+           right:0px;
+       }
+
+        
 </style>
-    }
-        </head>
+       </head>
     <main id="main">
 
     <!-- ======= Breadcrumbs ======= -->
@@ -86,23 +77,36 @@
 
 
             </div>
-            <div class="left-img">
-                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
-             
-            </div>
-            <div class="right-img">
-                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
-               
-            </div>
+         
         </div>
 
 
     </div><!-- End Breadcrumbs -->
 
     <section class="sample-page">
-       
+
+
+
+
+        <span class="left-img" id="left-img">
+            <img src="~/Images/store/OGGI歐奇窯烤披薩敦南店.jpg" alt="Placeholder Image" height="600px" width="210px" />
+            <span class="carousel-caption">
+               
+                123456
+                
+                
+            </span>
+        </span>
+        <span class="right-img" id="right-img">
+            <img src="~/Images/store/PalletBistro木棧板餐廳.jpg" alt="Placeholder Image" height="600px" width="210px" />
+            <span class="carousel-caption">
+            123456
+            </span>
+        </span>
       
+        
         <div class="container" data-aos="fade-up">
+
             <!--==============================================-->
            @* <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">*@
 
@@ -117,6 +121,7 @@
 
                 <!-- 輪播內容 -->
                 <div class="carousel-inner" role="listbox">
+
 
                     @foreach (var advertisement in Model.Item1)
                     {
