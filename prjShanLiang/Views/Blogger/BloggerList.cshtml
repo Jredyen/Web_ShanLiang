@@ -57,10 +57,10 @@
                             @Html.DisplayFor(modelItem => item.BlogContent)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.BlogPic)
+                            <img src ="~/Images/Blog/@item.BlogPic" width="100">
                         </td>
                         <td>
-                            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("修改", "BloggerEdit", new { id=item.BlogId }) |
                             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
                             @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
                         </td>
