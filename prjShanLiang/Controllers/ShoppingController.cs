@@ -113,14 +113,26 @@ namespace prjShanLiang.Controllers
         {   //確認訂單
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
                 return RedirectToAction("Menu");
-            string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
 
+            string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
+            
             List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
+            
             if (cart == null || cart.Count == 0)
                 return RedirectToAction("Menu");  //如果購物車是空的 回到Menu繼續點餐
+
+
+            //找出登入者資訊
+            string logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+             
+             Member datas = JsonSerializer.Deserialize<Member>(logginedUser);
+            var data = _db.Members.Where(t => t.Email.Contains(datas.Email));
+            ViewBag.MemberName = datas.MemberName;
+            ViewBag.MemberPhone = datas.Memberphone;
+
             return View(cart);            
         }
-        public IActionResult CreateOrder() 
+        public IActionResult CreateOrder()
         {   //付款後完成訂單
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
                 return RedirectToAction("Menu");
@@ -129,8 +141,7 @@ namespace prjShanLiang.Controllers
             List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
             if (cart == null || cart.Count == 0)
                 return RedirectToAction("Menu");  //如果購物車是空的 回到Menu繼續點餐
-            return View(cart);
-            
+            return View(cart);            
         }
     }
 }

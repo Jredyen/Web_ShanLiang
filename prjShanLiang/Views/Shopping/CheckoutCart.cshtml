@@ -1,4 +1,4 @@
-﻿@model List<prjShanLiang.Models.CShoppingCartItem>
+﻿@model List<prjShanLiang.Models.CShoppingCartItem> 
 
 @{
     ViewBag.Title = "確認訂單";
@@ -6,12 +6,14 @@
 @section Styles{
 <style>
     .marg {
-        margin: 10px;
+        margin: 20px;
     }
     .texbox{
         width: 150px;
     }
-
+    .btn{            
+            width: 150px;            
+        }
         
 </style>
 }
@@ -101,27 +103,16 @@
                     <div style="display:flex;">
                         <div class="marg">
                             <h2>訂購人姓名</h2>
-                            @Html.TextBox("txtOName","克里斯",new { @class = "texbox" })
-
+                            <input id="txtOName" name="txtOName" type="text" value="@ViewBag.MemberName" style="width:150px;"/>                            
                         </div>
                         <div class="marg">
                             <h2>訂購人電話</h2>
-                            @Html.TextBox("txtOPhone","0983385155",new { @class = "texbox" })
+                            <input id="txtOPhone" name="txtOPhone" type="text" value="@ViewBag.MemberPhone" style="width:150px; "/>
+                            
                         </div>
                     </div>
                     <hr />
-                    <div style="display:flex;">
-                        <div class="marg">
-                            <h2>取餐人姓名</h2>
-                            @Html.TextBox("txtOName","克里斯",new { @class = "texbox" })
-
-                        </div>
-                        <div class="marg">
-                            <h2>取餐人電話</h2>
-                            @Html.TextBox("txtOPhone","0983385155",new { @class = "texbox" })
-                        </div>
-                    </div>
-                    <hr />
+                    
                     <div style="display:flex; ">
                         <div class="marg">
                             <h2>訂單狀態</h2>
@@ -134,26 +125,23 @@
 
                             @Html.RadioButton("paymentMethod", "cash")
                             @Html.Label("paymentMethod", "現金付款")
+                        </div>                       
+                    </div>
+                    <div >
+                        <h1>
+                            優惠碼
+                            @Html.TextBox("coupon")
+                            @Html.ActionLink("輸入", "CheckoutCart", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
+                        </h1>
+                        <br>
+                        <div style="text-align:center">
+                            @Html.ActionLink("前往付款", "CreateOrder", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("取消", "Menu", "Shopping", null, new { @class = "btn btn-danger " } )
                         </div>
+                        
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="col-15 col-md-10 col-lg-4 " style="margin:10px;">
-            <div class="card">
-                <div class="card-body" style="background-color:orange;">
-                    <h1>
-                        優惠碼
-                        @Html.TextBox("coupon")
-                        @Html.ActionLink("輸入", "CheckoutCart", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
-                    </h1>
-                    <br>
-                    
-                    @Html.ActionLink("前往付款", "CreateOrder", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
-                    @Html.ActionLink("取消", "Menu", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
-                </div>
-            </div>
-        </div>
+        </div>       
     </div>
 </main><!-- End #main -->
