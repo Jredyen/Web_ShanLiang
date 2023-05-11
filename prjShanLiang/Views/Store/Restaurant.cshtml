@@ -1,11 +1,11 @@
-﻿@model IEnumerable<prjShanLiang.Models.Store>
+﻿@model prjShanLiang.ViewModels.CShowRestaurantViewModel
 
 @{
     ViewData["Title"] = "Restaurant";
 }
 <link rel="stylesheet" href="~/css/Restaurant.css" />
 
-@foreach (var item in Model)
+@foreach (var item in Model.store)
 {
     <!-- ======= Hero Section ======= -->
     <section id="hero" class="hero d-flex align-items-center section-bg">
@@ -31,10 +31,10 @@
                 <div class="row gy-4">
                     <div class="col-lg-8 position-relative about-img" @*style="background: url('@Url.Content("~/assets/img/about.jpg")') ;"*@ data-aos="fade-up" data-aos-delay="150">
                         <div class=" main-block">
-                            <div class="st1">.
-                                <div class="rating vertical" style="font-size:2rem">
-                                    <div class=""><i class="bi bi-suit-heart ic-t"></i><label>@item.MemberActions.Where(x => x.ActionId == 2 && x.StoreId == ViewBag.Id).Count()</label></div>
-                                    <div class=""><i class="bi bi-chat-left ic-t"></i><label>@item.StoreEvaluates.Where(x => x.StoreId == ViewBag.Id).Count()</label></div>
+                            <div class="st1">
+                                <div class="rating" style="font-size:2rem">
+                                    <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label>@item.MemberActions.Where(x => x.ActionId == 2 && x.StoreId == item.StoreId).Count()</label></div>
+                                    <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@item.StoreEvaluates.Where(x => x.StoreId == item.StoreId).Count()</label></div>
                                     <div class="rating"><label id="star"></label></div>
                                 </div>
                             </div>
@@ -65,10 +65,27 @@
                                 <label><a href="@Html.DisplayFor(modelItem => item.Website)">@Html.DisplayFor(modelItem => item.Website)</a></label>
                             </div>
                         </div>
+                        
+
                         <div class=" main-block">
                             <div class="st1">
-                                <label class="t1">官方網站</label>
-                                <label><a href="@Html.DisplayFor(modelItem => item.Website)">@Html.DisplayFor(modelItem => item.Website)</a></label>
+                                <div class="vertical" style="font-size:2rem">評論</div>
+                            </div>
+                            @foreach (var se in item.StoreEvaluates.Where(x => x.StoreId == item.StoreId))
+                            {
+                                <div class="st1">
+                                    @foreach (var m in Model.member.Where(y => y.MemberId == se.MemberId))
+                                    {
+                                        <label>@m.MemberName</label>
+                                    }                                    
+                                    <label>@se.Comments</label>
+                                </div>
+                            }
+                        </div>
+
+                        <div class=" main-block">
+                            <div class="st1">
+                                <div class="vertical" style="font-size:2rem">照片</div>
                             </div>
                         </div>
                     </div>

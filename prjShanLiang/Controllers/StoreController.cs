@@ -1,7 +1,9 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using prjShanLiang.Models;
+using prjShanLiang.ViewModels;
 using System;
 using System.Linq;
 
@@ -32,15 +34,24 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult Restaurant(int? id)
         {
-            ViewBag.Id = id;
             if (id == null)
                 return RedirectToAction("Reconnend");
-            IQueryable datas = from s in _db.Stores.Include(s => s.StoreDecorationImages).Include(s => s.StoreEvaluates).Include(s => s.MemberActions)
-                               where s.StoreId == id
-                               select s;
+            CShowRestaurantViewModel datas = new CShowRestaurantViewModel();
+            var sts = from s in _db.Stores.
+                        Include(s => s.StoreDecorationImages).
+                        Include(s => s.StoreEvaluates).
+                        Include(s => s.MemberActions)
+                        where s.StoreId == id
+                        select s;
+            var mbs = from m in _db.Members
+                      orderby m.MemberId
+                      select m;
+            datas.store = sts;
+            datas.member = mbs;
+
             if (datas == null)
                 return RedirectToAction("Reconnend");
-            return View(datas);  
+            return View(datas);
         }
         public IActionResult GetStore(string keyword)
         {
@@ -49,7 +60,7 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult ShowType()
         {
-            IQueryable datas = _db.RestaurantTypes.Select(r => new { r.TypeName , r.RestaurantTypeNum});
+            IQueryable datas = _db.RestaurantTypes.Select(r => new { r.TypeName, r.RestaurantTypeNum });
             return Json(datas);
         }
         /// <summary>
