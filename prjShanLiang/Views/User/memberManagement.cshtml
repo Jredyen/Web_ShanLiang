@@ -3,15 +3,36 @@
 @{
     ViewData["Title"] = "memberManagement";
 }
+        <main id="main">
 
-<h1>會員中心</h1>
+            <!-- ======= Breadcrumbs ======= -->
+            <div class="breadcrumbs">
+                <div class="container">
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2>會員中心</h2>
+                        <ul>
+                            <p>你好,@ViewBag.MemberName</p>
+                            @Html.ActionLink("修改資料", "memberDataRevision" ,new {  Model.FirstOrDefault().Email  })
+                        </ul>
+                    </div>
+
+                </div>
+            </div><!-- End Breadcrumbs -->
+
+            <section class="sample-page">
+                <div class="container" data-aos="fade-up">
+                    <!--==============================================-->
+        </div>
+    </section>
+
+</main><!-- End #main -->
 
 @*<p>
     <a asp-action="Create">Create New</a>
 </p>*@
 
-<p>你好,@ViewBag.MemberName</p>
-@Html.ActionLink("修改資料", "memberDataRevision" ,new {  Model.FirstOrDefault().Email  }) 
+
 
 
 @*
