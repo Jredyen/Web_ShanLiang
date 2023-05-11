@@ -43,6 +43,10 @@
                 outline: none;
             }
         /*=====================以上是回到最上層的CSS=========================*/
+        .my-image {
+            width: 600px;
+            height: auto;
+        }
 
         .form-group .form-control {
             margin-bottom: 10px;
@@ -119,7 +123,7 @@
         };
     </script>
 }
-
+<button type="button" id="BackTop" class="toTop-arrow"></button>   @*回到最上層按鈕*@
 
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
@@ -137,15 +141,55 @@
 
             </div>
         </div><!-- End Breadcrumbs -->
+        
+        @*<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="~/images/Menu/1.jpg" class="d-block w-100" >
+                </div>
+                <div class="carousel-item">
+                    <img src="~/images/Menu/2.jpg" class="d-block w-100" >
+                </div>
+                <div class="carousel-item">
+                    <img src="~/images/Menu/3.jpg" class="d-block w-100" >
+                </div>
+            </div>
+        </div>*@
 
-        <button type="button" id="BackTop" class="toTop-arrow"></button>   @*回到最上層按鈕*@
 
-        <img src="~/images/Menu/膳糧食堂.jpg" class="Top-image" />
-        <div>
-            <h1>膳糧食堂 大安店</h1>
-            <p>台北市大安區復興南路一段390號2樓</p>
-            <p>(02)6631-6588</p>
-        </div>
+        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="3000">
+                        <img src="~/images/Menu/a.jpg" class="d-block w-100 ">
+                    </div>
+                <div class="carousel-item" data-bs-interval="3000">
+                        <img src="~/images/Menu/b.jpg" class="d-block w-100 ">
+                    </div>
+                <div class="carousel-item" data-bs-interval="3000">
+                        <img src="~/images/Menu/c.jpg" class="d-block w-100 ">
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            
+        
+            
+       <div style="margin:10px 30px 30px 30px;">
+                <h1 style="font-size:40px;">膳糧食堂 大安店</h1>
+                <p>台北市大安區復興南路一段390號2樓</p>
+                <p>(02)6631-6588</p>
+            </div>
+        
+
+        
+        
 
 
         <div class="row">
