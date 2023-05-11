@@ -17,7 +17,7 @@ public partial class Store
 
     public string? RestaurantPhone { get; set; }
 
-    public int? DistrictId { get; set; }
+    public int DistrictId { get; set; }
 
     public int? Seats { get; set; }
 
