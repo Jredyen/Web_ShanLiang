@@ -1,19 +1,69 @@
-﻿@model Tuple<List<prjShanLiang.Models.Store>, List<prjShanLiang.Models.StoreEvaluate>>
+﻿@model Tuple<List<prjShanLiang.Models.Store>, List<prjShanLiang.Models.StoreAdImage>>
     @{
     ViewData["Title"] = "膳糧";
 }
-    <head>
-        <style>
-    .text {
-        color: blueviolet;
-    }
 
-    .item {
-        width: 1000px;
-        height: 600px;
-    }
+    <head>
+    @section Styles{
+    
+        <style>
+      
+
+        .image-container {
+            width: 1130px;
+            height: 600px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+     /*   .item {
+            width: 1115px;
+            height: 600px;
+        }
+
+            .item img {
+                width: 1115px;
+                height: 600px;
+                object-fit: cover;
+                object-position: center center;
+            }
+*/
+
+        .carousel-inner {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
+
+        .custom-images {
+            position: relative;
+            width: 150%;
+        }
+
+        .left-img {
+            position: absolute;
+            top: 145px;
+            left: 0;
+            height:300px;
+            width:200px;
+            z-index: 5; /* 設置較高的 z-index 值 */
+            float:none;
+        }
+
+        .right-img {
+            position: absolute;
+            top: 145px;
+            right: 0;
+            height: 200px;
+            width: 300px;
+            z-index: 5; /* 設置較高的 z-index 值 */
+            float: none;
+        }
+       
 
 </style>
+    }
         </head>
     <main id="main">
 
@@ -23,16 +73,32 @@
 
             <div class="d-flex justify-content-between align-items-center">
                 <h2>首頁</h2>
+
                 <ol>
                     <li><a a asp-controller="Home" asp-action="Index">Home</a></li>
                     <li>Index</li>
                 </ol>
-            </div>
 
+
+            </div>
+            <div class="left-img">
+                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
+                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
+                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
+            </div>
+            <div class="right-img">
+                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
+                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
+                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
+            </div>
         </div>
+
+
     </div><!-- End Breadcrumbs -->
 
     <section class="sample-page">
+       
+      
         <div class="container" data-aos="fade-up">
             <!--==============================================-->
             <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -47,22 +113,27 @@
     </ol>
 
     <!-- 輪播內容 -->
-    <div class="carousel-inner" role="listbox">
-        @foreach (var advertisement in Model.Item1)
-        {
-            <div class="item @(advertisement == Model.Item1.First() ? "active" : "")">
-
-                <a href="@advertisement.Website" target="_self">@*<img src="data:image/jpeg;base64,@(System.Convert.ToBase64String(advertisement.StoreImage))" />*@</a>
-                <div class="carousel-caption">
-                    <h3>@advertisement.RestaurantName</h3>
-                    <p>@advertisement.RestaurantPhone</p>
-
-                </div>
-            </div>
-
-        }
-    </div>
-
+                <div class="carousel-inner" role="listbox">
+                    
+                    @foreach (var advertisement in Model.Item1)
+                    {
+                        <div class="item @(advertisement == Model.Item1.First() ? "active" : "")">
+                            <div class="image-container">
+                                <a href="@advertisement.Website" target="_self">
+                                    @foreach (var adImage in Model.Item2.Where(ai => ai.StoreId == advertisement.StoreId))
+                                    {
+                                        string imgName = adImage.Adimage;
+                                        <img src="~/images/store/@imgName" />
+                                    }
+                                </a>
+                            </div>
+                            <div class="carousel-caption">
+                                <h3>@advertisement.RestaurantName</h3>
+                                <p>@advertisement.RestaurantPhone</p>
+                            </div>
+                        </div>
+                    }             
+                </div> 
 
     <!-- 左右箭頭 -->
     <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
@@ -74,33 +145,31 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-<div style="background-color:aqua" class="text">
-    @foreach (var item in Model.Item2)
-    {
-        <div>@item.MemberId</div>
-        <div>@item.Comments</div>
-        <div>@item.Rating</div>
-        <div>@item.EvaluateDate</div>
-    }
 
-
-
-
-
-</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script>
-    $(document).ready(function () {
-        $('.carousel').carousel({
-            interval: 100 // 設置自動切換時間為3秒
-        })
-    });
-</script>
+            <script>
+                $(document).ready(function () {
+                    $('.carousel').carousel({
+                        interval: 100, // 設置自動切換時間為1秒
+                        wrap: true, // 循環輪播
+                        fade: true // 淡入淡出效果
+                        keyboard: true, // 啟用左右鍵控制
+                        pause: "false" // 鼠標懸停在輪播上時不暫停
+                    })
+                });
+            </script>
             <!--==============================================-->
+            <div>
+                @foreach (var advertisement in Model.Item1)
+                {
+                    <h3>@advertisement.RestaurantName</h3> 
+                }
 
+            </div>
         </div>
+        
     </section>
-
 </main><!-- End #main -->
+

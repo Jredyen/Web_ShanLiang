@@ -27,8 +27,9 @@ namespace prjShanLiang.Controllers
             return View();
         }
         [HttpPost]
+        [Route("api/shoppingcart/add-to-cart")]
         public ActionResult AddToCart(CAddToCartViewModel vm)
-        {          
+        {   //增加到購物車
             MealMenu menu = _db.MealMenus.FirstOrDefault(t => t.MealId == vm.txtMealId);
             if (menu != null)
             {
@@ -57,7 +58,7 @@ namespace prjShanLiang.Controllers
                 {
                  CShoppingCartItem item = new CShoppingCartItem();
                 item.mealmenu = menu;
-                item.price = (decimal)menu.MealPrice;
+                item.price = (int)menu.MealPrice;
                 item.mealId = vm.txtMealId;
                 item.count = vm.txtCount;
                 cart.Add(item);
@@ -69,19 +70,67 @@ namespace prjShanLiang.Controllers
             return RedirectToAction("Menu");
         }
         public IActionResult CartView()
-        {
+        {  //檢視購物車
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
                 return RedirectToAction("Menu");
             string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
 
             List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
+            if (cart == null || cart.Count==0)
+                return RedirectToAction("Menu");  //如果購物車是空的 回到Menu繼續點餐
+            return View(cart);
+        }
+        
+        public IActionResult Delete(int? id)
+        {   //刪除購物車裡的餐點
+            if (id == null)     
+               return RedirectToAction("Menu");
+      
+            string json=HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
+            List<CShoppingCartItem> cart =JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
             if (cart == null)
+            { 
+                cart = new List<CShoppingCartItem>();                
+            }
+            for (int i = cart.Count - 1; i >= 0; i--)
+            {
+                if (cart[i].mealId == id)
+                {
+                    cart.RemoveAt(i);
+                }
+            }
+
+            json =JsonSerializer.Serialize(cart);
+
+            HttpContext.Session.SetString(CDictionary.SK_PURCHASED_MENU_LIST,json);
+            if (cart.Count == 0)
+            {
                 return RedirectToAction("Menu");
-            return View(cart);          
+            }
+            return RedirectToAction("CartView");
         }
         public IActionResult CheckoutCart()
-        {
-            return View();
+        {   //確認訂單
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
+                return RedirectToAction("Menu");
+            string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
+
+            List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
+            if (cart == null || cart.Count == 0)
+                return RedirectToAction("Menu");  //如果購物車是空的 回到Menu繼續點餐
+            return View(cart);            
+        }
+        public IActionResult CreateOrder() 
+        {   //付款後完成訂單
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
+                return RedirectToAction("Menu");
+            string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
+
+            List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
+            if (cart == null || cart.Count == 0)
+                return RedirectToAction("Menu");  //如果購物車是空的 回到Menu繼續點餐
+            return View(cart);
+            
         }
     }
 }

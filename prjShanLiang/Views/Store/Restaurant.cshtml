@@ -3,6 +3,8 @@
 @{
     ViewData["Title"] = "Restaurant";
 }
+<link rel="stylesheet" href="~/css/Restaurant.css" />
+
 @foreach (var item in Model)
 {
     <!-- ======= Hero Section ======= -->
@@ -11,10 +13,10 @@
             <div class="row justify-content-between gy-5">
                 <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
                     <h2 data-aos="fade-up">@Html.DisplayFor(modelItem => item.RestaurantName)</h2>
-                    <p data-aos="fade-up" data-aos-delay="100">Sed autem laudantium dolores. Voluptatem itaque ea consequatur eveniet. Eum quas beatae cumque eum quaerat.</p>
+                    <p data-aos="fade-up" data-aos-delay="100">@item.StoreEvaluates.FirstOrDefault()?.Comments</p>
                 </div>
                 <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
-                    <img src="~/Images/@item.StoreDecorationImages.FirstOrDefault().ImagePath" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300" />
+                    <img src="~/Images/@item.StoreDecorationImages.FirstOrDefault()?.ImagePath" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300" />
                 </div>
             </div>
         </div>
@@ -24,86 +26,87 @@
     <main id="main">
         <!-- ======= About Section ======= -->
         <section id="about" class="about">
-            <div class="container" data-aos="fade-up">
-                <!-- ======= Breadcrumbs ======= -->
-                <div class="breadcrumbs">
-                    <div class="container">
-
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h2></h2>
-                            <ol>
-                                <li><a asp-controller="Store" asp-action="List">Store</a></li>
-                                <li>@Html.DisplayFor(modelItem => item.StoreId)</li>
-                            </ol>
-                        </div>
-
-                    </div>
-                </div><!-- End Breadcrumbs -->
-                @*<div class="section-header">
-            <h2>About Us</h2>
-            <p>Learn More <span>About Us</span></p>
-            </div>*@
+            <div class="container content-r" data-aos="fade-up">
 
                 <div class="row gy-4">
                     <div class="col-lg-8 position-relative about-img" @*style="background: url('@Url.Content("~/assets/img/about.jpg")') ;"*@ data-aos="fade-up" data-aos-delay="150">
-                        <table class="table">
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.RestaurantName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.RestaurantAddress)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.RestaurantPhone)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Seats)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.OpeningTime)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ClosingTime)
-                                    </td>
-                                    <td>
-                                        <a href="@Html.DisplayFor(modelItem => item.Website)">個人網站</a>
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Rating)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.StoreMail)
-                                    </td>
-                                    <td>
-                                        @Html.ActionLink("我要訂位", "Reserve", new { id=item.StoreId })
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class=" main-block">
+                            <div class="st1">.
+                                <div class="rating vertical" style="font-size:2rem">
+                                    <div class=""><i class="bi bi-suit-heart ic-t"></i><label>@item.MemberActions.Where(x => x.ActionId == 2 && x.StoreId == ViewBag.Id).Count()</label></div>
+                                    <div class=""><i class="bi bi-chat-left ic-t"></i><label>@item.StoreEvaluates.Where(x => x.StoreId == ViewBag.Id).Count()</label></div>
+                                    <div class="rating"><label id="star"></label></div>
+                                </div>
+                            </div>
+                            <br>
+                            <hr>  <!-- 分隔線 -->
+                            <div class="st1">
+                                <label class="t1">地址</label>
+                                <label>@Html.DisplayFor(modelItem => item.RestaurantAddress)</label>
+                            </div>
+                            <hr>  <!-- 分隔線 -->
+                            <div class="st1">
+                                <label class="t1">連絡電話</label>
+                                <label>@Html.DisplayFor(modelItem => item.RestaurantPhone)</label>
+                            </div>
+                            <hr>  <!-- 分隔線 -->
+                            <div class="st1">
+                                <label class="t1">營業時間</label>
+                                <label>@Html.DisplayFor(modelItem => item.OpeningTime) - @Html.DisplayFor(modelItem => item.ClosingTime)</label>
+                            </div>
+                            <hr>  <!-- 分隔線 -->
+                            <div class="st1">
+                                <label class="t1">電子郵件</label>
+                                <label>@Html.DisplayFor(modelItem => item.StoreMail)</label>
+                            </div>
+                            <hr>  <!-- 分隔線 -->
+                            <div class="st1">
+                                <label class="t1">官方網站</label>
+                                <label><a href="@Html.DisplayFor(modelItem => item.Website)">@Html.DisplayFor(modelItem => item.Website)</a></label>
+                            </div>
+                        </div>
+                        <div class=" main-block">
+                            <div class="st1">
+                                <label class="t1">官方網站</label>
+                                <label><a href="@Html.DisplayFor(modelItem => item.Website)">@Html.DisplayFor(modelItem => item.Website)</a></label>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="300">
-                        <div class="content ps-0 ps-lg-5 why-us">
-                            <div class="why-box mid-flex">
-                                <div class="more-btn">
-                                    <a class="" asp-area="" asp-controller="Store" asp-action="Share"><i class="bi bi-share"></i>分享<i class="bx bx-chevron-right"></i></a>
-                                </div>
-                                <div class="more-btn">
-                                    <a class="" asp-area="" asp-controller="Store" asp-action="Comment"><i class="bi bi-chat-left"></i>評論<i class="bx bx-chevron-right"></i></a>
-                                </div>
-                                <div class="more-btn">
-                                    <a class="" asp-area="" asp-controller="Store" asp-action="Favorate"><i class="bi bi-suit-heart"></i>@*<i class="bi bi-suit-heart-fill"></i>*@收藏<i class="bx bx-chevron-right"></i></a>
-                                </div>
-                            </div>
+                    <div class="col-lg-4 d-flex position-relative about-img" data-aos="fade-up" data-aos-delay="300">
+                        <div>
+                            <div class="content ps-0 ps-lg-5 why-us mobiled">
+                                <div class="btn-group d-flex" role="group" aria-label="Button group with nested dropdown">
 
-                            <div class="why-box mid-flex shopBook">
-                                <div class="more-btn">
-                                    <a class="" asp-area="" asp-controller="Store" asp-action="Reserve"><i class="bi bi-calendar-event"></i>線上預訂<i class="bx bx-chevron-right"></i></a>
+                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <a class="" asp-area="" asp-controller="Store" asp-action="Share"><i class="bi bi-share ic-t"></i>分享</a>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                        <a class="dropdown-item" href="#">Facebook</a>
+                                        <a class="dropdown-item" href="#">Line</a>
+                                        <a class="dropdown-item" href="#">E-mail</a>
+                                        <a class="dropdown-item" href="#">複製連結</a>
+                                    </div>
+
+                                    <button type="button" class="btn btn-secondary">
+                                        <a class="" asp-area="" asp-controller="Store" asp-action="Comment"><i class="bi bi-chat-left ic-t"></i>評論</a>
+                                    </button>
+                                    <button type="button" class="btn btn-secondary">
+                                        <a class="" asp-area="" asp-controller="Store" asp-action="Favorate"><i class="bi bi-suit-heart ic-t"></i>@*<i class="bi bi-suit-heart-fill"></i>*@收藏</a>
+                                    </button>
+
                                 </div>
+
+                                <div class="why-box d-flex shopBook">
+                                    <div class="more-btn">
+                                        <a class="" asp-area="" asp-controller="Store" asp-action="Reserve" asp-route-id="@item.StoreId"><i class="bi bi-calendar-event ic-t"></i>線上訂位</a>
+                                    </div>
+                                    <div class="more-btn">
+                                        <a class="" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-id="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
+                                    </div>
+                                </div>
+
                             </div>
-                            
                         </div>
                     </div>
                 </div>
@@ -123,4 +126,23 @@
             </div><!-- End Google Maps -->
         </div>
     </section>
+
+    <button onclick="topFunction()" id="myBtn" title="回頁首"><i class="bi bi-chevron-double-up"></i></button>
+    <script src="~/js/Restaurant.js"></script>
+
+    @section Scripts{
+    <script>
+        const star = document.querySelector('#star');
+        function getStar() {
+            for (let i = 1; i <= @Html.DisplayFor(modelItem => item.Rating) ; i++) {
+                star.innerHTML += "★";
+            }
+            for (let i = 1; i <= (5 - @Html.DisplayFor(modelItem => item.Rating)); i++) {
+                star.innerHTML += "☆";
+            }
+        }
+        getStar();
+    </script>
+}
+
 }
