@@ -2,74 +2,88 @@
 @{
     ViewData["Title"] = "訂餐頁面";
 }
-<style>
-    .toTop-arrow {
-        width: 3.5rem;
-        height: 3.5rem;
-        padding: 0;
-        margin: 0;
-        border: 0;
-        border-radius: 33%;
-        opacity: 0.6;
-        background: #000;
-        cursor: pointer;
-        position: fixed;
-        right: 1rem;
-        bottom: 5rem;
-        display: none;
-    }
 
-        .toTop-arrow::before, .toTop-arrow::after {
-            width: 18px;
-            height: 5px;
-            border-radius: 3px;
-            background: #f90;
-            position: absolute;
-            content: "";
+    <style>
+
+        .toTop-arrow {
+            width: 4.3rem;
+            height: 4.3rem;
+            padding: 0;
+            margin: 0;
+            border: 0;
+            border-radius: 33%;
+            opacity: 0.6;
+            background: #000;
+            cursor: pointer;
+            position: fixed;
+            right: 1rem;
+            bottom: 5rem;
+            display: none;
         }
 
-        .toTop-arrow::before {
-            transform: rotate(-45deg) translate(0, -50%);
-            left: 0.5rem;
+            .toTop-arrow::before, .toTop-arrow::after {
+                width: 25px;
+                height: 6px;
+                border-radius: 3px;
+                background: #f90;
+                position: absolute;
+                content: "";
+            }
+
+            .toTop-arrow::before {
+                transform: rotate(-45deg) translate(0, -50%);
+                left: 0.42rem;
+            }
+
+            .toTop-arrow::after {
+                transform: rotate(45deg) translate(0, -50%);
+                right: 0.42rem;
+            }
+
+            .toTop-arrow:focus {
+                outline: none;
+            }
+        /*=====================以上是回到最上層的CSS=========================*/
+
+        .form-group .form-control {
+            margin-bottom: 10px;
         }
 
-        .toTop-arrow::after {
-            transform: rotate(45deg) translate(0, -50%);
-            right: 0.5rem;
+        .Top-image {
+            display: block;
+            margin: auto;
+            max-width: 100%;
+            max-height: 100%;
         }
 
-        .toTop-arrow:focus {
-            outline: none;
+        .Meal-image {
+            display: block;
+            margin: auto;
+            max-width: 100%;
+            max-height: 100%;
         }
 
-    /*=================================================*/
-    .form-group .form-control {
-        margin-bottom: 10px;
-    }
+        .row {
+            display: block;
+            margin: auto;
+            max-width: 100%;
+            max-height: 100%;
+            font-size: 14px;
+        }
 
-    .Top-image {
-        display: block;
-        margin: auto;
-        max-width: 100%;
-        max-height: 100%;
-    }
+        .card {
+            width: 400px;
+            height: 500px;
+            background-color: orange;
+            margin: 0px 20px 20px 20px;
+        }
+        
+    </style>
 
-    .Meal-image {
-        display: block;
-        margin: auto;
-        max-width: 100%;
-        max-height: 100%;
-    }
 
-    .row {
-        display: block;
-        margin: auto;
-        max-width: 100%;
-        max-height: 100%;
-    }
-</style>
 
 @section Scripts{
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         //回到最頂端功能
         $(function () {
@@ -89,7 +103,7 @@
             $(".product").click(function () {
                 var mealId = $(".txtMealId").val();
                 var count = $("#txtCount").val();
-                
+
                 $.ajax({
                     url: "/api/shoppingcart/add-to-cart",
                     type: "POST",
@@ -114,7 +128,7 @@
     </script>
 
 }
-<button type="button" id="BackTop" class="toTop-arrow"></button>
+
 
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
@@ -133,6 +147,8 @@
             </div>
         </div><!-- End Breadcrumbs -->
 
+        <button type="button" id="BackTop" class="toTop-arrow"></button>   @*回到最上層按鈕*@
+
         <img src="~/images/Menu/膳糧食堂.jpg" class="Top-image" />
         <div>
             <h1>膳糧食堂 大安店</h1>
@@ -146,25 +162,28 @@
             {
                 string imgName = item.MealImagePath; //照片路徑轉字串
 
-                <div class="col-12 col-md-6 col-lg-4 " style="margin-top:20px;">
+                <div class="col-10 col-md-10 col-lg-4 " style="margin-top:20px">
                     <div class="card">
-                        <img src="~/images/Menu/@imgName" class="Meal-image">
+                        
+                        <img src="~/Images/Menu/@imgName" class="Meal-image">
+
                         <div class="card-body">
                             <h1 class=text-center>@item.MealName</h1>
-                            <br>
-                            <p>@item.Recommendation</p>
-                            <h2>NT$:@item.MealPrice</h2>
+
                             @using (Html.BeginForm("AddToCart", "Shopping", FormMethod.Post))
                             {
                                 <div class=text-center>
-                                <input class="txtMealId" type="hidden" name="txtMealId" value="@item.MealId" />
+                                    <input class="txtMealId" type="hidden" name="txtMealId" value="@item.MealId" />
                                     <br>
-                                    @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control" })
+                                    @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control " })
                                     <br>
-                                    
                                     <input type="submit" value="加入購物車" class="btn btn-danger " />
                                 </div>
                             }
+                            <br>
+                            <p>@item.Recommendation</p>
+                            <p>NT$:@item.MealPrice</p>
+
                         </div>
                     </div>
                 </div>
