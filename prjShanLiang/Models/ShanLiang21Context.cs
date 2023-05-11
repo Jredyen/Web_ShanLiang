@@ -112,13 +112,9 @@ public partial class ShanLiang21Context : DbContext
 
         modelBuilder.Entity<Admin>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Admin", "dbo");
+            entity.ToTable("Admin", "dbo");
 
-            entity.Property(e => e.AdminId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("AdminID");
+            entity.Property(e => e.AdminId).HasColumnName("AdminID");
             entity.Property(e => e.AdminName).HasMaxLength(50);
             entity.Property(e => e.Passwoed).HasMaxLength(50);
         });

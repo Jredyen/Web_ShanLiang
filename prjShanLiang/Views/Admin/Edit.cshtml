@@ -1,0 +1,48 @@
+﻿@model prjShanLiang.Models.Admin
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>修改管理者作業</h1>
+
+<h4>輸入管理者資料</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="AdminId" value="@Model.AdminId" />
+            <div class="form-group">
+                <label asp-for="AdminName" class="control-label" placeholder="">管理者帳號</label>
+                <input asp-for="AdminName" class="form-control" />
+                <span asp-validation-for="AdminName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Passwoed" class="control-label" placeholder="">管理者密碼</label>
+                <input asp-for="Passwoed" class="form-control" />
+                <span asp-validation-for="Passwoed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Identification" class="control-label" placeholder="">管理者權限</label>
+                <input asp-for="Identification" class="form-control" />
+                <span asp-validation-for="Identification" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="List">取消</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
