@@ -11,5 +11,7 @@ public partial class StoreAdImage
 
     public string? Adimage { get; set; }
 
+    public string? Eximage { get; set; }
+
     public virtual Store? Store { get; set; }
 }

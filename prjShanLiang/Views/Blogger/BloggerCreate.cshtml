@@ -1,0 +1,93 @@
+﻿@model prjShanLiang.Models.Blog
+
+@{
+    ViewData["Title"] = "BloggerCreate";
+}
+<script src="~/lib/ckeditor/build/ckeditor.js"></script>
+<main id="main">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1>新增您的文章</h1>
+
+                </div>
+            </div>
+        </div><!-- End Breadcrumbs -->
+<hr />       
+<div class="row">
+            <form asp-action="BloggerCreate" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>         
+                    <div class="form-group">
+                        <label asp-for="BlogHeader" class="control-label"></label>
+                        <input asp-for="BlogHeader" class="form-control" />
+                        <span asp-validation-for="BlogHeader" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="BlogContent" class="control-label"></label>
+                        <textarea asp-for="BlogContent" class="form-control" id="editor"></textarea>
+                        <span asp-validation-for="BlogContent" class="text-danger"></span>
+                    </div>
+                
+                    <div class="form-group">
+                        <label asp-for="BlogPic" class="control-label"></label>  
+                    <input type="file" name="myimg" id="myimg" class="form-control-file" >
+                    <span asp-validation-for="BlogPic" class="text-danger"></span>
+                    </div>
+                <img id="preview" style="max-height:200px;" />
+                <script>
+                    $('#myimg').on('change', function (e) {
+                        const file = this.files[0];
+                        const objectURL = URL.createObjectURL(file);    // 使用 createObjectURL 產生圖片url
+                        $('#preview').attr('src', objectURL);
+                    });
+                </script>
+        </form>
+            
+</div>
+        
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+        <div>
+            <a asp-action="BloggerList">Back to List</a>
+        </div>
+        <script>
+            ClassicEditor
+                .create(document.querySelector('#editor'), {
+                    toolbar: {
+                        items: [
+                            'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList',
+                            '|', 'alignment', 'outdent', 'indent', '|', 'fontSize', 'fontColor',
+                            '|', 'imageUpload', 'blockQuote', 'insertTable', 'mediaEmbed',
+                            'undo', 'redo'
+                        ]
+                    },
+                    image: {
+                        toolbar: [
+                            'imageTextAlternative', 'imageStyle:inline',
+                            'imageStyle:block', 'imageStyle:side'
+                        ]
+                    },
+                    table: {
+                        contentToolbar: [
+                            'tableColumn', 'tableRow', 'mergeTableCells'
+                        ]
+                    },
+                    licenseKey: '',
+                })
+                .then(editor => {
+                    window.editor = editor;
+                })
+                .catch(error => {
+                    console.error('Oops, something went wrong!');
+                    console.error(error);
+                });
+        </script>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
+</div>
+</main>
