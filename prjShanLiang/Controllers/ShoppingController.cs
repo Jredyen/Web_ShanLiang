@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Plugins;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
 using System.Text.Json;
@@ -26,11 +27,11 @@ namespace prjShanLiang.Controllers
             ViewBag.MealId = id;
             return View();
         }
-        [HttpPost]
+       
         [Route("api/shoppingcart/add-to-cart")]
-        public ActionResult AddToCart(CAddToCartViewModel vm)
+        public ActionResult AddToCart(int? id,int? count)
         {   //增加到購物車
-            MealMenu menu = _db.MealMenus.FirstOrDefault(t => t.MealId == vm.txtMealId);
+            MealMenu menu = _db.MealMenus.FirstOrDefault(t => t.MealId == id);
             if (menu != null)
             {
                 string json ="";
@@ -49,7 +50,7 @@ namespace prjShanLiang.Controllers
                 {
                     if (shoppingItem.mealId == menu.MealId)
                     {
-                        shoppingItem.count += vm.txtCount;
+                        shoppingItem.count += (int)count;
                         verify = true;
                         break;
                     }                    
@@ -59,15 +60,21 @@ namespace prjShanLiang.Controllers
                  CShoppingCartItem item = new CShoppingCartItem();
                 item.mealmenu = menu;
                 item.price = (int)menu.MealPrice;
-                item.mealId = vm.txtMealId;
-                item.count = vm.txtCount;
+                item.mealId = (int)id;
+                item.count = (int)count;
                 cart.Add(item);
                 }
-               
+                //Todo假設沒有庫存回傳訊息
+                //if (//沒庫存)
+                //{ 
+                //return Json(new { success = false ,message= "庫存不足" });
+                //}
                 json = JsonSerializer.Serialize(cart);  //購物車資料變回json
                 HttpContext.Session.SetString(CDictionary.SK_PURCHASED_MENU_LIST, json);
+                
             }
-            return RedirectToAction("Menu");
+            return Json(new { success = true});
+            //return RedirectToAction("Menu");
         }
         public IActionResult CartView()
         {  //檢視購物車
@@ -124,7 +131,11 @@ namespace prjShanLiang.Controllers
 
             //找出登入者資訊
             string logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
-             
+            //如果沒有登入轉跳登入頁面
+            if (logginedUser == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
              Member datas = JsonSerializer.Deserialize<Member>(logginedUser);
             var data = _db.Members.Where(t => t.Email.Contains(datas.Email));
             ViewBag.MemberName = datas.MemberName;
@@ -136,6 +147,7 @@ namespace prjShanLiang.Controllers
         {   //付款後完成訂單
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
                 return RedirectToAction("Menu");
+
             string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
 
             List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
