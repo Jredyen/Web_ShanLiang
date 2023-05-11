@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using prjShanLiang.Models;
+using System;
+using System.Linq;
 
 namespace prjShanLiang.Controllers
 {
@@ -46,17 +49,71 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult ShowType()
         {
-            IQueryable datas = _db.RestaurantTypes.Select(r => r.TypeName);
+            IQueryable datas = _db.RestaurantTypes.Select(r => new { r.TypeName , r.RestaurantTypeNum});
             return Json(datas);
         }
-        public IActionResult SerachStore(string keyword, int[] type, int[] district)
+        /// <summary>
+        /// 使用篩選進行店家搜尋
+        /// </summary>
+        /// <param name="keyword">關鍵字</param>
+        /// <param name="types">類型</param>
+        /// <param name="districts">地區</param>
+        /// <param name="rating">評級</param>
+        /// <returns></returns>
+        public IActionResult SearchStore(string keyword, int[]? types, int[]? districts = null, double? rating = 0)
         {
-            IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword)).Select(s => new
+            //測試用            
+            //types = new int[] { 4, 5, 6 };
+            //districts = new int[] { 5, 6, 7 };
+
+            //TODO:整合店名、類型與地區的搜尋
+            //店名搜尋 : 完成
+            //類型搜尋 : 未完成且無法帶入
+            //地區搜尋 : 未完成且無法帶入
+            //評價搜尋 : 完成
+
+            IQueryable<Store> list = null;
+            //如果關鍵字不是null的話就用關鍵字搜尋
+            if (keyword != null)
             {
-                //TODO:整合店名、類型與地區的搜尋
-                //店名搜尋 : 完成
-                //類型搜尋 : 未完成
-                //地區搜尋 : 未完成
+                list = _db.Stores.Where(s => s.RestaurantName.Contains(keyword));
+            }
+            else
+            {
+                list = _db.Stores.Select(s => s);
+            }
+
+            //如果有選取類型的話就再篩選類型
+            if (types != null && types.Length > 0)
+            {
+                list = list.Join(_db.StoreTypes, s => s.StoreId, st => st.StoreId, (s, st) => new { s, st })
+                    .Where(x => types.Contains(x.st.RestaurantTypeNum))
+                    .Select(x => x.s)
+                    .Distinct();
+            }
+
+            //如果有選取地區的話就再篩選地區
+            if (districts != null && districts.Length > 0)
+            {
+                list = list.Where(s => districts.Contains(s.DistrictId));
+            }
+
+            //如果評價不是0的話就篩選高於的
+            /*TODO:改成評價範圍
+            1 = 1.9以下
+            2 = 2.5以下
+            3 = 3.5以下
+            4 = 4.5以下
+            5 = 4.6以上
+            */
+            if (rating != 0)
+            {
+                list = list.Where(s => s.Rating >= rating);
+            }
+
+            //只顯示指定的資料
+            var storeList = list.Select(s => new
+            {
                 s.RestaurantName,
                 s.StoreId,
                 s.Rating,

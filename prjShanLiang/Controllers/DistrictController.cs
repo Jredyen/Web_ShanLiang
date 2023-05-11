@@ -15,7 +15,7 @@ namespace prjShanLiang.Controllers
             var datas = from c in _db.Cities
                         join d in _db.Districts
                         on c.CityId equals d.CityId
-                        select new { c.CityName, d.DistrictName };
+                        select new { c.CityName, d.DistrictName, d.DistrictId};
             return datas;
         }
         //[HttpGet]
