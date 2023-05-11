@@ -32,9 +32,9 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="storeDataRevision">
+        <form asp-action="storeDataRevision2">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+                    <input type="hidden" value="@Model.StoreId" name="StoreId" />
             <div class="form-group">
                 <label asp-for="AccountName" class="control-label">帳號</label>
                 <input asp-for="AccountName" class="form-control" readonly/>
@@ -46,6 +46,13 @@
                 <input asp-for="RestaurantName" class="form-control" />
                 <span asp-validation-for="RestaurantName" class="text-danger"></span>
             </div>
+                    <div class="form-group">
+                        <label asp-for="RestaurantAddress" class="control-label">縣市</label>
+                        <select class="form-control" id="storeCity"></select>
+                        
+                        <span asp-validation-for="RestaurantAddress" class="text-danger"></span>
+                    </div>
+
             <div class="form-group">
                 <label asp-for="RestaurantAddress" class="control-label">餐廳地址</label>
                 <input asp-for="RestaurantAddress" class="form-control" />
@@ -65,12 +72,12 @@
            
             <div class="form-group">
                 <label asp-for="OpeningTime" class="control-label">開始營業時間</label>
-                <input asp-for="OpeningTime" class="form-control" />
+                <input asp-for="OpeningTime" class="form-control" type="time" />
                 <span asp-validation-for="OpeningTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ClosingTime" class="control-label">結束營業時間</label>
-                <input asp-for="ClosingTime" class="form-control" />
+                <input asp-for="ClosingTime" class="form-control" type="time" />
                 <span asp-validation-for="ClosingTime" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -93,24 +100,153 @@
                 <input asp-for="StoreMail" class="form-control" />
                 <span asp-validation-for="StoreMail" class="text-danger"></span>
             </div>
+             <div class="form-group">
+                        <label asp-for="Password" class="control-label" placeholder="" for="storePassword">新密碼</label>
+                        <label>
+                            <input type="checkbox" name="showPassword" id="chkShowPassword" />顯示密碼
+                        </label>
+                        <input asp-for="Password" class="form-control" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" type="password" id="storePassword" value="" maxlength="16" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+              </div>
+
+              <div class="form-group">
+                        <label for="storePasswordChecking" class="control-label">密碼確認</label>
+                        <input type="password" name="passwordChecking" placeholder="請再次輸入密碼" id="storePasswordChecking" class="form-control" maxlength="16" />
+
+              </div>
+
+
             <div class="form-group">
-                <label asp-for="Password" class="control-label">密碼</label>
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                        <input type="submit" value="Save" class="btn btn-primary" id="btnDataRevision" />
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
+             
         </form>
+        <div id="errorMessage1" ></div>
+        
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+            <a asp-action="storeManagement">回到餐廳管理中心</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+   
+        const Password1 = document.getElementById('storePassword');
+        const Password2 = document.getElementById('storePasswordChecking');
+        const errorMessage = document.getElementById('errorMessage1');
+        const btnDataRevision = document.getElementById('btnDataRevision');
+        const chkShowPassword = document.getElementById('chkShowPassword');
+        const storeDataRevision = document.getElementById('storeDataRevision');
+        const storeCity = document.getElementById('storeCity');
+
+        let errorString = '';
+        btnDataRevision.disabled = false
+        let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
+        let result = false
+
+
+
+        Password1.addEventListener('input',
+        function (event) {
+        // 錯誤訊息用字串
+            if (Password1.value){
+                errorString = ''
+                result = pattern.test(Password1.value)
+                if (!Password1.value) {
+                errorString += '請填寫密碼'
+                }
+                if (!Password2.value) {
+                errorString += ' 請確認密碼'
+                }
+                if (Password1.value !== Password2.value) {
+                errorString += ' 兩次輸入的密碼不同'
+                }
+                if (!result) {
+                errorString += ' 密碼強度不足'
+                }
+                errorMessage.innerText = (errorString) ? errorString : '密碼一致'
+
+                if (!errorString) {
+                btnDataRevision.disabled = false
+                }
+                if (errorString) {
+                btnDataRevision.disabled = true
+                }
+            }
+        })
+        Password2.addEventListener('input',
+        function (event) {
+        // 錯誤訊息用字串
+            if (Password1.value){
+            errorString = ''
+            result = pattern.test(Password1.value)
+                if (!Password1.value) {
+                errorString += ' 密碼沒填'
+                }
+                if (!Password2.value) {
+                errorString += ' 密碼確認沒填'
+                }
+                if (Password1.value !== Password2.value) {
+                errorString += ' 兩次輸入的密碼不同'
+                }
+                if (!result) {
+                errorString += ' 密碼強度不足'
+                }
+                errorMessage.innerText = (errorString) ? errorString : '密碼一致'
+
+                if (!errorString) {
+                btnDataRevision.disabled = false
+                }
+                if (errorString) {
+                btnDataRevision.disabled = true
+                }
+            }
+        })
+        //await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        chkShowPassword.addEventListener('change', (event) => {
+            if (event.currentTarget.checked) {
+                Password1.type = "text"
+                Password2.type = "text"
+            }
+            else {
+                Password1.type = "password"
+                Password2.type = "password"
+            }
+        })
+        storeCity.addEventListener('click',async ()=>{
+           const response = await fetch('@Url.Content("~/User/GetCities")')
+           const datas = await response.json();
+           console.log(datas)
+           const cities = datas.map(data=>{
+               return(
+                    `<option>${data}111</option>`
+                                    
+               )
+           })        
+            storeCity.innerHTML = cities.join("");
+
+           })
+
+
+
+
+
+
+
+        })
+
+
+
+
+
+
+
+
+    //@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        </script>
 }
     </div>
 </section>

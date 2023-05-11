@@ -27,9 +27,9 @@
 
 
 
-<h1>edit</h1>
+<h1>修改會員資料</h1>
 
-<h4>Member</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -55,7 +55,7 @@
             
             <div class="form-group">
                 <label asp-for="BrithDate" class="control-label" placeholder="">生日</label>
-                        <input asp-for="BrithDate" readonly class="form-control" />
+                        <input asp-for="BrithDate" readonly class="form-control" type="date" />
                 <span asp-validation-for="BrithDate" class="text-danger"></span>
             </div>
             
@@ -65,13 +65,13 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div><div class="form-group">
                 <label asp-for="CustomerLevel" class="control-label" placeholder="">會員分級</label>
-                <input readonly asp-for="CustomerLevel" class="form-control" />
+                        <input readonly  class="form-control" placeholder=@ViewBag.CustomerLevel />
                 <span asp-validation-for="CustomerLevel" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Password" class="control-label" placeholder="" for="memberPassword" >新密碼</label>
                  <label>
-                            <input type="checkbox" name="showPassword" id="rdoShowPassword" />顯示密碼
+                            <input type="checkbox" name="showPassword" id="chkShowPassword" />顯示密碼
                   </label>
                         <input asp-for="Password" class="form-control" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" type="password" id="memberPassword" value="" maxlength="16"  />
                 <span asp-validation-for="Password" class="text-danger"></span>
@@ -87,12 +87,12 @@
                 <input id = "btnDataRevision" type="submit" value="送出" class="btn btn-primary" />
             </div>
         </form>
-        <div id="errorMessage1" >aaa</div>
+        <div id="errorMessage1" ></div>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+            <a asp-action="memberManagement">回到會員中心</a>
 </div>
 
 @section Scripts {
@@ -102,7 +102,7 @@
         const Password2 = document.getElementById('memberPasswordChecking');
         const errorMessage = document.getElementById('errorMessage1');
         const btnDataRevision = document.getElementById('btnDataRevision');
-        const rdoShowPassword = document.getElementById('rdoShowPassword');
+        const chkShowPassword = document.getElementById('chkShowPassword');
         const memberDataRevision = document.getElementById('memberDataRevision');
         
 
@@ -120,10 +120,10 @@
                          errorString = ''
                     result = pattern.test(Password1.value)
                     if (!Password1.value) {
-                                errorString += ' 密碼沒填' 
-                    }
+                                errorString += '請填寫密碼'
+                            }
                     if (!Password2.value) {
-                        errorString += ' 密碼確認沒填'
+                                errorString += ' 請確認密碼'
                     }
                     if (Password1.value !== Password2.value) {
                         errorString += ' 兩次輸入的密碼不同'
@@ -170,7 +170,7 @@
               }
             })
         //await Html.RenderPartialAsync("_ValidationScriptsPartial");
-                rdoShowPassword.addEventListener('change', (event) => {
+                chkShowPassword.addEventListener('change', (event) => {
                     if (event.currentTarget.checked) {
                         Password1.type = "text"
                         Password2.type = "text"
