@@ -16,12 +16,12 @@
         }
 
         .item {
-            width: 1000px;
+            width: 1300px;
             height: 600px;
         }
 
             .item img {
-                width:1000px;
+                width:1300px;
                 height:600px;
                 object-fit: cover;
                 object-position: center center;
@@ -48,19 +48,21 @@
                 width:70%;
             }
 
-        #left-img {
+        .left-img {
             position: absolute;
            
         }
 
-       #right-img{
+       .right-img{
             position: absolute;
            right:0px;
        }
 
+      
         
 </style>
        </head>
+       <body>
     <main id="main">
 
     <!-- ======= Breadcrumbs ======= -->
@@ -69,43 +71,29 @@
 
             <div class="d-flex justify-content-between align-items-center">
                 <h2>首頁</h2>
-
                 <ol>
                     <li><a a asp-controller="Home" asp-action="Index">Home</a></li>
                     <li>Index</li>
                 </ol>
-
-
-            </div>
-         
+            </div>   
         </div>
-
-
     </div><!-- End Breadcrumbs -->
 
     <section class="sample-page">
+        <span class="left-img">
+                <img src="~/Images/store/PRIMEONE牛排館.jpg" alt="Placeholder Image" height="600px" width="210px" id="left-img-element" />
 
-
-
-
-        <span class="left-img" id="left-img">
-            <img src="~/Images/store/OGGI歐奇窯烤披薩敦南店.jpg" alt="Placeholder Image" height="600px" width="210px" />
             <span class="carousel-caption">
-               
-                123456
-                
-                
+              123456             
             </span>
         </span>
-        <span class="right-img" id="right-img">
-            <img src="~/Images/store/PalletBistro木棧板餐廳.jpg" alt="Placeholder Image" height="600px" width="210px" />
+        <span class="right-img" >
+                <img src="~/Images/store/PRIMEONE牛排館.jpg" alt="Placeholder Image" height="600px" width="210px" id="right-img-element" />
             <span class="carousel-caption">
             123456
             </span>
         </span>
-      
-        
-        <div class="container" data-aos="fade-up">
+                      <div class="container" data-aos="fade-up">
 
             <!--==============================================-->
            @* <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">*@
@@ -153,36 +141,67 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-            <script>
-                $(document).ready(function () {
-                    $('.carousel').carousel({
-                        interval: 100, // 設置自動切換時間為1秒
-                        wrap: true, // 循環輪播
-                        fade: true // 淡入淡出效果
-                        keyboard: true, // 啟用左右鍵控制
-                        pause: "false" // 鼠標懸停在輪播上時不暫停
-                    })
-                });
-
-               
-            </script>
-           
-            <!--==============================================-->
             <div>
                 @foreach (var advertisement in Model.Item1)
                 {
                     <h3>@advertisement.RestaurantName</h3>
-                  
+
                 }
-
-            </div>
+                            </div>
         </div>
-        
-    </section>
-</main><!-- End #main -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+                <script>
+                $('.carousel').carousel({
+                    interval: 1000, // 設置自動切換時間為1秒
+                    wrap: true, // 循環輪播
+                    pause: "false", // 鼠標懸停在輪播上時不暫停
+                    keyboard: true // 啟用左右鍵控制
+                });
+                
+                var leftImgElement = document.getElementById("left-img-element");
+                leftImgElement.addEventListener("click", changeleftImage);
+
+                function changeleftImage() {
+                    var input = document.createElement("input");
+                    input.type = "file";
+                    input.accept = "image/*";
+
+                    input.addEventListener("change", function () {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            leftImgElement.src = e.target.result;
+                        };
+
+                        reader.readAsDataURL(input.files[0]);
+                    });
+
+                    input.click();
+                }
+                var rightImgElement = document.getElementById("right-img-element");
+                rightImgElement.addEventListener("click", changerightImage);
+
+                function changerightImage() {
+                    var input = document.createElement("input");
+                    input.type = "file";
+                    input.accept = "image/*";
+
+                    input.addEventListener("change", function () {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            rightImgElement.src = e.target.result;
+                        };
+
+                        reader.readAsDataURL(input.files[0]);
+                    });
+
+                    input.click();
+                }
+            </script>
+                </script>
+
+                       <!--==============================================-->
+       </section>
+</main><!-- End #main -->
+</body>
