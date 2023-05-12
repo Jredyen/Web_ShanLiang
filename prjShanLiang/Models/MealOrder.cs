@@ -11,7 +11,7 @@ public partial class MealOrder
 
     public int? StoreId { get; set; }
 
-    public decimal? Total { get; set; }
+    public int? Total { get; set; }
 
     public int? OrderStatus { get; set; }
 
