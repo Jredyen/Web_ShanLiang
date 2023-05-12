@@ -16,11 +16,6 @@ namespace prjShanLiang.Controllers
             var datas = from a in db.Admins
                         select a;
 
-            ViewBag.General = "一般管理者";
-            ViewBag.Hight = "高級管理者";
-
-            //datas.Where(i => i.Identification == 0).Select(i => i.Identification);
-
             return View(datas);
         }
 

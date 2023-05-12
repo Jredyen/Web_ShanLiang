@@ -16,11 +16,11 @@
     </div>
     <div class="card-body">
 
-        <table id="adminDataTables" class="hover cell-border order-column order-column">
-            <a asp-action="Create" >+新增管理員帳號</a>
+        <table id="aa" class="hover cell-border order-column order-column">
+            <a asp-action="Create" class="btn btn-outline-warning">+新增管理員帳號</a>
             <thead>
                 <tr>
-                    <th>管理員編號</th>
+                    <th >管理員編號</th>
                     <th>管理員帳號</th>
                     <th>管理員權限</th>
                     <th>設定</th>
@@ -34,10 +34,19 @@
                         <tr>
                             <td>@count</td>
                             <td>@Html.DisplayFor(modelItem => item.AdminName)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Identification)</td>
                             <td>
-                                @Html.ActionLink("修改", "Edit", new { id = item.AdminId }, new {Class="btn btn-primary"}) |
-                                @Html.ActionLink("刪除", "Delete","Admin", new {  id=item.AdminId },new {onclick="return confirm('確定刪除嗎?')", Class="btn btn-danger"})
+                                @if (item.Identification == 0)
+                                {
+                                   <span>一般管理者</span>
+                                }
+                                else if (item.Identification == 3)
+                                {
+                                    <span>高級管理者</span>
+                                }
+                            </td>
+                            <td>
+                                @Html.ActionLink("修改", "Edit", new { id = item.AdminId }, new {Class="btn btn-outline-primary"}) |
+                                @Html.ActionLink("刪除", "Delete","Admin", new {  id=item.AdminId },new {onclick="return confirm('確定刪除嗎?')", Class="btn btn-outline-danger"})
                             </td>
                         </tr>
                       }}
