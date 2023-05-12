@@ -65,7 +65,7 @@
                                 <label><a href="@Html.DisplayFor(modelItem => item.Website)">@Html.DisplayFor(modelItem => item.Website)</a></label>
                             </div>
                         </div>
-                        
+
 
                         <div class=" main-block">
                             <div class="st1">
@@ -76,8 +76,8 @@
                                 <div class="st1">
                                     @foreach (var m in Model.member.Where(y => y.MemberId == se.MemberId))
                                     {
-                                        <label>@m.MemberName</label>
-                                    }                                    
+                                        <p>@m.MemberName</p>
+                                    }
                                     <label>@se.Comments</label>
                                 </div>
                             }
@@ -93,16 +93,23 @@
                     <div class="col-lg-4 d-flex position-relative about-img" data-aos="fade-up" data-aos-delay="300">
                         <div>
                             <div class="content ps-0 ps-lg-5 why-us mobiled">
-                                <div class="btn-group d-flex" role="group" aria-label="Button group with nested dropdown">
-
+                                <div class="btn-group d-flex" role="group" aria-label="Button group with nested dropdown">         
+                                    <!--Dropdowns-->
                                     <button id="btnGroupDrop1" type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <a class="" asp-area="" asp-controller="Store" asp-action="Share"><i class="bi bi-share ic-t"></i>分享</a>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        <a class="dropdown-item" href="#">Facebook</a>
-                                        <a class="dropdown-item" href="#">Line</a>
-                                        <a class="dropdown-item" href="#">E-mail</a>
-                                        <a class="dropdown-item" href="#">複製連結</a>
+                                        <a class="dropdown-item" href="#"><i class="bi bi-facebook"></i> Facebook</a>
+                                        <a class="dropdown-item" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1"
+                                           target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
+                                        <a class="dropdown-item" href="#"><i class="bi bi-envelope"></i> E-mail</a>
+                                        <a class="dropdown-item" href="#"><i class="bi bi-link"></i> 複製連結</a>
+                                    </div>
+
+                                    <!--FB分享-->
+                                    <div class="fb-share-button" data-href="https://localhost:44351/Store/Restaurant/1" data-layout="" data-size="">
+                                        <a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1&amp;src=sdkpreparse"
+                                           class="fb-xfbml-parse-ignore">Facebook</a>
                                     </div>
 
                                     <button type="button" class="btn btn-secondary">
@@ -122,7 +129,6 @@
                                         <a class="" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-id="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -146,7 +152,9 @@
 
     <button onclick="topFunction()" id="myBtn" title="回頁首"><i class="bi bi-chevron-double-up"></i></button>
     <script src="~/js/Restaurant.js"></script>
-
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v16.0" nonce="ANheGeBE"></script>
+    <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
     @section Scripts{
     <script>
         const star = document.querySelector('#star');
@@ -159,6 +167,15 @@
             }
         }
         getStar();
+
+        var myModal = document.getElementById('myModal')
+        var myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', function () {
+            myInput.focus()
+        })
+
+                })
     </script>
 }
 
