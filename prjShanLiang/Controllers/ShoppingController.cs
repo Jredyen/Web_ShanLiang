@@ -186,8 +186,9 @@ namespace prjShanLiang.Controllers
             return View(cart);
         }
         public IActionResult MyMealOrder()
-        { 
-         return View();        
+        {
+            IEnumerable<MealOrder> datas = _db.MealOrders;
+            return View(datas);        
         }
     }
 }

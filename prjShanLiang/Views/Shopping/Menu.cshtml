@@ -16,7 +16,7 @@
             cursor: pointer;
             position: fixed;
             right: 1rem;
-            bottom: 5rem;
+            bottom: 8rem;
             display: none;
         }
 
@@ -76,7 +76,7 @@
 
         .card {
             width: 400px;
-            height: 500px;
+            height: 480px;
             background-color: orange;
             margin: 0px 20px 20px 20px;
         }
@@ -102,15 +102,17 @@
         //使用Ajax非同步(完成)
         function con(id) {
             var mealId = id;
-            var count = $('#'+id).val();
-            
+            var count = $('#' + id).val();
+            const liveToastBtn = document.getElementById('liveToastBtn')
+            const toastLiveExample = document.getElementById('liveToast')
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
             $.ajax({
-                url: "/api/shoppingcart/add-to-cart?id=" + id + "&count=" + count ,
+                url: "/api/shoppingcart/add-to-cart?id=" + id + "&count=" + count,
                 type: "GET",
-              
+
                 success: function (data) {
-                    if (data.success) {
-                        alert("商品已成功加入購物車");
+                    if (data.success) {                       
+                        toastBootstrap.show()
                     } else {
                         alert(data.message);
                     }
@@ -119,10 +121,26 @@
                     alert("加入購物車失敗");
                 }
             });
-        };
+        };   
     </script>
 }
 <button type="button" id="BackTop" class="toTop-arrow"></button>   @*回到最上層按鈕*@
+
+@*跳出已加入購物車視窗*@
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="width:250px;">
+    
+    <div id="liveToast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true" >
+        <div class="toast-header">
+            
+            <strong class="me-auto">提示</strong>
+            
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" style="font-size:16px; text-align:center">
+            已加入購物車
+        </div>
+    </div>
+</div>
 
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
@@ -140,52 +158,37 @@
 
             </div>
         </div><!-- End Breadcrumbs -->
-        
-        @*<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="~/images/Menu/1.jpg" class="d-block w-100" >
-                </div>
-                <div class="carousel-item">
-                    <img src="~/images/Menu/2.jpg" class="d-block w-100" >
-                </div>
-                <div class="carousel-item">
-                    <img src="~/images/Menu/3.jpg" class="d-block w-100" >
-                </div>
-            </div>
-        </div>*@
-
 
         <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-                <div class="carousel-inner">
+            <div class="carousel-inner">
                 <div class="carousel-item active" data-bs-interval="3000">
-                        <img src="~/images/Menu/c.jpg" class="d-block w-100 ">
-                    </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                        <img src="~/images/Menu/b.jpg" class="d-block w-100 ">
-                    </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                        <img src="~/images/Menu/a.jpg" class="d-block w-100 ">
-                    </div>
+                    <img src="~/images/Menu/c.jpg" class="d-block w-100 ">
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
+                <div class="carousel-item" data-bs-interval="3000">
+                    <img src="~/images/Menu/b.jpg" class="d-block w-100 ">
+                </div>
+                <div class="carousel-item" data-bs-interval="3000">
+                    <img src="~/images/Menu/a.jpg" class="d-block w-100 ">
+                </div>
             </div>
-            
-        
-            
-       <div style="margin:10px 30px 30px 30px;">
-                <h1 style="font-size:40px;">膳糧食堂 大安店</h1>
-                <p>台北市大安區復興南路一段390號2樓</p>
-                <p>(02)6631-6588</p>
-            </div>
-        
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+
+
+
+        <div style="margin:10px 30px 30px 30px;">
+            <h1 style="font-size:40px;">膳糧食堂 大安店</h1>
+            <p>台北市大安區復興南路一段390號2樓</p>
+            <p>(02)6631-6588</p>
+        </div>
+
 
         <div class="row">
             @foreach (var item in Model)
@@ -201,14 +204,14 @@
                             <h1 class=text-center>@item.MealName</h1>
 
                             @*@using (Html.BeginForm("AddToCart", "Shopping", FormMethod.Post))
-                            {*@
-                                <div class=text-center>
-                                    <input class="txtMealId" type="hidden" name="txtMealId" value="@item.MealId" />
-                                    <br>
-                                    @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control ",id=item.MealId })
-                                    <br>
-                                    <input type="button" value="加入購物車" class="btn btn-danger" onclick="con(@item.MealId)" />
-                                </div>
+                        {*@
+                            <div class=text-center>
+                                <input class="txtMealId" type="hidden" name="txtMealId" value="@item.MealId" />
+                                <br>
+                                @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control ",id=item.MealId })
+                                <br>
+                                <input type="button" value="加入購物車" class="btn btn-danger " onclick="con(@item.MealId)" id="liveToastBtn" />
+                            </div>
                             @*}*@
                             <br>
                             <p>@item.Recommendation</p>
@@ -218,6 +221,6 @@
                     </div>
                 </div>
             }
-        </div>
+        </div>      
     </div>
 </main><!-- End #main -->
