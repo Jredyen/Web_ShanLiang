@@ -45,7 +45,7 @@ namespace prjShanLiang.Controllers
                 db.Blogs.Remove(b);
                 db.SaveChanges();
             }
-            return View();
+            return RedirectToAction("BloggerList");
         }
         public IActionResult BloggerEdit(int? id)
         {

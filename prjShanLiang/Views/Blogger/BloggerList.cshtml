@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "BloggerList";
 }
+<script src="~/lib/ckeditor/build/ckeditor.js"></script>
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <!-- ======= Breadcrumbs ======= -->
@@ -32,14 +33,15 @@
                         文章主題
                     </th>
                     <th>
-                        文章內容
+                        參考圖片
                     </th>
                     <th>
-                        參考圖片
+                        文章內容
                     </th>
                     <th></th>
                 </tr>
             </thead>
+
             <tbody>
                 @{
                     int count = 0;
@@ -54,19 +56,22 @@
                             @Html.DisplayFor(modelItem => item.BlogHeader)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.BlogContent)
-                        </td>
-                        <td>
                             <img src ="~/Images/Blog/@item.BlogPic" width="100">
                         </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BlogContent)
+                            </td>
+                            
                         <td>
                             @Html.ActionLink("修改", "BloggerEdit", new { id=item.BlogId }) |
                             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                                @Html.ActionLink("刪除", "BloggerDelete", new { id=item.BlogId })
                         </td>
                     </tr>
+                    
                 }}
             </tbody>
         </table>
+        
     </div>
 </main>
