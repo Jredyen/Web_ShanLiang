@@ -83,10 +83,15 @@ namespace prjShanLiang.Controllers
                 return RedirectToAction("Menu");
             string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
 
-            List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
-            if (cart == null || cart.Count == 0)
-                return RedirectToAction("Menu");  //如果購物車是空的 回到Menu繼續點餐
-            return View(cart);
+            if (json != "")
+            {   //如果Session購物車沒東西
+                List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
+                if (cart == null || cart.Count == 0)
+                    return RedirectToAction("Menu");  //如果購物車是空的 回到Menu繼續點餐
+                return View(cart);
+            }
+            return RedirectToAction("Menu");
+
         }
 
         public IActionResult Delete(int? id)
@@ -163,7 +168,8 @@ namespace prjShanLiang.Controllers
             string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER); //Session裡會員資料轉字串
 
             Member datas = JsonSerializer.Deserialize<Member>(jsonUser);  //字串轉會員資料物件
-
+            ViewBag.MemberName = datas.MemberName;
+            ViewBag.MemberPhone = datas.Memberphone;
             //先寫進訂單資料表
             MealOrder mealOrder = new MealOrder();
             mealOrder.MemberId = datas.MemberId;
@@ -180,34 +186,22 @@ namespace prjShanLiang.Controllers
                 mealOrderDetail.OrderId = mealOrder.OrderId;
                 mealOrderDetail.MealId = item.mealId;
                 mealOrderDetail.Quantity = item.count;
-                _db.MealOrderDetails.Add(mealOrderDetail);               
+                _db.MealOrderDetails.Add(mealOrderDetail);
             }
             _db.SaveChanges();
-            HttpContext.Session.SetString(CDictionary.SK_PURCHASED_MENU_LIST,""); //清空購物車
+            HttpContext.Session.SetString(CDictionary.SK_PURCHASED_MENU_LIST, ""); //清空購物車
             return View(cart);
         }
-        public IActionResult MyMealOrder()
-        {
-            //List<MealOrder> datas=new List<MealOrder>();
-
-            //var names=_db.MealOrders.Include(o => o.Store).Select(o => o.Store.RestaurantName).ToArray();
-            //int i = 0;
-
-            //foreach(var item in _db.MealOrders)
-            //{
-            //    MealOrder mealOrder = new MealOrder();
-            //    mealOrder.Total=item.Total;
-            //    mealOrder.OrderStatus = item.OrderStatus;
-            //    mealOrder.restaurantName = names[i];
-            //    datas.Add(mealOrder);
-            //    i++;
-            //}
-            IEnumerable<MealOrder> datas = _db.MealOrders;
-            return View(datas);   
+        public IActionResult MyMealOrder(int? id)
+        {            //傳會員ID進來
+            IEnumerable<MealOrder> datas = from s in _db.MealOrders.Include(m => m.Store).Include(m => m.OrderStatusNavigation)
+                                           where s.MemberId == id
+                                           select s;
+            return View(datas);
         }
-        public IActionResult MyMealOrderDetail(int? id) 
+        public IActionResult MyMealOrderDetail(int? id)
         {
-        IEnumerable<MealOrderDetail> datas = _db.MealOrderDetails.Where(t => t.OrderId == id);
+            IEnumerable<MealOrderDetail> datas = _db.MealOrderDetails.Include(m => m.Meal).Where(t => t.OrderId == id);
             return View(datas);
         }
     }

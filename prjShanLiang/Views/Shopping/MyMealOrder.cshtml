@@ -48,13 +48,13 @@
                                 @count
                             </td>                            
                             <td>
-                                膳糧食堂 大安店
+                                @Html.DisplayFor(modelItem => item.Store.RestaurantName)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Total)
                             </td>
                             <td>
-                                已完成
+                                @Html.DisplayFor(modelItem => item.OrderStatusNavigation.StatusName)
                             </td>
                             
                             <td>

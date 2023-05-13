@@ -94,12 +94,12 @@
                     <div style="display:flex;">
                         <div class="marg">
                             <h2>訂購人姓名</h2>
-                            @Html.Label("txtOName","克里斯",new { @class = "texbox" })
+                            @Html.Label("txtOName",@ViewBag.MemberName,new { @class = "texbox" })
 
                         </div>
                         <div class="marg">
                             <h2>訂購人電話</h2>
-                            @Html.Label("txtOPhone","0983385155",new { @class = "texbox" })
+                            @Html.Label("txtOPhone",@ViewBag.MemberPhone,new { @class = "texbox" })
                         </div>
                     </div>
                     <hr />
@@ -116,7 +116,7 @@
                     </div>                   
                 </div>                
             </div>
-            @Html.ActionLink("檢視我的訂單", "MyMealOrder", "Shopping", null, new { @class = "btn btn-danger marg"} )
+            @Html.ActionLink("檢視我的訂單", "MyMealOrder", "Shopping", new{ id = 33}, new { @class = "btn btn-danger marg"} )
         </div>
         
     </div>
