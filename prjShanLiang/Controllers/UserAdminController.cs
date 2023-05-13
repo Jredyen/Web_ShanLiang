@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using prjShanLiang.Models;
 
 namespace prjShanLiang.Controllers
@@ -13,10 +14,8 @@ namespace prjShanLiang.Controllers
         public IActionResult List()
         {
             ShanLiang21Context db = new ShanLiang21Context();
-            var datas = from m in db.Members
+            var datas = from m in db.Members.Include(s => s.AccountStatusNavigation)
                         select m;
-            
-            //var status  = db.Members.Where(m => m.)
 
             return View(datas);
         }

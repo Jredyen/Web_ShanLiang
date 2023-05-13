@@ -42,7 +42,7 @@
                             <td>@Html.DisplayFor(modelItem => item.Memberphone)</td>
                             <td>@(item.BrithDate?.ToString("yyyy-MM-dd"))</td>
                             <td>@Html.DisplayFor(modelItem => item.Address)</td>
-                            <td>@Html.DisplayFor(modelItem => item.AccountStatus)</td>
+                            <td>@Html.DisplayFor(modelItem => item.AccountStatusNavigation.StatusName)</td>
 
                             <td>
                                 @Html.ActionLink("修改", "Edit", new { id = item.MemberId }, new {Class="btn btn-outline-primary"}) |
