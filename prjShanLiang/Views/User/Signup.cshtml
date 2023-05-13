@@ -29,50 +29,140 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" class="form-control" />
+                        <input asp-for="Email" required type="email"class="form-control" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="AccountPassword" class="control-label"></label>
-                        <input asp-for="AccountPassword" class="form-control" />
+                        <input type="checkbox" id="chkShowPassword" />顯示密碼
+                        <input type="password" required id="memberPassword"  maxlength="16" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" asp-for="AccountPassword" class="form-control" />
                         <span asp-validation-for="AccountPassword" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="AccountPassword2" class="control-label"></label>
-                        <input asp-for="AccountPassword2" class="form-control" />
+                        <label for="memberPasswordChecking" asp-for="AccountPassword2" class="control-label">確認密碼</label>
+                        <input type="password" required asp-for="AccountPassword2"  placeholder="請再次輸入密碼" id="memberPasswordChecking" class="form-control" maxlength="16"/>
                         <span asp-validation-for="AccountPassword2" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Memberphone" class="control-label"></label>
-                        <input asp-for="Memberphone" class="form-control" />
+                        <input asp-for="Memberphone" placeholder="請輸入數字，範例：0912323656"maxlength="10" required class="form-control" />
                         <span asp-validation-for="Memberphone" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="MemberName" class="control-label"></label>
-                        <input asp-for="MemberName" class="form-control" />
+                        <input asp-for="MemberName"  required class="form-control" />
                         <span asp-validation-for="MemberName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="BrithDate" class="control-label"></label>
-                        <input asp-for="BrithDate" class="form-control" type="date" value="1990-01-01" />
+                        <input asp-for="BrithDate"  required class="form-control" type="date" value="1990-01-01" />
                         <span asp-validation-for="BrithDate" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Address" class="control-label"></label>
-                        <input asp-for="Address" class="form-control" />
+                        <input asp-for="Address" required class="form-control" />
                         <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="送出" class="btn btn-primary" />
+                        <input id="btnDataRevision"  type="submit" value="送出" class="btn btn-primary" />
                     </div>
                 </form>
+                <div id="errorMessage1"></div>
             </div>
         </div>
 
         @section Scripts {
+            <script>
+
+                const Password1 = document.getElementById('memberPassword');
+                const Password2 = document.getElementById('memberPasswordChecking');
+                const errorMessage = document.getElementById('errorMessage1');
+                const btnDataRevision = document.getElementById('btnDataRevision');
+                const chkShowPassword = document.getElementById('chkShowPassword');
+                const memberDataRevision = document.getElementById('memberDataRevision');
+
+
+                let errorString = '';
+                btnDataRevision.disabled = false
+                let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
+                let result = false
+
+
+
+                Password1.addEventListener('input',
+                    function (event) {
+                        // 錯誤訊息用字串
+                        if (Password1.value) {
+                            errorString = ''
+                            result = pattern.test(Password1.value)
+                            if (!Password1.value) {
+                                errorString += '請填寫密碼'
+                            }
+                            if (!Password2.value) {
+                                errorString += ' 請確認密碼'
+                            }
+                            if (Password1.value !== Password2.value) {
+                                errorString += ' 兩次輸入的密碼不同'
+                            }
+                            if (!result) {
+                                errorString += ' 密碼強度不足'
+                            }
+                            errorMessage.innerText = (errorString) ? errorString : '密碼一致'
+
+                            if (!errorString) {
+                                btnDataRevision.disabled = false
+                            }
+                            if (errorString) {
+                                btnDataRevision.disabled = true
+                            }
+                        }
+                    })
+                Password2.addEventListener('input',
+                    function (event) {
+                        // 錯誤訊息用字串
+                        if (Password1.value) {
+                            errorString = ''
+                            result = pattern.test(Password1.value)
+                            if (!Password1.value) {
+                                errorString += ' 密碼沒填'
+                            }
+                            if (!Password2.value) {
+                                errorString += ' 密碼確認沒填'
+                            }
+                            if (Password1.value !== Password2.value) {
+                                errorString += ' 兩次輸入的密碼不同'
+                            }
+                            if (!result) {
+                                errorString += ' 密碼強度不足'
+                            }
+                            errorMessage.innerText = (errorString) ? errorString : '密碼一致'
+
+                            if (!errorString) {
+                                btnDataRevision.disabled = false
+                            }
+                            if (errorString) {
+                                btnDataRevision.disabled = true
+                            }
+                        }
+                    })
+                //await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                chkShowPassword.addEventListener('click', (event) => {
+                    if (event.currentTarget.checked) {
+                        Password1.type = "text"
+                        Password2.type = "text"
+                        console.log("5")
+                    }
+                    else {
+                        Password1.type = "password"
+                        Password2.type = "password"
+                    }
+                })
+            
+            
             @{
-                await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                //await Html.RenderPartialAsync("_ValidationScriptsPartial");
             }
+            </script>
         }
     </div>
 </main>

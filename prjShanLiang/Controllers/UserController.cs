@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
+using System;
 using System.Linq;
 using System.Net;
 using System.Runtime.Intrinsics.X86;
@@ -11,8 +12,19 @@ namespace prjShanLiang.Controllers
 {
     public class UserController : Controller
     {
+
+        private IWebHostEnvironment _enviro;
+
+
+        public UserController(IWebHostEnvironment p) {
+            _enviro = p;
+        }
         public IActionResult Login()
         {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) !=null)
+            {
+                return RedirectToAction("Mypage");
+            }
             return View();
         }
         [HttpPost]
@@ -53,6 +65,16 @@ namespace prjShanLiang.Controllers
             }
                 return View("Login");
         }
+        public IActionResult logOut() {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) != null)
+            {
+                HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "");
+            }
+            return View("Login");
+
+        }
+
+
         public IActionResult MemberManager(string? account)
         {
             if (account == null /*|| acc == null*/)
@@ -100,6 +122,7 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult Signup()
         {
+            
             return View();
         }
         [HttpPost]
@@ -108,6 +131,7 @@ namespace prjShanLiang.Controllers
             ShanLiang21Context db = new ShanLiang21Context();
             Member mem = new Member()
             {
+
                 AccountName = vm.AccountName,
                 Memberphone = vm.Memberphone,
                 MemberName = vm.MemberName,
@@ -130,6 +154,9 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult SignupStore()
         {
+            ViewBag.chosenCity = "";
+            ViewBag.chosenDistrict = "";
+            
             return View();
         }
         [HttpPost]
@@ -148,6 +175,23 @@ namespace prjShanLiang.Controllers
                 StoreMail = vm.StoreMail,
                 Password = vm.AccountPassword
             };
+            
+
+
+            if (vm.StoreImage != null)
+            {
+                string photoName = vm.RestaurantName + ".jpg";
+                string path = _enviro.WebRootPath + "/images/store/" + photoName;
+                System.IO.File.Copy("vm.StoreImage", path);
+
+                //vm.StoreImage.CopyTo(new FileStream(path, FileMode.Create));
+
+            }
+
+
+
+
+
             //Account acc = new Account()
             //{
             //    AccountName = vm.AccountName,
@@ -275,6 +319,10 @@ namespace prjShanLiang.Controllers
                     sto.ClosingTime = s.ClosingTime;
                     sto.Website = s.Website;
                     sto.StoreMail = s.StoreMail;
+
+
+
+
                 }
 
                 if (s.Password == null)

@@ -55,13 +55,13 @@
             
             <div class="form-group">
                 <label asp-for="BrithDate" class="control-label" placeholder="">生日</label>
-                        <input asp-for="BrithDate" readonly class="form-control" type="date" />
+                <input asp-for="BrithDate" readonly class="form-control" type="date" />
                 <span asp-validation-for="BrithDate" class="text-danger"></span>
             </div>
             
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" readonly class="form-control"  />
+                <label asp-for="Email" class="form-control" >@Model.Email</label>
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div><div class="form-group">
                 <label asp-for="CustomerLevel" class="control-label" placeholder="">會員分級</label>

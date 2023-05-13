@@ -37,7 +37,7 @@
                     <input type="hidden" value="@Model.StoreId" name="StoreId" />
             <div class="form-group">
                 <label asp-for="AccountName" class="control-label">帳號</label>
-                <input asp-for="AccountName" class="form-control" readonly/>
+                <label asp-for ="AccountName" class="form-control">@Model.AccountName </label>
                 <span asp-validation-for="AccountName" class="text-danger"></span>
             </div>
             
@@ -68,7 +68,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Seats" class="control-label">餐廳座位數</label>
-                <input asp-for="Seats" class="form-control" />
+                <input type="number"min="0" max="500" asp-for="Seats" class="form-control" />
                 <span asp-validation-for="Seats" class="text-danger"></span>
             </div>
             
@@ -90,12 +90,16 @@
             </div>
             <div class="form-group">
                 <label asp-for="StoreImage" class="control-label">餐廳圖片</label>
-                <input asp-for="StoreImage" class="form-control" />
+                        @{
+                            string imageName = Model.RestaurantName + ".jpg";
+                        }
+                        <img src="~/images/store/@imageName" alt="店內環境" width="80" height="60" />
+                        
                 <span asp-validation-for="StoreImage" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Rating" class="control-label">評分</label>
-                <input asp-for="Rating"readonly class="form-control" />
+                        <label  asp-for="Rating" class="form-control">@Model.Rating</label>
                 <span asp-validation-for="Rating" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -120,7 +124,7 @@
 
 
             <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary" id="btnDataRevision" />
+                        <input type="submit" value="送出" class="btn btn-primary" id="btnDataRevision" />
             </div>
              
         </form>
@@ -259,25 +263,17 @@
                 })
 
                 storeDistrict.addEventListener('change', function () {
-                   
+                   //if (addressString.contains(chosenDistrict)){
+                   //     addressString = ""
+                   // }
                     let num = storeDistrict.selectedIndex
                     let chosenDistrict = storeDistrict.options[num].text
                     
                     addressString += chosenDistrict
                     storeAddress.value = addressString
+
                     
                 })
-
-
-
-        
-
-
-
-
-
-
-
 
     //@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
         </script>
