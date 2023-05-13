@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Plugins;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
@@ -182,13 +183,32 @@ namespace prjShanLiang.Controllers
                 _db.MealOrderDetails.Add(mealOrderDetail);               
             }
             _db.SaveChanges();
-
+            HttpContext.Session.SetString(CDictionary.SK_PURCHASED_MENU_LIST,""); //清空購物車
             return View(cart);
         }
         public IActionResult MyMealOrder()
         {
+            //List<MealOrder> datas=new List<MealOrder>();
+
+            //var names=_db.MealOrders.Include(o => o.Store).Select(o => o.Store.RestaurantName).ToArray();
+            //int i = 0;
+
+            //foreach(var item in _db.MealOrders)
+            //{
+            //    MealOrder mealOrder = new MealOrder();
+            //    mealOrder.Total=item.Total;
+            //    mealOrder.OrderStatus = item.OrderStatus;
+            //    mealOrder.restaurantName = names[i];
+            //    datas.Add(mealOrder);
+            //    i++;
+            //}
             IEnumerable<MealOrder> datas = _db.MealOrders;
-            return View(datas);        
+            return View(datas);   
+        }
+        public IActionResult MyMealOrderDetail(int? id) 
+        {
+        IEnumerable<MealOrderDetail> datas = _db.MealOrderDetails.Where(t => t.OrderId == id);
+            return View(datas);
         }
     }
 }

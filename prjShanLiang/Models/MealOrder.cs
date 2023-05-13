@@ -18,7 +18,7 @@ public partial class MealOrder
     public string? Remark { get; set; }
 
     public DateTime? OrderDate { get; set; }
-
+  
     public virtual ICollection<MealOrderDetail> MealOrderDetails { get; set; } = new List<MealOrderDetail>();
 
     public virtual Member? Member { get; set; }

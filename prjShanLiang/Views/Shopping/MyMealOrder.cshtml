@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<prjShanLiang.Models.MealOrder>
 
 @{
-    ViewData["Title"] = "MyMealOrder";
+    ViewData["Title"] = "我的訂單紀錄";
 }
 
 <main id="main">
@@ -20,24 +20,19 @@
                 <tr>
                     <th>
                         序號
+                    </th>                   
+                    <th>
+                        店家
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.MemberId)
+                        金額
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.StoreId)
+                        訂單狀態
                     </th>
+                    
                     <th>
-                        @Html.DisplayNameFor(model => model.Total)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.OrderStatus)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Remark)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.OrderDate)
+                        訂單時間
                     </th>
                     <th></th>
                 </tr>
@@ -51,29 +46,22 @@
                         <tr>
                             <td>
                                 @count
-                            </td>
+                            </td>                            
                             <td>
-                                @Html.DisplayFor(modelItem => item.MemberId)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StoreId)
+                                膳糧食堂 大安店
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Total)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.OrderStatus)
+                                已完成
                             </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Remark)
-                            </td>
+                            
                             <td>
                                 @Html.DisplayFor(modelItem => item.OrderDate)
                             </td>
                             <td>
-                                @Html.ActionLink("修改", "Edit", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("查看", "Details", new { /* id=item.PrimaryKey */ }) |
-                                @Html.ActionLink("刪除", "Delete", new { /* id=item.PrimaryKey */ })
+                                @Html.ActionLink("查看", "MyMealOrderDetail","Shopping", new {  id=item.OrderId  },new{@class = "btn btn-primary"})
                             </td>
                         </tr>
                     }
