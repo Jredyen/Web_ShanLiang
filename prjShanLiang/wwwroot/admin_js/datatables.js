@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-    $('#aa').DataTable({
+    $('#datatables').DataTable({
 
         // 中文化
         "language": {

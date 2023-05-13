@@ -15,6 +15,8 @@ namespace prjShanLiang.Controllers
             ShanLiang21Context db = new ShanLiang21Context();
             var datas = from m in db.Members
                         select m;
+            
+            //var status  = db.Members.Where(m => m.)
 
             return View(datas);
         }
