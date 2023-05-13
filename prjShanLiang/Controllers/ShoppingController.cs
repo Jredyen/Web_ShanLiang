@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Plugins;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
+using System.Collections.Generic;
 using System.Text.Json;
 
 namespace prjShanLiang.Controllers
@@ -15,9 +16,11 @@ namespace prjShanLiang.Controllers
         {
             _db = db;
         }
-
+        //public IActionResult Menu(int? StoreId)
+        //傳入店家ID
         public IActionResult Menu()
         {
+            //IEnumerable<MealMenu> datas = _db.MealMenus.Include(m => m.Store).Where(t => t.StoreId == StoreId);
             IEnumerable<MealMenu> datas = _db.MealMenus;
             return View(datas);
         }
@@ -173,7 +176,7 @@ namespace prjShanLiang.Controllers
             //先寫進訂單資料表
             MealOrder mealOrder = new MealOrder();
             mealOrder.MemberId = datas.MemberId;
-            mealOrder.StoreId = 1;
+            mealOrder.StoreId = 1;  //寫死店家ID:1
             mealOrder.Total = sum;
             mealOrder.OrderStatus = 4; //訂單狀態:已完成
             mealOrder.OrderDate = DateTime.Now;
