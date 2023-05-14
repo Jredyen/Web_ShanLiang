@@ -1,4 +1,5 @@
-﻿@model IEnumerable<prjShanLiang.Models.Member>
+﻿@*@model Tuple<List<prjShanLiang.Models.Member>,List<prjShanLiang.Models.StoreEvaluate>>*@
+@model IEnumerable<prjShanLiang.Models.Member>
 
 @{
     ViewData["Title"] = "List";
@@ -46,7 +47,7 @@
 
                             <td>
                                 @Html.ActionLink("修改", "Edit", new { id = item.MemberId }, new {Class="btn btn-outline-primary"}) |
-                                @Html.ActionLink("刪除", "Delete","Admin", new {  id=item.MemberId },new {onclick="return confirm('確定刪除嗎?')", Class="btn btn-outline-danger"})
+                                @Html.ActionLink("刪除", "Delete","UserAdmin", new {  id=item.MemberId },new {onclick="return confirmDelete();", Class="btn btn-outline-danger"})
                             </td>
                         </tr>
                     }
@@ -55,3 +56,57 @@
         </table>
     </div>
 </div>
+
+
+@*@section Scripts{
+       @foreach(var item in Model){
+    <script>
+        function confirmDelete() {
+            if(@item.StoreEvaluates.Where(e => e.MemberId == item.MemberId).Any())
+            {
+                    if (confirm('會員評論紀錄存在資料確定一併刪除嗎?')) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+            }
+            else
+            {
+                   if (confirm('確定刪除嗎?')) {
+                        return true;
+                   } else {
+                        return false;
+                   }   
+            }
+            
+        }
+    </script>
+}
+}*@
+
+
+@section Scripts{
+    @foreach (var item in Model)
+    {
+        <script>
+            function confirmDelete() {
+                if (@item.StoreEvaluates.Where(e => e.MemberId == item.MemberId).Any()) {
+                    if (confirm('會員評論紀錄存在資料確定一併刪除嗎?')) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+                else {
+                    if (confirm('確定刪除嗎?')) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        </script>
+    }
+}
+
+    
