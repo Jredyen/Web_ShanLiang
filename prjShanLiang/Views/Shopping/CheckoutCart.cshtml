@@ -6,12 +6,10 @@
 @section Styles{
     <style>
         .marg {
-            margin: 50px;
+            margin: 30px;
         }
 
-        .texbox {
-            width: 150px;
-        }
+        
 
         .btn {
             width: 100px;
@@ -32,6 +30,10 @@
             height: 600px;
             margin: 10px 0px 20px 20px;
             padding: 15px;
+        }
+
+        label {
+            font-size: 20px;
         }
     </style>
 }
@@ -112,45 +114,36 @@
                     <hr>
                     <div style="display:flex;">
                         <div class="marg">
-                            <h2>訂購人姓名</h2>
+                            <label>訂購人姓名</label>
                             <label>@ViewBag.MemberName</label>
-
                         </div>
                         <div class="marg">
-                            <h2>訂購人電話</h2>
+                            <label>訂購人電話</label>
                             <label>@ViewBag.MemberPhone</label>
                         </div>
                         <hr />
-                    </div>
-                    <hr />
-                    @*<div style="display:flex;">
-                        <div class="marg">
-                            <h2>取餐人姓名</h2>
-                            <input type="text" value="@ViewBag.MemberName">
 
+                    </div>
+                    <hr />                    
+                    <div style="display:flex;">
+                        <div class="marg">
+                            <label>訂單狀態</label>
+                            <br>
+                            <label>尚未付款</label>
                         </div>
                         <div class="marg">
-                            <h2>取餐人電話</h2>
-                            <input type="text" value="@ViewBag.MemberPhone">
-                        </div>
-                    </div>*@
-                    <div style="display:flex; ">
-                        <div class="marg">
-                            <h2>訂單狀態</h2>
-                            <h2>尚未付款</h2>
-                        </div>
-                        <div class="marg" style="margin-left:50px;">
-                            <h2>付款方式</h2>
+                            <label>付款方式</label>
+                            <br>
                             @Html.RadioButton("paymentMethod", "creditCard")
                             @Html.Label("paymentMethod", "信用卡")
-
+                            <br>
                             @Html.RadioButton("paymentMethod", "cash")
                             @Html.Label("paymentMethod", "現金付款")
                         </div>
                     </div>
                     <div>
                         <p>
-                            優惠碼 : <input type="text" name="coupon" value="測試中" class="texbox" />                            
+                            優惠碼 : <input type="text" name="coupon" value="" class="texbox" />                            
                             @Html.ActionLink("輸入", "CheckoutCart", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
                         </p>
                         <br>

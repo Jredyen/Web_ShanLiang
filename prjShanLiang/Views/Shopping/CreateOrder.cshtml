@@ -5,11 +5,30 @@
 }
 <style>
     .marg {
-        margin: 10px;
+        margin: 30px;
     }
 
-    .texbox {
-        width: 150px;
+    .btn {
+        width: 100px;
+    }
+
+    li {
+        font-size: 20px;
+    }
+    .divcard {
+        margin: 30px 50px 30px 100px;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .card {
+        width: 500px;
+        height: 600px;
+        margin: 10px 0px 20px 20px;
+        padding: 15px;
+    }
+    label{
+    font-size:20px;
     }
 </style>
 <main id="main">
@@ -25,8 +44,8 @@
             </div>
         </div><!-- End Breadcrumbs -->
 
-        <div class="col-15 col-md-10 col-lg-4 " style="margin:10px; font-size:16px; ">
-            <div class="card" style="background-color:orange;">
+        <div class="col-15 col-md-10 col-lg-4 divcard">
+            <div class="card shadow p-3 mb-5 bg-white rounded">
                 <h2 class=text-center style="margin:20px; font-size:40px;">餐點內容</h2>
 
                 <table class="table">
@@ -86,38 +105,36 @@
             </div>
         </div>
 
-        <div class="col-15 col-md-10 col-lg-4 " style="margin:10px; font-size:16px;">
-            <div class="card" style="background-color:orange;">
+        <div class="col-15 col-md-10 col-lg-4 divcard">
+            <div class="card shadow p-3 mb-5 bg-white rounded">
                 <h2 class=text-center style="margin:20px; font-size:40px;">訂單資料</h2>
-                <div class="card-body" style="">
+                <div class="card-body">
                     <hr>
                     <div style="display:flex;">
                         <div class="marg">
-                            <h2>訂購人姓名</h2>
-                            @Html.Label("txtOName",@ViewBag.MemberName,new { @class = "texbox" })
-
+                            <label>訂購人姓名</label>
+                            <label>@ViewBag.MemberName</label>
                         </div>
                         <div class="marg">
-                            <h2>訂購人電話</h2>
-                            @Html.Label("txtOPhone",@ViewBag.MemberPhone,new { @class = "texbox" })
+                            <label>訂購人電話</label>
+                            <label>@ViewBag.MemberPhone</label>
                         </div>
                     </div>
                     <hr />
                     
                     <div style="display:flex; ">
                         <div class="marg">
-                            <h2>訂單狀態</h2>
-                            <h4>付款完成</h4>
+                            <label>訂單狀態</label>
+                            <label>付款完成</label>
                         </div>
                         <div class="marg" style="margin-left:50px;">
-                            <h2>付款方式</h2>
-                            <h4> @Html.Label("paymentMethod", "現金付款")</h4>
+                            <label>付款方式</label>
+                            <label>現金付款</label>
                         </div>
                     </div>                   
-                </div>                
-            </div>
-            @Html.ActionLink("檢視我的訂單", "MyMealOrder", "Shopping", new{ id = 33}, new { @class = "btn btn-danger marg"} )
-        </div>
-        
+                </div>  
+                @Html.ActionLink("檢視我的訂單", "MyMealOrder", "Shopping", new{ id = ViewBag.MemberId}, new { @class = "btn btn-danger marg"} )
+            </div>   
+        </div>       
     </div>
 </main><!-- End #main -->
