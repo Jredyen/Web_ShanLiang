@@ -174,7 +174,7 @@ namespace prjShanLiang.Controllers
             mealOrder.Total = sum;
             mealOrder.OrderStatus = 2; //訂單狀態:已付款
             mealOrder.OrderDate = DateTime.Now;
-            _db.MealOrders.Add(mealOrder);           
+            _db.MealOrders.Add(mealOrder);
             _db.SaveChanges();//成立訂單先存回資料庫
 
             foreach (var item in cart)
@@ -184,7 +184,7 @@ namespace prjShanLiang.Controllers
                 mealOrderDetail.MealId = item.mealId;
                 mealOrderDetail.Quantity = item.count;
                 _db.MealOrderDetails.Add(mealOrderDetail);
-            }           
+            }
             _db.SaveChanges();//訂單明細存回資料庫
             HttpContext.Session.Remove(CDictionary.SK_PURCHASED_MENU_LIST);//清空購物車
             return View(cart);
