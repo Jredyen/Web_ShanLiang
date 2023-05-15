@@ -26,7 +26,7 @@
         <hr />
         <div class="row">
             <div class="col-md-4">
-                <form asp-action="SignupStore" enctype="multipart/form-data">
+                <form asp-action="SignupStore" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="AccountName" class="control-label"></label>
@@ -34,20 +34,6 @@
                         <span asp-validation-for="AccountName" class="text-danger"></span>
                     </div>
                     
-                    <div class="form-group">
-                        <label asp-for="AccountPassword" class="control-label"></label>
-                        <input type="checkbox" id="chkShowPassword" />顯示密碼
-                        <input type="password" required id="storePassword" maxlength="16" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" asp-for="AccountPassword" class="form-control" />
-                        <span asp-validation-for="AccountPassword" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label  class="control-label">確認密碼</label>
-                        <input required type="password" class="form-control" id="storePasswordChecking" />
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="註冊" id="btnDataRevision" class="btn btn-primary" />
-                    </div>
                     <div class="form-group">
                         <label asp-for="TaxID" class="control-label"></label>
                         <input asp-for="TaxID" required class="form-control" />
@@ -64,7 +50,7 @@
                         <span asp-validation-for="RestaurantPhone" class="text-danger"></span>
                     </div>
                     
-                    <div id="errorMessage1"></div>
+                    
                     <div class="form-group">
                         <label  class="control-label">縣市</label>
                         <select class="form-control" id="storeCity"></select>
@@ -112,7 +98,23 @@
                         <input asp-for="StoreMail" type="email" required  class="form-control" />
                         <span asp-validation-for="StoreMail" class="text-danger"></span>
                     </div>
-                    
+
+                    <div class="form-group">
+                        <label asp-for="AccountPassword" class="control-label"></label>
+                        <input type="checkbox" id="chkShowPassword" />顯示密碼
+                        <input type="password" required id="storePassword" maxlength="16" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" asp-for="AccountPassword" class="form-control" />
+                        <span asp-validation-for="AccountPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">確認密碼</label>
+                        <input required type="password" class="form-control" id="storePasswordChecking" />
+                    </div>
+                    <div id="errorMessage1"></div>
+                    <div class="form-group">
+                        <input type="submit" value="註冊" id="btnDataRevision" class="btn btn-primary" />
+                    </div>
+
                 </form>
             </div>
         </div>
