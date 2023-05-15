@@ -1,9 +1,11 @@
-﻿using System.ComponentModel;
+﻿using prjShanLiang.Models;
+using System.ComponentModel;
 
 namespace prjShanLiang.ViewModels
 {
     public class CCreateStoreAccountViewModel
     {
+        public Store sto; 
         [DisplayName("帳號")]
         public string AccountName { get; set; }
         [DisplayName("密碼")]
@@ -22,5 +24,13 @@ namespace prjShanLiang.ViewModels
         public int Seats { get; set; }
         [DisplayName("E-mail")]
         public string StoreMail { get; set; }
+
+        public string Website { get; set; }
+        public byte[]? StoreImage { get; set; }
+
+        public string districtName { get; set; }
+
+        public DateTime OpenningTime { get; set; }
+        public DateTime ClosingTime { get; set; }
     }
 }

@@ -14,6 +14,7 @@
                 <h2>會員中心</h2>
                 <ul>
                     <p>你好,@ViewBag.storeName</p>
+                    @Html.ActionLink("登出", "logOut","User")
                     @Html.ActionLink("修改資料", "storeDataRevision" ,new {  Model.FirstOrDefault().AccountName  })
                 </ul>
             </div>
