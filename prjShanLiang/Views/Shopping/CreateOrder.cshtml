@@ -5,7 +5,7 @@
 }
 <style>
     .marg {
-        margin: 20px 50px 20px 50px;
+        margin: 20px 50px 0px 50px;
         width: 120px;
         height: 100px;
     }
@@ -133,7 +133,10 @@
                             <label>付款方式</label>
                             <label>現金付款</label>
                         </div>
-                    </div>                   
+                    </div>   
+                    <hr />
+                    <label>備註:@ViewBag.Remark</label>
+                    
                 </div>  
                 @Html.ActionLink("檢視我的訂單", "MyMealOrder", "Shopping", new{ id = ViewBag.MemberId}, new { @class = "btn btn-danger "} )
             </div>           

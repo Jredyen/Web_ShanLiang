@@ -6,7 +6,7 @@
 @section Styles{
     <style>
         .marg {
-            margin: 20px 50px 20px 50px;
+            margin: 15px 50px 0px 50px;
             width: 120px;
             height: 100px;
         }
@@ -36,6 +36,28 @@
         }
     </style>
 }
+@section Scripts{
+    @*此方法可以取得總金額和備註並傳回後端 myBtn是按鈕*@
+    <script>
+        const myBtn = document.getElementById('myBtn')
+        myBtn.addEventListener('click', () => {
+            let remark = saveRemark();
+            let sum = saveSum();
+            window.location.replace('@Url.Content("~/Shopping/CreateOrder")?sum=' + sum + '&remark=' + remark)
+        })
+        function saveRemark() {
+            const textarea = document.getElementById("txtremark");
+            const remark = textarea.value;
+            return remark
+        }
+        function saveSum() {
+            const textarea = document.getElementById("txtsum");
+            const sum = textarea.value;
+            return sum
+        }
+    </script>
+}
+
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <!-- ======= Breadcrumbs ======= -->
@@ -47,7 +69,7 @@
                 </div>               
             </div>
         </div><!-- End Breadcrumbs -->
-
+        <form action="CreateOrder">
         <div class="col-15 col-md-10 col-lg-4 divcard">
             <div class="card shadow p-3 mb-5 bg-white rounded">
                 <h2 class=text-center style="margin:20px; font-size:40px;">餐點內容</h2>
@@ -94,8 +116,9 @@
                         sum = pay + tax;
                     }
                 </table>
-                <br />
+                <br />                
                 <div style="margin:20px;">
+                    <input type="hidden" name="txtsum" id="txtsum" value="@sum" />
                     <li>餐點金額:NT$@pay.ToString("###,###,##0")</li>
 
                     <li>服  務  費:NT$@tax.ToString("###,###,##0")</li>
@@ -103,14 +126,20 @@
                     <li>應付金額:NT$@sum.ToString("###,###,##0")</li>
 
                 </div>
+                <div>
+                    <p>
+                        優惠碼 : <input type="text" name="coupon" value="" class="texbox" />
+                        @Html.ActionLink("輸入", "CheckoutCart", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
+                    </p>
+                </div>
             </div>
         </div>
-
+        
         <div class="col-15 col-md-10 col-lg-4 divcard ">
-            <div class="card shadow p-3 mb-5 bg-white rounded" ">
+            <div class="card shadow p-3 mb-5 bg-white rounded">               
                 <h2 class=text-center style="margin:20px; font-size:40px;">訂單資料</h2>
-                <div class="card-body" >
-                    <hr>
+                <hr>
+                <div class="card-body" >                   
                     <div style="display:flex;">
                         <div class="marg">
                             <label>訂購人姓名</label>
@@ -119,9 +148,7 @@
                         <div class="marg">
                             <label>訂購人電話</label>
                             <label>@ViewBag.MemberPhone</label>
-                        </div>
-                        <hr />
-
+                        </div>              
                     </div>
                     <hr />                    
                     <div style="display:flex;">
@@ -140,19 +167,25 @@
                             @Html.Label("paymentMethod", "現金付款")
                         </div>
                     </div>
+                    <hr />                          
                     <div>
-                        <p>
-                            優惠碼 : <input type="text" name="coupon" value="" class="texbox" />                            
-                            @Html.ActionLink("輸入", "CheckoutCart", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
-                        </p>
+                       <div>
+                           <br>                            
+                            <label>備註:  </label>
+                                <textarea id="txtremark" name="txtremark" style="resize: none;"></textarea>
+                            
+                       </div>
                         <br>
                         <div style="text-align:center">
-                            @Html.ActionLink("前往付款", "CreateOrder", "Shopping",  new {  sum=sum  } , new { @class = "btn btn-danger" })
+                                <input type="button" id="myBtn" value="前往付款" class="btn btn-danger" />
+                                @*@Html.ActionLink("前往付款", "CreateOrder", "Shopping",  new{sum=sum } , new { @class = "btn btn-danger" ,onclick="saveRemark()"})*@
                             @Html.ActionLink("取消", "Menu", "Shopping", null, new { @class = "btn btn-danger " } )
                         </div>
                     </div>
+                    </div>       
                 </div>
             </div>
-        </div>
+        </form>
     </div>
-</main><!-- End #main -->
+    </main><!-- End #main -->
+
