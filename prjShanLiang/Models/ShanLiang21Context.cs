@@ -53,6 +53,8 @@ public partial class ShanLiang21Context : DbContext
 
     public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
 
+    public virtual DbSet<Region> Regions { get; set; }
+
     public virtual DbSet<RestaurantType> RestaurantTypes { get; set; }
 
     public virtual DbSet<Status> Statuses { get; set; }
@@ -112,13 +114,9 @@ public partial class ShanLiang21Context : DbContext
 
         modelBuilder.Entity<Admin>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Admin", "dbo");
+            entity.ToTable("Admin", "dbo");
 
-            entity.Property(e => e.AdminId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("AdminID");
+            entity.Property(e => e.AdminId).HasColumnName("AdminID");
             entity.Property(e => e.AdminName).HasMaxLength(50);
             entity.Property(e => e.Passwoed).HasMaxLength(50);
         });
@@ -137,6 +135,7 @@ public partial class ShanLiang21Context : DbContext
 
             entity.Property(e => e.CityId).HasColumnName("CityID");
             entity.Property(e => e.CityName).HasMaxLength(10);
+            entity.Property(e => e.RegionId).HasColumnName("RegionID");
         });
 
         modelBuilder.Entity<Coupon>(entity =>
@@ -372,6 +371,14 @@ public partial class ShanLiang21Context : DbContext
 
             entity.Property(e => e.PaymentMethodId).HasColumnName("PaymentMethodID");
             entity.Property(e => e.PaymentName).HasMaxLength(8);
+        });
+
+        modelBuilder.Entity<Region>(entity =>
+        {
+            entity.ToTable("Region", "dbo");
+
+            entity.Property(e => e.RegionId).HasColumnName("RegionID");
+            entity.Property(e => e.RegionName).HasMaxLength(50);
         });
 
         modelBuilder.Entity<RestaurantType>(entity =>

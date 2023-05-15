@@ -265,179 +265,66 @@
                                     <div class="padding"></div>
                                     <div class="row">
 
-                                        <div class="col-sm-6">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default dropdown-toggle"
-                                                        data-toggle="dropdown">
-                                                    排序 <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu" role="menu">
-                                                    <li><a href="#">評價</a></li>
-                                                    <li><a href="#">距離</a></li>
-                                                    <li><a href="#">新到舊</a></li>
-                                                    <li><a href="#">舊到新</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                    <div class="col-sm-6">
+                                        <div class="btn-group">
+                                            @*<button type="button" class="btn btn-default dropdown-toggle"
+                                                data-toggle="dropdown" id="orderButton">
+                                                排序 <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu">
+                                                <li><a href="#" name="0" class="orderBy">所有結果</a></li>
+                                                <li><a href="#" name="1" class="orderBy">評價高 > 低</a></li>
+                                                <li><a href="#" name="2" class="orderBy">評價低 > 高</a></li>
+                                                <li><a href="#" name="3" class="orderBy">加入新 > 舊</a></li>
+                                                <li><a href="#" name="4" class="orderBy">加入舊 > 新</a></li>
+                                                <li><a href="#" name="5" class="orderBy">收藏高 > 低</a></li>
+                                                <li><a href="#" name="6" class="orderBy">收藏低 > 高</a></li>
+                                            </ul>*@
 
-                                        <div class="col-md-6 text-right">
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-default active">
-                                                    <i class="fa fa-list"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-default">
-                                                    <i class="fa fa-th"></i>
-                                                </button>
-                                            </div>
+                                            <select class="form-select selectOrder" aria-label="Default select example">
+                                                <option value="0" selected>預設排序</option>
+                                                <option value="1">評價高 > 低</option>
+                                                <option value="2">評價低 > 高</option>
+                                                <option value="3">加入新 > 舊</option>
+                                                <option value="4">加入舊 > 新</option>
+                                                <option value="5">收藏高 > 低</option>
+                                                <option value="6">收藏低 > 高</option>
+                                            </select>
+
                                         </div>
                                     </div>
 
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <tbody id="storeList">
-                                                <tr>
-                                                    <td class="number text-center">1</td>
-                                                    <td class="image">
-                                                        <img src="https://www.bootdey.com/image/400x300/FF8C00" alt="">
-                                                    </td>
-                                                    <td class="product">
-                                                        <a href="Restaurant/59">
-                                                            <strong>
-                                                                Product
-                                                                1
-                                                            </strong><br>This is the product description.
-                                                        </a>
-                                                    </td>
-                                                    <td class="rate text-right">
-                                                        <span>
-                                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i>
-                                                        </span>
-                                                    </td>
-                                                    @*<td class="price text-right">$350</td>*@
-                                                    <td class="price text-right">
-                                                        @Html.ActionLink("我要訂位", "Reserve"/*, new {
-                                                        id=item.StoreId }*/)
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="number text-center">2</td>
-                                                    <td class="image">
-                                                        <img src="https://www.bootdey.com/image/400x300/5F9EA0" alt="">
-                                                    </td>
-                                                    <td class="product">
-                                                        <strong>Product 2</strong><br>This is the product
-                                                        description.
-                                                    </td>
-                                                    <td class="rate text-right">
-                                                        <span>
-                                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i>
-                                                        </span>
-                                                    </td>
-                                                    <td class="rate text-right">
-                                                        <a href="">分享</a><br /><a href="">收藏</a>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="number text-center">3</td>
-                                                    <td class="image">
-                                                        <img src="https://www.bootdey.com/image/400x300"
-                                                             alt="">
-                                                    </td>
-                                                    <td class="product">
-                                                        <strong>Product 3</strong><br>This is the product
-                                                        description.
-                                                    </td>
-                                                    <td class="rate text-right">
-                                                        <span>
-                                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i>
-                                                        </span>
-                                                    </td>
-                                                    <td class="price text-right">$550</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="number text-center">4</td>
-                                                    <td class="image">
-                                                        <img src="https://www.bootdey.com/image/400x300/8A2BE2" alt="">
-                                                    </td>
-                                                    <td class="product">
-                                                        <strong>Product 4</strong><br>This is the product
-                                                        description.
-                                                    </td>
-                                                    <td class="rate text-right">
-                                                        <span>
-                                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i>
-                                                        </span>
-                                                    </td>
-                                                    <td class="price text-right">$330</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="number text-center">5</td>
-                                                    <td class="image">
-                                                        <img src="https://www.bootdey.com/image/400x300"
-                                                             alt="">
-                                                    </td>
-                                                    <td class="product">
-                                                        <strong>Product 5</strong><br>This is the product
-                                                        description.
-                                                    </td>
-                                                    <td class="rate text-right">
-                                                        <span>
-                                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
-                                                        </span>
-                                                    </td>
-                                                    <td class="price text-right">$540</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="number text-center">6</td>
-                                                    <td class="image">
-                                                        <img src="https://www.bootdey.com/image/400x300/6495ED" alt="">
-                                                    </td>
-                                                    <td class="product">
-                                                        <strong>Product 6</strong><br>This is the product
-                                                        description.
-                                                    </td>
-                                                    <td class="rate text-right">
-                                                        <span>
-                                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i>
-                                                        </span>
-                                                    </td>
-                                                    <td class="price text-right">$870</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="number text-center">7</td>
-                                                    <td class="image">
-                                                        <img src="https://www.bootdey.com/image/400x300/DC143C" alt="">
-                                                    </td>
-                                                    <td class="product">
-                                                        <strong>Product 7</strong><br>This is the product
-                                                        description.
-                                                    </td>
-                                                    <td class="rate text-right">
-                                                        <span>
-                                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i><i class="fa fa-star-o"></i>
-                                                        </span>
-                                                    </td>
-                                                    <td class="price text-right">$620</td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="number text-center">8</td>
-                                                    <td class="image">
-                                                        <img src="https://www.bootdey.com/image/400x300/9932CC" alt="">
-                                                    </td>
-                                                    <td class="product">
-                                                        <strong>Product 8</strong><br>This is the product
-                                                        description.
-                                                    </td>
-                                                    <td class="rate text-right">
-                                                        <span>
-                                                            <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i>
-                                                        </span>
-                                                    </td>
-                                                    <td class="price text-right">$1,550</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="col-md-6 text-right">
+                                        @*<div class="btn-group">
+                                            <button type="button" class="btn btn-default active"><i
+                                                    class="fa fa-list"></i></button>
+                                            <button type="button" class="btn btn-default"><i
+                                                    class="fa fa-th"></i></button>
+                                        </div>*@
                                     </div>
+                                </div>
+
+
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <tbody id="storeList">
+
+                                            <div id="loading">
+                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                            </div>
+
+                                        </tbody>
+                                    </table>
+                                </div>
 
 
                                     <ul class="pagination">
@@ -477,11 +364,15 @@
         const StoreType = document.querySelector('#storeType');
         const CAD = document.querySelector('#cityAndDistrict');
         const StoreList = document.querySelector('#storeList');
+        const Loading = document.getElementById('loading');
+        const OrderSelect = document.querySelector('.selectOrder');
 
+        //第一次載入網頁時獲取所有店家列表
         search();
 
+        //輸入關鍵字跳出提示
         Keyword.addEventListener('input', async () => {
-            const response = await fetch('@Url.Content("~/Store/GetStore")?keyword=' + Keyword.value);
+            const response = await fetch('@Url.Content("~/Store/GetName")?keyword=' + Keyword.value);
             const datas = await response.json();
             const shop = datas.map(data => {
                 return (
@@ -494,6 +385,10 @@
         //搜尋鍵
         SerachButton.addEventListener('click', async () => {
             try {
+
+                //獲得排序編號
+                const orderBy = OrderSelect.value;
+
                 //取得選取的類型ID
                 const checkedType = Array.from(document.querySelectorAll('input.typeCheckbox[type="checkbox"]:checked'))
                     .map(checkbox => checkbox.name);
@@ -508,7 +403,8 @@
                 //除錯用資料===========
                 console.log(checkedType);
                 console.log(checkedDistrict);
-                console.log(Rating);
+                console.log('評級 : '+Rating);
+                console.log('排序方式 : '+orderBy);
                 //==================
 
                 //執行搜尋function
@@ -551,9 +447,9 @@
             })
         }
 
-        async function search(checkedType, checkedDistrict, Rating) {
+        async function search(checkedType, checkedDistrict, Rating, orderBy) {
             //把關鍵字、類型、地區及評價串接後進行查詢
-            const response = await fetch(`@Url.Content("~/Store/SearchStore")?keyword=${Keyword.value}&types=${JSON.stringify(checkedType)}&districts=${JSON.stringify(checkedDistrict)}&rating=${Rating}`);
+            const response = await fetch(`@Url.Content("~/Store/SearchStore")?keyword=${Keyword.value}&types=${JSON.stringify(checkedType)}&districts=${JSON.stringify(checkedDistrict)}&rating=${Rating}&order=${OrderSelect.value}`);
             const datas = await response.json();
             //將結果回傳HTML
 
@@ -570,8 +466,15 @@
                                                     <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
                                                   </tr>`;
             });
+
+            //延遲2秒
+            setTimeout(function () {
+            }, 2000);
+
+            Loading.innerHTML = null;
             StoreList.innerHTML = shop.join("");
         }
+
 
     </script>
 }

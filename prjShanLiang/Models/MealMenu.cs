@@ -11,7 +11,7 @@ public partial class MealMenu
 
     public string? MealName { get; set; }
 
-    public int? MealPrice { get; set; }
+    public decimal? MealPrice { get; set; }
 
     public string? MealImagePath { get; set; }
 
