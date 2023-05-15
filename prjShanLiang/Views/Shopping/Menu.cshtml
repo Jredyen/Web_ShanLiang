@@ -253,7 +253,8 @@
                             <div class="divCountMoney">
                                 <input class="txtMealId" type="hidden" name="txtMealId" value="@item.MealId" />
                                 <p class="CountMoney">
-                                    NT$:@item.MealPrice
+                                    @{string ntd = Math.Floor((decimal)item.MealPrice).ToString();}
+                                    NT$:@ntd
                                 </p>
                                 <p class="CountMoney">
                                     @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control ",id=item.MealId , style="width:100px;"})

@@ -173,7 +173,7 @@ namespace prjShanLiang.Controllers
             mealOrder.StoreId = 1;     //寫死店家ID:1
             mealOrder.Total = sum;
             mealOrder.OrderStatus = 2; //訂單狀態:已付款
-            mealOrder.OrderDate = DateTime.Now;
+            mealOrder.OrderDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             _db.MealOrders.Add(mealOrder);
             _db.SaveChanges();//成立訂單先存回資料庫
 

@@ -20,7 +20,10 @@
                 <tr>
                     <th>
                         序號
-                    </th>                   
+                    </th>   
+                    <th>
+                        訂單編號
+                    </th>
                     <th>
                         店家
                     </th>
@@ -34,7 +37,9 @@
                     <th>
                         訂單時間
                     </th>
-                    <th></th>
+                    <th>
+                        評價
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -46,7 +51,10 @@
                         <tr>
                             <td>
                                 @count
-                            </td>                            
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OrderId)
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Store.RestaurantName)
                             </td>
@@ -58,6 +66,9 @@
                             </td>                            
                             <td>
                                 @Html.DisplayFor(modelItem => item.OrderDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Remark)
                             </td>
                             <td>
                                 @Html.ActionLink("查看", "MyMealOrderDetail","Shopping", new {  id=item.OrderId  },new{@class = "btn btn-primary"})

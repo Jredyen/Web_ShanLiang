@@ -5,7 +5,9 @@
 }
 <style>
     .marg {
-        margin: 30px;
+        margin: 20px 50px 20px 50px;
+        width: 120px;
+        height: 100px;
     }
 
     .btn {
@@ -133,8 +135,8 @@
                         </div>
                     </div>                   
                 </div>  
-                @Html.ActionLink("檢視我的訂單", "MyMealOrder", "Shopping", new{ id = ViewBag.MemberId}, new { @class = "btn btn-danger marg"} )
-            </div>   
+                @Html.ActionLink("檢視我的訂單", "MyMealOrder", "Shopping", new{ id = ViewBag.MemberId}, new { @class = "btn btn-danger "} )
+            </div>           
         </div>       
     </div>
 </main><!-- End #main -->
