@@ -9,5 +9,7 @@ public partial class City
 
     public string? CityName { get; set; }
 
+    public int? RegionId { get; set; }
+
     public virtual ICollection<District> Districts { get; set; } = new List<District>();
 }

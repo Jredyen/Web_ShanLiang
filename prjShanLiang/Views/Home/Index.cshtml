@@ -1,69 +1,69 @@
 ﻿@model Tuple<List<prjShanLiang.Models.Store>, List<prjShanLiang.Models.StoreAdImage>>
-@{
+    @{
     ViewData["Title"] = "膳糧";
 }
 
-<head>
-    @section Styles{
+    <head>
+         <style>
+      
 
-        <style>
+        .image-container {
+            width:100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
+        .item {
+            width: 1300px;
+            height: 600px;
+        }
 
-            .image-container {
-                width: 1130px;
-                height: 600px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
+            .item img {
+                width:1300px;
+                height:600px;
+                object-fit: cover;
+                object-position: center center;
             }
 
-            /*   .item {
-                                    width: 1115px;
-                                    height: 600px;
-                                }
+           
+        .carousel-inner {
+            text-align: center;
+            display: flex;
+            justify-content: center;
+        }
 
-                                    .item img {
-                                        width: 1115px;
-                                        height: 600px;
-                                        object-fit: cover;
-                                        object-position: center center;
-                                    }
-                        */
+        .custom-images {
+            position: relative;
+            width: 150%;
+        }
 
-            .carousel-inner {
-                text-align: center;
-                display: flex;
-                justify-content: center;
+       
+       .carousel-example-generic{
+           width:90%;
+       }
+
+            .carousel-indicators{
+                width:70%;
             }
 
-            .custom-images {
-                position: relative;
-                width: 150%;
-            }
+        .left-img {
+            position: absolute;
+           
+        }
 
-            .left-img {
-                position: absolute;
-                top: 145px;
-                left: 0;
-                height: 300px;
-                width: 200px;
-                z-index: 5; /* 設置較高的 z-index 值 */
-                float: none;
-            }
+       .right-img{
+            position: absolute;
+           right:0px;
+       }
 
-            .right-img {
-                position: absolute;
-                top: 145px;
-                right: 0;
-                height: 200px;
-                width: 300px;
-                z-index: 5; /* 設置較高的 z-index 值 */
-                float: none;
-            }
-        </style>
-    }
-</head>
-<main id="main">
+      
+        
+</style>
+       </head>
+       <body>
+    <main id="main">
 
     <!-- ======= Breadcrumbs ======= -->
     <div class="breadcrumbs">
@@ -71,35 +71,32 @@
 
             <div class="d-flex justify-content-between align-items-center">
                 <h2>首頁</h2>
-
-                <!-- <ol>
+                <ol>
                     <li><a a asp-controller="Home" asp-action="Index">Home</a></li>
                     <li>Index</li>
-                </ol> -->
-
-
-            </div>
-            <div class="left-img">
-                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
-                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
-                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
-            </div>
-            <div class="right-img">
-                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
-                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
-                <img src="~/Images/store/首頁廣告範例圖.jpg" alt="Placeholder Image" />
-            </div>
+                </ol>
+            </div>   
         </div>
-
-
     </div><!-- End Breadcrumbs -->
 
     <section class="sample-page">
+        <span class="left-img">
+                <img src="~/Images/store/PRIMEONE牛排館.jpg" alt="Placeholder Image" height="600px" width="210px" id="left-img-element" />
 
+            <span class="carousel-caption">
+              123456             
+            </span>
+        </span>
+        <span class="right-img" >
+                <img src="~/Images/store/PRIMEONE牛排館.jpg" alt="Placeholder Image" height="600px" width="210px" id="right-img-element" />
+            <span class="carousel-caption">
+            123456
+            </span>
+        </span>
+                      <div class="container" data-aos="fade-up">
 
-        <div class="container" data-aos="fade-up">
             <!--==============================================-->
-            <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"> -->
+           @* <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">*@
 
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                 <!-- 輪播指示器 -->
@@ -113,15 +110,16 @@
                 <!-- 輪播內容 -->
                 <div class="carousel-inner" role="listbox">
 
+
                     @foreach (var advertisement in Model.Item1)
                     {
                         <div class="item @(advertisement == Model.Item1.First() ? "active" : "")">
                             <div class="image-container">
-                                <a href="@advertisement.Website" target="_self">
+                                <a href="@Url.Action("Restaurant", "store", new { id = advertisement.StoreId })">
                                     @foreach (var adImage in Model.Item2.Where(ai => ai.StoreId == advertisement.StoreId))
                                     {
                                         string imgName = adImage.Adimage;
-                                        <img src="~/images/store/@imgName" />
+                                        <img src="~/images/store/@imgName" class="carousel-image" />
                                     }
                                 </a>
                             </div>
@@ -143,30 +141,67 @@
                     <span class="sr-only">Next</span>
                 </a>
             </div>
-
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-            <script>
-                $(document).ready(function () {
-                    $('.carousel').carousel({
-                        interval: 100, // 設置自動切換時間為1秒
-                        wrap: true, // 循環輪播
-                        fade: true // 淡入淡出效果
-                                                        keyboard: true, // 啟用左右鍵控制
-                        pause: "false" // 鼠標懸停在輪播上時不暫停
-                    })
-                });
-            </script>
-            <!--==============================================-->
             <div>
                 @foreach (var advertisement in Model.Item1)
                 {
                     <h3>@advertisement.RestaurantName</h3>
+
                 }
-
-            </div>
+                            </div>
         </div>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    </section>
+                <script>
+                $('.carousel').carousel({
+                    interval: 1000, // 設置自動切換時間為1秒
+                    wrap: true, // 循環輪播
+                    pause: "false", // 鼠標懸停在輪播上時不暫停
+                    keyboard: true // 啟用左右鍵控制
+                });
+                
+                var leftImgElement = document.getElementById("left-img-element");
+                leftImgElement.addEventListener("click", changeleftImage);
+
+                function changeleftImage() {
+                    var input = document.createElement("input");
+                    input.type = "file";
+                    input.accept = "image/*";
+
+                    input.addEventListener("change", function () {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            leftImgElement.src = e.target.result;
+                        };
+
+                        reader.readAsDataURL(input.files[0]);
+                    });
+
+                    input.click();
+                }
+                var rightImgElement = document.getElementById("right-img-element");
+                rightImgElement.addEventListener("click", changerightImage);
+
+                function changerightImage() {
+                    var input = document.createElement("input");
+                    input.type = "file";
+                    input.accept = "image/*";
+
+                    input.addEventListener("change", function () {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            rightImgElement.src = e.target.result;
+                        };
+
+                        reader.readAsDataURL(input.files[0]);
+                    });
+
+                    input.click();
+                }
+            </script>
+                </script>
+
+                       <!--==============================================-->
+       </section>
 </main><!-- End #main -->
+</body>
