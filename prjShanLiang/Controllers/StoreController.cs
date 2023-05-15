@@ -84,19 +84,19 @@ namespace prjShanLiang.Controllers
             }
 
             //如果有選取類型的話就再篩選類型
-            if (types != null && types.Length > 0)
-            {
-                list = list.Join(_db.StoreTypes, s => s.StoreId, st => st.StoreId, (s, st) => new { s, st })
-                    .Where(x => types.Contains(x.st.RestaurantTypeNum))
-                    .Select(x => x.s)
-                    .Distinct();
-            }
+            //if (types != null && types.Length > 0)
+            //{
+            //    list = list.Join(_db.StoreTypes, s => s.StoreId, st => st.StoreId, (s, st) => new { s, st })
+            //        .Where(x => types.Contains(x.st.RestaurantTypeNum))
+            //        .Select(x => x.s)
+            //        .Distinct();
+            //}
 
             //如果有選取地區的話就再篩選地區
-            if (districts != null && districts.Length > 0)
-            {
-                list = list.Where(s => districts.Contains(s.DistrictId));
-            }
+            //if (districts != null && districts.Length > 0)
+            //{
+            //    list = list.Where(s => districts.Contains(s.DistrictId));
+            //}
 
             //如果評價不是0的話就篩選高於的
             /*TODO:改成評價範圍
