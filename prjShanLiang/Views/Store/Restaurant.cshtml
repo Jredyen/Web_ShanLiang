@@ -35,10 +35,9 @@
                                 <div class="rating" style="font-size:2rem">
                                     <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label>@item.MemberActions.Where(x => x.ActionId == 2 && x.StoreId == item.StoreId).Count()</label></div>
                                     <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@item.StoreEvaluates.Where(x => x.StoreId == item.StoreId).Count()</label></div>
-                                    <div id="star" class="vertical" style="color:#ffc107;margin-right:10px;" onload="getStar(event, @item.Rating)"></div>
+                                    <div id="star" class="vertical" style="color:#ffc107;margin-right:10px;" onclick="getStar(event,@item.Rating)"></div>
                                 </div>
                             </div>
-
 
                             <br>
                             <hr>  <!-- 分隔線 -->
@@ -93,15 +92,13 @@
                                                                     </p>
                                                                     @foreach (var m in Model.member.Where(y => y.MemberId == se.MemberId))
                                                                     {
-                                                                        <h3>@m.MemberName</h3>
+                                                                        <h4>@m.MemberName</h4>
                                                                     }
-                                                                    <h4>@se.EvaluateDate</h4>
-                                                                    <div id="@se.EvaluateNo" class="stars">
-                                                                        <i class="bi bi-star-fill"></i>
-                                                                    </div>
+                                                                    <h5>@se.EvaluateDate</h5>
+                                                                    <div id="@se.EvaluateNo" class="stars"></div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-2 text-center">   
+                                                            <div class="col-lg-2 text-center">
                                                                 <img src="~/Images/man_person_icon.png" class="img-fluid testimonial-img" alt="">
                                                             </div>
                                                         </div>
@@ -186,19 +183,24 @@
     <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
     @section Scripts{
     <script>
-        //const star = document.querySelector('#star');
-        function getStar(e, n) {
-            var level = document.getElementById(e.target.id).innerHTML;
-            //let level = '';
+        const sRate = document.getElementById('star');
+        const cRate = document.querySelectorAll('.stars');
+        function getStar(event, n) {
+            //var level = document.getElementById(event.target.id);
             for (let i = 1; i <= n; i++) {
-                level += '<i class="bi bi-star-fill"></i>';
+                event.target.innerHTML += '<i class="bi bi-star-fill"></i>';
             }
             for (let i = 1; i <= (5 - n); i++) {
-                level += '<i class="bi bi-star"></i>';
+                event.target.innerHTML += '<i class="bi bi-star"></i>';
             }
-            //return level;
         }
-        //star.innerHTML = getStar(@item.Rating);
+        sRate.click();
+        for (i = 0; i < cRate.length; i++) {
+            cRate[i].innerHTML = '<i class="bi bi-star-fill"></i>';
+        }
+
+
+        
 
         function copyUrl() {
             var dummy = document.createElement('input'), text = window.location.href;
@@ -208,7 +210,6 @@
             document.execCommand('copy');
             document.body.removeChild(dummy);
         }
-
 
     </script>
     }
