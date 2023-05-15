@@ -23,6 +23,8 @@ public partial class ShanLiang21Context : DbContext
 
     public virtual DbSet<Admin> Admins { get; set; }
 
+    public virtual DbSet<Blog> Blogs { get; set; }
+
     public virtual DbSet<City> Cities { get; set; }
 
     public virtual DbSet<Coupon> Coupons { get; set; }
@@ -50,6 +52,8 @@ public partial class ShanLiang21Context : DbContext
     public virtual DbSet<OrderDetail> OrderDetails { get; set; }
 
     public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
+
+    public virtual DbSet<Region> Regions { get; set; }
 
     public virtual DbSet<RestaurantType> RestaurantTypes { get; set; }
 
@@ -110,15 +114,19 @@ public partial class ShanLiang21Context : DbContext
 
         modelBuilder.Entity<Admin>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Admin", "dbo");
+            entity.ToTable("Admin", "dbo");
 
-            entity.Property(e => e.AdminId)
-                .ValueGeneratedOnAdd()
-                .HasColumnName("AdminID");
+            entity.Property(e => e.AdminId).HasColumnName("AdminID");
             entity.Property(e => e.AdminName).HasMaxLength(50);
             entity.Property(e => e.Passwoed).HasMaxLength(50);
+        });
+
+        modelBuilder.Entity<Blog>(entity =>
+        {
+            entity.ToTable("Blog");
+
+            entity.Property(e => e.BlogHeader).HasMaxLength(50);
+            entity.Property(e => e.BlogPic).HasMaxLength(50);
         });
 
         modelBuilder.Entity<City>(entity =>
@@ -127,6 +135,7 @@ public partial class ShanLiang21Context : DbContext
 
             entity.Property(e => e.CityId).HasColumnName("CityID");
             entity.Property(e => e.CityName).HasMaxLength(10);
+            entity.Property(e => e.RegionId).HasColumnName("RegionID");
         });
 
         modelBuilder.Entity<Coupon>(entity =>
@@ -364,6 +373,14 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.PaymentName).HasMaxLength(8);
         });
 
+        modelBuilder.Entity<Region>(entity =>
+        {
+            entity.ToTable("Region", "dbo");
+
+            entity.Property(e => e.RegionId).HasColumnName("RegionID");
+            entity.Property(e => e.RegionName).HasMaxLength(50);
+        });
+
         modelBuilder.Entity<RestaurantType>(entity =>
         {
             entity.HasKey(e => e.RestaurantTypeNum);
@@ -417,6 +434,9 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.Adimage)
                 .HasMaxLength(50)
                 .HasColumnName("ADImage");
+            entity.Property(e => e.Eximage)
+                .HasMaxLength(50)
+                .HasColumnName("EXImage");
             entity.Property(e => e.StoreId).HasColumnName("StoreID");
 
             entity.HasOne(d => d.Store).WithMany(p => p.StoreAdImages)

@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using prjShanLiang.Models;
+using prjShanLiang.ViewModels;
 using System;
 using System.Linq;
+using System.Text.Json;
 
 namespace prjShanLiang.Controllers
 {
@@ -40,16 +42,16 @@ namespace prjShanLiang.Controllers
                                select s;
             if (datas == null)
                 return RedirectToAction("Reconnend");
-            return View(datas);  
+            return View(datas);
         }
-        public IActionResult GetStore(string keyword)
+        public IActionResult GetName(string keyword)
         {
             IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword)).Select(s => s.RestaurantName);
             return Json(storeList);
         }
         public IActionResult ShowType()
         {
-            IQueryable datas = _db.RestaurantTypes.Select(r => new { r.TypeName , r.RestaurantTypeNum});
+            IQueryable datas = _db.RestaurantTypes.Select(r => new { r.TypeName, r.RestaurantTypeNum });
             return Json(datas);
         }
         /// <summary>
@@ -60,16 +62,12 @@ namespace prjShanLiang.Controllers
         /// <param name="districts">地區</param>
         /// <param name="rating">評級</param>
         /// <returns></returns>
-        public IActionResult SearchStore(string keyword, int[]? types, int[]? districts = null, double? rating = 0)
+        public IActionResult SearchStore(string keyword, string types, string districts, double? rating = 0, int order = 0)
         {
-            //測試用            
-            //types = new int[] { 4, 5, 6 };
-            //districts = new int[] { 5, 6, 7 };
-
-            //TODO:整合店名、類型與地區的搜尋
+            //整合店名、類型與地區的搜尋
             //店名搜尋 : 完成
-            //類型搜尋 : 未完成且無法帶入
-            //地區搜尋 : 未完成且無法帶入
+            //類型搜尋 : 完成
+            //地區搜尋 : 完成
             //評價搜尋 : 完成
 
             IQueryable<Store> list = null;
@@ -83,35 +81,44 @@ namespace prjShanLiang.Controllers
                 list = _db.Stores.Select(s => s);
             }
 
-            //如果有選取類型的話就再篩選類型
-            if (types != null && types.Length > 0)
+            //有選取類型的話，把傳回來的類型字串變回陣列並防例外狀況，再篩選類型
+            int[]? type = null;
+            try
+            {
+                if (types != "undefined")
+                    type = JsonSerializer.Deserialize<int[]>(types.Replace("\"", ""));
+            }
+            catch
+            { }
+            if (type != null && type.Length > 0)
             {
                 list = list.Join(_db.StoreTypes, s => s.StoreId, st => st.StoreId, (s, st) => new { s, st })
-                    .Where(x => types.Contains(x.st.RestaurantTypeNum))
+                    .Where(x => type.Contains(x.st.RestaurantTypeNum))
                     .Select(x => x.s)
                     .Distinct();
             }
 
-            //如果有選取地區的話就再篩選地區
-            if (districts != null && districts.Length > 0)
+            //有選取地區的話，把傳回來的地區字串變回陣列並防例外狀況，再篩選地區
+            int[]? district = null;
+            try
             {
-                list = list.Where(s => districts.Contains(s.DistrictId));
+                if (districts != "undefined")
+                    district = JsonSerializer.Deserialize<int[]>(districts.Replace("\"", ""));
+            }
+            catch
+            { }
+            if (district != null && district.Length > 0)
+            {
+                list = list.Where(s => district.Contains(s.DistrictId));
             }
 
-            //如果評價不是0的話就篩選高於的
-            /*TODO:改成評價範圍
-            1 = 1.9以下
-            2 = 2.5以下
-            3 = 3.5以下
-            4 = 4.5以下
-            5 = 4.6以上
-            */
+            //如果評價不是0的話就篩選高於選取星數的
             if (rating != 0)
             {
                 list = list.Where(s => s.Rating >= rating);
             }
 
-            //只顯示指定的資料
+            //只顯示需要給顧客瀏覽的資料
             var storeList = list.Select(s => new
             {
                 s.RestaurantName,
@@ -131,6 +138,17 @@ namespace prjShanLiang.Controllers
             rt => rt.RestaurantTypeNum,
             (st, rt) => rt.TypeName).ToList(),
             });
+
+            //排序依據
+            if (order == 1)
+                    storeList = from s in storeList orderby s.Rating descending select s;
+            else if (order == 2)
+                    storeList = from s in storeList orderby s.Rating select s;
+            else if (order == 3)
+                storeList = from s in storeList orderby s.StoreId descending select s;
+            else if (order == 4)
+                storeList = from s in storeList orderby s.StoreId select s;
+
             return Json(storeList);
         }
     }
