@@ -40,7 +40,8 @@ namespace prjShanLiang.Controllers
             var sts = from s in _db.Stores.
                         Include(s => s.StoreDecorationImages).
                         Include(s => s.StoreEvaluates).
-                        Include(s => s.MemberActions)
+                        Include(s => s.MemberActions).
+                        Include(s => s.StoreMealImages)
                         where s.StoreId == id
                         select s;
             var mbs = from m in _db.Members
@@ -53,6 +54,29 @@ namespace prjShanLiang.Controllers
                 return RedirectToAction("Reconnend");
             return View(datas);
         }
+        public IActionResult GetRestaurantType(int id)
+        {
+            IQueryable datas = from s in _db.StoreTypes 
+                               join r in _db.RestaurantTypes 
+                               on s.RestaurantTypeNum equals r.RestaurantTypeNum
+                               where s.StoreId == id
+                               select new { s.No,s.RestaurantTypeNum,s.StoreId,r.TypeName};
+            return Json(datas);
+        }
+        public IActionResult searchRestaurantType(int id)
+        {
+            IQueryable datas = from r in _db.StoreTypes
+                                      join s in _db.Stores
+                                      on r.StoreId equals s.StoreId
+                                      where r.RestaurantTypeNum == id
+                                      orderby r.StoreId 
+                                      select new { r.No, r.RestaurantTypeNum, r.StoreId, s.AccountName,
+                                          s.TaxId, s.RestaurantName,s.RestaurantAddress, s.RestaurantPhone, 
+                                          s.DistrictId, s.Seats, s.Longitude, s.Latitude, s.OpeningTime, s.ClosingTime,
+                                          s.Website, s.StoreImage, s.Rating, s.StoreMail, s.Password, s.AccountStatus};
+            return View(datas);
+        }
+
         public IActionResult GetName(string keyword)
         {
             IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword)).Select(s => s.RestaurantName);

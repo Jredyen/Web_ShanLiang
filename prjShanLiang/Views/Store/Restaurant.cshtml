@@ -1,6 +1,5 @@
 ﻿@model prjShanLiang.ViewModels.CShowRestaurantViewModel
 
-
 <link rel="stylesheet" href="~/css/Restaurant.css" />
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v16.0" nonce="aqWRwhk5"></script>
@@ -13,10 +12,12 @@
             <div class="row justify-content-between gy-5">
                 <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
                     <h2 data-aos="fade-up">@item.RestaurantName</h2>
-                    <p data-aos="fade-up" data-aos-delay="100">@item.StoreEvaluates.FirstOrDefault()?.Comments</p>
+                    <div id="storeType">
+                        
+                    </div>
                 </div>
                 <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
-                    <img src="~/Images/@item.StoreDecorationImages.FirstOrDefault()?.ImagePath" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300" />
+                    <img src="~/Images/Restaurant/@item.StoreDecorationImages.FirstOrDefault()?.ImagePath" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300" />
                 </div>
             </div>
         </div>
@@ -29,13 +30,14 @@
             <div class="container content-r" data-aos="fade-up">
 
                 <div class="row gy-4">
-                    <div class="col-lg-8 position-relative about-img" @*style="background: url('@Url.Content("~/assets/img/about.jpg")') ;"*@ data-aos="fade-up" data-aos-delay="150">
+                    <!-- Left Block -->
+                    <div class="col-lg-8 position-relative about-img" data-aos="fade-up" data-aos-delay="150">
                         <div class=" main-block">
                             <div class="st1">
                                 <div class="rating" style="font-size:2rem">
                                     <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label>@item.MemberActions.Where(x => x.ActionId == 2 && x.StoreId == item.StoreId).Count()</label></div>
                                     <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@item.StoreEvaluates.Where(x => x.StoreId == item.StoreId).Count()</label></div>
-                                    <div id="star" class="vertical" style="color:#ffc107;margin-right:10px;" onclick="getStar(event,@item.Rating)"></div>
+                                    <div id="star" class="vertical" style="color:#ffc107;margin-right:10px; pointer-events: none;" onclick="getStar(event,@item.Rating)"></div>
                                 </div>
                             </div>
 
@@ -95,11 +97,11 @@
                                                                         <h4>@m.MemberName</h4>
                                                                     }
                                                                     <h5>@se.EvaluateDate</h5>
-                                                                    <div id="@se.EvaluateNo" class="stars" onclick="getStar(event,@se.Rating)"></div>
+                                                                    <div id="@se.EvaluateNo" class="stars" style="pointer-events: none;" onclick="getStar(event,@se.Rating)"></div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-2 text-center">
-                                                                <img src="~/Images/man_person_icon.png" class="img-fluid testimonial-img" alt="">
+                                                            <div class="col-lg-2 text-center" style="width:120px;">
+                                                                <img src="~/Images/Restaurant/man_person_icon.png" class="img-fluid testimonial-img" alt="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -118,10 +120,29 @@
                             <div class="st1">
                                 <div class="vertical" style="font-size:2rem">照片</div>
                             </div>
+                            <!-- ======= Gallery Section ======= -->
+                            <section id="gallery" class="gallery section-bg">
+                                <div class="container" data-aos="fade-up">
+
+                                    <div class="gallery-slider swiper">
+                                        <div class="swiper-wrapper align-items-center">
+                                            @foreach (var smi in item.StoreMealImages.Where(x => x.StoreId == item.StoreId))
+                                            {
+                                                <div class="swiper-slide">
+                                                    <a class="glightbox" data-gallery="images-gallery" href="~/Images/Restaurant/@smi.ImagePath">
+                                                        <img src="~/Images/Restaurant/@smi.ImagePath" class="img-fluid" alt="">
+                                                    </a>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="swiper-pagination"></div>
+                                    </div>
+
+                                </div>
+                            </section><!-- End Gallery Section -->
                         </div>
-                    </div>
-
-
+                    </div><!-- End Left Block -->
+                    <!-- Right Block -->
                     <div class="col-lg-4 d-flex position-relative about-img" data-aos="fade-up" data-aos-delay="300">
                         <div>
                             <div class="content ps-0 ps-lg-5 why-us mobiled">
@@ -138,7 +159,7 @@
                                            target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
                                         <a class="dropdown-item" href="mailto: ?subject=與您分享一間美味的餐廳，@item.RestaurantName！&body=@item.StoreMail"><i class="bi bi-envelope"></i> E-mail</a>
                                         <a class="dropdown-item" href="javascript:copyUrl();"><i class="bi bi-link"></i> 複製連結</a>
-                                    </div>
+                                    </div><!--End Dropdowns-->
 
                                     <button type="button" class="btn btn-secondary">
                                         <a class="" asp-area="" asp-controller="Store" asp-action="Comment"><i class="bi bi-chat-left ic-t"></i>評論</a>
@@ -149,6 +170,9 @@
 
                                 </div>
 
+                                <div class="content ps-0 ps-lg-5 why-us mobiled">
+                                </div>
+
                                 <div class="why-box d-flex shopBook">
                                     <div class="more-btn">
                                         <a class="" asp-area="" asp-controller="Store" asp-action="Reserve" asp-route-id="@item.StoreId"><i class="bi bi-calendar-event ic-t"></i>線上訂位</a>
@@ -157,14 +181,16 @@
                                         <a class="" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-id="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
-                    </div>
+                    </div><!-- End Right Block -->
                 </div>
             </div>
         </section><!-- End About Section -->
 
     </main>
+
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact">
         <div class="container" data-aos="fade-up">
@@ -176,17 +202,16 @@
             </div><!-- End Google Maps -->
         </div>
     </section>
-
-
     <button onclick="topFunction()" id="myBtn" title="回頁首"><i class="bi bi-chevron-double-up"></i></button>
+
     <script src="~/js/Restaurant.js"></script>
     <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
     @section Scripts{
     <script>
+        // 生成評價星星
         const sRate = document.getElementById('star');
         const cRate = document.querySelectorAll('.stars');
         function getStar(event, n) {
-            //var level = document.getElementById(event.target.id);
             for (let i = 1; i <= n; i++) {
                 event.target.innerHTML += '<i class="bi bi-star-fill"></i>';
             }
@@ -199,9 +224,7 @@
             cRate[i].click();
         }
 
-
-
-
+        // 複製連結
         function copyUrl() {
             var dummy = document.createElement('input'), text = window.location.href;
             document.body.appendChild(dummy);
@@ -211,6 +234,39 @@
             document.body.removeChild(dummy);
         }
 
+        // 取得餐廳類型列表、餐廳類型
+        const StoreType = document.querySelector('#storeType');
+        async function getRtype() {
+            const response = await fetch('@Url.Content("~/Store/GetRestaurantType/")' + @item.StoreId);
+            const datas = await response.json();
+            const shop = datas.map(data => {
+                return (
+                    StoreType.innerHTML += `<a  asp-area="" asp-controller="Store" asp-action="searchRestaurantType" asp-route-types="${data.restaurantTypeNum}" data-aos="fade-up" style="margin-right:10px;"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
+                )
+            })
+        }
+        getRtype();
+
+        進入類別
+        async function search(checkedType, checkedDistrict, Rating, orderBy) {
+            //把關鍵字、類型、地區及評價串接後進行查詢
+            const response = await fetch(`@Url.Content("~/Store/SearchStore")?keyword=${Keyword.value}&types=${JSON.stringify(checkedType)}&districts=${JSON.stringify(checkedDistrict)}&rating=${Rating}&order=${OrderSelect.value}`);
+            const datas = await response.json();
+            //將結果回傳HTML
+
+            //TODO:搜尋結果需要帶入評分
+            //<i class="fa fa-star"></i> 1
+            //< i class="fa fa-star-half-o" ></i> 0.5
+            // < i class="fa fa-star-o" ></i> 0
+            const shop = datas.map((data, index) => {
+                return `<tr>
+                                                            <td class="number text-center">${index + 1}</td>
+                                                            <td class="image"><a href="Restaurant/${data.storeId}"><img src="../../images/store/decoration/${data.imagePath}" alt="${data.restaurantName}"></a></td>
+                                                            <td class="product"><a href="Restaurant/${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}</a></td>
+                                                            <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></span></td>
+                                                            <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
+                                                          </tr>`;
+            });
     </script>
     }
 
