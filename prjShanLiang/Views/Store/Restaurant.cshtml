@@ -12,7 +12,7 @@
         <div class="container">
             <div class="row justify-content-between gy-5">
                 <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
-                    <h2 data-aos="fade-up">@Html.DisplayFor(modelItem => item.RestaurantName)</h2>
+                    <h2 data-aos="fade-up">@item.RestaurantName</h2>
                     <p data-aos="fade-up" data-aos-delay="100">@item.StoreEvaluates.FirstOrDefault()?.Comments</p>
                 </div>
                 <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
@@ -43,27 +43,27 @@
                             <hr>  <!-- 分隔線 -->
                             <div class="st1">
                                 <label class="t1">地址</label>
-                                <label>@Html.DisplayFor(modelItem => item.RestaurantAddress)</label>
+                                <label>@item.RestaurantAddress</label>
                             </div>
                             <hr>  <!-- 分隔線 -->
                             <div class="st1">
                                 <label class="t1">連絡電話</label>
-                                <label>@Html.DisplayFor(modelItem => item.RestaurantPhone)</label>
+                                <label>@item.RestaurantPhone</label>
                             </div>
                             <hr>  <!-- 分隔線 -->
                             <div class="st1">
                                 <label class="t1">營業時間</label>
-                                <label>@Html.DisplayFor(modelItem => item.OpeningTime) - @Html.DisplayFor(modelItem => item.ClosingTime)</label>
+                                <label>@item.OpeningTime - @item.ClosingTime</label>
                             </div>
                             <hr>  <!-- 分隔線 -->
                             <div class="st1">
                                 <label class="t1">電子郵件</label>
-                                <label>@Html.DisplayFor(modelItem => item.StoreMail)</label>
+                                <label>@item.StoreMail</label>
                             </div>
                             <hr>  <!-- 分隔線 -->
                             <div class="st1">
                                 <label class="t1">官方網站</label>
-                                <label><a href="@Html.DisplayFor(modelItem => item.Website)">@Html.DisplayFor(modelItem => item.Website)</a></label>
+                                <label><a href="@item.Website">@item.Website</a></label>
                             </div>
                         </div>
 
@@ -136,7 +136,7 @@
                                         </a>
                                         <a class="dropdown-item" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1"
                                            target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
-                                        <a class="dropdown-item" href="mailto:@Html.DisplayFor(modelItem => item.StoreMail)"><i class="bi bi-envelope"></i> E-mail</a>
+                                        <a class="dropdown-item" href="mailto: ?subject=與您分享一間美味的餐廳，@item.RestaurantName！&body=@item.StoreMail"><i class="bi bi-envelope"></i> E-mail</a>
                                         <a class="dropdown-item" href="javascript:copyUrl();"><i class="bi bi-link"></i> 複製連結</a>
                                     </div>
 
