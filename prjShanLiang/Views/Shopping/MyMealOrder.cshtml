@@ -1,0 +1,71 @@
+﻿@model IEnumerable<prjShanLiang.Models.MealOrder>
+
+@{
+    ViewData["Title"] = "我的訂單紀錄";
+}
+
+<main id="main">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>@ViewData["Title"]</h2>
+                </div>
+            </div>
+        </div><!-- End Breadcrumbs -->
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        序號
+                    </th>                   
+                    <th>
+                        店家
+                    </th>
+                    <th>
+                        金額
+                    </th>
+                    <th>
+                        訂單狀態
+                    </th>
+                    
+                    <th>
+                        訂單時間
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int count = 0;
+                    foreach (var item in Model)
+                    {
+                        count++;
+                        <tr>
+                            <td>
+                                @count
+                            </td>                            
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Store.RestaurantName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Total)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OrderStatusNavigation.StatusName)
+                            </td>                            
+                            <td>
+                                @Html.DisplayFor(modelItem => item.OrderDate)
+                            </td>
+                            <td>
+                                @Html.ActionLink("查看", "MyMealOrderDetail","Shopping", new {  id=item.OrderId  },new{@class = "btn btn-primary"})
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</main><!-- End #main -->

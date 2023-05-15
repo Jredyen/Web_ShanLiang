@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
 
@@ -6,6 +7,11 @@ namespace prjShanLiang.Controllers
 {
     public class BloggerController : Controller
     {
+        private IWebHostEnvironment _enviro;
+        public BloggerController(IWebHostEnvironment p)
+        {
+            _enviro = p;
+        }
         public IActionResult BloggerList(CKeywordViewModel vm)
         {
             ShanLiang21Context db = new ShanLiang21Context();
@@ -22,12 +28,13 @@ namespace prjShanLiang.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult BloggerCreate(Blog b)
+        public IActionResult BloggerCreate(Blog blog)
         {
             ShanLiang21Context db = new ShanLiang21Context();
-            db.Blogs.Add(b);
-            db.SaveChanges();
-            return RedirectToAction("List");
+            db.Blogs.Add(blog);
+           
+                db.SaveChanges();
+            return RedirectToAction("BloggerList");
         }
         public IActionResult BloggerDelete(int? id)
         {
@@ -38,29 +45,36 @@ namespace prjShanLiang.Controllers
                 db.Blogs.Remove(b);
                 db.SaveChanges();
             }
-            return View();
+            return RedirectToAction("BloggerList");
         }
         public IActionResult BloggerEdit(int? id)
         {
             ShanLiang21Context db = new ShanLiang21Context();
             Blog blog = db.Blogs.FirstOrDefault(t => t.BlogId == id);
             if (blog == null)
-                return RedirectToAction("List");
+                return RedirectToAction("BloggerList");
             return View(blog);
         }
         [HttpPost]
-        public IActionResult BloggerEdit(Blog b)
+        public IActionResult BloggerEdit(CBlogwrap p)
         {
             ShanLiang21Context db = new ShanLiang21Context();
-            Blog blog = db.Blogs.FirstOrDefault(t => t.BlogId == b.BlogId);
+            Blog blog = db.Blogs.FirstOrDefault(t => t.BlogId == p.BlogId);
             if (blog != null)
             {
-                blog.BlogHeader = b.BlogHeader;
-                blog.BlogContent = b.BlogContent;
-                blog.BlogPic = b.BlogPic;
-     
+                if (p.photo != null)
+                {
+                    string PicName = Guid.NewGuid().ToString() + ".jpg";
+                    string path = _enviro.WebRootPath + "/Images/Blog/" + PicName;
+                    p.photo.CopyTo(new FileStream(path, FileMode.Create));
+                    blog.BlogPic = PicName;
+                }
+                blog.BlogHeader = p.BlogHeader;
+                blog.BlogContent = p.BlogContent;
+               
+                db.SaveChanges();
             }
-                return RedirectToAction("List");
+                return RedirectToAction("BloggerList");
             
         }
     }

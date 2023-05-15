@@ -19,6 +19,7 @@
     *@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
     @*    <link rel="stylesheet" href="~/Content/bootstrap.css" />*@
 
     <!-- bootstrap@5.3.0 -->
@@ -52,8 +53,8 @@
     ======================================================== -->
     <style>
         body{
-            font-size: 1.5rem;
-        }
+            font-size: 1.5rem;            
+        }       
     </style>
     @await RenderSectionAsync("Styles",required:false)
 </head>
@@ -76,12 +77,12 @@
                     <li>
                         <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="List">餐廳一覽</a>
                     </li>
-                    <li>
+                    @*<li>
                         <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Reconnend">人氣餐廳</a>
                     </li>
                     <li>
                         <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Latest">新進餐廳</a>
-                    </li>
+                    </li>*@
                     <li>
                         <a class="nav-link text-dark" asp-area="" asp-controller="Blogger" asp-action="BloggerList">膳糧專欄</a>
                     </li>
@@ -95,7 +96,7 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Advertisement" asp-action="BuyAdv">廣告行銷方案</a>
                     </li>
                     <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Shopping" asp-action="Menu">訂餐</a>
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-StoreId="1">訂餐</a>
                     </li>
                 </ul>
             </nav>
@@ -207,6 +208,6 @@
     <!-- Template Main JS File -->
     <script src="~/assets/js/main.js"></script>
 
-    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Scripts", required: false)    
 </body>
 </html>
