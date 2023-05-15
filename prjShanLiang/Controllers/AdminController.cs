@@ -8,13 +8,17 @@ namespace prjShanLiang.Controllers
     {
         public IActionResult Index()
         {
+            //if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE)  == null)
+            //{
+            //    return RedirectToAction( "Login", "User");
+            //}
             return View();
         }
 
         public IActionResult List()
         {
             ShanLiang21Context db = new ShanLiang21Context();
-            var datas = from a in db.Admins.Include(i => i.Identification)
+            var datas = from a in db.Admins.Include(i => i.IdentificationNavigation)
                         select a;
 
             return View(datas);

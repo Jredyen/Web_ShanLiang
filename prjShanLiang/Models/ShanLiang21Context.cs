@@ -119,6 +119,10 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.AdminId).HasColumnName("AdminID");
             entity.Property(e => e.AdminName).HasMaxLength(50);
             entity.Property(e => e.Passwoed).HasMaxLength(50);
+
+            entity.HasOne(d => d.IdentificationNavigation).WithMany(p => p.Admins)
+                .HasForeignKey(d => d.Identification)
+                .HasConstraintName("FK_Admin_Identification");
         });
 
         modelBuilder.Entity<Blog>(entity =>
@@ -145,6 +149,10 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.CityId).HasColumnName("CityID");
             entity.Property(e => e.CityName).HasMaxLength(10);
             entity.Property(e => e.RegionId).HasColumnName("RegionID");
+
+            entity.HasOne(d => d.Region).WithMany(p => p.Cities)
+                .HasForeignKey(d => d.RegionId)
+                .HasConstraintName("FK_City_Region");
         });
 
         modelBuilder.Entity<Coupon>(entity =>

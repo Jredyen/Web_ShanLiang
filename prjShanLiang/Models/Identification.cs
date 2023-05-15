@@ -10,4 +10,6 @@ public partial class Identification
     public string? IdentificationName { get; set; }
 
     public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
+
+    public virtual ICollection<Admin> Admins { get; set; } = new List<Admin>();
 }

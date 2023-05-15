@@ -34,16 +34,7 @@
                         <tr>
                             <td>@count</td>
                             <td>@Html.DisplayFor(modelItem => item.AdminName)</td>
-                            <td>
-                                @if (item.Identification == 0)
-                                {
-                                   <span>一般管理者</span>
-                                }
-                                else if (item.Identification == 3)
-                                {
-                                    <span>高級管理者</span>
-                                }
-                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.IdentificationNavigation.IdentificationName)</td>
                             <td>
                                 @Html.ActionLink("修改", "Edit", new { id = item.AdminId }, new {Class="btn btn-outline-primary"}) |
                                 @Html.ActionLink("刪除", "Delete","Admin", new {  id=item.AdminId },new {onclick="return confirm('確定刪除嗎?')", Class="btn btn-outline-danger"})
