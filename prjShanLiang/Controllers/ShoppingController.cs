@@ -197,7 +197,7 @@ namespace prjShanLiang.Controllers
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USER))
                 return RedirectToAction("Login", "User");//如果沒登入 回登入頁面
 
-            IEnumerable<MealOrder> datas = from s in _db.MealOrders.Include(m => m.Store).Include(m => m.OrderStatusNavigation)
+            IEnumerable<MealOrder> datas = from s in _db.MealOrders.Include(m => m.MealOrderDetails).Include(m => m.Store).Include(m => m.OrderStatusNavigation)
                                            where s.MemberId == id
                                            select s;
             return View(datas);

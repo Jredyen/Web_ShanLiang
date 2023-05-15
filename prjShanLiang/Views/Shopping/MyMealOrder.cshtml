@@ -4,6 +4,42 @@
     ViewData["Title"] = "我的訂單紀錄";
 }
 
+@section Styles{
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+}
+
 @section Scripts{
    @* <script>
         const stars = document.querySelectorAll('.stars');
@@ -20,8 +56,66 @@
         }
         
     </script>*@
+    <script>
+        
+        var myModal = document.getElementById('myModal')
+        var myInput = document.getElementById('myInput')
 
+        myModal.addEventListener('shown.bs.modal', function () {
+            myInput.focus()
+        })
+    </script>
     }
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                序號
+                            </th>
+                            <th>
+                                餐點名稱
+                            </th>
+                            <th>
+                                數量
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int count = 0;
+                            foreach (var item in Model)
+                            {
+                                count++;
+                                <tr>
+                                    <td>
+                                        @count
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MealOrderDetails.FirstOrDefault().Meal.MealName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MealOrderDetails.FirstOrDefault().Quantity)
+                                    </td>
+                                </tr>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>            
+        </div>
+    </div>
+</div>
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <!-- ======= Breadcrumbs ======= -->
@@ -62,13 +156,13 @@
             </thead>
             <tbody>
                 @{
-                    int count = 0;
+                    int count1 = 0;
                     foreach (var item in Model)
                     {
-                        count++;
+                        count1++;
                         <tr>
                             <td>
-                                @count
+                                @count1
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.OrderId)
@@ -90,12 +184,17 @@
                                 @Html.DisplayFor(modelItem => item.Remark)
                             </td>
                             <td>
-                                @Html.ActionLink("查看", "MyMealOrderDetail","Shopping", new {  id=item.OrderId  },new{@class = "btn btn-primary"})
+                                
+                                @Html.ActionLink("查看", "MyMealOrderDetail","Shopping", new {  id=item.OrderId  },new{@class = "btn btn-danger "})
                             </td>
                         </tr>
                     }
                 }
             </tbody>
         </table>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            展示
+        </button>   
     </div>
 </main><!-- End #main -->
