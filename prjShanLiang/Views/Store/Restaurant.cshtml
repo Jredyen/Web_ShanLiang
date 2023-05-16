@@ -241,32 +241,12 @@
             const datas = await response.json();
             const shop = datas.map(data => {
                 return (
-                    StoreType.innerHTML += `<a  asp-area="" asp-controller="Store" asp-action="searchRestaurantType" asp-route-types="${data.restaurantTypeNum}" data-aos="fade-up" style="margin-right:10px;"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
+                    StoreType.innerHTML += `<a  asp-area="" asp-controller="Store" asp-action="List" asp-route-types="${data.restaurantTypeNum}" data-aos="fade-up" style="margin-right:10px;"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
                 )
             })
         }
-        getRtype();
+        getRtype();        
 
-        進入類別
-        async function search(checkedType, checkedDistrict, Rating, orderBy) {
-            //把關鍵字、類型、地區及評價串接後進行查詢
-            const response = await fetch(`@Url.Content("~/Store/SearchStore")?keyword=${Keyword.value}&types=${JSON.stringify(checkedType)}&districts=${JSON.stringify(checkedDistrict)}&rating=${Rating}&order=${OrderSelect.value}`);
-            const datas = await response.json();
-            //將結果回傳HTML
-
-            //TODO:搜尋結果需要帶入評分
-            //<i class="fa fa-star"></i> 1
-            //< i class="fa fa-star-half-o" ></i> 0.5
-            // < i class="fa fa-star-o" ></i> 0
-            const shop = datas.map((data, index) => {
-                return `<tr>
-                                                            <td class="number text-center">${index + 1}</td>
-                                                            <td class="image"><a href="Restaurant/${data.storeId}"><img src="../../images/store/decoration/${data.imagePath}" alt="${data.restaurantName}"></a></td>
-                                                            <td class="product"><a href="Restaurant/${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}</a></td>
-                                                            <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></span></td>
-                                                            <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
-                                                          </tr>`;
-            });
     </script>
     }
 

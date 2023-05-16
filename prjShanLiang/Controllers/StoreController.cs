@@ -63,19 +63,19 @@ namespace prjShanLiang.Controllers
                                select new { s.No,s.RestaurantTypeNum,s.StoreId,r.TypeName};
             return Json(datas);
         }
-        public IActionResult searchRestaurantType(int id)
-        {
-            IQueryable datas = from r in _db.StoreTypes
-                                      join s in _db.Stores
-                                      on r.StoreId equals s.StoreId
-                                      where r.RestaurantTypeNum == id
-                                      orderby r.StoreId 
-                                      select new { r.No, r.RestaurantTypeNum, r.StoreId, s.AccountName,
-                                          s.TaxId, s.RestaurantName,s.RestaurantAddress, s.RestaurantPhone, 
-                                          s.DistrictId, s.Seats, s.Longitude, s.Latitude, s.OpeningTime, s.ClosingTime,
-                                          s.Website, s.StoreImage, s.Rating, s.StoreMail, s.Password, s.AccountStatus};
-            return View(datas);
-        }
+        //public IActionResult searchRestaurantType(int id)
+        //{
+        //    IQueryable datas = from r in _db.StoreTypes
+        //                              join s in _db.Stores
+        //                              on r.StoreId equals s.StoreId
+        //                              where r.RestaurantTypeNum == id
+        //                              orderby r.StoreId 
+        //                              select new { r.No, r.RestaurantTypeNum, r.StoreId, s.AccountName,
+        //                                  s.TaxId, s.RestaurantName,s.RestaurantAddress, s.RestaurantPhone, 
+        //                                  s.DistrictId, s.Seats, s.Longitude, s.Latitude, s.OpeningTime, s.ClosingTime,
+        //                                  s.Website, s.StoreImage, s.Rating, s.StoreMail, s.Password, s.AccountStatus};
+        //    return View(datas);
+        //}
 
         public IActionResult GetName(string keyword)
         {
