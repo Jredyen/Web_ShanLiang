@@ -197,10 +197,18 @@ namespace prjShanLiang.Controllers
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USER))
                 return RedirectToAction("Login", "User");//如果沒登入 回登入頁面
 
-            IEnumerable<MealOrder> datas = from s in _db.MealOrders.Include(m => m.MealOrderDetails).Include(m => m.Store).Include(m => m.OrderStatusNavigation)
+            string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER); //Session裡會員資料轉字串
+
+            Member member = JsonSerializer.Deserialize<Member>(jsonUser);  //字串轉會員資料物件
+            if (member.MemberId == id) 
+            {  //記錄越多讀取越久 18筆要等9秒??
+                IEnumerable<MealOrder> datas = from s in _db.MealOrders.Include(m => m.MealOrderDetails).Include(m => m.Store).Include(m => m.OrderStatusNavigation)
                                            where s.MemberId == id
                                            select s;
             return View(datas);
+            }
+            return RedirectToAction("Menu");//如果傳進來的Id不是登入者的Id轉跳回Menu
+
         }
         public IActionResult MyMealOrderDetail(int? id)
         {  //顯示選到的訂單明細
