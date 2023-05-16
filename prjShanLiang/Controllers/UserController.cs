@@ -177,9 +177,8 @@ namespace prjShanLiang.Controllers
                 Password = vm.AccountPassword
                 
             };
-            
-
-
+            string storeDistrict = vm.storeDistrict;
+            sto.DistrictId = db.Districts.FirstOrDefault(p => p.DistrictName == storeDistrict).DistrictId;
             if (StoreImage != null)
             {
                 string photoName = vm.RestaurantName + ".jpg";
@@ -190,10 +189,6 @@ namespace prjShanLiang.Controllers
 
                 //sto.StoreImage = photoName;
             }
-
-
-
-
 
             //Account acc = new Account()
             //{
