@@ -64,6 +64,8 @@
         myModal.addEventListener('shown.bs.modal', function () {
             myInput.focus()
         })
+
+        
     </script>
     }
 <!-- Modal -->
@@ -75,6 +77,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
                 <table class="table">
                     <thead>
                         <tr>
@@ -101,21 +104,22 @@
                                         @count
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.MealOrderDetails.FirstOrDefault().Meal.MealName)
+                                        
                                     </td>
                                     <td>
-                                        @Html.DisplayFor(modelItem => item.MealOrderDetails.FirstOrDefault().Quantity)
+                                        
                                     </td>
                                 </tr>
-
                             }
                         }
                     </tbody>
                 </table>
-            </div>            
+            </div>
         </div>
     </div>
 </div>
+
+
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <!-- ======= Breadcrumbs ======= -->
@@ -165,26 +169,28 @@
                                 @count1
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.OrderId)
+                                 @item.OrderId
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Store.RestaurantName)
+                                膳糧食堂 大安店 
+                            </td>
+                            <td>                                
+                                $:@Convert.ToInt16(item.Total)
                             </td>
                             <td>
-                                @{string ntd = Math.Floor((decimal)item.Total).ToString(); }
-                                $:@ntd
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.OrderStatusNavigation.StatusName)
+                                @item.OrderStatusNavigation.StatusName
                             </td>                            
                             <td>
-                                @Html.DisplayFor(modelItem => item.OrderDate)
+                                @item.OrderDate
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Remark)
+                                @item.Remark
                             </td>
                             <td>
-                                
+                                <!-- Button trigger modal -->
+                                <div type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="getdetail(@item.OrderId)">
+                                    查看
+                                </div>
                                 @Html.ActionLink("查看", "MyMealOrderDetail","Shopping", new {  id=item.OrderId  },new{@class = "btn btn-danger "})
                             </td>
                         </tr>
@@ -192,9 +198,6 @@
                 }
             </tbody>
         </table>
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            展示
-        </button>   
+        
     </div>
 </main><!-- End #main -->

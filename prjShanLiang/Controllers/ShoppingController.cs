@@ -201,8 +201,8 @@ namespace prjShanLiang.Controllers
 
             Member member = JsonSerializer.Deserialize<Member>(jsonUser);  //字串轉會員資料物件
             if (member.MemberId == id) 
-            {  //記錄越多讀取越久 18筆要等9秒??
-                IEnumerable<MealOrder> datas = from s in _db.MealOrders.Include(m => m.MealOrderDetails).Include(m => m.Store).Include(m => m.OrderStatusNavigation)
+            {  
+                IEnumerable<MealOrder> datas = from s in _db.MealOrders.Include(m => m.OrderStatusNavigation)
                                            where s.MemberId == id
                                            select s;
             return View(datas);
@@ -210,6 +210,7 @@ namespace prjShanLiang.Controllers
             return RedirectToAction("Menu");//如果傳進來的Id不是登入者的Id轉跳回Menu
 
         }
+       
         public IActionResult MyMealOrderDetail(int? id)
         {  //顯示選到的訂單明細
             IEnumerable<MealOrderDetail> datas = _db.MealOrderDetails.Include(m => m.Meal).Where(t => t.OrderId == id);
