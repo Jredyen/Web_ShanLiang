@@ -68,7 +68,8 @@ namespace prjShanLiang.Controllers
         public IActionResult logOut() {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) != null)
             {
-                HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "");
+                HttpContext.Session.Remove(CDictionary.SK_LOGINED_USER);
+                HttpContext.Session.Remove(CDictionary.SK_LOGINED_USER_ROLE);
             }
             return View("Login");
 
@@ -122,7 +123,6 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult Signup()
         {
-            
             return View();
         }
         [HttpPost]
