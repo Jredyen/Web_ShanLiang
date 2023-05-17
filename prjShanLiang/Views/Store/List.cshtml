@@ -7,12 +7,9 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="~/assets/css/loading.css" rel="stylesheet">
+    <link href="~/assets/css/checkbox.css" rel="stylesheet" />
     <style type="text/css">
-        /*body {
-                            margin-top: 20px;
-                            background: #eee;
-                        }*/
-
         .btn {
             margin-bottom: 5px;
         }
@@ -69,12 +66,6 @@
         }
 
         /*=============================================*/
-        /*.card {
-                            width: 350px;
-                            border: none;
-                            box-shadow: 5px 6px 6px 2px #e9ecef;
-                            border-radius: 12px;
-                        }*/
 
         .circle-image img {
             border: 6px solid #fff;
@@ -177,11 +168,19 @@
             .rating-submit:hover {
                 color: #fff;
             }
+            /*=============================================*/
+        ul {
+            list-style: none;
+        }
+
+        li {
+            margin-top: 1em;
+        }
     </style>
 </head>
 
 <body>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">-->
     <main id="main">
         <!-- ======= Breadcrumbs ======= -->
         <div class="breadcrumbs">
@@ -209,46 +208,104 @@
                                     <h2 class="grid-title"><i class="fa fa-filter"></i> 條件篩選</h2>
                                     <hr>
 
-                                    <h4>類別</h4>
-                                    <p>
-                                        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseType"
-                                           role="button" aria-expanded="false" aria-controls="collapseType">展開</a>
-                                    </p>
-                                    <div class="collapse" id="collapseType">
-                                        <div class="card card-body" id="storeType">
-                                            @*會在剛載入網頁時使用 ShowType() 獲得所有類型*@
+                                    <div class="accordion" id="accordionPanelsStayOpenExample">
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                                    類別
+                                                </button>
+                                            </h2>
+                                            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                                                <div class="accordion-body" id="storeType">
+                                                    @*會在剛載入網頁時使用 ShowType() 獲得所有類型*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                                                    地區
+                                                </button>
+                                            </h2>
+                                            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+                                                <div class="accordion-body" id="regionAndCityAndDistrict">
+                                                    @*會在剛載入網頁時使用 ShowCity() 獲得所有城市與行政區*@
+                                                    <ul class="iossearchfacets">
+                                                        <li>
+                                                            <span class="facetselector">北部</span>
+                                                            <ul>
+                                                                <li><span class="facetselector">台北市</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="1" type="checkbox"> 中正區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="2" type="checkbox"> 大同區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="3" type="checkbox"> 中山區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="4" type="checkbox"> 松山區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="5" type="checkbox"> 大安區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="6" type="checkbox"> 萬華區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="7" type="checkbox"> 信義區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="8" type="checkbox"> 士林區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="9" type="checkbox"> 北投區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="10" type="checkbox"> 內湖區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="11" type="checkbox"> 南港區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="12" type="checkbox"> 文山區</span></li></ul></li>
+                                                                <li><span class="facetselector">新北市</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="13" type="checkbox"> 板橋區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="14" type="checkbox"> 新莊區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="15" type="checkbox"> 泰山區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="16" type="checkbox"> 林口區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="17" type="checkbox"> 淡水區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="18" type="checkbox"> 金山區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="19" type="checkbox"> 八里區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="20" type="checkbox"> 萬里區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="21" type="checkbox"> 石門區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="22" type="checkbox"> 三芝區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="23" type="checkbox"> 瑞芳區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="24" type="checkbox"> 汐止區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="25" type="checkbox"> 平溪區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="26" type="checkbox"> 貢寮區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="27" type="checkbox"> 雙溪區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="28" type="checkbox"> 深坑區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="29" type="checkbox"> 石碇區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="30" type="checkbox"> 新店區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="31" type="checkbox"> 坪林區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="32" type="checkbox"> 烏來區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="33" type="checkbox"> 中和區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="34" type="checkbox"> 永和區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="35" type="checkbox"> 土城區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="36" type="checkbox"> 三峽區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="37" type="checkbox"> 樹林區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="38" type="checkbox"> 鶯歌區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="39" type="checkbox"> 三重區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="40" type="checkbox"> 蘆洲區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="41" type="checkbox"> 五股區</span></li></ul></li>
+                                                                <li><span class="facetselector">基隆市</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="42" type="checkbox"> 仁愛區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="43" type="checkbox"> 中正區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="44" type="checkbox"> 信義區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="45" type="checkbox"> 中山區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="46" type="checkbox"> 安樂區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="47" type="checkbox"> 暖暖區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="48" type="checkbox"> 七堵區</span></li></ul></li>
+                                                                <li><span class="facetselector">桃園市</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="49" type="checkbox"> 桃園區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="50" type="checkbox"> 中壢區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="51" type="checkbox"> 平鎮區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="52" type="checkbox"> 八德區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="53" type="checkbox"> 楊梅區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="54" type="checkbox"> 蘆竹區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="55" type="checkbox"> 龜山區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="56" type="checkbox"> 龍潭區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="57" type="checkbox"> 大溪區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="58" type="checkbox"> 大園區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="59" type="checkbox"> 觀音區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="60" type="checkbox"> 新屋區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="61" type="checkbox"> 復興區</span></li></ul></li>
+                                                                <li><span class="facetselector">新竹縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="62" type="checkbox"> 竹北市</span></li><li><span class="facetselector"><input class="selectedDistricts" value="63" type="checkbox"> 竹東鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="64" type="checkbox"> 新埔鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="65" type="checkbox"> 關西鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="66" type="checkbox"> 峨眉鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="67" type="checkbox"> 寶山鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="68" type="checkbox"> 北埔鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="69" type="checkbox"> 橫山鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="70" type="checkbox"> 芎林鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="71" type="checkbox"> 湖口鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="72" type="checkbox"> 新豐鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="73" type="checkbox"> 尖石鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="74" type="checkbox"> 五峰鄉</span></li></ul></li>
+                                                                <li><span class="facetselector">新竹市</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="75" type="checkbox"> 東區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="76" type="checkbox"> 北區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="77" type="checkbox"> 香山區</span></li></ul></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>
+                                                            <span class="facetselector">中部</span>
+                                                            <ul>
+                                                                <li><span class="facetselector">苗栗縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="78" type="checkbox"> 苗栗市</span></li><li><span class="facetselector"><input class="selectedDistricts" value="79" type="checkbox"> 通霄鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="80" type="checkbox"> 苑裡鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="81" type="checkbox"> 竹南鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="82" type="checkbox"> 頭份鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="83" type="checkbox"> 後龍鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="84" type="checkbox"> 卓蘭鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="85" type="checkbox"> 西湖鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="86" type="checkbox"> 頭屋鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="87" type="checkbox"> 公館鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="88" type="checkbox"> 銅鑼鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="89" type="checkbox"> 三義鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="90" type="checkbox"> 造橋鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="91" type="checkbox"> 三灣鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="92" type="checkbox"> 南庄鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="93" type="checkbox"> 大湖鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="94" type="checkbox"> 獅潭鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="95" type="checkbox"> 泰安鄉</span></li></ul></li>
+                                                                <li><span class="facetselector">臺中市</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="96" type="checkbox"> 中區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="97" type="checkbox"> 東區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="98" type="checkbox"> 南區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="99" type="checkbox"> 西區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="100" type="checkbox"> 北區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="101" type="checkbox"> 北屯區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="102" type="checkbox"> 西屯區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="103" type="checkbox"> 南屯區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="104" type="checkbox"> 太平區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="105" type="checkbox"> 大里區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="106" type="checkbox"> 霧峰區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="107" type="checkbox"> 烏日區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="108" type="checkbox"> 豐原區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="109" type="checkbox"> 后里區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="110" type="checkbox"> 東勢區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="111" type="checkbox"> 石岡區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="112" type="checkbox"> 新社區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="113" type="checkbox"> 和平區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="114" type="checkbox"> 神岡區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="115" type="checkbox"> 潭子區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="116" type="checkbox"> 大雅區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="117" type="checkbox"> 大肚區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="118" type="checkbox"> 龍井區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="119" type="checkbox"> 沙鹿區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="120" type="checkbox"> 梧棲區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="121" type="checkbox"> 清水區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="122" type="checkbox"> 大甲區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="123" type="checkbox"> 外埔區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="124" type="checkbox"> 大安區</span></li></ul></li>
+                                                                <li><span class="facetselector">南投縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="125" type="checkbox"> 南投市</span></li><li><span class="facetselector"><input class="selectedDistricts" value="126" type="checkbox"> 埔里鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="127" type="checkbox"> 草屯鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="128" type="checkbox"> 竹山鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="129" type="checkbox"> 集集鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="130" type="checkbox"> 名間鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="131" type="checkbox"> 鹿谷鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="132" type="checkbox"> 中寮鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="133" type="checkbox"> 魚池鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="134" type="checkbox"> 國姓鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="135" type="checkbox"> 水里鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="136" type="checkbox"> 信義鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="137" type="checkbox"> 仁愛鄉</span></li></ul></li>
+                                                                <li><span class="facetselector">彰化縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="138" type="checkbox"> 彰化市</span></li><li><span class="facetselector"><input class="selectedDistricts" value="139" type="checkbox"> 員林鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="140" type="checkbox"> 和美鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="141" type="checkbox"> 鹿港鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="142" type="checkbox"> 溪湖鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="143" type="checkbox"> 二林鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="144" type="checkbox"> 田中鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="145" type="checkbox"> 北斗鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="146" type="checkbox"> 花壇鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="147" type="checkbox"> 芬園鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="148" type="checkbox"> 大村鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="149" type="checkbox"> 永靖鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="150" type="checkbox"> 伸港鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="151" type="checkbox"> 線西鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="152" type="checkbox"> 福興鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="153" type="checkbox"> 秀水鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="154" type="checkbox"> 埔心鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="155" type="checkbox"> 埔鹽鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="156" type="checkbox"> 大城鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="157" type="checkbox"> 芳苑鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="158" type="checkbox"> 竹塘鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="159" type="checkbox"> 社頭鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="160" type="checkbox"> 二水鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="161" type="checkbox"> 田尾鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="162" type="checkbox"> 埤頭鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="163" type="checkbox"> 溪州鄉</span></li></ul></li>
+                                                                <li><span class="facetselector">雲林縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="164" type="checkbox"> 斗六市</span></li><li><span class="facetselector"><input class="selectedDistricts" value="165" type="checkbox"> 斗南鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="166" type="checkbox"> 虎尾鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="167" type="checkbox"> 西螺鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="168" type="checkbox"> 土庫鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="169" type="checkbox"> 北港鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="170" type="checkbox"> 莿桐鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="171" type="checkbox"> 林內鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="172" type="checkbox"> 古坑鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="173" type="checkbox"> 大埤鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="174" type="checkbox"> 崙背鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="175" type="checkbox"> 二崙鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="176" type="checkbox"> 麥寮鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="177" type="checkbox"> 臺西鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="178" type="checkbox"> 東勢鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="179" type="checkbox"> 褒忠鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="180" type="checkbox"> 四湖鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="181" type="checkbox"> 口湖鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="182" type="checkbox"> 水林鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="183" type="checkbox"> 元長鄉</span></li></ul></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>
+                                                            <span class="facetselector">南部</span>
+                                                            <ul>
+                                                                <li><span class="facetselector">嘉義縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="184" type="checkbox"> 太保市</span></li><li><span class="facetselector"><input class="selectedDistricts" value="185" type="checkbox"> 朴子市</span></li><li><span class="facetselector"><input class="selectedDistricts" value="186" type="checkbox"> 布袋鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="187" type="checkbox"> 大林鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="188" type="checkbox"> 民雄鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="189" type="checkbox"> 溪口鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="190" type="checkbox"> 新港鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="191" type="checkbox"> 六腳鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="192" type="checkbox"> 東石鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="193" type="checkbox"> 義竹鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="194" type="checkbox"> 鹿草鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="195" type="checkbox"> 水上鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="196" type="checkbox"> 中埔鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="197" type="checkbox"> 竹崎鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="198" type="checkbox"> 梅山鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="199" type="checkbox"> 番路鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="200" type="checkbox"> 大埔鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="201" type="checkbox"> 阿里山鄉</span></li></ul></li>
+                                                                <li><span class="facetselector">嘉義市</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="202" type="checkbox"> 東區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="203" type="checkbox"> 西區</span></li></ul></li>
+                                                                <li><span class="facetselector">臺南市</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="204" type="checkbox"> 中西區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="205" type="checkbox"> 東區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="206" type="checkbox"> 南區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="207" type="checkbox"> 北區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="208" type="checkbox"> 安平區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="209" type="checkbox"> 安南區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="210" type="checkbox"> 永康區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="211" type="checkbox"> 歸仁區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="212" type="checkbox"> 新化區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="213" type="checkbox"> 左鎮區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="214" type="checkbox"> 玉井區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="215" type="checkbox"> 楠西區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="216" type="checkbox"> 南化區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="217" type="checkbox"> 仁德區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="218" type="checkbox"> 關廟區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="219" type="checkbox"> 龍崎區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="220" type="checkbox"> 官田區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="221" type="checkbox"> 麻豆區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="222" type="checkbox"> 佳里區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="223" type="checkbox"> 西港區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="224" type="checkbox"> 七股區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="225" type="checkbox"> 將軍區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="226" type="checkbox"> 學甲區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="227" type="checkbox"> 北門區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="228" type="checkbox"> 新營區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="229" type="checkbox"> 後壁區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="230" type="checkbox"> 白河區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="231" type="checkbox"> 東山區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="232" type="checkbox"> 六甲區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="233" type="checkbox"> 下營區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="234" type="checkbox"> 柳營區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="235" type="checkbox"> 鹽水區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="236" type="checkbox"> 善化區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="237" type="checkbox"> 大內區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="238" type="checkbox"> 山上區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="239" type="checkbox"> 新市區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="240" type="checkbox"> 安定區</span></li></ul></li>
+                                                                <li><span class="facetselector">高雄市</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="241" type="checkbox"> 楠梓區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="242" type="checkbox"> 左營區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="243" type="checkbox"> 鼓山區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="244" type="checkbox"> 三民區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="245" type="checkbox"> 鹽埕區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="246" type="checkbox"> 前金區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="247" type="checkbox"> 新興區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="248" type="checkbox"> 苓雅區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="249" type="checkbox"> 前鎮區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="250" type="checkbox"> 小港區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="251" type="checkbox"> 旗津區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="252" type="checkbox"> 鳳山區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="253" type="checkbox"> 大寮區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="254" type="checkbox"> 鳥松區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="255" type="checkbox"> 林園區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="256" type="checkbox"> 仁武區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="257" type="checkbox"> 大樹區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="258" type="checkbox"> 大社區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="259" type="checkbox"> 岡山區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="260" type="checkbox"> 路竹區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="261" type="checkbox"> 橋頭區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="262" type="checkbox"> 梓官區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="263" type="checkbox"> 彌陀區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="264" type="checkbox"> 永安區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="265" type="checkbox"> 燕巢區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="266" type="checkbox"> 田寮區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="267" type="checkbox"> 阿蓮區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="268" type="checkbox"> 茄萣區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="269" type="checkbox"> 湖內區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="270" type="checkbox"> 旗山區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="271" type="checkbox"> 美濃區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="272" type="checkbox"> 內門區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="273" type="checkbox"> 杉林區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="274" type="checkbox"> 甲仙區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="275" type="checkbox"> 六龜區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="276" type="checkbox"> 茂林區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="277" type="checkbox"> 桃源區</span></li><li><span class="facetselector"><input class="selectedDistricts" value="278" type="checkbox"> 那瑪夏區</span></li></ul></li>
+                                                                <li><span class="facetselector">屏東縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="279" type="checkbox"> 屏東市</span></li><li><span class="facetselector"><input class="selectedDistricts" value="280" type="checkbox"> 潮州鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="281" type="checkbox"> 東港鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="282" type="checkbox"> 恆春鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="283" type="checkbox"> 萬丹鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="284" type="checkbox"> 長治鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="285" type="checkbox"> 麟洛鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="286" type="checkbox"> 九如鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="287" type="checkbox"> 里港鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="288" type="checkbox"> 鹽埔鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="289" type="checkbox"> 高樹鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="290" type="checkbox"> 萬巒鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="291" type="checkbox"> 內埔鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="292" type="checkbox"> 竹田鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="293" type="checkbox"> 新埤鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="294" type="checkbox"> 枋寮鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="295" type="checkbox"> 新園鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="296" type="checkbox"> 崁頂鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="297" type="checkbox"> 林邊鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="298" type="checkbox"> 南州鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="299" type="checkbox"> 佳冬鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="300" type="checkbox"> 琉球鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="301" type="checkbox"> 車城鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="302" type="checkbox"> 滿州鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="303" type="checkbox"> 枋山鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="304" type="checkbox"> 霧台鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="305" type="checkbox"> 瑪家鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="306" type="checkbox"> 泰武鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="307" type="checkbox"> 來義鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="308" type="checkbox"> 春日鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="309" type="checkbox"> 獅子鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="310" type="checkbox"> 牡丹鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="311" type="checkbox"> 三地門鄉</span></li></ul></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>
+                                                            <span class="facetselector">東部</span>
+                                                            <ul>
+                                                                <li><span class="facetselector">宜蘭縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="312" type="checkbox"> 宜蘭市</span></li><li><span class="facetselector"><input class="selectedDistricts" value="313" type="checkbox"> 羅東鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="314" type="checkbox"> 蘇澳鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="315" type="checkbox"> 頭城鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="316" type="checkbox"> 礁溪鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="317" type="checkbox"> 壯圍鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="318" type="checkbox"> 員山鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="319" type="checkbox"> 冬山鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="320" type="checkbox"> 五結鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="321" type="checkbox"> 三星鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="322" type="checkbox"> 大同鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="323" type="checkbox"> 南澳鄉</span></li></ul></li>
+                                                                <li><span class="facetselector">花蓮縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="324" type="checkbox"> 花蓮市</span></li><li><span class="facetselector"><input class="selectedDistricts" value="325" type="checkbox"> 鳳林鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="326" type="checkbox"> 玉里鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="327" type="checkbox"> 新城鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="328" type="checkbox"> 吉安鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="329" type="checkbox"> 壽豐鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="330" type="checkbox"> 秀林鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="331" type="checkbox"> 光復鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="332" type="checkbox"> 豐濱鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="333" type="checkbox"> 瑞穗鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="334" type="checkbox"> 萬榮鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="335" type="checkbox"> 富里鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="336" type="checkbox"> 卓溪鄉</span></li></ul></li>
+                                                                <li><span class="facetselector">臺東縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="337" type="checkbox"> 臺東市</span></li><li><span class="facetselector"><input class="selectedDistricts" value="338" type="checkbox"> 成功鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="339" type="checkbox"> 關山鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="340" type="checkbox"> 長濱鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="341" type="checkbox"> 海端鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="342" type="checkbox"> 池上鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="343" type="checkbox"> 東河鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="344" type="checkbox"> 鹿野鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="345" type="checkbox"> 延平鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="346" type="checkbox"> 卑南鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="347" type="checkbox"> 金峰鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="348" type="checkbox"> 大武鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="349" type="checkbox"> 達仁鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="350" type="checkbox"> 綠島鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="351" type="checkbox"> 蘭嶼鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="352" type="checkbox"> 太麻里鄉</span></li></ul></li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>
+                                                            <span class="facetselector">外島</span>
+                                                            <ul>
+                                                                <li><span class="facetselector">澎湖縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="353" type="checkbox"> 馬公市</span></li><li><span class="facetselector"><input class="selectedDistricts" value="354" type="checkbox"> 湖西鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="355" type="checkbox"> 白沙鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="356" type="checkbox"> 西嶼鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="357" type="checkbox"> 望安鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="358" type="checkbox"> 七美鄉</span></li></ul></li>
+                                                                <li><span class="facetselector">金門縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="359" type="checkbox"> 金城鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="360" type="checkbox"> 金湖鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="361" type="checkbox"> 金沙鎮</span></li><li><span class="facetselector"><input class="selectedDistricts" value="362" type="checkbox"> 金寧鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="363" type="checkbox"> 烈嶼鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="364" type="checkbox"> 烏坵鄉</span></li></ul></li>
+                                                                <li><span class="facetselector">連江縣</span><ul><li><span class="facetselector"><input class="selectedDistricts" value="365" type="checkbox"> 南竿鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="366" type="checkbox"> 北竿鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="367" type="checkbox"> 莒光鄉</span></li><li><span class="facetselector"><input class="selectedDistricts" value="368" type="checkbox"> 東引鄉</span></li></ul></li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="false" aria-controls="panelsStayOpen-collapseThree">
+                                                    評價
+                                                </button>
+                                            </h2>
+                                            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse">
+                                                <div class="accordion-body">
+                                                    <div class="rating">
+                                                        <input type="radio" name="rating" value="5" id="5" class="ratingRadio"><label for="5">☆</label>
+                                                        <input type="radio" name="rating" value="4" id="4" class="ratingRadio"><label for="4">☆</label>
+                                                        <input type="radio" name="rating" value="3" id="3" class="ratingRadio"><label for="3">☆</label>
+                                                        <input type="radio" name="rating" value="2" id="2" class="ratingRadio"><label for="2">☆</label>
+                                                        <input type="radio" name="rating" value="1" id="1" class="ratingRadio"><label for="1">☆</label>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <div class="padding"></div>
-
-                                    <h4>地區</h4>
-                                    <p>
-                                        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCAD"
-                                           role="button" aria-expanded="false" aria-controls="collapseCAD">展開</a>
-                                    </p>
-                                    <div class="collapse" id="collapseCAD">
-                                        <div class="card card-body" id="cityAndDistrict">
-                                            @*會在剛載入網頁時使用 ShowCity() 獲得所有城市與行政區*@
-                                        </div>
-                                    </div>
-
-                                    <div class="padding"></div>
-
-                                    <h4>評價</h4>
-                                    <div class="rating">
-                                        <input type="radio" name="rating" value="5" id="5" class="ratingRadio"><label for="5">☆</label>
-                                        <input type="radio" name="rating" value="4" id="4" class="ratingRadio"><label for="4">☆</label>
-                                        <input type="radio" name="rating" value="3" id="3" class="ratingRadio"><label for="3">☆</label>
-                                        <input type="radio" name="rating" value="2" id="2" class="ratingRadio"><label for="2">☆</label>
-                                        <input type="radio" name="rating" value="1" id="1" class="ratingRadio"><label for="1">☆</label>
-                                    </div>
-
                                 </div>
 
 
                                 <div class="col-md-9">
-                                    <h2><i class='fas fa-utensils'></i> 搜尋結果</h2>
+                                    <h2><i class='fas fa-utensils'></i> 商店一覽</h2>
                                     <hr>
                                     <div class="input-group">
                                         <input type="text" class="form-control" id="txtSearch" placeholder="輸入關鍵字搜尋"
@@ -267,20 +324,6 @@
 
                                     <div class="col-sm-6">
                                         <div class="btn-group">
-                                            @*<button type="button" class="btn btn-default dropdown-toggle"
-                                                data-toggle="dropdown" id="orderButton">
-                                                排序 <span class="caret"></span>
-                                            </button>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="#" name="0" class="orderBy">所有結果</a></li>
-                                                <li><a href="#" name="1" class="orderBy">評價高 > 低</a></li>
-                                                <li><a href="#" name="2" class="orderBy">評價低 > 高</a></li>
-                                                <li><a href="#" name="3" class="orderBy">加入新 > 舊</a></li>
-                                                <li><a href="#" name="4" class="orderBy">加入舊 > 新</a></li>
-                                                <li><a href="#" name="5" class="orderBy">收藏高 > 低</a></li>
-                                                <li><a href="#" name="6" class="orderBy">收藏低 > 高</a></li>
-                                            </ul>*@
-
                                             <select class="form-select selectOrder" aria-label="Default select example">
                                                 <option value="0" selected>預設排序</option>
                                                 <option value="1">評價高 > 低</option>
@@ -290,7 +333,9 @@
                                                 <option value="5">收藏高 > 低</option>
                                                 <option value="6">收藏低 > 高</option>
                                             </select>
-
+                                        </div>
+                                        <div id="selectCount">
+                                            正在查詢
                                         </div>
                                     </div>
 
@@ -306,21 +351,12 @@
 
 
                                 <div class="table-responsive">
+                                            <div id="loading">
+                                                @*LoadingCSS*@
+                                            </div>
                                     <table class="table table-hover">
                                         <tbody id="storeList">
 
-                                            <div id="loading">
-                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
-                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
-                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
-                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
-                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
-                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
-                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
-                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
-                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
-                                            <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
-                                            </div>
 
                                         </tbody>
                                     </table>
@@ -356,6 +392,7 @@
     </main>
 </body>
 @section Scripts{
+    <script src="~/assets/js/checkbox.js"></script>
     <script>
         const Keyword = document.querySelector('#txtSearch');
         const KeywordResult = document.querySelector('#searchTxtResult');
@@ -363,10 +400,15 @@
         const SerachButton = document.querySelector('#serachButton');
         const StoreType = document.querySelector('#storeType');
         const CAD = document.querySelector('#cityAndDistrict');
+        const RACAD = document.querySelector('#regionAndCityAndDistrict')
         const StoreList = document.querySelector('#storeList');
         const Loading = document.getElementById('loading');
         const OrderSelect = document.querySelector('.selectOrder');
-
+        const SelectCount = document.getElementById('selectCount');
+        //在載入資料前顯示載入的CSS(10行)
+        for (let i = 0; i < 11; i++){
+            Loading.innerHTML += `<div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>`
+        }
         //第一次載入網頁時獲取所有店家列表
         search();
 
@@ -394,8 +436,8 @@
                     .map(checkbox => checkbox.name);
 
                 //取得選取的地區ID
-                const checkedDistrict = Array.from(document.querySelectorAll('input.districtCheckbox[type="checkbox"]:checked'))
-                    .map(checkbox => checkbox.name);
+                const checkedDistrict = Array.from(document.querySelectorAll('input.selectedDistricts[type="checkbox"]:checked'))
+                    .map(checkbox => checkbox.value);
 
                 //取得選取的評分，未選取的話為搜尋全部(0)
                 const Rating = document.querySelector('[class=ratingRadio]:checked') ? document.querySelector('[class=ratingRadio]:checked').value : 0
@@ -426,7 +468,7 @@
         //獲得所有類型
         getType();
         async function getType() {
-            const response = await fetch('@Url.Content("~/Store/ShowType")')
+            const response = await fetch('@Url.Content("~/Store/GetType")')
             const datas = await response.json();
             const shop = datas.map(data => {
                 return (
@@ -435,16 +477,31 @@
             })
         }
 
-        //獲得所有城市與地區
-        getCAD();
-        async function getCAD() {
-            const response = await fetch('@Url.Content("~/api/District")')
+        //(new)無法載入JavaScript的垃圾，直接把它寫死在html裡面了
+        //getRACAD();
+        async function getRACAD() {
+            const response = await fetch('@Url.Content("~/store/GetRACAD")');
             const datas = await response.json();
-            const shop = datas.map(data => {
+            const add = datas.map(data =>{
                 return (
-                    CAD.innerHTML += `<div class="checkbox"><label><input type="checkbox" class="icheck districtCheckbox" name="${data.districtId}"> ${data.districtName}</label></div>`
+                    `
+                     <li>
+                     <span class="facetselector" >${data.regionName}</span>
+                     <ul>
+                     ${c(data.cities)}
+                     </ul>
+                     </li>`
                 )
             })
+            RACAD.innerHTML = `<ul class="iossearchfacets">${add.join("")}</ul>`;
+        }
+        function c(cities) {
+            const city = cities.map(data => `<li><span class="facetselector">${data.cityName}</span><ul>${d(data.districts)}</ul></li>`)
+            return city.join("");
+        }
+        function d(districts){
+            const district = districts.map(data => `<li><span class="facetselector"><input class="selectedDistricts" value="${data.districtID}" type="checkbox"></input> ${data.districtName}</span></li>`)
+            return district.join("");
         }
 
         async function search(checkedType, checkedDistrict, Rating, orderBy) {
@@ -453,28 +510,55 @@
             const datas = await response.json();
             //將結果回傳HTML
 
-            //TODO:搜尋結果需要帶入評分
             //<i class="fa fa-star"></i> 1
-            //< i class="fa fa-star-half-o" ></i> 0.5
-            // < i class="fa fa-star-o" ></i> 0
+            //<i class="fa fa-star-half-o"></i> 0.5
+            //<i class="fa fa-star-o"></i> 0
+            let datasum = 0;//查詢到的資料數
             const shop = datas.map((data, index) => {
-                return `<tr>
-                                                    <td class="number text-center">${index + 1}</td>
-                                                    <td class="image"><a href="Restaurant/${data.storeId}"><img src="../../images/store/decoration/${data.imagePath}" alt="${data.restaurantName}"></a></td>
-                                                    <td class="product"><a href="Restaurant/${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}</a></td>
-                                                    <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></span></td>
-                                                    <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
-                                                  </tr>`;
-            });
 
+                let stars = '';
+                for (let i = 1; i <= 5; i++) { // 產生 5 顆星星
+                    if (i <= data.rating) {
+                        stars += '<i class="fa fa-star"></i>'; // 如果該顆星星應該被填滿，則加上實心星星
+                    } else {
+                        stars += '<i class="fa fa-star-o"></i>'; // 否則加上空心星星
+                    }
+                }
+                    datasum = data.datasum;
+                    return `<tr>
+                     <td class="number text-center">${index + 1}</td>
+                     <td class="image"><a href="Restaurant/${data.storeId}"><img src="../../images/store/decoration/${data.imagePath}" alt="${data.restaurantName}"></a></td>
+                     <td class="product"><a href="Restaurant/${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}</a></td>
+                     <td class="rate text-right"><span>${stars}</span></td>
+                     <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
+                     </tr>`
+            });
             //延遲2秒
             setTimeout(function () {
             }, 2000);
-
             Loading.innerHTML = null;
             StoreList.innerHTML = shop.join("");
+            SelectCount.innerHTML = `查詢到 ${datasum} 筆資料`;
         }
 
+        //================================================================================
+        //var checkboxes = document.querySelectorAll('input.subOption'),
+        //    checkall = document.getElementById('option');
 
+        //for (var i = 0; i < checkboxes.length; i++) {
+        //    checkboxes[i].onclick = function () {
+        //        var checkedCount = document.querySelectorAll('input.subOption:checked').length;
+
+        //        checkall.checked = checkedCount > 0;
+        //        checkall.indeterminate = checkedCount > 0 && checkedCount < checkboxes.length;
+        //    }
+        //}
+
+        //checkall.onclick = function () {
+        //    for (var i = 0; i < checkboxes.length; i++) {
+        //        checkboxes[i].checked = this.checked;
+        //    }
+        //}
+        
     </script>
 }

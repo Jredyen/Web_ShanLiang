@@ -22,70 +22,26 @@ namespace prjShanLiang.Controllers
             return datas;
         }
         //[HttpGet]
-        //public IQueryable GetR()
+        //public object GG()
         //{
-        //    ShanLiang21Context _db = new();
-        //    var R = _db.Regions.Select(x => x).ToList();
-        //    var C = _db.Cities.Select(x => x).ToList();
-        //    var D = _db.Districts.Select(x => x).ToList();
-
-        //    foreach (var r in R)
-        //    {
-        //    var datas = new List<CRegion>
-        //    {
-        //        new CRegion
+        //    var regions = _db.Regions
+        //        .Include(r => r.Cities)
+        //        .ThenInclude(c => c.Districts)
+        //        .Select(r => new CRegion
         //        {
         //            regionName = r.RegionName,
-        //            Cities = new List<CCity>
+        //            Cities = r.Cities.Select(c => new CCity
         //            {
-        //                new CCity
+        //                cityName = c.CityName,
+        //                Districts = c.Districts.Select(d => new CDistrict
         //                {
-        //                    cityName = "A市",
-        //                    Districts = new List<CDistrict>
-        //                    {
-        //                        new CDistrict { districtName = "1區" },
-        //                        new CDistrict { districtName = "2區" },
-        //                    }
-        //                },
-        //                new CCity
-        //                {
-        //                    cityName = "B縣",
-        //                    Districts = new List<CDistrict>
-        //                    {
-        //                        new CDistrict { districtName = "3區" },
-        //                        new CDistrict { districtName = "4區" },
-        //                    }
-        //                },
-        //            }
-        //        },
-        //        new CRegion
-        //        {
-        //            regionName = "南部",
-        //            Cities = new List<CCity>
-        //            {
-        //                new CCity
-        //                {
-        //                    cityName = "C市",
-        //                    Districts = new List<CDistrict>
-        //                    {
-        //                        new CDistrict { districtName = "5區" },
-        //                        new CDistrict { districtName = "6區" },
-        //                    }
-        //                },
-        //                new CCity
-        //                {
-        //                    cityName = "D市",
-        //                    Districts = new List<CDistrict>
-        //                    {
-        //                        new CDistrict { districtName = "7區" },
-        //                        new CDistrict { districtName = "8區" },
-        //                    }
-        //                },
-        //            }
-        //        },
-        //    };
-        //    }
-        //    return Json(datas);
+        //                    districtName = d.DistrictName,
+        //                    districtID = d.DistrictId
+        //                }).ToList()
+        //            }).ToList()
+        //        })
+        //        .ToList();
+        //    return Json(regions);
         //}
     }
 }

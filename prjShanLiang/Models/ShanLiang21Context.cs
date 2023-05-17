@@ -127,6 +127,15 @@ public partial class ShanLiang21Context : DbContext
 
             entity.Property(e => e.BlogHeader).HasMaxLength(50);
             entity.Property(e => e.BlogPic).HasMaxLength(50);
+            entity.Property(e => e.CityName)
+                .HasMaxLength(10)
+                .IsFixedLength();
+            entity.Property(e => e.DistrictName)
+                .HasMaxLength(10)
+                .IsFixedLength();
+            entity.Property(e => e.RestaurantName)
+                .HasMaxLength(30)
+                .IsFixedLength();
         });
 
         modelBuilder.Entity<City>(entity =>
@@ -136,6 +145,10 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.CityId).HasColumnName("CityID");
             entity.Property(e => e.CityName).HasMaxLength(10);
             entity.Property(e => e.RegionId).HasColumnName("RegionID");
+
+            entity.HasOne(d => d.Region).WithMany(p => p.Cities)
+                .HasForeignKey(d => d.RegionId)
+                .HasConstraintName("FK_City_Region");
         });
 
         modelBuilder.Entity<Coupon>(entity =>
@@ -205,7 +218,7 @@ public partial class ShanLiang21Context : DbContext
 
             entity.Property(e => e.OrderId).HasColumnName("OrderID");
             entity.Property(e => e.MemberId).HasColumnName("MemberID");
-            entity.Property(e => e.OrderDate).HasColumnType("date");
+            entity.Property(e => e.OrderDate).HasMaxLength(50);
             entity.Property(e => e.Remark).HasMaxLength(50);
             entity.Property(e => e.StoreId).HasColumnName("StoreID");
             entity.Property(e => e.Total).HasColumnType("money");
