@@ -20,12 +20,7 @@ namespace prjShanLiang.Controllers
             public IActionResult Index()
             {
 
-            //var datas = from s in _db.Stores.
-            //            Include(s => s.StoreAdImages).
-            //            Include(s => s.StoreEvaluates)
-
-            //          select s;
-
+            
 
             var Image = _db.Stores.ToList();
             var AdImages = _db.StoreAdImages.ToList();
