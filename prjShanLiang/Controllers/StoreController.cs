@@ -77,6 +77,13 @@ namespace prjShanLiang.Controllers
             ViewBag.Id = id;
             return View(datas);
         }
+        public IActionResult ShowFavorate(int id)
+        {
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            var ma = _db.MemberActions.Where(ma => ma.ActionId == 2 && ma.MemberId == mem.MemberId && ma.StoreId == id).FirstOrDefault();
+            return Json(ma);
+        }
         public IActionResult AddToFavorate(int id)
         {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)

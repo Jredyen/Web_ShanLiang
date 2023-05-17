@@ -147,7 +147,7 @@
                             <div class="btn-group d-flex" role="group" aria-label="Button group with nested dropdown">
                                 <!--Dropdowns-->
                                 <button id="btnGroupDrop1" type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <a class="" asp-area="" asp-controller="" asp-action=""><i class="bi bi-share ic-t"></i>分享</a>
+                                    <a><i class="bi bi-share ic-t"></i>分享</a>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                     <a class="dropdown-item fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1&amp;src=sdkpreparse">
@@ -159,10 +159,10 @@
                                     <a class="dropdown-item" href="javascript:copyUrl();"><i class="bi bi-link"></i> 複製連結</a>
                                 </div><!--End Dropdowns-->
                                 <button type="button" class="btn btn-secondary">
-                                    <a class="" asp-area="" asp-controller="" asp-action=""><i class="bi bi-chat-left ic-t"></i>評論</a>
+                                    <a id="comment"><i class="bi bi-chat-left ic-t"></i>評論</a>
                                 </button>
                                 <button type="button" class="btn btn-secondary">
-                                    <a class="" asp-area="" asp-controller="" asp-action="" id="favorate"><i class="bi bi-suit-heart-fill ic-t"></i>收藏</a>
+                                    <a id="favorate"><i class="bi bi-suit-heart ic-t"></i>收藏</a>
                                 </button>
                             </div>
 
@@ -244,25 +244,32 @@
             })
         }
         getRtype();
-
-        // 收藏鍵變色、加入收藏
+        
+        // 載入時判斷Favorate紅或白
         const favorate = document.getElementById('favorate');
-        const ccolor = document.getElementById('ccolor');
+        async function showFavorate() {
+            const response = await fetch('@Url.Content("~/Store/ShowFavorate/")' + @item.StoreId);
+            const datas = await response.json();
+            if(datas == null) {
+                return (favorate.innerHTML = `<i class="bi bi-suit-heart ic-t"></i>收藏`);                
+            }
+            else {
+                return (favorate.innerHTML = `<i class="bi bi-suit-heart-fill ic-t" style="color:red;"></i>收藏`);
+            }
+        };
+        showFavorate();
+                // Favorate鍵變色、加入收藏
         favorate.addEventListener('click', async function () {
             const response = await fetch('@Url.Content("~/Store/AddToFavorate/")' + @item.StoreId);
             const datas = await response.json();
-            return(
-                // 未收藏：變紅、新增
-                if (datas.memberNotes == "新增收藏") {
-                favorate.innerHTML = `<i class="bi bi-suit-heart-fill ic-t" id="ccolor" style="color:red;"></i>收藏`;
-                }
-                // 已收藏：變白、刪除
-                else if (datas.memberNotes != "新增收藏") {
-                favorate.innerHTML = `<i class="bi bi-suit-heart ic-t" id="ccolor"></i>收藏`;
-                }
-            )
-            
-            
+            // 未收藏：變紅、新增
+            if (datas.memberNotes == "新增收藏") {
+                return (favorate.innerHTML = `<i class="bi bi-suit-heart-fill ic-t" style="color:red;"></i>收藏`);
+            }
+            // 已收藏：變白、刪除
+            else {
+                return (favorate.innerHTML = `<i class="bi bi-suit-heart ic-t"></i>收藏`);
+            }
         });
 
     </script>
