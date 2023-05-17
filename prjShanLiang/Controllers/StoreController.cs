@@ -77,10 +77,38 @@ namespace prjShanLiang.Controllers
             ViewBag.Id = id;
             return View(datas);
         }
-        public IActionResult AddToFavorate()
+        public IActionResult AddToFavorate(int id)
         {
-            string test = "";
-            return Json(test);
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            var ma = _db.MemberActions.Where(ma => ma.ActionId == 2 && ma.MemberId == mem.MemberId && ma.StoreId == id).FirstOrDefault();
+            if (ma != null) 
+            { 
+                _db.MemberActions.Remove(ma);
+                _db.SaveChanges();
+                return Json(ma);
+            }
+            else if (ma == null)
+            {
+                ma = new MemberAction();
+                ma.ActionId = 2;
+                ma.MemberId = mem.MemberId;
+                ma.StoreId = id;
+                ma.MemberNotes = "新增收藏";
+                _db.MemberActions.Add(ma);
+                _db.SaveChanges();
+                return Json(ma);
+            }
+            else
+                return RedirectToAction("Login", "User");
+        }
+        public IActionResult AddComment()
+        {
+            return View();
         }
 
         public IActionResult GetName(string keyword)
