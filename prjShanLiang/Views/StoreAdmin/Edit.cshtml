@@ -76,7 +76,8 @@
                 @{
                     string imageName = Model.RestaurantName + ".jpg";
                 }
-                <div><img src="~/images/test/@imageName" alt="店家照片" width="200" height="180" /></div>
+                <div id="previewImage"><img src="~/images/test/@imageName" alt="店家照片" width="200" height="180" /></div>
+                @*<div id="previewImage"></div>*@
                 <label asp-for="StoreImage" class="control-label" placeholder="">店家圖片</label>
                 <input asp-for="StoreImage" class="form-control" name="StoreImage" type="file" />
                 <span asp-validation-for="StoreImage" class="text-danger"></span>
@@ -108,5 +109,38 @@
 </div>
 
 @section Scripts {
+    <script>
+        // 獲取文件選擇框
+        var fileInput = document.querySelector('input[type="file"]');
+
+        //監聽文件選擇事件
+        fileInput.addEventListener('change', function (event) {
+            // 獲取用戶選擇的文件
+            var file = event.target.files[0];
+
+            // 創建文件讀取器
+            var reader = new FileReader();
+
+            // 文件讀取完成時的回調函數
+            reader.onload = function (e) {
+                // 創建一個新的圖像元素
+                var imgElement = document.createElement('img');
+
+                // 設置圖像元素的屬性
+                imgElement.src = e.target.result;
+                imgElement.width = 200;
+                imgElement.height = 180;
+
+                // 將圖像元素添加到頁面中
+                var previewContainer = document.getElementById('previewImage');
+                previewContainer.innerHTML = '';
+                previewContainer.appendChild(imgElement);
+            };
+
+            // 讀取文件內容
+            reader.readAsDataURL(file);
+        });
+    </script>
+
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
