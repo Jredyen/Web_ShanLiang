@@ -52,11 +52,11 @@ namespace prjShanLiang.Controllers
 
                 db.SaveChanges();
             }
-            if (s.StoreImage != null)
+            if (StoreImage != null)
             {
                 string photoName = s.RestaurantName + ".jpg";
                 string path = _enviro.WebRootPath + "/images/test/" + photoName;
-                System.IO.File.Copy("s.StoreImage", path);
+                StoreImage.CopyTo(new FileStream(path, FileMode.Create));
             }
 
             return RedirectToAction("List");

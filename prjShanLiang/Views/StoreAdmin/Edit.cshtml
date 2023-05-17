@@ -59,12 +59,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="OpeningTime" class="control-label" placeholder="">營業時間</label>
-                <input asp-for="OpeningTime" class="form-control" />
+                <input asp-for="OpeningTime" class="form-control" type="time" />
                 <span asp-validation-for="OpeningTime" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ClosingTime" class="control-label" placeholder="">結束時間</label>
-                <input asp-for="ClosingTime" class="form-control" />
+                <input asp-for="ClosingTime" class="form-control" type="time"/>
                 <span asp-validation-for="ClosingTime" class="text-danger"></span>
             </div>
             @*<div class="form-group">
@@ -77,13 +77,10 @@
                     string imageName = Model.RestaurantName + ".jpg";
                 }
                 <div><img src="~/images/test/@imageName" alt="店家照片" width="200" height="180" /></div>
-                    <label class="control-label">餐廳圖片</label>
-                    <input name="StoreImage" type="file" class="form-control" />
-                </div>
-                @*<label asp-for="StoreImage" class="control-label" placeholder="">店家圖片</label>
+                <label asp-for="StoreImage" class="control-label" placeholder="">店家圖片</label>
                 <input asp-for="StoreImage" class="form-control" name="StoreImage" type="file" />
                 <span asp-validation-for="StoreImage" class="text-danger"></span>
-            </div>*@
+            </div>
             <div class="form-group">
                 <label asp-for="AccountStatus" class="control-label" placeholder="">狀態</label>
                 <select name="AccountStatus" asp-for="AccountStatus" class="form-control">
