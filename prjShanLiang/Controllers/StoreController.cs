@@ -9,46 +9,33 @@ namespace prjShanLiang.Controllers
 {
     public class StoreController : Controller
     {
-        private readonly ShanLiang21Context _db;
-        public StoreController(ShanLiang21Context db)
-        {
-            _db = db;
-        }
 
         public IActionResult List()
         {
+            ShanLiang21Context _db = new();
             IQueryable<Store> datas = from s in _db.Stores orderby s.StoreId select s;
-            return View(datas);
-        }
-        public IActionResult Reconnend()
-        {
-            IQueryable<Store> datas = from s in _db.Stores orderby s.Rating descending select s;
-            return View(datas);
-        }
-        public IActionResult Latest()
-        {
-            IQueryable<Store> datas = from s in _db.Stores orderby s.StoreId descending select s;
             return View(datas);
         }
         public IActionResult Restaurant(int? id)
         {
+            ShanLiang21Context _db = new();
             ViewBag.Id = id;
             if (id == null)
                 return RedirectToAction("Reconnend");
             IQueryable datas = from s in _db.Stores.Include(s => s.StoreDecorationImages).Include(s => s.StoreEvaluates).Include(s => s.MemberActions)
                                where s.StoreId == id
                                select s;
-            if (datas == null)
-                return RedirectToAction("Reconnend");
             return View(datas);  
         }
         public IActionResult GetStore(string keyword)
         {
+            ShanLiang21Context _db = new();
             IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword)).Select(s => s.RestaurantName);
             return Json(storeList);
         }
         public IActionResult ShowType()
         {
+            ShanLiang21Context _db = new();
             IQueryable datas = _db.RestaurantTypes.Select(r => new { r.TypeName , r.RestaurantTypeNum});
             return Json(datas);
         }
@@ -72,6 +59,7 @@ namespace prjShanLiang.Controllers
             //地區搜尋 : 未完成且無法帶入
             //評價搜尋 : 完成
 
+            ShanLiang21Context _db = new();
             IQueryable<Store> list = null;
             //如果關鍵字不是null的話就用關鍵字搜尋
             if (keyword != null)

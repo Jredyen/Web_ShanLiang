@@ -16,6 +16,7 @@ namespace prjShanLiang.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Login(CAccountPasswordViewModel vm)
         {
             ShanLiang21Context db = new ShanLiang21Context();
