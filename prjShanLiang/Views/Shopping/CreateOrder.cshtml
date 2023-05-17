@@ -91,7 +91,7 @@
                 </table>
                 <br />
                 <div style="margin:20px;color:red;font-size:30px;">
-                    總計:NT$@pay
+                    總計: $@pay 元
                 </div>
             </div>
         </div>
@@ -125,11 +125,11 @@
                     </div>   
                     <hr />                    
                     <div style="margin-bottom:10px; color:red;font-size:30px;">
-                        優惠後金額:NT$@ViewBag.fin
+                        優惠後金額: $@ViewBag.fin 元
                     </div>
                     <p>備註:@ViewBag.Remark</p>                    
                 </div>  
-                @Html.ActionLink("檢視我的訂單", "MyMealOrder", "Shopping", new{ id = ViewBag.MemberId}, new { @class = "btn btn-danger",style="margin:20px;"} )
+                @Html.ActionLink("檢視我的訂單", "MyMealOrder", "Shopping", new{ id = ViewBag.MemberId}, new { @class = "btn btn-primary",style="margin:20px;"} )
             </div>           
         </div>       
     </div>

@@ -178,7 +178,7 @@ namespace prjShanLiang.Controllers
             mealOrder.OrderDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             mealOrder.Remark = remark;
             _db.MealOrders.Add(mealOrder);
-            //_db.SaveChanges();//成立訂單先存回資料庫
+            _db.SaveChanges();//成立訂單先存回資料庫
 
             foreach (var item in cart)
             {   //生成訂單後 再把購物車裡的物品一筆一筆放到訂單細節資料表
@@ -188,7 +188,7 @@ namespace prjShanLiang.Controllers
                 mealOrderDetail.Quantity = item.count;
                 _db.MealOrderDetails.Add(mealOrderDetail);
             }
-            //_db.SaveChanges();//訂單明細存回資料庫
+            _db.SaveChanges();//訂單明細存回資料庫
             HttpContext.Session.Remove(CDictionary.SK_PURCHASED_MENU_LIST);//清空購物車
             return View(cart);
         }
