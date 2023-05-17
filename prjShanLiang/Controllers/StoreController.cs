@@ -144,15 +144,51 @@ namespace prjShanLiang.Controllers
                 _db.SaveChanges();
                 return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
             }
-            else {
+            else
+            {
                 se1.Comments = se.Comments;
                 se1.Rating = se.Rating;
                 se1.EvaluateDate = se.EvaluateDate;
                 _db.SaveChanges();
-                return RedirectToAction("Restaurant", "Store", new { id = se.StoreId }); 
-            }                
+                return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
+            }
         }
-
+        public IActionResult Reserve(int? id)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            ViewBag.Id = id;
+            ViewBag.mid = mem.MemberId;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Reserve(StoreReserved sr)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).FirstOrDefault();
+            var sr1 = _db.StoreReserveds.GroupBy(sr1 => sr1.StoreId == sr.StoreId && sr1.Time == 12).
+                Select(sr1 => new { Total=sr1.Sum(sr1=>sr1.NumOfPeople) });
+            if (s.Seats <= sr1.FirstOrDefault().Total)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else 
+            {
+                _db.StoreReserveds.Add(sr);
+                _db.SaveChanges();
+                return RedirectToAction("Restaurant", "Store", new { id = sr.StoreId });
+            }
+            
+        }
         public IActionResult GetName(string keyword)
         {
             IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword)).Select(s => s.RestaurantName);

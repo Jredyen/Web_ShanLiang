@@ -1,0 +1,187 @@
+﻿@model prjShanLiang.Models.StoreReserved
+
+@{
+    ViewData["Title"] = "線上訂位";
+}
+<main id="main">
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>選擇預約時段</h2>
+                <ol>
+                    <li><a a asp-controller="Store" asp-action="List">Store</a></li>
+                    <li>Reserve</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- End Breadcrumbs -->
+
+    <div class="container">
+        <hr />
+        <div class="col-md-4">
+            <form asp-action="Reserve">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group" hidden>
+                    <label asp-for="ReservationId" class="control-label"></label>
+                    <input asp-for="ReservationId" class="form-control" />
+                    <span asp-validation-for="ReservationId" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="StoreId" class="control-label"></label>
+                    <input asp-for="StoreId" class="form-control" value="@ViewBag.Id" />
+                    <span asp-validation-for="StoreId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Date" class="control-label"></label>
+                    <input asp-for="Date" class="form-control" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+                <table class="table">
+                    <thead class="future-reserve-header" id="future_reserve_header" style="display: table-header-group;">
+                        <tr>
+                            <th>時間</th>
+                            <th>分鐘</th>
+                        </tr>
+                    </thead>
+                    <tbody id="future_reserve_button" class="future-reserve-button">
+                        <tr>
+                            <td>11</td>
+                            <td><input type="button" id="hour_11_min_00" class="btn min-click min_click fc-quaternary" value="00" data-min="00" data-hour="11"></td>
+                            <td><input type="button" id="hour_11_min_10" class="btn min-click min_click fc-quaternary" value="10" data-min="10" data-hour="11"></td>
+                            <td><input type="button" id="hour_11_min_20" class="btn min-click min_click fc-quaternary" value="20" data-min="20" data-hour="11"></td>
+                            <td><input type="button" id="hour_11_min_30" class="btn min-click min_click fc-quaternary" value="30" data-min="30" data-hour="11"></td>
+                            <td><input type="button" id="hour_11_min_40" class="btn min-click min_click fc-quaternary" value="40" data-min="40" data-hour="11"></td>
+                            <td><input type="button" id="hour_11_min_50" class="btn min-click min_click fc-quaternary" value="50" data-min="50" data-hour="11"></td>
+                        </tr>
+                        <tr>
+                            <td>12</td>
+                            <td><input type="button" id="hour_12_min_00" class="btn min-click min_click fc-quaternary" value="00" data-min="00" data-hour="12"></td>
+                            <td><input type="button" id="hour_12_min_10" class="btn min-click min_click fc-quaternary" value="10" data-min="10" data-hour="12"></td>
+                            <td><input type="button" id="hour_12_min_20" class="btn min-click min_click fc-quaternary" value="20" data-min="20" data-hour="12"></td>
+                            <td><input type="button" id="hour_12_min_30" class="btn min-click min_click fc-quaternary" value="30" data-min="30" data-hour="12"></td>
+                            <td><input type="button" id="hour_12_min_40" class="btn min-click min_click fc-quaternary" value="40" data-min="40" data-hour="12"></td>
+                            <td><input type="button" id="hour_12_min_50" class="btn min-click min_click fc-quaternary" value="50" data-min="50" data-hour="12"></td>
+                        </tr>
+                        <tr>
+                            <td>13</td>
+                            <td><input type="button" id="hour_13_min_00" class="btn min-click min_click fc-quaternary" value="00" data-min="00" data-hour="13"></td>
+                            <td><input type="button" id="hour_13_min_10" class="btn min-click min_click fc-quaternary" value="10" data-min="10" data-hour="13"></td>
+                            <td><input type="button" id="hour_13_min_20" class="btn min-click min_click fc-quaternary" value="20" data-min="20" data-hour="13"></td>
+                            <td><input type="button" id="hour_13_min_30" class="btn min-click min_click fc-quaternary" value="30" data-min="30" data-hour="13"></td>
+                            <td><input type="button" id="hour_13_min_40" class="btn min-click min_click fc-quaternary" value="40" data-min="40" data-hour="13"></td>
+                            <td><input type="button" id="hour_13_min_50" class="btn min-click min_click fc-quaternary" value="50" data-min="50" data-hour="13"></td>
+                        </tr>
+                        <tr>
+                            <td>14</td>
+                            <td><input type="button" id="hour_14_min_00" class="btn min-click min_click fc-quaternary" value="00" data-min="00" data-hour="14"></td>
+                            <td><input type="button" id="hour_14_min_10" class="btn min-click min_click fc-quaternary" value="10" data-min="10" data-hour="14"></td>
+                            <td><input type="button" id="hour_14_min_20" class="btn min-click min_click fc-quaternary" value="20" data-min="20" data-hour="14"></td>
+                            <td><input type="button" id="hour_14_min_30" class="btn min-click min_click fc-quaternary" value="30" data-min="30" data-hour="14"></td>
+                            <td><input type="button" id="hour_14_min_40" class="btn min-click min_click fc-quaternary" value="40" data-min="40" data-hour="14"></td>
+                            <td><input type="button" id="hour_14_min_50" class="btn min-click min_click fc-quaternary" value="50" data-min="50" data-hour="14"></td>
+                        </tr>
+                        <tr>
+                            <td>15</td>
+                            <td><input type="button" id="hour_15_min_00" class="btn min-click min_click fc-quaternary" value="00" data-min="00" data-hour="15"></td>
+                            <td><input type="button" id="hour_15_min_10" class="btn min-click min_click fc-quaternary" value="10" data-min="10" data-hour="15"></td>
+                            <td><input type="button" id="hour_15_min_20" class="btn min-click min_click fc-quaternary" value="20" data-min="20" data-hour="15"></td>
+                            <td><input type="button" id="hour_15_min_30" class="btn min-click min_click fc-quaternary" value="30" data-min="30" data-hour="15"></td>
+                            <td><input type="button" id="hour_15_min_40" class="btn min-click min_click fc-quaternary" value="40" data-min="40" data-hour="15"></td>
+                            <td><input type="button" id="hour_15_min_50" class="btn min-click min_click fc-quaternary" value="50" data-min="50" data-hour="15"></td>
+                        </tr>
+                        <tr>
+                            <td>16</td>
+                            <td><input type="button" id="hour_16_min_00" class="btn min-click min_click fc-quaternary" value="00" data-min="00" data-hour="16"></td>
+                            <td><input type="button" id="hour_16_min_10" class="btn min-click min_click fc-quaternary" value="10" data-min="10" data-hour="16"></td>
+                            <td><input type="button" id="hour_16_min_20" class="btn min-click min_click fc-quaternary" value="20" data-min="20" data-hour="16"></td>
+                            <td><input type="button" id="hour_16_min_30" class="btn min-click min_click fc-quaternary" value="30" data-min="30" data-hour="16"></td>
+                            <td><input type="button" id="hour_16_min_40" class="btn min-click min_click fc-quaternary" value="40" data-min="40" data-hour="16"></td>
+                            <td><input type="button" id="hour_16_min_50" class="btn min-click min_click fc-quaternary" value="50" data-min="50" data-hour="16"></td>
+                        </tr>
+                        <tr>
+                            <td>17</td>
+                            <td><input type="button" id="hour_17_min_00" class="btn min-click min_click fc-quaternary" value="00" data-min="00" data-hour="17"></td>
+                            <td><input type="button" id="hour_17_min_10" class="btn min-click min_click fc-quaternary" value="10" data-min="10" data-hour="17"></td>
+                            <td><input type="button" id="hour_17_min_20" class="btn min-click min_click fc-quaternary" value="20" data-min="20" data-hour="17"></td>
+                            <td><input type="button" id="hour_17_min_30" class="btn min-click min_click fc-quaternary" value="30" data-min="30" data-hour="17"></td>
+                            <td><input type="button" id="hour_17_min_40" class="btn min-click min_click fc-quaternary" value="40" data-min="40" data-hour="17"></td>
+                            <td><input type="button" id="hour_17_min_50" class="btn min-click min_click fc-quaternary" value="50" data-min="50" data-hour="17"></td>
+                        </tr>
+                        <tr>
+                            <td>18</td>
+                            <td><input type="button" id="hour_18_min_00" class="btn min-click min_click fc-quaternary" value="00" data-min="00" data-hour="18"></td>
+                            <td><input type="button" id="hour_18_min_10" class="btn min-click min_click fc-quaternary" value="10" data-min="10" data-hour="18"></td>
+                            <td><input type="button" id="hour_18_min_20" class="btn min-click min_click fc-quaternary" value="20" data-min="20" data-hour="18"></td>
+                            <td><input type="button" id="hour_18_min_30" class="btn min-click min_click fc-quaternary" value="30" data-min="30" data-hour="18"></td>
+                            <td><input type="button" id="hour_18_min_40" class="btn min-click min_click fc-quaternary" value="40" data-min="40" data-hour="18"></td>
+                            <td><input type="button" id="hour_18_min_50" class="btn min-click min_click fc-quaternary" value="50" data-min="50" data-hour="18"></td>
+                        </tr>
+                        <tr>
+                            <td>19</td>
+                            <td><input type="button" id="hour_19_min_00" class="btn min-click min_click fc-quaternary" value="00" data-min="00" data-hour="19"></td>
+                            <td><input type="button" id="hour_19_min_10" class="btn min-click min_click fc-quaternary" value="10" data-min="10" data-hour="19"></td>
+                            <td><input type="button" id="hour_19_min_20" class="btn min-click min_click fc-quaternary" value="20" data-min="20" data-hour="19"></td>
+                            <td><input type="button" id="hour_19_min_30" class="btn min-click min_click fc-quaternary" value="30" data-min="30" data-hour="19"></td>
+                            <td><input type="button" id="hour_19_min_40" class="btn min-click min_click fc-quaternary" value="40" data-min="40" data-hour="19"></td>
+                            <td><input type="button" id="hour_19_min_50" class="btn min-click min_click fc-quaternary" value="50" data-min="50" data-hour="19"></td>
+                        </tr>
+                        <tr>
+                            <td>20</td>
+                            <td><input type="button" id="hour_20_min_00" class="btn min-click min_click fc-quaternary" value="00" data-min="00" data-hour="20"></td>
+                            <td><input type="button" id="hour_20_min_10" class="btn min-click min_click fc-quaternary" value="10" data-min="10" data-hour="20"></td>
+                            <td><input type="button" id="hour_20_min_20" class="btn min-click min_click fc-quaternary" value="20" data-min="20" data-hour="20"></td>
+                            <td><input type="button" id="hour_20_min_30" class="btn min-click min_click fc-quaternary" value="30" data-min="30" data-hour="20"></td>
+                            <td><input type="button" id="hour_20_min_40" class="btn min-click min_click fc-quaternary" value="40" data-min="40" data-hour="20"></td>
+                            <td><input type="button" id="hour_20_min_50" class="btn min-click min_click fc-quaternary" value="50" data-min="50" data-hour="20"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="form-group" >
+                    <label asp-for="Time" class="control-label"></label>
+                    <input asp-for="Time" class="form-control" id="Time" readonly/>
+                    <span asp-validation-for="Time" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="MemberId" class="control-label"></label>
+                    <input asp-for="MemberId" class="form-control" value="@ViewBag.mid" />
+                    <span asp-validation-for="MemberId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NumOfPeople" class="control-label"></label>
+                    <input asp-for="NumOfPeople" class="form-control" min="1" max="10" />
+                    <span asp-validation-for="NumOfPeople" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CouponId" class="control-label"></label>
+                    <input asp-for="CouponId" class="form-control" />
+                    <span asp-validation-for="CouponId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="送出" class="btn btn-primary" />
+                    <a asp-action="Restaurant" asp-route-id="@ViewBag.Id">取消</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</main>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        const button = document.querySelectorAll('.btn');
+        const checked = document.querySelectorAll('.min-click').checked;
+        console.log(checked);
+        const time = document.getElementById('Time');
+        for (var i = 0; i < button.length; i++) {
+            button[i].addEventListener('click', async function () {
+                time.value = checked.getAttribute('data-hour');
+                
+            });
+        }
+
+    </script>
+}
