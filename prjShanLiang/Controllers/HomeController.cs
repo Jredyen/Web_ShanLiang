@@ -27,11 +27,12 @@ namespace prjShanLiang.Controllers
             //          select s;
 
 
-            var Image = _db.Stores.Take(4).ToList();
+            var Image = _db.Stores.ToList();
             var AdImages = _db.StoreAdImages.ToList();
             var Evaluate = _db.StoreEvaluates.ToList();
             var member = _db.Members.ToList();
-            var model = new Tuple<List<Store>, List<StoreAdImage>,List<StoreEvaluate>,List<Member>>(Image, AdImages, Evaluate, member);
+            var blog = _db.Blogs.ToList();
+            var model = new Tuple<List<Store>, List<StoreAdImage>,List<StoreEvaluate>,List<Member>,List<Blog>>(Image, AdImages, Evaluate, member,blog);
             return View(model);
             }
         
