@@ -14,55 +14,56 @@ namespace TestPrjShanLiang
         StoreController _sc;
         public TestsStoreController()
         {
-            _sc = new();
+            ShanLiang21Context db = new();
+            _sc = new(db);
         }
         [Test]
         public void TestStoreList()
         {
             var result = _sc.List();
-            Assert.Null(result);
+            Assert.IsNotNull(result);
         }
         [Test]
         public void TestGetKeyword()
         {
             string keyword = "IJIDJh7e674841IOIG";
-            IActionResult result = _sc.GetStore(keyword);
-            Assert.Null(result);
+            IActionResult result = _sc.GetName(keyword);
+            Assert.IsNotNull(result);
         }
         [Test]
         public void TestGetType()
         {
             IActionResult result = _sc.ShowType();
-            Assert.Null(result);
+            Assert.IsNotNull(result);
         }
         [Test]
         public void TestSearchHaveKeyword()
         {
             string keywoed = "¿¯Â³";
-            int[]? types = { 1, 2, 3, 4, 5 };
-            int[]? districts = { 1, 2, 3, 4, 5 };
+            string types = " 1 2, 3, 4, 5 ";
+            string districts = " 1, 2, 3, 4, 5 ";
             int rating = 3;
             IActionResult result = _sc.SearchStore(keywoed, types, districts, rating);
-            Assert.Null(result);
+            Assert.IsNotNull(result);
         }
         [Test]
         public void TestSearchNoKeyword()
         {
             IActionResult result = _sc.SearchStore(null, null, null, null);
-            Assert.Null(result);
+            Assert.IsNotNull(result);
         }
         [Test]
         public void TestShowRestaurant()
         {
             int storeID = 1;
             IActionResult result = _sc.Restaurant(storeID);
-            Assert.Null(result);
+            Assert.IsNotNull(result);
         }
         [Test]
         public void TestNoInputRestaurantID()
         {
             IActionResult result = _sc.Restaurant(null);
-            Assert.Null(result);
+            Assert.IsNotNull(result);
         }
 
     }
