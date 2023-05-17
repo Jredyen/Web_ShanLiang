@@ -41,8 +41,10 @@
                 <span asp-validation-for="BlogHeader" class="text-danger"></span>
             </div>
             <div class="form-group">
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
                 <label asp-for="BlogContent" class="control-label">內容</label>
-                <textarea asp-for="BlogContent" class="form-control" rows ="50" >
+                    <textarea asp-for="BlogContent" class="form-control" rows="20" id="story">
+                    <script src="~/js/Blog.js"></script>
                     </textarea>
                 <span asp-validation-for="BlogContent" class="text-danger"></span>
             </div>
@@ -50,14 +52,13 @@
                     <label class="control-label">上傳圖片</label>
                     <input type="file" name="photo" class="form-control" />
             </div>
-            
+            <br />
+            <hr />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="上傳" class="btn btn-primary" />
             </div>
         </form>
-   
 </div>
-
 <div>
             <a asp-action="BloggerList">回到文章列表</a>
 </div>
@@ -67,6 +68,5 @@
                 await Html.RenderPartialAsync("_ValidationScriptsPartial");
             }
         }
-
 </div>
     </main>

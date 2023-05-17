@@ -13,9 +13,6 @@
                 </div>
             </div>
         </div><!-- End Breadcrumbs -->
-        
-
-        <h4>Blog</h4>
         <hr />
         <div class="row">
                 <form asp-action="BloggerDetail">
@@ -42,29 +39,26 @@
                         <span asp-validation-for="BlogHeader" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="BlogContent" class="control-label">內容</label>
-                    <textarea asp-for="BlogContent" class="form-control" rows="10" readonly="value"></textarea>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+                        <label asp-for="BlogContent" class="control-label">推薦內容</label>
+                    <textarea asp-for="BlogContent" class="form-control" readonly="value" id="story"></textarea>
                         <span asp-validation-for="BlogContent" class="text-danger"></span>
+                    <script src="~/js/Blog.js"></script>
                     </div>
-                    
-                <div style="width:1000px;height:500px;border:1px #cccccc dashed;">
+                <div style="border:1px #cccccc dashed;">
                     <label asp-for="BlogPic" class="control-label" >店家照片</label>
-                    <img src="~/Images/Blog/07703540-afc2-47e7-9d3d-115bdf7bda41.jpg" width="500" />
-                       
+                    <img src="~/Images/Blog/@Model.BlogPic" width="1000" />
+                    <span asp-validation-for="BlogPic" class="text-danger"></span>
                     </div>
-                    
                 </form>
-            
-            
         </div>
-
+        <br />
+        <hr />
         <div>
             <a asp-action="BloggerList">回到文章列表</a>
         </div>
-
     </div>
         </main>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
