@@ -13,6 +13,7 @@
                         <h2>會員中心</h2>
                         <ul>
                             <p>你好,@ViewBag.MemberName</p>
+                            @Html.ActionLink("登出", "logOut","User")
                             @Html.ActionLink("修改資料", "memberDataRevision" ,new {  Model.FirstOrDefault().Email  })
                         </ul>
                     </div>

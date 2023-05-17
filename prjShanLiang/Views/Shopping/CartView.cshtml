@@ -3,24 +3,19 @@
 @{
     ViewBag.Title = "購物車";
 }
+@section Styles{
 <style>
-    
-    
+   
 </style>
+}
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <!-- ======= Breadcrumbs ======= -->
         <div class="breadcrumbs">
             <div class="container">
-
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2>@ViewData["Title"]</h2>
-                    <ol>
-                        <li><a asp-controller="Store" asp-action="List">Store</a></li>
-                        <li>Latest</li>
-                    </ol>
+                    <h2>@ViewData["Title"]</h2>                 
                 </div>
-
             </div>
         </div><!-- End Breadcrumbs -->       
         <div style="margin:20px; font-size:16px;">
@@ -86,10 +81,9 @@
             <li>應付金額:NT$@sum.ToString("###,###,##0")</li>
             <br />
             <p>
-                @Html.ActionLink("確認訂單", "CheckoutCart", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
-                @Html.ActionLink("繼續點餐", "Menu", "Shopping", null, new { @class = "btn btn-primary" })
+                @Html.ActionLink("確認訂單", "CheckoutCart", "Shopping", null, new { @class = "btn btn-primary" })
+                @Html.ActionLink("繼續點餐", "Menu", "Shopping", new{StoreId=1}, new { @class = "btn btn-primary" })
             </p>
-        </div>
-        
+        </div>        
     </div>
 </main><!-- End #main -->

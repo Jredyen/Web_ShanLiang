@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "註冊店家";
+
 }
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
@@ -25,92 +26,242 @@
         <hr />
         <div class="row">
             <div class="col-md-4">
-                <form asp-action="SignupStore">
+                <form asp-action="SignupStore" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="AccountName" class="control-label"></label>
-                        <input asp-for="AccountName" class="form-control" />
+                        <input asp-for="AccountName" required class="form-control" />
                         <span asp-validation-for="AccountName" class="text-danger"></span>
                     </div>
+                    
                     <div class="form-group">
                         <label asp-for="AccountPassword" class="control-label"></label>
-                        <input asp-for="AccountPassword" class="form-control" />
+                        <input type="checkbox" id="chkShowPassword" />顯示密碼
+                        <input type="password" required id="storePassword" maxlength="16" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" asp-for="AccountPassword" class="form-control" />
                         <span asp-validation-for="AccountPassword" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label  class="control-label">確認密碼</label>
+                        <input required type="password" class="form-control" id="storePasswordChecking" />
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="註冊" id="btnDataRevision" class="btn btn-primary" />
                     </div>
                     <div class="form-group">
                         <label asp-for="TaxID" class="control-label"></label>
-                        <input asp-for="TaxID" class="form-control" />
+                        <input asp-for="TaxID" required class="form-control" />
                         <span asp-validation-for="TaxID" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="RestaurantName" class="control-label"></label>
-                        <input asp-for="RestaurantName" class="form-control" />
+                        <input asp-for="RestaurantName" required class="form-control" />
                         <span asp-validation-for="RestaurantName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="RestaurantPhone" class="control-label"></label>
-                        <input asp-for="RestaurantPhone" class="form-control" />
+                        <input asp-for="RestaurantPhone"  maxlength="10"  required class="form-control" />
                         <span asp-validation-for="RestaurantPhone" class="text-danger"></span>
                     </div>
+                    
+                    <div id="errorMessage1"></div>
                     <div class="form-group">
-                        <label asp-for="RestaurantAddress" class="control-label"></label>
-                        <input asp-for="RestaurantAddress" class="form-control" />
-                        <span asp-validation-for="RestaurantAddress" class="text-danger"></span>
+                        <label  class="control-label">縣市</label>
+                        <select class="form-control" id="storeCity"></select>
+                        <span class="text-danger"></span>
                     </div>
-
-                    <div>
-                        <select>
-                            <option>請選擇縣市</option>
-                            @{
-                                ShanLiang21Context db = new ShanLiang21Context();
-                                IQueryable cDatas = db.Cities.Select(c => c.CityName);
-                                foreach (string item in cDatas)
-                                {
-                                    <option>@item</option>
-                                }
-                            }
-                        </select>
-                        <select>
-                            <option>請選擇行政區</option>
-                            @{
-                                IQueryable<string> dDatas = from d in db.Districts
-                                                            join c in db.Cities on d.CityId equals c.CityId
-                                                            //where c.CityName == City.SelectedItem
-                                                            select d.DistrictName;
-                                foreach (string item in dDatas)
-                                {
-                                    <option>@item</option>
-                                }
-                            }
-                        </select>
-                    </div>
-
                     <div class="form-group">
-                        <label asp-for="DistrictId" class="control-label"></label>
-                        <input asp-for="DistrictId" class="form-control" />
+                        <label asp-for="DistrictId" class="control-label">地區</label>
+                        <select asp-for="DistrictId" class="form-control" name="storeDistrict" id="storeDistrict"></select>
                         <span asp-validation-for="DistrictId" class="text-danger"></span>
                     </div>
+
+                    <div class="form-group">
+                        <label asp-for="RestaurantAddress" class="control-label"></label>
+                        <input asp-for="RestaurantAddress" id="storeAddress"  required class="form-control" />
+                        <span asp-validation-for="RestaurantAddress" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="OpenningTime" class="control-label">開始營業時間</label>
+                        <input asp-for="OpenningTime" required class="form-control" type="time" />
+                        <span asp-validation-for="OpenningTime" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ClosingTime" class="control-label">結束營業時間</label>
+                        <input asp-for="ClosingTime" required class="form-control" type="time" />
+                        <span asp-validation-for="ClosingTime" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Website" class="control-label">餐廳網站</label>
+                        <input type="url" asp-for="Website" required class="form-control" />
+                        <span asp-validation-for="Website" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label  class="control-label">餐廳圖片</label>
+                        <input name="StoreImage"  type="file"  class="form-control" />
+                    </div>
+
                     <div class="form-group">
                         <label asp-for="Seats" class="control-label"></label>
-                        <input asp-for="Seats" class="form-control" />
+                        <input asp-for="Seats" required class="form-control" />
                         <span asp-validation-for="Seats" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="StoreMail" class="control-label"></label>
-                        <input asp-for="StoreMail" class="form-control" />
+                        <input asp-for="StoreMail" type="email" required  class="form-control" />
                         <span asp-validation-for="StoreMail" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <input type="submit" value="註冊" class="btn btn-primary" />
-                    </div>
+                    
                 </form>
             </div>
         </div>
 
-        @section Scripts {
-            @{
-                await Html.RenderPartialAsync("_ValidationScriptsPartial");
+       @section Scripts {
+    <script>
+        
+   
+        const Password1 = document.getElementById('storePassword');
+        const Password2 = document.getElementById('storePasswordChecking');
+        const errorMessage = document.getElementById('errorMessage1');
+        const btnDataRevision = document.getElementById('btnDataRevision');
+        const chkShowPassword = document.getElementById('chkShowPassword');
+        const storeDataRevision = document.getElementById('storeDataRevision');
+        const storeCity = document.getElementById('storeCity');
+        const storeDistrict = document.getElementById('storeDistrict');
+        const storeAddress = document.getElementById('storeAddress');
+
+        let errorString = '';
+        btnDataRevision.disabled = false
+        let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
+        let result = false
+
+
+
+        Password1.addEventListener('input',
+        function (event) {
+        // 錯誤訊息用字串
+            if (Password1.value){
+                errorString = ''
+                result = pattern.test(Password1.value)
+                if (!Password1.value) {
+                errorString += '請填寫密碼'
+                }
+                if (!Password2.value) {
+                errorString += ' 請確認密碼'
+                }
+                if (Password1.value !== Password2.value) {
+                errorString += ' 兩次輸入的密碼不同'
+                }
+                if (!result) {
+                errorString += ' 密碼強度不足'
+                }
+                errorMessage.innerText = (errorString) ? errorString : '密碼一致'
+
+                if (!errorString) {
+                btnDataRevision.disabled = false
+                }
+                if (errorString) {
+                btnDataRevision.disabled = true
+                }
             }
-        }
+        })
+        Password2.addEventListener('input',
+        function (event) {
+        // 錯誤訊息用字串
+            if (Password1.value){
+            errorString = ''
+            result = pattern.test(Password1.value)
+                if (!Password1.value) {
+                errorString += ' 密碼沒填'
+                }
+                if (!Password2.value) {
+                errorString += ' 密碼確認沒填'
+                }
+                if (Password1.value !== Password2.value) {
+                errorString += ' 兩次輸入的密碼不同'
+                }
+                if (!result) {
+                errorString += ' 密碼強度不足'
+                }
+                errorMessage.innerText = (errorString) ? errorString : '密碼一致'
+
+                if (!errorString) {
+                btnDataRevision.disabled = false
+                }
+                if (errorString) {
+                btnDataRevision.disabled = true
+                }
+            }
+        })
+        //await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                chkShowPassword.addEventListener('click', (event) => {
+                    if (event.currentTarget.checked) {
+                        Password1.type = "text"
+                        Password2.type = "text"
+                        
+                    }
+                    else {
+                        Password1.type = "password"
+                        Password2.type = "password"
+                    }
+                })
+        storeCity.addEventListener('mousedown',async ()=>{
+           const response = await fetch('@Url.Content("~/User/GetCities")')
+           const datas = await response.json();
+           const cities = datas.map(data=>{
+               return(
+                    `<option value=${data}>${data}</option>`
+               )
+           })
+                    storeCity.innerHTML = cities.join("");
+        })
+
+        storeDistrict.addEventListener('mousedown', async () => {
+             let num = storeCity.selectedIndex
+             let chosenCity= storeCity.options[num].text
+
+                    const response = await fetch('@Url.Content("~/User/GetDistricts")?storeCity=' + chosenCity)
+             const datas = await response.json();
+                   
+             const districts = datas.map(data=>{
+                 return(
+                    `<option value=${data}>${data}</option>`
+                 )
+            })
+            storeDistrict.innerHTML = districts.join("");
+        })
+
+        let addressString=""
+        let chosenCity =""
+                    storeCity.addEventListener('change', function(){
+                    addressString = ""
+                    let num = storeCity.selectedIndex
+                    let chosenCity = storeCity.options[num].text
+                    addressString += chosenCity
+                    storeAddress.value = addressString
+                    console.log(chosenCity)
+                })
+
+                storeDistrict.addEventListener('change', function () {
+                   //if (addressString.contains(chosenDistrict)){
+                   //     addressString = ""
+                   // }
+                    let num = storeDistrict.selectedIndex
+                    let chosenDistrict = storeDistrict.options[num].text
+                    addressString += chosenDistrict
+                    storeAddress.value = addressString
+                })
+                
+                
+
+    @{
+        //await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+        </script>
+}
     </div>
+
+    
 </main>

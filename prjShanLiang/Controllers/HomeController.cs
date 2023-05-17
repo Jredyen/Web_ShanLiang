@@ -18,7 +18,7 @@ namespace prjShanLiang.Controllers
        
             public IActionResult Index()
             {
-                var Image = _db.Stores.Take(5).ToList();
+                var Image = _db.Stores.Take(10).ToList();
                 var AdImages = _db.StoreAdImages.ToList();
                 var model = new Tuple<List<Store>, List<StoreAdImage>>(Image, AdImages);
                 return View(model);

@@ -101,7 +101,7 @@
 .btn-secondary {
     font-size: 18px;
     border-style: solid;
-    border-color: white;
+    border-color: white;    
 }
 
 .d-flex {
@@ -136,4 +136,6 @@ a {
 
 .main-block {
     background-color: #eee;
+    padding: 5px;
+    margin-bottom: 20px;
 }

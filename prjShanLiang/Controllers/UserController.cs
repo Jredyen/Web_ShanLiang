@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
+using System;
 using System.Linq;
 using System.Net;
 using System.Runtime.Intrinsics.X86;
@@ -11,8 +12,19 @@ namespace prjShanLiang.Controllers
 {
     public class UserController : Controller
     {
+
+        private IWebHostEnvironment _enviro;
+
+
+        public UserController(IWebHostEnvironment p) {
+            _enviro = p;
+        }
         public IActionResult Login()
         {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) !=null)
+            {
+                return RedirectToAction("Mypage");
+            }
             return View();
         }
         [HttpPost]
@@ -54,6 +66,16 @@ namespace prjShanLiang.Controllers
             }
                 return View("Login");
         }
+        public IActionResult logOut() {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) != null)
+            {
+                HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "");
+            }
+            return View("Login");
+
+        }
+
+
         public IActionResult MemberManager(string? account)
         {
             if (account == null /*|| acc == null*/)
@@ -101,6 +123,7 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult Signup()
         {
+            
             return View();
         }
         [HttpPost]
@@ -109,6 +132,7 @@ namespace prjShanLiang.Controllers
             ShanLiang21Context db = new ShanLiang21Context();
             Member mem = new Member()
             {
+
                 AccountName = vm.AccountName,
                 Memberphone = vm.Memberphone,
                 MemberName = vm.MemberName,
@@ -131,6 +155,9 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult SignupStore()
         {
+            ViewBag.chosenCity = "";
+            ViewBag.chosenDistrict = "";
+            
             return View();
         }
         [HttpPost]
@@ -149,6 +176,23 @@ namespace prjShanLiang.Controllers
                 StoreMail = vm.StoreMail,
                 Password = vm.AccountPassword
             };
+            
+
+
+            if (vm.StoreImage != null)
+            {
+                string photoName = vm.RestaurantName + ".jpg";
+                string path = _enviro.WebRootPath + "/images/store/" + photoName;
+                System.IO.File.Copy("vm.StoreImage", path);
+
+                //vm.StoreImage.CopyTo(new FileStream(path, FileMode.Create));
+
+            }
+
+
+
+
+
             //Account acc = new Account()
             //{
             //    AccountName = vm.AccountName,
@@ -201,10 +245,29 @@ namespace prjShanLiang.Controllers
             Member mem = sl.Members.FirstOrDefault(m => m.Email == Email);
             if (mem == null)
                 return RedirectToAction("memberManagement");
+            getCustomerLevel(mem);
+
+
             return View(mem);
             
             
         }
+        void getCustomerLevel(Member mem)
+        {
+            if (mem.CustomerLevel == 0)
+            {
+                ViewBag.CustomerLevel = "一般會員";
+            }
+            else if (mem.CustomerLevel == 1)
+            {
+                ViewBag.CustomerLevel = "白金會員";
+            }
+            else if (mem.CustomerLevel == 2)
+            {
+                ViewBag.CustomerLevel = "鑽石會員";
+            }
+        }
+
         public IActionResult storeDataRevision(string? AccountName)
         {
 
@@ -212,7 +275,7 @@ namespace prjShanLiang.Controllers
             //CAccountPasswordViewModel vm = new CAccountPasswordViewModel();
             Store sto = sl.Stores.FirstOrDefault(s => s.AccountName == AccountName);
             if (sto == null)
-                return RedirectToAction("stoManagement");
+                return RedirectToAction("storeManagement");
             return View(sto);
 
 
@@ -237,8 +300,66 @@ namespace prjShanLiang.Controllers
                 }
             }
             sl.SaveChanges();
-            return RedirectToAction("memberDataRevision");
+            return RedirectToAction("memberManagement");
         }
-       
+
+        public IActionResult storeDataRevision2( CStoreWrap s)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            Store sto = sl.Stores.FirstOrDefault(p => p.AccountName == s.AccountName);
+            if (sto != null)
+            {
+                if (s.Password != null)
+                {
+                    sto.RestaurantName = s.Password;
+                    sto.RestaurantAddress = s.RestaurantAddress;
+                    sto.RestaurantPhone = s.RestaurantPhone;
+                    sto.Seats = s.Seats;
+                    sto.StoreMail = s.StoreMail;
+                    sto.OpeningTime = s.OpeningTime;
+                    sto.ClosingTime = s.ClosingTime;
+                    sto.Website = s.Website;
+                    sto.StoreMail = s.StoreMail;
+
+
+
+
+                }
+
+                if (s.Password == null)
+                {
+                    sto.RestaurantName = s.Password;
+                    sto.RestaurantAddress = s.RestaurantAddress;
+                    sto.RestaurantPhone = s.RestaurantPhone;
+                    sto.Seats = s.Seats;
+                    sto.StoreMail = s.StoreMail;
+                    sto.OpeningTime = s.OpeningTime;
+                    sto.ClosingTime = s.ClosingTime;
+                    sto.Website = s.Website;
+                    sto.StoreMail = s.StoreMail;
+                    sto.Password = sto.Password;
+                }
+            }
+            sl.SaveChanges();
+            return RedirectToAction("storeManagement");
+        }
+        public IActionResult GetCities()
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            var cities = sl.Cities.Select(p => p.CityName);
+            return Json(cities);
+        }
+
+        public IActionResult GetDistricts(string storeCity)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            var districts = sl.Districts.Where(p => p.City.CityName == storeCity).Select(d => d.DistrictName);
+
+            return Json(districts);
+        }
+        
+
+
+
     }
 }
