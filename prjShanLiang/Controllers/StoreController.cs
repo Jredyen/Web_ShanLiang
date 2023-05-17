@@ -63,7 +63,6 @@ namespace prjShanLiang.Controllers
                                select new { s.No, s.RestaurantTypeNum, s.StoreId, r.TypeName };
             return Json(datas);
         }
-
         public IActionResult SearchRestaurantType(int? id)
         {
             IQueryable<Store> datas = from s in _db.StoreTypes.Include(s => s.Store)
@@ -79,9 +78,12 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult ShowFavorate(int id)
         {
+            MemberAction ma = null;
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+                return Json(ma);
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Member mem = JsonSerializer.Deserialize<Member>(json);
-            var ma = _db.MemberActions.Where(ma => ma.ActionId == 2 && ma.MemberId == mem.MemberId && ma.StoreId == id).FirstOrDefault();
+            ma = _db.MemberActions.Where(ma => ma.ActionId == 2 && ma.MemberId == mem.MemberId && ma.StoreId == id).FirstOrDefault();
             return Json(ma);
         }
         public IActionResult AddToFavorate(int id)
@@ -93,10 +95,11 @@ namespace prjShanLiang.Controllers
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Member mem = JsonSerializer.Deserialize<Member>(json);
             var ma = _db.MemberActions.Where(ma => ma.ActionId == 2 && ma.MemberId == mem.MemberId && ma.StoreId == id).FirstOrDefault();
-            if (ma != null) 
-            { 
+            if (ma != null)
+            {
                 _db.MemberActions.Remove(ma);
                 _db.SaveChanges();
+                ma.MemberNotes = "";
                 return Json(ma);
             }
             else if (ma == null)
@@ -113,9 +116,41 @@ namespace prjShanLiang.Controllers
             else
                 return RedirectToAction("Login", "User");
         }
-        public IActionResult AddComment()
+        public IActionResult AddComment(int? id)
         {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            ViewBag.Id = id;
+            ViewBag.mid = mem.MemberId;
             return View();
+        }
+        [HttpPost]
+        public IActionResult AddComment(StoreEvaluate se)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            var se1 = _db.StoreEvaluates.Where(se => se.MemberId == mem.MemberId).FirstOrDefault();
+            if (se1 == null)
+            {
+                _db.StoreEvaluates.Add(se);
+                _db.SaveChanges();
+                return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
+            }
+            else {
+                se1.Comments = se.Comments;
+                se1.Rating = se.Rating;
+                se1.EvaluateDate = se.EvaluateDate;
+                _db.SaveChanges();
+                return RedirectToAction("Restaurant", "Store", new { id = se.StoreId }); 
+            }                
         }
 
         public IActionResult GetName(string keyword)
