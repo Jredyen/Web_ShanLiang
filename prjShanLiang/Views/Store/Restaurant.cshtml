@@ -13,7 +13,6 @@
                 <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
                     <h2 data-aos="fade-up">@item.RestaurantName</h2>
                     <div id="storeType" data-aos="fade-up">
-                        
                     </div>
                 </div>
                 <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
@@ -144,46 +143,44 @@
                     </div><!-- End Left Block -->
                     <!-- Right Block -->
                     <div class="col-lg-4 d-flex position-relative about-img" data-aos="fade-up" data-aos-delay="300">
-                        <div>
-                            <div class="content ps-0 ps-lg-5 why-us mobiled">
-                                <div class="btn-group d-flex" role="group" aria-label="Button group with nested dropdown">
-                                    <!--Dropdowns-->
-                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <a class="" asp-area="" asp-controller="" asp-action=""><i class="bi bi-share ic-t"></i>分享</a>
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        <a class="dropdown-item fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1&amp;src=sdkpreparse">
-                                            <i class="bi bi-facebook"></i> Facebook
-                                        </a>
-                                        <a class="dropdown-item" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1"
-                                           target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
-                                        <a class="dropdown-item" href="mailto: ?subject=與您分享一間美味的餐廳，@item.RestaurantName！&body=@item.StoreMail"><i class="bi bi-envelope"></i> E-mail</a>
-                                        <a class="dropdown-item" href="javascript:copyUrl();"><i class="bi bi-link"></i> 複製連結</a>
-                                    </div><!--End Dropdowns-->
-
-                                    <button type="button" class="btn btn-secondary">
-                                        <a class="" asp-area="" asp-controller="Store" asp-action="Comment"><i class="bi bi-chat-left ic-t"></i>評論</a>
-                                    </button>
-                                    <button type="button" class="btn btn-secondary">
-                                        <a class="" asp-area="" asp-controller="Store" asp-action="Favorate"><i class="bi bi-suit-heart ic-t"></i>@*<i class="bi bi-suit-heart-fill"></i>*@收藏</a>
-                                    </button>
-
-                                </div>
-
-                                <div class="content ps-0 ps-lg-5 why-us mobiled">
-                                </div>
-
-                                <div class="why-box d-flex shopBook">
-                                    <div class="more-btn">
-                                        <a class="" asp-area="" asp-controller="Store" asp-action="Reserve" asp-route-id="@item.StoreId"><i class="bi bi-calendar-event ic-t"></i>線上訂位</a>
-                                    </div>
-                                    <div class="more-btn">
-                                        <a class="" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-id="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
-                                    </div>
-                                </div>
-
+                        <div class="content ps-0 ps-lg-5 why-us mobiled">
+                            <div class="btn-group d-flex" role="group" aria-label="Button group with nested dropdown">
+                                <!--Dropdowns-->
+                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="" asp-area="" asp-controller="" asp-action=""><i class="bi bi-share ic-t"></i>分享</a>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <a class="dropdown-item fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1&amp;src=sdkpreparse">
+                                        <i class="bi bi-facebook"></i> Facebook
+                                    </a>
+                                    <a class="dropdown-item" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1"
+                                       target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
+                                    <a class="dropdown-item" href="mailto: ?subject=與您分享一間美味的餐廳，@item.RestaurantName！&body=@item.StoreMail"><i class="bi bi-envelope"></i> E-mail</a>
+                                    <a class="dropdown-item" href="javascript:copyUrl();"><i class="bi bi-link"></i> 複製連結</a>
+                                </div><!--End Dropdowns-->
+                                <button type="button" class="btn btn-secondary">
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="Comment"><i class="bi bi-chat-left ic-t"></i>評論</a>
+                                </button>
+                                <button type="button" class="btn btn-secondary">
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="AddToFavorate"><i class="bi bi-suit-heart-fill ic-t" id="favorate" style="color:null;"></i>收藏</a>
+                                </button>
                             </div>
+
+                            <div class="btn-group d-flex">
+                                <div class="main-block" style="margin:0;padding:10px;">容客量：@item.Seats 人</div>
+                            </div>
+
+                            <div class="why-box d-flex shopBook">
+                                <div class="more-btn">
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="Reserve" asp-route-id="@item.StoreId"><i class="bi bi-calendar-event ic-t"></i>線上訂位</a>
+                                </div>
+                                <div class="more-btn">
+                                    <a class="" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-id="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
+                                </div>
+                            </div>
+
                         </div>
+
                     </div><!-- End Right Block -->
                 </div>
             </div>
@@ -200,10 +197,11 @@
             <div class="mb-3">
                 <iframe style="border:0; width: 100%; height: 350px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1278.101707603652!2d121.54386081424009!3d25.033478882048225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abd379a5ec97%3A0xedc006d25a9e35df!2z6LOH5bGV5ZyL6Zqb6IKh5Lu95pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1682580771029!5m2!1szh-TW!2stw" frameborder="0" allowfullscreen></iframe>
             </div><!-- End Google Maps -->
+
         </div>
     </section>
     <button onclick="topFunction()" id="myBtn" title="回頁首"><i class="bi bi-chevron-double-up"></i></button>
-
+    
     <script src="~/js/Restaurant.js"></script>
     <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
     @section Scripts{
@@ -239,15 +237,24 @@
         async function getRtype() {
             const response = await fetch('@Url.Content("~/Store/GetRestaurantType/")' + @item.StoreId);
             const datas = await response.json();
-            console.log(datas);
             const shop = datas.map(data => {
                 return (
                     StoreType.innerHTML += `<a style="margin-right:10px;" href="../searchRestaurantType/${data.restaurantTypeNum}"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
                 )
             })
         }
-        getRtype();        
+        getRtype();
 
+        const favorate = document.getElementById('favorate');
+        favorate.addEventListener('click',function(){
+            if (favorate.style.color == "") {
+                favorate.style.color = "red";
+            }
+            else if (favorate.style.color == "red") {
+                favorate.style.color = "";
+            }
+        });
+        
     </script>
     }
 

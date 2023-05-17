@@ -52,8 +52,6 @@ namespace prjShanLiang.Controllers
             datas.storeDecorationImagePath = sdp.FirstOrDefault();
             datas.memberFavorateCount = mfc.Count();
             datas.storeMealImages = smi;
-            if (datas == null)
-                return RedirectToAction("Reconnend");
             return View(datas);
         }
         public IActionResult GetRestaurantType(int id)
@@ -78,6 +76,11 @@ namespace prjShanLiang.Controllers
             ViewBag.TypeName = data.FirstOrDefault();
             ViewBag.Id = id;
             return View(datas);
+        }
+        public IActionResult AddToFavorate()
+        {
+            string test = "";
+            return Json(test);
         }
 
         public IActionResult GetName(string keyword)
