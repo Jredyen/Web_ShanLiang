@@ -1,0 +1,495 @@
+﻿@model IEnumerable<prjShanLiang.Models.Store>
+
+@{
+    ViewData["Title"] = ViewBag.TypeName;
+}
+
+
+<head>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
+    <style type="text/css">
+        /*body {
+                                                            margin-top: 20px;
+                                                            background: #eee;
+                                                        }*/
+
+        .btn {
+            margin-bottom: 5px;
+        }
+
+        .grid {
+            position: relative;
+            width: 100%;
+            background: #fff;
+            color: #666666;
+            border-radius: 2px;
+            margin-bottom: 25px;
+            box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+        }
+
+            .grid .grid-body {
+                padding: 15px 20px 15px 20px;
+                font-size: 0.9em;
+                line-height: 1.9em;
+                margin-bottom: 100px;
+            }
+
+        .search table tr td.rate {
+            color: #f39c12;
+            line-height: 50px;
+        }
+
+        .search table tr:hover {
+            cursor: pointer;
+        }
+
+        .search table tr td.image {
+            width: 150px;
+        }
+
+        .search table tr td img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .search table tr td.rate {
+            color: #f39c12;
+            line-height: 50px;
+        }
+
+        .search table tr td.price {
+            font-size: 1.5em;
+            line-height: 50px;
+        }
+
+        .search #price1,
+        .search #price2 {
+            display: inline;
+            font-weight: 600;
+        }
+
+        /*=============================================*/
+        /*.card {
+                                                            width: 350px;
+                                                            border: none;
+                                                            box-shadow: 5px 6px 6px 2px #e9ecef;
+                                                            border-radius: 12px;
+                                                        }*/
+
+        .circle-image img {
+            border: 6px solid #fff;
+            border-radius: 100%;
+            padding: 0px;
+            top: -28px;
+            position: relative;
+            width: 70px;
+            height: 70px;
+            border-radius: 100%;
+            z-index: 1;
+            background: #e7d184;
+            cursor: pointer;
+        }
+
+        .dot {
+            height: 18px;
+            width: 18px;
+            background-color: blue;
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            border: 3px solid #fff;
+            top: -48px;
+            left: 186px;
+            z-index: 1000;
+        }
+
+        .name {
+            margin-top: -21px;
+            font-size: 18px;
+        }
+
+        .fw-500 {
+            font-weight: 500 !important;
+        }
+
+        .start {
+            color: green;
+        }
+
+        .stop {
+            color: red;
+        }
+
+        .rate {
+            border-bottom-right-radius: 12px;
+            border-bottom-left-radius: 12px;
+        }
+
+        .rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center
+        }
+
+            .rating > input {
+                display: none
+            }
+
+            .rating > label {
+                position: relative;
+                width: 1em;
+                font-size: 30px;
+                font-weight: 300;
+                color: #FFD600;
+                cursor: pointer
+            }
+
+                .rating > label::before {
+                    content: "\2605";
+                    position: absolute;
+                    opacity: 0
+                }
+
+                .rating > label:hover:before,
+                .rating > label:hover ~ label:before {
+                    opacity: 1 !important
+                }
+
+            .rating > input:checked ~ label:before {
+                opacity: 1
+            }
+
+            .rating:hover > input:checked ~ label:before {
+                opacity: 0.4
+            }
+
+        .buttons {
+            top: 36px;
+            position: relative;
+        }
+
+        .rating-submit {
+            border-radius: 15px;
+            color: #fff;
+            height: 49px;
+        }
+
+            .rating-submit:hover {
+                color: #fff;
+            }
+    </style>
+</head>
+
+<body>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <main id="main">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs">
+            <div class="container">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>@ViewData["Title"]</h2>
+                    <ol>
+                        <li><a asp-controller="Store" asp-action="List">Store</a></li>
+                        <li>Latest</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div><!-- End Breadcrumbs -->
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-12">
+                    <div class="grid search">
+                        <div class="grid-body">
+                            <div class="row">
+
+                                <div class="col-md-3">
+                                    <h2 class="grid-title"><i class="fa fa-filter"></i> 條件篩選</h2>
+                                    <hr>
+
+                                    <h4>類別</h4>
+                                    <p>
+                                        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseType"
+                                           role="button" aria-expanded="false" aria-controls="collapseType">展開</a>
+                                    </p>
+                                    <div class="collapse" id="collapseType">
+                                        <div class="card card-body" id="storeType">
+                                            @*會在剛載入網頁時使用 ShowType() 獲得所有類型*@
+                                        </div>
+                                    </div>
+
+                                    <div class="padding"></div>
+
+                                    <h4>地區</h4>
+                                    <p>
+                                        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseCAD"
+                                           role="button" aria-expanded="false" aria-controls="collapseCAD">展開</a>
+                                    </p>
+                                    <div class="collapse" id="collapseCAD">
+                                        <div class="card card-body" id="cityAndDistrict">
+                                            @*會在剛載入網頁時使用 ShowCity() 獲得所有城市與行政區*@
+                                        </div>
+                                    </div>
+
+                                    <div class="padding"></div>
+
+                                    <h4>評價</h4>
+                                    <div class="rating">
+                                        <input type="radio" name="rating" value="5" id="5" class="ratingRadio"><label for="5">☆</label>
+                                        <input type="radio" name="rating" value="4" id="4" class="ratingRadio"><label for="4">☆</label>
+                                        <input type="radio" name="rating" value="3" id="3" class="ratingRadio"><label for="3">☆</label>
+                                        <input type="radio" name="rating" value="2" id="2" class="ratingRadio"><label for="2">☆</label>
+                                        <input type="radio" name="rating" value="1" id="1" class="ratingRadio"><label for="1">☆</label>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-md-9">
+                                    <h2><i class='fas fa-utensils'></i> 搜尋結果</h2>
+                                    <hr>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="txtSearch" placeholder="輸入關鍵字搜尋"
+                                               list="searchResule">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary" type="button" id="serachButton">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </span>
+                                        <datalist id="searchResule"></datalist>
+                                    </div>
+
+                                    <p id="searchTxtResult"></p>
+                                    <div class="padding"></div>
+                                    <div class="row">
+
+                                        <div class="col-sm-6">
+                                            <div class="btn-group">
+                                                @*<button type="button" class="btn btn-default dropdown-toggle"
+                                                data-toggle="dropdown" id="orderButton">
+                                                排序 <span class="caret"></span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu">
+                                                <li><a href="#" name="0" class="orderBy">所有結果</a></li>
+                                                <li><a href="#" name="1" class="orderBy">評價高 > 低</a></li>
+                                                <li><a href="#" name="2" class="orderBy">評價低 > 高</a></li>
+                                                <li><a href="#" name="3" class="orderBy">加入新 > 舊</a></li>
+                                                <li><a href="#" name="4" class="orderBy">加入舊 > 新</a></li>
+                                                <li><a href="#" name="5" class="orderBy">收藏高 > 低</a></li>
+                                                <li><a href="#" name="6" class="orderBy">收藏低 > 高</a></li>
+                                                </ul>*@
+
+                                                <select class="form-select selectOrder" aria-label="Default select example">
+                                                    <option value="0" selected>預設排序</option>
+                                                    <option value="1">評價高 > 低</option>
+                                                    <option value="2">評價低 > 高</option>
+                                                    <option value="3">加入新 > 舊</option>
+                                                    <option value="4">加入舊 > 新</option>
+                                                    <option value="5">收藏高 > 低</option>
+                                                    <option value="6">收藏低 > 高</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-6 text-right">
+                                            @*<div class="btn-group">
+                                            <button type="button" class="btn btn-default active"><i
+                                            class="fa fa-list"></i></button>
+                                            <button type="button" class="btn btn-default"><i
+                                            class="fa fa-th"></i></button>
+                                            </div>*@
+                                        </div>
+                                    </div>
+
+
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <tbody id="storeList">
+
+                                                <div id="loading">
+                                                    <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                                    <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                                    <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                                    <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                                    <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                                    <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                                    <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                                    <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                                    <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                                    <div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>
+                                                </div>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+
+                                    <ul class="pagination">
+                                        <li class="disabled"><a href="#">«</a></li>
+                                        <li class="active"><a href="#">1</a></li>
+                                        <li><a href="#">2</a></li>
+                                        <li><a href="#">3</a></li>
+                                        <li><a href="#">4</a></li>
+                                        <li><a href="#">5</a></li>
+                                        <li><a href="#">»</a></li>
+                                    </ul>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        @*<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>*@
+        <script type="text/javascript">
+
+        </script>
+
+    </main>
+</body>
+@section Scripts{
+    <script>
+        const Keyword = document.querySelector('#txtSearch');
+        const KeywordResult = document.querySelector('#searchTxtResult');
+        const SearchResule = document.querySelector('#searchResule');
+        const SerachButton = document.querySelector('#serachButton');
+        const StoreType = document.querySelector('#storeType');
+        const CAD = document.querySelector('#cityAndDistrict');
+        const StoreList = document.querySelector('#storeList');
+        const Loading = document.getElementById('loading');
+        const OrderSelect = document.querySelector('.selectOrder');
+
+        //第一次載入網頁時獲取所有店家列表
+        //search();
+
+        //輸入關鍵字跳出提示
+        Keyword.addEventListener('input', async () => {
+            const response = await fetch('@Url.Content("~/Store/GetName")?keyword=' + Keyword.value);
+            const datas = await response.json();
+            const shop = datas.map(data => {
+                return (
+                    `<option value="${data}"></option>`
+                )
+            })
+            SearchResule.innerHTML = shop.join("");
+        })
+
+        //搜尋鍵
+        SerachButton.addEventListener('click', async () => {
+            try {
+
+                //獲得排序編號
+                const orderBy = OrderSelect.value;
+
+                //取得選取的類型ID
+                const checkedType = Array.from(document.querySelectorAll('input.typeCheckbox[type="checkbox"]:checked'))
+                    .map(checkbox => checkbox.name);
+
+                //取得選取的地區ID
+                const checkedDistrict = Array.from(document.querySelectorAll('input.districtCheckbox[type="checkbox"]:checked'))
+                    .map(checkbox => checkbox.name);
+
+                //取得選取的評分，未選取的話為搜尋全部(0)
+                const Rating = document.querySelector('[class=ratingRadio]:checked') ? document.querySelector('[class=ratingRadio]:checked').value : 0
+
+                //除錯用資料===========
+                console.log(checkedType);
+                console.log(checkedDistrict);
+                console.log('評級 : ' + Rating);
+                console.log('排序方式 : ' + orderBy);
+                //==================
+
+                //執行搜尋function
+                search(checkedType, checkedDistrict, Rating);
+
+                //如果搜尋框沒有輸入，改變輸出文字
+                if (Keyword.value != '') {
+                    KeywordResult.innerHTML = `顯示所有 "${Keyword.value}" 的結果`;
+                }
+                else {
+                    KeywordResult.innerHTML = `顯示所有店家`;
+                }
+
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+        //獲得所有類型
+        getType();
+        async function getType() {
+            const response = await fetch('@Url.Content("~/Store/ShowType")')
+            const datas = await response.json();
+            const shop = datas.map(data => {
+                return (
+                    StoreType.innerHTML += `<div class="checkbox"><label><input type="checkbox" class="icheck typeCheckbox" name="${data.restaurantTypeNum}" id="${data.restaurantTypeNum}"> ${data.typeName}</label></div>`
+                )
+            })
+        }
+
+        //獲得所有城市與地區
+        getCAD();
+        async function getCAD() {
+            const response = await fetch('@Url.Content("~/api/District")')
+            const datas = await response.json();
+            const shop = datas.map(data => {
+                return (
+                    CAD.innerHTML += `<div class="checkbox"><label><input type="checkbox" class="icheck districtCheckbox" name="${data.districtId}"> ${data.districtName}</label></div>`
+                )
+            })
+        }
+
+        async function search(checkedType, checkedDistrict, Rating, orderBy) {
+            //把關鍵字、類型、地區及評價串接後進行查詢
+            const response = await fetch(`@Url.Content("~/Store/SearchStore")?keyword=${Keyword.value}&types=${JSON.stringify(checkedType)}&districts=${JSON.stringify(checkedDistrict)}&rating=${Rating}&order=${OrderSelect.value}`);
+            const datas = await response.json();
+            //將結果回傳HTML
+
+            //TODO:搜尋結果需要帶入評分
+            //<i class="fa fa-star"></i> 1
+            //< i class="fa fa-star-half-o" ></i> 0.5
+            // < i class="fa fa-star-o" ></i> 0
+            const shop = datas.map((data, index) => {
+                return `<tr>
+                                                                                    <td class="number text-center">${index + 1}</td>
+                                                                                    <td class="image"><a href="Restaurant/${data.storeId}"><img src="../../images/store/decoration/${data.imagePath}" alt="${data.restaurantName}"></a></td>
+                                                                                    <td class="product"><a href="Restaurant/${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}</a></td>
+                                                                                    <td class="rate text-right"><span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></span></td>
+                                                                                    <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
+                                                                                  </tr>`;
+            });
+
+            //延遲2秒
+            setTimeout(function () {
+            }, 1000);
+
+            Loading.innerHTML = null;
+            StoreList.innerHTML = shop.join("");
+        }
+        
+        setTimeout(async function () {
+            const key = @ViewBag.Id - 1;            
+            const SelectedType = await document.querySelectorAll('.typeCheckbox');
+            console.log(SelectedType.length);
+            for (i = 0; i < SelectedType.length; i++) {
+                if (i == key) {
+                    SelectedType[i].click();
+                }
+            }
+            SerachButton.click();
+        }, 2000);
+
+        
+    </script>
+}

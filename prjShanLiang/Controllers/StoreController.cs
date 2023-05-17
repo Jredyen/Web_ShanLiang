@@ -38,44 +38,47 @@ namespace prjShanLiang.Controllers
                 return RedirectToAction("Reconnend");
             CShowRestaurantViewModel datas = new CShowRestaurantViewModel();
             var sts = from s in _db.Stores.
-                        Include(s => s.StoreDecorationImages).
-                        Include(s => s.StoreEvaluates).
-                        Include(s => s.MemberActions).
-                        Include(s => s.StoreMealImages)
-                        where s.StoreId == id
-                        select s;
+                      Include(s => s.StoreEvaluates)
+                      where s.StoreId == id
+                      select s;
             var mbs = from m in _db.Members
                       orderby m.MemberId
                       select m;
+            var sdp = from sd in _db.StoreDecorationImages where sd.StoreId == id select sd.ImagePath;
+            var mfc = from ma in _db.MemberActions where ma.ActionId == 2 && ma.StoreId == id select ma;
+            var smi = from sm in _db.StoreMealImages where sm.StoreId == id select sm.ImagePath;
             datas.store = sts;
             datas.member = mbs;
-
+            datas.storeDecorationImagePath = sdp.FirstOrDefault();
+            datas.memberFavorateCount = mfc.Count();
+            datas.storeMealImages = smi;
             if (datas == null)
                 return RedirectToAction("Reconnend");
             return View(datas);
         }
         public IActionResult GetRestaurantType(int id)
         {
-            IQueryable datas = from s in _db.StoreTypes 
-                               join r in _db.RestaurantTypes 
+            IQueryable datas = from s in _db.StoreTypes
+                               join r in _db.RestaurantTypes
                                on s.RestaurantTypeNum equals r.RestaurantTypeNum
                                where s.StoreId == id
-                               select new { s.No,s.RestaurantTypeNum,s.StoreId,r.TypeName};
+                               select new { s.No, s.RestaurantTypeNum, s.StoreId, r.TypeName };
             return Json(datas);
         }
-        //public IActionResult searchRestaurantType(int id)
-        //{
-        //    IQueryable datas = from r in _db.StoreTypes
-        //                              join s in _db.Stores
-        //                              on r.StoreId equals s.StoreId
-        //                              where r.RestaurantTypeNum == id
-        //                              orderby r.StoreId 
-        //                              select new { r.No, r.RestaurantTypeNum, r.StoreId, s.AccountName,
-        //                                  s.TaxId, s.RestaurantName,s.RestaurantAddress, s.RestaurantPhone, 
-        //                                  s.DistrictId, s.Seats, s.Longitude, s.Latitude, s.OpeningTime, s.ClosingTime,
-        //                                  s.Website, s.StoreImage, s.Rating, s.StoreMail, s.Password, s.AccountStatus};
-        //    return View(datas);
-        //}
+
+        public IActionResult SearchRestaurantType(int? id)
+        {
+            IQueryable<Store> datas = from s in _db.StoreTypes.Include(s => s.Store)
+                                      where s.RestaurantTypeNum == id
+                                      orderby s.StoreId
+                                      select s.Store;
+            var data = from s in _db.RestaurantTypes
+                       where s.RestaurantTypeNum == id
+                       select s.TypeName;
+            ViewBag.TypeName = data.FirstOrDefault();
+            ViewBag.Id = id;
+            return View(datas);
+        }
 
         public IActionResult GetName(string keyword)
         {
@@ -174,9 +177,9 @@ namespace prjShanLiang.Controllers
 
             //排序依據
             if (order == 1)
-                    storeList = from s in storeList orderby s.Rating descending select s;
+                storeList = from s in storeList orderby s.Rating descending select s;
             else if (order == 2)
-                    storeList = from s in storeList orderby s.Rating select s;
+                storeList = from s in storeList orderby s.Rating select s;
             else if (order == 3)
                 storeList = from s in storeList orderby s.StoreId descending select s;
             else if (order == 4)

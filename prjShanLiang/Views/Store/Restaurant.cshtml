@@ -12,12 +12,12 @@
             <div class="row justify-content-between gy-5">
                 <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
                     <h2 data-aos="fade-up">@item.RestaurantName</h2>
-                    <div id="storeType">
+                    <div id="storeType" data-aos="fade-up">
                         
                     </div>
                 </div>
                 <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
-                    <img src="~/Images/Restaurant/@item.StoreDecorationImages.FirstOrDefault()?.ImagePath" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300" />
+                    <img src="~/Images/store/decoration/@Model.storeDecorationImagePath" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300" />
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
                         <div class=" main-block">
                             <div class="st1">
                                 <div class="rating" style="font-size:2rem">
-                                    <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label>@item.MemberActions.Where(x => x.ActionId == 2 && x.StoreId == item.StoreId).Count()</label></div>
+                                    <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label>@Model.memberFavorateCount</label></div>
                                     <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@item.StoreEvaluates.Where(x => x.StoreId == item.StoreId).Count()</label></div>
                                     <div id="star" class="vertical" style="color:#ffc107;margin-right:10px; pointer-events: none;" onclick="getStar(event,@item.Rating)"></div>
                                 </div>
@@ -126,11 +126,11 @@
 
                                     <div class="gallery-slider swiper">
                                         <div class="swiper-wrapper align-items-center">
-                                            @foreach (var smi in item.StoreMealImages.Where(x => x.StoreId == item.StoreId))
+                                            @foreach (var smi in Model.storeMealImages)
                                             {
                                                 <div class="swiper-slide">
-                                                    <a class="glightbox" data-gallery="images-gallery" href="~/Images/Restaurant/@smi.ImagePath">
-                                                        <img src="~/Images/Restaurant/@smi.ImagePath" class="img-fluid" alt="">
+                                                    <a class="glightbox" data-gallery="images-gallery" href="~/Images/Restaurant/@smi">
+                                                        <img src="~/Images/Restaurant/@smi" class="img-fluid" alt="">
                                                     </a>
                                                 </div>
                                             }
@@ -149,7 +149,7 @@
                                 <div class="btn-group d-flex" role="group" aria-label="Button group with nested dropdown">
                                     <!--Dropdowns-->
                                     <button id="btnGroupDrop1" type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <a class="" asp-area="" asp-controller="Store" asp-action="Share"><i class="bi bi-share ic-t"></i>分享</a>
+                                        <a class="" asp-area="" asp-controller="" asp-action=""><i class="bi bi-share ic-t"></i>分享</a>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                         <a class="dropdown-item fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1&amp;src=sdkpreparse">
@@ -211,7 +211,7 @@
         // 生成評價星星
         const sRate = document.getElementById('star');
         const cRate = document.querySelectorAll('.stars');
-        function getStar(event, n) {
+        async function getStar(event, n) {
             for (let i = 1; i <= n; i++) {
                 event.target.innerHTML += '<i class="bi bi-star-fill"></i>';
             }
@@ -239,9 +239,10 @@
         async function getRtype() {
             const response = await fetch('@Url.Content("~/Store/GetRestaurantType/")' + @item.StoreId);
             const datas = await response.json();
+            console.log(datas);
             const shop = datas.map(data => {
                 return (
-                    StoreType.innerHTML += `<a  asp-area="" asp-controller="Store" asp-action="List" asp-route-types="${data.restaurantTypeNum}" data-aos="fade-up" style="margin-right:10px;"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
+                    StoreType.innerHTML += `<a style="margin-right:10px;" href="../searchRestaurantType/${data.restaurantTypeNum}"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
                 )
             })
         }
