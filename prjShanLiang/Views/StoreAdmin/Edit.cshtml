@@ -1,0 +1,115 @@
+﻿@model prjShanLiang.Models.Store
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>修改店家作業</h1>
+
+<h4>輸入店家資料</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="StoreId" value="@Model.StoreId" />
+            <div class="form-group">
+                <label asp-for="AccountName" class="control-label" placeholder="">店家帳號</label>
+                <input asp-for="AccountName" class="form-control" />
+                <span asp-validation-for="AccountName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RestaurantName" class="control-label" placeholder="">店家名稱</label>
+                <input asp-for="RestaurantName" class="form-control" />
+                <span asp-validation-for="RestaurantName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TaxId" class="control-label" placeholder="">統編</label>
+                <input asp-for="TaxId" class="form-control" />
+                <span asp-validation-for="TaxId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RestaurantPhone" class="control-label" placeholder="">電話</label>
+                <input asp-for="RestaurantPhone" class="form-control" />
+                <span asp-validation-for="RestaurantPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RestaurantAddress" class="control-label" placeholder="">地址</label>
+                <input asp-for="RestaurantAddress" class="form-control" />
+                <span asp-validation-for="RestaurantAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StoreMail" class="control-label" placeholder="">店家信箱</label>
+                <input asp-for="StoreMail" class="form-control" />
+                <span asp-validation-for="StoreMail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Website" class="control-label" placeholder="">店家網站</label>
+                <input asp-for="Website" class="form-control" />
+                <span asp-validation-for="Website" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Seats" class="control-label" placeholder="">座位</label>
+                <input asp-for="Seats" class="form-control" />
+                <span asp-validation-for="Seats" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OpeningTime" class="control-label" placeholder="">營業時間</label>
+                <input asp-for="OpeningTime" class="form-control" />
+                <span asp-validation-for="OpeningTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ClosingTime" class="control-label" placeholder="">結束時間</label>
+                <input asp-for="ClosingTime" class="form-control" />
+                <span asp-validation-for="ClosingTime" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="DistrictId" class="control-label"></label>
+                <input asp-for="DistrictId" class="form-control" />
+                <span asp-validation-for="DistrictId" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                @{
+                    string imageName = Model.RestaurantName + ".jpg";
+                }
+                <div><img src="~/images/test/@imageName" alt="店家照片" width="200" height="180" /></div>
+                    <label class="control-label">餐廳圖片</label>
+                    <input name="StoreImage" type="file" class="form-control" />
+                </div>
+                @*<label asp-for="StoreImage" class="control-label" placeholder="">店家圖片</label>
+                <input asp-for="StoreImage" class="form-control" name="StoreImage" type="file" />
+                <span asp-validation-for="StoreImage" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="AccountStatus" class="control-label" placeholder="">狀態</label>
+                <select name="AccountStatus" asp-for="AccountStatus" class="form-control">
+                    @{
+                        ShanLiang21Context db = new ShanLiang21Context();
+                        var data = db.AccountStatuses.ToList();
+                        foreach (var item in data)
+                        {
+                            <option value="@item.StatusId">@item.StatusName</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="AccountStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="送出" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr />
+<div>
+    <a asp-action="List" class="btn btn-outline-danger">取消</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

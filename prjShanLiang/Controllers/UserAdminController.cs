@@ -14,7 +14,7 @@ namespace prjShanLiang.Controllers
         public IActionResult List()
         {
             ShanLiang21Context db = new ShanLiang21Context();
-            var datas = from m in db.Members.Include(s => s.AccountStatusNavigation).Include(e => e.StoreEvaluates)
+            var datas = from m in db.Members.Include(s => s.AccountStatusNavigation)
                         select m;
 
             return View(datas);
