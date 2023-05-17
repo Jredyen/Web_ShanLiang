@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using prjShanLiang.Models;
 using System.Diagnostics;
 
@@ -18,10 +19,20 @@ namespace prjShanLiang.Controllers
        
             public IActionResult Index()
             {
-                var Image = _db.Stores.Take(10).ToList();
-                var AdImages = _db.StoreAdImages.ToList();
-                var model = new Tuple<List<Store>, List<StoreAdImage>>(Image, AdImages);
-                return View(model);
+
+            //var datas = from s in _db.Stores.
+            //            Include(s => s.StoreAdImages).
+            //            Include(s => s.StoreEvaluates)
+
+            //          select s;
+
+
+            var Image = _db.Stores.Take(4).ToList();
+            var AdImages = _db.StoreAdImages.ToList();
+            var Evaluate = _db.StoreEvaluates.ToList();
+            var member = _db.Members.ToList();
+            var model = new Tuple<List<Store>, List<StoreAdImage>,List<StoreEvaluate>,List<Member>>(Image, AdImages, Evaluate, member);
+            return View(model);
             }
         
 
