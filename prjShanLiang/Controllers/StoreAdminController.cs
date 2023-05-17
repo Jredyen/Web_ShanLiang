@@ -6,6 +6,12 @@ namespace prjShanLiang.Controllers
 {
     public class StoreAdminController : Controller
     {
+        private IWebHostEnvironment _enviro;
+
+        public StoreAdminController(IWebHostEnvironment p) {
+            _enviro = p;
+        }
+
         public IActionResult List()
         {
             ShanLiang21Context db = new ShanLiang21Context();
@@ -46,6 +52,13 @@ namespace prjShanLiang.Controllers
 
                 db.SaveChanges();
             }
+            if (s.StoreImage != null)
+            {
+                string photoName = s.RestaurantName + ".jpg";
+                string path = _enviro.WebRootPath + "/images/test/" + photoName;
+                System.IO.File.Copy("s.StoreImage", path);
+            }
+
             return RedirectToAction("List");
         }
     }
