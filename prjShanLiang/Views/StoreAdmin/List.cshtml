@@ -10,69 +10,6 @@
 
 <h1>店家資料一覽表</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StoreId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccountName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TaxId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RestaurantName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RestaurantAddress)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RestaurantPhone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DistrictId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Seats)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Longitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Latitude)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OpeningTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClosingTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Website)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StoreImage)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rating)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StoreMail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Password)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AccountStatus)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
@@ -141,7 +78,7 @@
 </table>
 
 
-<h1>店家資料一覽表</h1>
+@*<h1>店家資料一覽表</h1>
 <div class="card mb-4">
     <div class="card-header">
         <i class="fa-solid fa-store"></i>
@@ -175,12 +112,17 @@
                         count++;
                         <tr>
                             <td>@count</td>
-                            <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                            <td>@Html.DisplayFor(modelItem => item.MemberName)</td>
-                            <td>@Html.DisplayFor(modelItem => item.Memberphone)</td>
-                            <td>@(item.BrithDate?.ToString("yyyy-MM-dd"))</td>
-                            <td>@Html.DisplayFor(modelItem => item.Address)</td>
-                            <td>@Html.DisplayFor(modelItem => item.AccountStatusNavigation.StatusName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.AccountName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.RestaurantName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TaxId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.RestaurantPhone)</td>
+                            <td>@Html.DisplayFor(modelItem => item.RestaurantAddress)</td>
+                            <td>@Html.DisplayFor(modelItem => item.StoreMail)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Website)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Seats)</td>
+                            <td>@Html.DisplayFor(modelItem => item.OpeningTime)</td>
+                            <td>@Html.DisplayFor(modelItem => item.ClosingTime)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TaxId)</td>
 
                             <td>
                                 @Html.ActionLink("修改", "Edit", new { id = item.MemberId }, new {Class="btn btn-outline-primary"})
@@ -191,4 +133,4 @@
             </tbody>
         </table>
     </div>
-</div>
+</div>*@
