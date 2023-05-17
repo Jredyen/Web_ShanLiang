@@ -144,7 +144,7 @@ namespace prjShanLiang.Controllers
 
             return View(cart);
         }
-        public IActionResult CreateOrder(int? sum, string remark)
+        public IActionResult CreateOrder(int? pay, string remark)
         {   //付款後完成訂單
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
                 return RedirectToAction("Menu");//如果購物車沒東西 回點餐頁面
@@ -167,17 +167,18 @@ namespace prjShanLiang.Controllers
             ViewBag.MemberId = datas.MemberId;
             ViewBag.MemberName = datas.MemberName;
             ViewBag.MemberPhone = datas.Memberphone;
+            ViewBag.fin = pay;
             ViewBag.Remark = remark;
             //先寫進訂單資料表
             MealOrder mealOrder = new MealOrder();
             mealOrder.MemberId = datas.MemberId;
             mealOrder.StoreId = 1;     //寫死店家ID:1
-            mealOrder.Total = sum;
+            mealOrder.Total = pay;
             mealOrder.OrderStatus = 2; //訂單狀態:已付款
             mealOrder.OrderDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             mealOrder.Remark = remark;
             _db.MealOrders.Add(mealOrder);
-            _db.SaveChanges();//成立訂單先存回資料庫
+            //_db.SaveChanges();//成立訂單先存回資料庫
 
             foreach (var item in cart)
             {   //生成訂單後 再把購物車裡的物品一筆一筆放到訂單細節資料表
@@ -187,7 +188,7 @@ namespace prjShanLiang.Controllers
                 mealOrderDetail.Quantity = item.count;
                 _db.MealOrderDetails.Add(mealOrderDetail);
             }
-            _db.SaveChanges();//訂單明細存回資料庫
+            //_db.SaveChanges();//訂單明細存回資料庫
             HttpContext.Session.Remove(CDictionary.SK_PURCHASED_MENU_LIST);//清空購物車
             return View(cart);
         }

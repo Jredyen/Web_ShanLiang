@@ -50,7 +50,7 @@
             <div class="card shadow p-3 mb-5 bg-white rounded">
                 <h2 class=text-center style="margin:20px; font-size:40px;">餐點內容</h2>
 
-                <table class="table">
+                <table class="table table-striped">
                     <tr>
                         <th>
                             餐點
@@ -66,9 +66,8 @@
                         </th>
                     </tr>
                     @{
-                        decimal pay = 0;
-                        decimal tax = 0;
-                        decimal sum = 0;
+                        int pay = 0;
+                        
 
                         foreach (var item in Model)
                         {
@@ -87,23 +86,13 @@
                                     NT$ @Html.DisplayFor(modelItem => item.小計)
                                 </td>
                             </tr>
-                        }
-                        tax = pay * 0.1M;
-                        sum = pay + tax;
+                        }                        
                     }
                 </table>
                 <br />
-                <div style="margin:20px;">
-                    <li>餐點金額:NT$@pay.ToString("###,###,##0")</li>
-
-                    <li>服  務  費:NT$@tax.ToString("###,###,##0")</li>
-
-                    <li>應付金額:NT$@sum.ToString("###,###,##0")</li>
-
+                <div style="margin:20px;color:red;font-size:30px;">
+                    總計:NT$@pay
                 </div>
-
-
-
             </div>
         </div>
 
@@ -115,11 +104,11 @@
                     <div style="display:flex;">
                         <div class="marg">
                             <label>訂購人姓名</label>
-                            <label>@ViewBag.MemberName</label>
+                            <p>@ViewBag.MemberName</p>
                         </div>
                         <div class="marg">
                             <label>訂購人電話</label>
-                            <label>@ViewBag.MemberPhone</label>
+                            <p>@ViewBag.MemberPhone</p>
                         </div>
                     </div>
                     <hr />
@@ -127,17 +116,20 @@
                     <div style="display:flex; ">
                         <div class="marg">
                             <label>訂單狀態</label>
-                            <label>付款完成</label>
+                            <p>付款完成</p>
                         </div>
                         <div class="marg" style="margin-left:50px;">
                             <label>付款方式</label>
-                            <label>現金付款</label>
+                            <p>現金付款</p>
                         </div>
                     </div>   
-                    <hr />
-                    <label>備註:@ViewBag.Remark</label>                    
+                    <hr />                    
+                    <div style="margin-bottom:10px; color:red;font-size:30px;">
+                        優惠後金額:NT$@ViewBag.fin
+                    </div>
+                    <p>備註:@ViewBag.Remark</p>                    
                 </div>  
-                @Html.ActionLink("檢視我的訂單", "MyMealOrder", "Shopping", new{ id = ViewBag.MemberId}, new { @class = "btn btn-danger "} )
+                @Html.ActionLink("檢視我的訂單", "MyMealOrder", "Shopping", new{ id = ViewBag.MemberId}, new { @class = "btn btn-danger",style="margin:20px;"} )
             </div>           
         </div>       
     </div>

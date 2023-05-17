@@ -6,8 +6,6 @@
         public int count { get; set; }
         public int price { get; set; }
         public int 小計 { get { return this.count * this.price; } }
-        public MealMenu? mealmenu { get; set; }
-        public string txtremark { get; set; }
-        public int txtsum { get; set; }
+        public MealMenu? mealmenu { get; set; }        
     }
 }

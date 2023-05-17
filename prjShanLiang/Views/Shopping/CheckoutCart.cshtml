@@ -8,8 +8,9 @@
         .marg {
             margin: 15px 50px 0px 50px;
             width: 120px;
-            height: 100px;
+            height: 90px;
         }
+
         .btn {
             width: 100px;
         }
@@ -18,10 +19,10 @@
             font-size: 20px;
         }
 
-        .divcard{
+        .divcard {
             margin: 30px 50px 30px 100px;
             font-size: 16px;
-            text-align:center;            
+            text-align: center;
         }
 
         .card {
@@ -37,23 +38,24 @@
     </style>
 }
 @section Scripts{
-    @*此方法可以取得總金額和備註並傳回後端 myBtn是按鈕*@
     <script>
-        const myBtn = document.getElementById('myBtn')
+        @*此方法可以取得總金額和備註並傳回後端 myBtn是按鈕*@
+                    const myBtn = document.getElementById('myBtn')
         myBtn.addEventListener('click', () => {
             let remark = saveRemark();
-            let sum = saveSum();
-            window.location.replace('@Url.Content("~/Shopping/CreateOrder")?sum=' + sum + '&remark=' + remark)
+            let pay = savepay();
+            let finalAmount = pay * discount;
+            window.location.replace('@Url.Content("~/Shopping/CreateOrder")?pay=' + finalAmount + '&remark=' + remark)
         })
         function saveRemark() {
             const textarea = document.getElementById("txtremark");
             const remark = textarea.value;
             return remark
         }
-        function saveSum() {
-            const textarea = document.getElementById("txtsum");
-            const sum = textarea.value;
-            return sum
+        function savepay() {
+            const textarea = document.getElementById("txtpay");
+            const pay = textarea.value;
+            return pay
         }
     </script>
 }
@@ -66,126 +68,143 @@
 
                 <div class="d-flex justify-content-between align-items-center">
                     <h2>@ViewData["Title"]</h2>
-                </div>               
+                </div>
             </div>
         </div><!-- End Breadcrumbs -->
         <form action="CreateOrder">
-        <div class="col-15 col-md-10 col-lg-4 divcard">
-            <div class="card shadow p-3 mb-5 bg-white rounded">
-                <h2 class=text-center style="margin:20px; font-size:40px;">餐點內容</h2>
+            <div class="col-15 col-md-10 col-lg-4 divcard">
+                <div class="card shadow p-3 mb-5 bg-white rounded">
+                    <h2 class=text-center style="margin:20px; font-size:40px;">餐點內容</h2>
 
-                <table class="table">
-                    <tr>
-                        <th>
-                            餐點
-                        </th>
-                        <th>
-                            數量
-                        </th>
-                        <th>
-                            售價
-                        </th>
-                        <th>
-                            小計
-                        </th>
-                    </tr>
-                    @{
-                        int pay = 0;
-                        int tax = 0;
-                        int sum = 0;
-
-                        foreach (var item in Model)
-                        {
-                            pay += item.小計;
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.mealmenu.MealName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.count)
-                                </td>
-                                <td>
-                                    NT$ @Html.DisplayFor(modelItem => item.price)
-                                </td>
-                                <td>
-                                    NT$ @Html.DisplayFor(modelItem => item.小計)
-                                </td>
-                            </tr>
+                    <table class="table table-striped">
+                        <tr>
+                            <th>
+                                餐點
+                            </th>
+                            <th>
+                                數量
+                            </th>
+                            <th>
+                                售價
+                            </th>
+                            <th>
+                                小計
+                            </th>
+                        </tr>
+                        @{
+                            int pay = 0;
+                            decimal fin = 0;
+                            foreach (var item in Model)
+                            {
+                                pay += item.小計;
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.mealmenu.MealName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.count)
+                                    </td>
+                                    <td>
+                                        NT$ @Html.DisplayFor(modelItem => item.price)
+                                    </td>
+                                    <td>
+                                        NT$ @Html.DisplayFor(modelItem => item.小計)
+                                    </td>
+                                </tr>
+                            }
+                            fin = pay;
                         }
-                        tax = Convert.ToInt32(pay * 0.1M);
-                        sum = pay + tax;
-                    }
-                </table>
-                <br />                
-                <div style="margin:20px;">
-                    <input type="hidden" name="txtsum" id="txtsum" value="@sum" />
-                    <li>餐點金額:NT$@pay.ToString("###,###,##0")</li>
+                    </table>
+                    <br />
+                    <div style="margin-bottom:10px; color:red;font-size:30px;">
+                        <input type="hidden" name="txtpay" id="txtpay" value="@fin" />
+                        總計:NT$@pay                       
+                    </div>
 
-                    <li>服  務  費:NT$@tax.ToString("###,###,##0")</li>
-
-                    <li>應付金額:NT$@sum.ToString("###,###,##0")</li>
-
-                </div>
-                <div>
-                    <p>
-                        優惠碼 : <input type="text" name="coupon" value="" class="texbox" />
-                        @Html.ActionLink("輸入", "CheckoutCart", "Shopping", new { /*id=item.mealmenu.MealId*/   }, new { @class = "btn btn-primary" })
-                    </p>
                 </div>
             </div>
-        </div>
-        
-        <div class="col-15 col-md-10 col-lg-4 divcard ">
-            <div class="card shadow p-3 mb-5 bg-white rounded">               
-                <h2 class=text-center style="margin:20px; font-size:40px;">訂單資料</h2>
-                <hr>
-                <div class="card-body" >                   
-                    <div style="display:flex;">
-                        <div class="marg">
-                            <label>訂購人姓名</label>
-                            <label>@ViewBag.MemberName</label>
+
+            <div class="col-15 col-md-10 col-lg-4 divcard ">
+                <div class="card shadow p-3 mb-5 bg-white rounded">
+                    <h2 class=text-center style="margin:20px; font-size:40px;">訂單資料</h2>
+                    <hr>
+                    <div class="card-body">
+                        <div style="display:flex;">
+                            <div class="marg">
+                                <label>訂購人姓名</label>
+                                <p>@ViewBag.MemberName</p>
+                            </div>
+                            <div class="marg">
+                                <label>訂購人電話</label>
+                                <p>@ViewBag.MemberPhone</p>
+                            </div>
                         </div>
-                        <div class="marg">
-                            <label>訂購人電話</label>
-                            <label>@ViewBag.MemberPhone</label>
-                        </div>              
-                    </div>
-                    <hr />                    
-                    <div style="display:flex;">
-                        <div class="marg">
-                            <label>訂單狀態</label>
-                            <br>
-                            <label>尚未付款</label>
+                        <hr />
+                        <div style="display:flex;">
+                            <div class="marg">
+                                <label>訂單狀態</label>
+                                <br>
+                                <p style="color:red;">尚未付款</p>
+                            </div>
+                            <div class="marg">
+                                <label>付款方式</label>
+                                <br>
+                                @Html.RadioButton("paymentMethod", "creditCard")
+                                @Html.Label("paymentMethod", "信用卡")
+                                <br>
+                                @Html.RadioButton("paymentMethod", "cash")
+                                @Html.Label("paymentMethod", "現金")
+                            </div>
                         </div>
-                        <div class="marg">
-                            <label>付款方式</label>
-                            <br>
-                            @Html.RadioButton("paymentMethod", "creditCard")
-                            @Html.Label("paymentMethod", "信用卡")
-                            <br>
-                            @Html.RadioButton("paymentMethod", "cash")
-                            @Html.Label("paymentMethod", "現金付款")
+                        <hr />
+                        
+                        <div style="margin-bottom:10px; color:red;font-size:30px;">
+                            優惠後金額:NT$<span id="finalAmount">@fin</span>
                         </div>
-                    </div>
-                    <hr />                          
-                    <div>
-                       <div>
-                           <br>                            
-                            <label>備註:  </label>
-                                <textarea id="txtremark" name="txtremark" style="resize: none;"></textarea>
+                        <div>
                             
-                       </div>
-                        <br>
-                        <div style="text-align:center">
-                                <input type="button" id="myBtn" value="前往付款" class="btn btn-danger" />
-                                @*@Html.ActionLink("前往付款", "CreateOrder", "Shopping",  new{sum=sum } , new { @class = "btn btn-danger" ,onclick="saveRemark()"})*@
+                            <label>優惠碼 :</label>
+                            <input type="text" value="ispan666" name="coupon" id="txtcoupon" />
+                            <input type="button" value="確定" class="btn btn-primary" id="coupon" />
+                            <br />
+                            <br />
+                            <label>備註:</label>
+                            <input type="text" id="txtremark" name="txtremark" style="width:350px;">
+                            <br />
+                            <br />
+                            <input type="button" id="myBtn" value="前往付款" class="btn btn-primary" />
                             @Html.ActionLink("取消", "Menu", "Shopping", null, new { @class = "btn btn-danger " } )
                         </div>
                     </div>
-                    </div>       
                 </div>
             </div>
+            <script>
+                @*此方法可以取得輸入的優惠碼 判斷折價多少*@
+                @*先取得輸入的優惠碼*@
+                const coupon = document.getElementById('coupon')@*確認按鈕*@
+                const textarea = document.getElementById("txtcoupon"); @*輸入的優惠碼*@
+                var discount = 1.0; @*初始折扣值*@
+                var payValue = @pay; @*折扣前金額*@
+                var finValue = @fin; @*折扣後金額*@
+
+                @*確認按鈕監聽點擊事件*@
+                    coupon.addEventListener('click', () => {
+                    const txtcoupon = textarea.value;
+                    const coupon1 = 'ispan666'
+                        if (txtcoupon === coupon1) {
+                        discount = 0.9;
+                        finValue = payValue * discount
+                        document.getElementById("finalAmount").textContent = finValue;
+                        alert('成功使用優惠碼 享有9折優惠')
+                    }
+                    else {
+                        discount = 1.0;
+                        finValue = payValue;
+                        document.getElementById("finalAmount").textContent = finValue;
+                        alert('請輸入正確優惠碼')
+                    }
+                })
+            </script>
         </form>
     </div>
-    </main><!-- End #main -->
-
+</main><!-- End #main -->
