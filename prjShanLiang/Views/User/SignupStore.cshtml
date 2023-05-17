@@ -172,7 +172,7 @@
                                             <label class="control-label">確認密碼</label>
                                                     <input required type="password" class="form-control inputFont" id="storePasswordChecking" />
                                         </div>
-                                        <div id="errorMessage1"></div>
+                                        <div id="errorMessage1" style="color:red" ></div>
                                         <div class="form-group">
                                             <input type="submit" value="註冊" id="btnDataRevision" class="btn btn-primary" />
                                         </div>
@@ -342,16 +342,16 @@
                 errorString = ''
                 result = pattern.test(Password1.value)
                 if (!Password1.value) {
-                errorString += '請填寫密碼'
+                errorString += '*請填寫密碼\n'
                 }
                 if (!Password2.value) {
-                errorString += ' 請確認密碼'
+                errorString += ' *請確認密碼\n'
                 }
                 if (Password1.value !== Password2.value) {
-                errorString += ' 兩次輸入的密碼不同'
+                errorString += ' *兩次輸入的密碼不同\n'
                 }
                 if (!result) {
-                errorString += ' 密碼強度不足'
+                errorString += ' *密碼強度不足\n'
                 }
                 errorMessage.innerText = (errorString) ? errorString : '密碼一致'
 
@@ -370,16 +370,16 @@
             errorString = ''
             result = pattern.test(Password1.value)
                 if (!Password1.value) {
-                errorString += ' 密碼沒填'
+                errorString += ' *密碼沒填\n'
                 }
                 if (!Password2.value) {
-                errorString += ' 密碼確認沒填'
+                errorString += ' *密碼確認沒填\n'
                 }
                 if (Password1.value !== Password2.value) {
-                errorString += ' 兩次輸入的密碼不同'
+                errorString += ' *兩次輸入的密碼不同\n'
                 }
                 if (!result) {
-                errorString += ' 密碼強度不足'
+                errorString += ' *密碼強度不足\n'
                 }
                 errorMessage.innerText = (errorString) ? errorString : '密碼一致'
 
