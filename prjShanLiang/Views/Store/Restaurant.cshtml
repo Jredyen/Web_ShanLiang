@@ -162,7 +162,7 @@
                                     <a class="" asp-area="" asp-controller="Store" asp-action="Comment"><i class="bi bi-chat-left ic-t"></i>評論</a>
                                 </button>
                                 <button type="button" class="btn btn-secondary">
-                                    <a class="" asp-area="" asp-controller="Store" asp-action="AddToFavorate"><i class="bi bi-suit-heart-fill ic-t" id="favorate" style="color:null;"></i>收藏</a>
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="AddToFavorate" id="ccolor"><i class="bi bi-suit-heart-fill ic-t" id="favorate" style="color:null;"></i>收藏</a>
                                 </button>
                             </div>
 
@@ -246,7 +246,8 @@
         getRtype();
 
         const favorate = document.getElementById('favorate');
-        favorate.addEventListener('click',function(){
+        const ccolor = document.getElementById('ccolor');
+        ccolor.addEventListener('click', function () {
             if (favorate.style.color == "") {
                 favorate.style.color = "red";
             }
