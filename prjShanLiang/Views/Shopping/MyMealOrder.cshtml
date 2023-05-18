@@ -188,7 +188,7 @@
                             </td>
                             <td>
                                 <!-- Button trigger modal -->
-                                <div type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="getdetail(@item.OrderId)">
+                                <div type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                     查看
                                 </div>
                                 @Html.ActionLink("查看", "MyMealOrderDetail","Shopping", new {  id=item.OrderId  },new{@class = "btn btn-primary "})
@@ -197,7 +197,6 @@
                     }
                 }
             </tbody>
-        </table>
-        
+        </table>        
     </div>
 </main><!-- End #main -->

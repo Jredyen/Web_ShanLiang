@@ -12,7 +12,7 @@
         }
 
         .btn {
-            width: 100px;
+            width: 80px;
         }
 
         li {
@@ -57,6 +57,7 @@
             const pay = textarea.value;
             return pay
         }
+        
     </script>
 }
 
@@ -164,9 +165,11 @@
                         <div>
                             
                             <label>優惠碼 :</label>
-                            <input type="text" value="ispan666" name="coupon" id="txtcoupon" />
+                            <input type="text" value="" name="coupon" id="txtcoupon" />
                             <input type="button" value="確定" class="btn btn-primary" id="coupon" />
                             <br />
+                            <input type="button" value="優惠碼Demo" id="coupondemo" />
+                            <input type="button" value="備註Demo" id="remarkdemo" />
                             <br />
                             <label>備註:</label>
                             <input type="text" id="txtremark" name="txtremark" style="width:350px;">
@@ -203,6 +206,15 @@
                         document.getElementById("finalAmount").textContent = finValue;
                         alert('請輸入正確優惠碼')
                     }
+                })
+                @*Demo優惠碼*@
+                        const coupondemo = document.getElementById('coupondemo')
+                coupondemo.addEventListener('click', () => {
+                    textarea.value = 'ispan666'                    
+                })
+                const remarkdemo = document.getElementById('remarkdemo')
+                remarkdemo.addEventListener('click',()=>{
+                    txtremark.value = '寫程式壓力好大 來個大辣~'
                 })
             </script>
         </form>
