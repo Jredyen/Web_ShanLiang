@@ -1,0 +1,66 @@
+﻿@model prjShanLiang.Models.StoreEvaluate
+
+@{
+    ViewData["Title"] = "新增留言";
+}
+<main id="main">
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs">
+        <div class="container">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>新增留言</h2>
+                <ol>
+                    <li><a a asp-controller="Store" asp-action="List">Store</a></li>
+                    <li>AddComment</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- End Breadcrumbs -->    
+    
+    <div class="container">
+        <hr />
+        <div class="col-md-4">
+            <form asp-action="AddComment">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group" hidden>
+                    <label asp-for="StoreId" class="control-label"></label>
+                    <input asp-for="StoreId" class="form-control" value="@ViewBag.Id" />
+                    <span asp-validation-for="StoreId" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="MemberId" class="control-label"></label>
+                    <input asp-for="MemberId" class="form-control" value="@ViewBag.mid" />
+                    <span asp-validation-for="MemberId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Comments" class="control-label"></label>
+                    <textarea asp-for="Comments" class="form-control" style="height:49px;text-align:"></textarea>
+                    <span asp-validation-for="Comments" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Rating" class="control-label"></label>
+                    <input asp-for="Rating" class="form-control" min="0" max="5" />
+                    <span asp-validation-for="Rating" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EvaluateDate" class="control-label"></label>
+                    <input asp-for="EvaluateDate" class="form-control" />
+                    <span asp-validation-for="EvaluateDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="送出" class="btn btn-primary" />
+                    <a asp-action="Restaurant" asp-route-id="@ViewBag.Id">取消</a>
+                </div>                    
+            </form>
+        </div>
+    </div>
+
+    
+</main>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

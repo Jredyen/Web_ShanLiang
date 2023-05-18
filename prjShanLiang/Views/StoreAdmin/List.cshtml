@@ -1,0 +1,80 @@
+﻿@model IEnumerable<prjShanLiang.Models.Store>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>店家資料一覽表</h1>
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fa-solid fa-store"></i>
+        店家資料
+    </div>
+    <div class="card-body">
+
+        <table id="datatables" class="hover cell-border order-column order-column compact">
+            <thead>
+                <tr>
+                    <th>編號</th>
+                    <th>店家帳號</th>
+                    <th>店家名稱</th>
+                    <th>統編</th>
+                    <th>電話</th>
+                    <th>地址</th>
+                    <th>店家信箱</th>
+                    <th>店家網站</th>
+                    <th>座位</th>
+                    <th>營業 時間</th>
+                    <th>結束 時間</th>
+                    <th>圖片</th>
+                    <th>狀態</th>
+                    <th>設定</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    int count = 0;
+                    foreach (var item in Model)
+                    {
+                        count++;
+                        <tr>
+                            <td>@count</td>
+                            <td>@Html.DisplayFor(modelItem => item.AccountName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.RestaurantName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TaxId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.RestaurantPhone)</td>
+                            <td>@Html.DisplayFor(modelItem => item.RestaurantAddress)</td>
+                            <td>
+                                <div class="storeMail">
+                                    @Html.DisplayFor(modelItem => item.StoreMail)
+                                </div>
+                            </td>
+                            <td>
+                                <div class="website">
+                                    @Html.DisplayFor(modelItem => item.Website)
+                                </div>
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.Seats)</td>
+                            <td>@(item.OpeningTime.HasValue ? item.OpeningTime.Value.ToString(@"hh\:mm") : "")</td>
+                            <td>@(item.ClosingTime.HasValue ? item.ClosingTime.Value.ToString(@"hh\:mm") : "")</td>
+                            <td>
+                                @{
+                                    string imageName = item.RestaurantName + ".jpg";
+                                     }
+                                <img src="~/images/test/@imageName" alt="店家照片" width="80" height="60" />
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.AccountStatusNavigation.StatusName)</td>
+                            <td>
+                                @Html.ActionLink("修改", "Edit", new { id = item.StoreId }, new {Class="btn btn-outline-primary"})
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

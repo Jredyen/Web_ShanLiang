@@ -34,6 +34,20 @@
             padding-top: 1.5rem;
             padding-bottom: 1.5rem;
         }
+
+        .storeMail {
+            width: 160px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .website {
+            width: 160px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
  </style>
     @await RenderSectionAsync("Styles", required: false)
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
@@ -128,7 +142,7 @@
                         </a>
                         <div class="border-bottom border-secondary"></div>
                         <a class="nav-link" asp-area="" asp-controller="StoreAdmin" asp-action="List">
-                            <div class="sb-nav-link-icon"><i class="fa-solid fa-store"></i></i></div>
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-store"></i></div>
                             店家資料一覽表
                         </a>
                         <div class="border-bottom border-secondary"></div>

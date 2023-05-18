@@ -32,6 +32,23 @@
             get { return _blog.BlogPic; }
             set { _blog.BlogPic = value; }
         }
+        public string? CityName
+        {
+            get { return _blog.CityName; }
+            set { _blog.CityName = value; }
+        }
+
+        public string? DistrictName 
+        {
+            get { return _blog.DistrictName; }
+            set { _blog.DistrictName = value; } 
+        }
+
+        public string? RestaurantName 
+        {
+            get { return _blog.RestaurantName; }
+            set { _blog.RestaurantName = value; } 
+        }
         public IFormFile photo { get; set; }
     }
 }

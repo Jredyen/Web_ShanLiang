@@ -136,8 +136,8 @@
 <button type="button" id="BackTop" class="toTop-arrow"></button>   @*回到最上層按鈕*@
 
 @*跳出已加入購物車視窗*@
-<div class="toast-container position-fixed bottom-0 end-0 p-3" style="width:250px;">
 
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="width:250px;">
     <div id="liveToast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
 
@@ -252,17 +252,17 @@
                             <h1 class=text-center>@item.MealName</h1>
                             <div class="divCountMoney">
                                 <input class="txtMealId" type="hidden" name="txtMealId" value="@item.MealId" />
-                                <p class="CountMoney">
-                                    NT$:@item.MealPrice
+                                <p class="CountMoney"style="font-size:18px;">                                    
+                                    NT$:@Convert.ToInt16(item.MealPrice)
                                 </p>
                                 <p class="CountMoney">
                                     @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control ",id=item.MealId , style="width:100px;"})
                                 </p>
                                 <p class="CountMoney">
-                                    <input type="button" value="加入購物車" class="btn btn-danger " onclick="con(@item.MealId)" id="liveToastBtn" />
+                                    <input type="button" value="加入購物車" class="btn btn-primary " onclick="con(@item.MealId)" id="liveToastBtn" />
                                 </p>
                             </div>                            
-                            <p>@item.Recommendation</p>
+                            <p >@item.Recommendation</p>
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
 using System;
@@ -38,27 +39,169 @@ namespace prjShanLiang.Controllers
                 return RedirectToAction("Reconnend");
             CShowRestaurantViewModel datas = new CShowRestaurantViewModel();
             var sts = from s in _db.Stores.
-                        Include(s => s.StoreDecorationImages).
-                        Include(s => s.StoreEvaluates).
-                        Include(s => s.MemberActions)
-                        where s.StoreId == id
-                        select s;
-            var mbs = from m in _db.Members
-                      orderby m.MemberId
-                      select m;
+                      Include(s => s.StoreEvaluates)
+                      where s.StoreId == id
+                      select s;
+            IEnumerable<Member> mbs = from m in _db.Members
+                                      orderby m.MemberId
+                                      select new Member { MemberId = m.MemberId, MemberName = m.MemberName };
+            var sdp = from sd in _db.StoreDecorationImages where sd.StoreId == id select sd.ImagePath;
+            var mfc = from ma in _db.MemberActions where ma.ActionId == 2 && ma.StoreId == id select ma;
+            var smi = from sm in _db.StoreMealImages where sm.StoreId == id select sm.ImagePath;
             datas.store = sts;
             datas.member = mbs;
-
-            if (datas == null)
-                return RedirectToAction("Reconnend");
+            datas.storeDecorationImagePath = sdp.FirstOrDefault();
+            datas.memberFavorateCount = mfc.Count();
+            datas.storeMealImages = smi;
             return View(datas);
+        }
+        public IActionResult GetRestaurantType(int id)
+        {
+            IQueryable datas = from s in _db.StoreTypes
+                               join r in _db.RestaurantTypes
+                               on s.RestaurantTypeNum equals r.RestaurantTypeNum
+                               where s.StoreId == id
+                               select new { s.No, s.RestaurantTypeNum, s.StoreId, r.TypeName };
+            return Json(datas);
+        }
+        public IActionResult SearchRestaurantType(int? id)
+        {
+            IQueryable<Store> datas = from s in _db.StoreTypes.Include(s => s.Store)
+                                      where s.RestaurantTypeNum == id
+                                      orderby s.StoreId
+                                      select s.Store;
+            var data = from s in _db.RestaurantTypes
+                       where s.RestaurantTypeNum == id
+                       select s.TypeName;
+            ViewBag.TypeName = data.FirstOrDefault();
+            ViewBag.Id = id;
+            return View(datas);
+        }
+        public IActionResult ShowFavorate(int id)
+        {
+            MemberAction ma = null;
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+                return Json(ma);
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            ma = _db.MemberActions.Where(ma => ma.ActionId == 2 && ma.MemberId == mem.MemberId && ma.StoreId == id).FirstOrDefault();
+            return Json(ma);
+        }
+        public IActionResult AddToFavorate(int id)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            var ma = _db.MemberActions.Where(ma => ma.ActionId == 2 && ma.MemberId == mem.MemberId && ma.StoreId == id).FirstOrDefault();
+            if (ma != null)
+            {
+                _db.MemberActions.Remove(ma);
+                _db.SaveChanges();
+                ma.MemberNotes = "";
+                return Json(ma);
+            }
+            else if (ma == null)
+            {
+                ma = new MemberAction();
+                ma.ActionId = 2;
+                ma.MemberId = mem.MemberId;
+                ma.StoreId = id;
+                ma.MemberNotes = "新增收藏";
+                _db.MemberActions.Add(ma);
+                _db.SaveChanges();
+                return Json(ma);
+            }
+            else
+                return RedirectToAction("Login", "User");
+        }
+        public IActionResult AddComment(int? id)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            ViewBag.Id = id;
+            ViewBag.mid = mem.MemberId;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddComment(StoreEvaluate se)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            var se1 = _db.StoreEvaluates.Where(se => se.MemberId == mem.MemberId).FirstOrDefault();
+            if (se1 == null)
+            {
+                _db.StoreEvaluates.Add(se);
+                _db.SaveChanges();
+                return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
+            }
+            else
+            {
+                se1.Comments = se.Comments;
+                se1.Rating = se.Rating;
+                se1.EvaluateDate = se.EvaluateDate;
+                _db.SaveChanges();
+                return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
+            }
+        }
+        public IActionResult Reserve(int? id)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            ViewBag.Id = id;
+            ViewBag.mid = mem.MemberId;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Reserve(StoreReserved sr)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).FirstOrDefault();
+            var sr1 = _db.StoreReserveds.Where(s => s.StoreId == sr.StoreId).Select(s => s);
+            var gsr1 = sr1.GroupBy(sr => sr.Time, sr => sr.NumOfPeople, (time, num) => new
+            {
+                Time = time,
+                Sum = num.Sum()
+            });
+            if (gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum >= s.Seats)
+            {
+                // 跳出視窗：該時段已滿
+                sr.NumOfPeople = 0;
+                return Json(sr);
+            }
+            else
+            {
+                _db.StoreReserveds.Add(sr);
+                _db.SaveChanges();
+                return RedirectToAction("Restaurant", "Store", new { id = sr.StoreId });
+            }
+
         }
         public IActionResult GetName(string keyword)
         {
             IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword)).Select(s => s.RestaurantName);
             return Json(storeList);
         }
-        public IActionResult ShowType()
+        public IActionResult GetType()
         {
             IQueryable datas = _db.RestaurantTypes.Select(r => new { r.TypeName, r.RestaurantTypeNum });
             return Json(datas);
@@ -71,94 +214,136 @@ namespace prjShanLiang.Controllers
         /// <param name="districts">地區</param>
         /// <param name="rating">評級</param>
         /// <returns></returns>
-        public IActionResult SearchStore(string keyword, string types, string districts, double? rating = 0, int order = 0)
+        public IActionResult SearchStore(string keyword, string types, string districts, double? rating = 0, int order = 0, int step = 0, int take = 1000)
         {
-            //整合店名、類型與地區的搜尋
-            //店名搜尋 : 完成
-            //類型搜尋 : 完成
-            //地區搜尋 : 完成
-            //評價搜尋 : 完成
-
-            IQueryable<Store> list = null;
-            //如果關鍵字不是null的話就用關鍵字搜尋
-            if (keyword != null)
-            {
-                list = _db.Stores.Where(s => s.RestaurantName.Contains(keyword));
-            }
-            else
-            {
-                list = _db.Stores.Select(s => s);
-            }
-
-            //有選取類型的話，把傳回來的類型字串變回陣列並防例外狀況，再篩選類型
-            int[]? type = null;
             try
             {
-                if (types != "undefined")
-                    type = JsonSerializer.Deserialize<int[]>(types.Replace("\"", ""));
-            }
-            catch
-            { }
-            if (type != null && type.Length > 0)
-            {
-                list = list.Join(_db.StoreTypes, s => s.StoreId, st => st.StoreId, (s, st) => new { s, st })
-                    .Where(x => type.Contains(x.st.RestaurantTypeNum))
-                    .Select(x => x.s)
-                    .Distinct();
-            }
+                //整合店名、類型與地區的搜尋
+                //店名搜尋 : 完成
+                //類型搜尋 : 完成
+                //地區搜尋 : 完成
+                //評價搜尋 : 完成
 
-            //有選取地區的話，把傳回來的地區字串變回陣列並防例外狀況，再篩選地區
-            int[]? district = null;
-            try
-            {
-                if (districts != "undefined")
-                    district = JsonSerializer.Deserialize<int[]>(districts.Replace("\"", ""));
-            }
-            catch
-            { }
-            if (district != null && district.Length > 0)
-            {
-                list = list.Where(s => district.Contains(s.DistrictId));
-            }
+                IQueryable<Store> list = null;
+                //如果關鍵字不是null的話就用關鍵字搜尋
+                if (keyword != null)
+                {
+                    list = _db.Stores.Where(s => s.RestaurantName.Contains(keyword));
+                }
+                else
+                {
+                    list = _db.Stores.Select(s => s);
+                }
 
-            //如果評價不是0的話就篩選高於選取星數的
-            if (rating != 0)
-            {
-                list = list.Where(s => s.Rating >= rating);
-            }
+                //有選取類型的話，把傳回來的類型字串變回陣列並防例外狀況，再篩選類型
+                int[]? type = null;
+                try
+                {
+                    if (types != "undefined")
+                        type = JsonSerializer.Deserialize<int[]>(types.Replace("\"", ""));
+                }
+                catch
+                { }
+                if (type != null && type.Length > 0)
+                {
+                    list = list.Join(_db.StoreTypes, s => s.StoreId, st => st.StoreId, (s, st) => new { s, st })
+                        .Where(x => type.Contains(x.st.RestaurantTypeNum))
+                        .Select(x => x.s)
+                        .Distinct();
+                }
 
-            //只顯示需要給顧客瀏覽的資料
-            var storeList = list.Select(s => new
-            {
-                s.RestaurantName,
-                s.StoreId,
-                s.Rating,
-                s.OpeningTime,
-                s.ClosingTime,
-                s.RestaurantPhone,
-                s.RestaurantAddress,
-                imagePath = _db.StoreDecorationImages
-                    .Where(x => x.StoreId == s.StoreId)
-                    .Select(x => x.ImagePath).ToList(),
-                typeName = _db.StoreTypes
-                    .Where(st => st.StoreId == s.StoreId)
-                    .Join(_db.RestaurantTypes,
-            st => st.RestaurantTypeNum,
-            rt => rt.RestaurantTypeNum,
-            (st, rt) => rt.TypeName).ToList(),
-            });
+                //有選取地區的話，把傳回來的地區字串變回陣列並防例外狀況，再篩選地區
+                int[]? district = null;
+                try
+                {
+                    if (districts != "undefined")
+                        district = JsonSerializer.Deserialize<int[]>(districts.Replace("\"", ""));
+                }
+                catch
+                { }
+                if (district != null && district.Length > 0)
+                {
+                    list = list.Where(s => district.Contains(s.DistrictId));
+                }
+                //如果評價不是0的話就篩選高於選取星數的
+                if (rating != 0)
+                {
+                    list = list.Where(s => s.Rating >= rating);
+                }
 
-            //排序依據
-            if (order == 1)
+                //只顯示需要給顧客瀏覽的資料
+                int datasum = list.Count();
+                var storeList = list.Select(s => new
+                {
+                    s.RestaurantName,
+                    s.StoreId,
+                    s.Rating,
+                    s.OpeningTime,
+                    s.ClosingTime,
+                    s.RestaurantPhone,
+                    s.RestaurantAddress,
+                    imagePath = _db.StoreDecorationImages
+                        .Where(x => x.StoreId == s.StoreId)
+                        .Select(x => x.ImagePath).ToList(),
+                    typeName = _db.StoreTypes
+                        .Where(st => st.StoreId == s.StoreId)
+                        .Join(_db.RestaurantTypes,
+                st => st.RestaurantTypeNum,
+                rt => rt.RestaurantTypeNum,
+                (st, rt) => rt.TypeName).ToList(),
+                    datasum,
+                //TODO:地址
+                    //address = _db.Districts 
+                    //.Join( _db.Cities,
+                    //d => d.CityId,
+                    //c => c.CityId,
+                    //(c, d) => s.DistrictId == c.DistrictId)
+                }).Skip(step * 10).Take(take);
+
+                //if (step > 0)
+                //    storeList.Skip(step * 10).Take(10);
+                //else
+                //    storeList.Take(10);
+
+                //排序依據
+                if (order == 1)
                     storeList = from s in storeList orderby s.Rating descending select s;
-            else if (order == 2)
+                else if (order == 2)
                     storeList = from s in storeList orderby s.Rating select s;
-            else if (order == 3)
-                storeList = from s in storeList orderby s.StoreId descending select s;
-            else if (order == 4)
-                storeList = from s in storeList orderby s.StoreId select s;
+                else if (order == 3)
+                    storeList = from s in storeList orderby s.StoreId descending select s;
+                else if (order == 4)
+                    storeList = from s in storeList orderby s.StoreId select s;
 
-            return Json(storeList);
+                return Json(storeList);
+            }
+            catch (Exception ex)
+            {
+                return Json("資料傳輸時發生錯誤 : " + ex);
+            }
         }
+
+        public object GetRACAD()
+        {
+            var regions = _db.Regions
+                .Include(r => r.Cities)
+                .ThenInclude(c => c.Districts)
+                .Select(r => new CRegion
+                {
+                    regionName = r.RegionName,
+                    Cities = r.Cities.Select(c => new CCity
+                    {
+                        cityName = c.CityName,
+                        Districts = c.Districts.Select(d => new CDistrict
+                        {
+                            districtName = d.DistrictName,
+                            districtID = d.DistrictId
+                        }).ToList()
+                    }).ToList()
+                })
+                .ToList();
+            return Json(regions);
+        }
+
     }
 }
