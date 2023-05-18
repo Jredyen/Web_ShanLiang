@@ -1,0 +1,64 @@
+ul, li {
+  
+    list-style: none;  
+  }  
+  
+  
+  ul.iossearchfacets li {
+    
+    margin: 0 0 0 10px;
+    font-weight: normal;  
+  }
+  
+  ul.iossearchfacets li.has-selected {
+    
+    font-weight: bold;
+  }
+  
+  ul.iossearchfacets ul {
+    
+    display: none;
+  }
+  
+  ul.iossearchfacets .open > ul {
+    
+    display: block;
+  }
+  
+  ul.iossearchfacets li.has-children .facetselector {
+  
+    cursor: pointer;
+  }
+  
+  ul.iossearchfacets li.has-children > .facetselector:after {
+    
+    content: "+";
+    margin: 0 0 0 5px;
+  }
+  
+  ul.iossearchfacets li.has-children.open > .facetselector:after {
+    
+    content: "-";
+  }
+  
+  .removeable-facet {
+    
+    margin: 0 10px 10px 0;
+    cursor: pointer;
+    padding: 5px 10px;
+    background-color: #444444;
+    color: #FFFFFF;
+    border-radius: 10px;
+    display:inline-block;
+  }
+  
+  .removeable-facet:after {
+    
+    padding: 0 0 0 5px;
+    content: "x"
+  }
+  
+  .removeable-facet:hover {
+    
+    background-color: #666666;
+  }
