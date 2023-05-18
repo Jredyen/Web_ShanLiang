@@ -213,7 +213,7 @@
 
 
                 <div class="row">
-                    @foreach (var advertisement in Model.Item1.Take(4))
+                    @foreach (var advertisement in Model.Item1.Skip(4).Take(4))
                     {
                         string imgName = advertisement.RestaurantName + ".jpg";
                         <div class="col-sm-3">
@@ -261,7 +261,7 @@
                    @* <div class="fs-s fc-secondary">HOT</div>*@
                 </div>
                 <div class="row">
-                     @foreach(var ShanLiangBlog in Model.Item5)
+                     @foreach(var ShanLiangBlog in Model.Item5.Take(4))
                     {
                     <div class="col-sm-3">
                         <div class="card rounded" style="width: 32rem;">
@@ -272,7 +272,7 @@
 
                                 </div>
                                     <div class="card-body-123">
-                        <div>
+                        <div class="card-body-blog-123">
                             @ShanLiangBlog.BlogHeader;
                         </div>
                         <div>
