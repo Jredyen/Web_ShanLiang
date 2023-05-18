@@ -175,16 +175,17 @@ namespace prjShanLiang.Controllers
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Member mem = JsonSerializer.Deserialize<Member>(json);
             var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).FirstOrDefault();
-            var sr1 = _db.StoreReserveds.Where(s=>s.StoreId==sr.StoreId).Select(s => s);
+            var sr1 = _db.StoreReserveds.Where(s => s.StoreId == sr.StoreId).Select(s => s);
             var gsr1 = sr1.GroupBy(sr => sr.Time, sr => sr.NumOfPeople, (time, num) => new
             {
-                Time= time,
+                Time = time,
                 Sum = num.Sum()
             });
-            if (s.Seats <= gsr1.Where(g=>g.Time== sr.Time).FirstOrDefault().Sum)
+            if (gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum >= s.Seats)
             {
-                // 容客量已滿
-                return RedirectToAction("Index", "Home");
+                // 跳出視窗：該時段已滿
+                sr.NumOfPeople = 0;
+                return Json(sr);
             }
             else
             {
