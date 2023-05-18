@@ -32,7 +32,7 @@ namespace prjShanLiang.Controllers
         public IActionResult Create(Admin a)
         {
             ShanLiang21Context db = new ShanLiang21Context();
-            if (a.Identification != 0)
+            if (a.Identification != 3)
             {
                 ViewBag.Message = "無法修改權限";
                 return View();
