@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
@@ -153,6 +154,10 @@ namespace prjShanLiang.Controllers
             //db.Add(acc);
             db.SaveChanges();
             return RedirectToAction("Login");
+
+
+
+
         }
         public IActionResult SignupStore()
         {
@@ -355,9 +360,27 @@ namespace prjShanLiang.Controllers
 
             return Json(districts);
         }
+
+        public IActionResult CheckName(string name)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            var exists = sl.Members.Any(m => m.Email == name);
+            return Content(exists.ToString());
+        }
+        public IActionResult CheckStoreName(string name)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            var exists = sl.Stores.Any(s => s.AccountName == name);     
+            return Content(exists.ToString());
+        }
+        public IActionResult CheckLoginAccount(string name)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            var isStoreAccountExists = sl.Stores.Any(s => s.AccountName == name);
+            var isMemberAccountExists = sl.Members.Any(m => m.Email == name);
+            var exists = isStoreAccountExists || isMemberAccountExists;
+            return Content(exists.ToString());
+        }
         
-
-
-
     }
 }
