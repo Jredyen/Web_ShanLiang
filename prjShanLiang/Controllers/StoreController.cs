@@ -41,9 +41,9 @@ namespace prjShanLiang.Controllers
                       Include(s => s.StoreEvaluates)
                       where s.StoreId == id
                       select s;
-            var mbs = from m in _db.Members
-                      orderby m.MemberId
-                      select m;
+            IEnumerable<Member> mbs = from m in _db.Members
+                                      orderby m.MemberId
+                                      select new Member { MemberId = m.MemberId, MemberName = m.MemberName };
             var sdp = from sd in _db.StoreDecorationImages where sd.StoreId == id select sd.ImagePath;
             var mfc = from ma in _db.MemberActions where ma.ActionId == 2 && ma.StoreId == id select ma;
             var smi = from sm in _db.StoreMealImages where sm.StoreId == id select sm.ImagePath;
@@ -175,19 +175,24 @@ namespace prjShanLiang.Controllers
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Member mem = JsonSerializer.Deserialize<Member>(json);
             var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).FirstOrDefault();
-            var sr1 = _db.StoreReserveds.GroupBy(sr1 => sr1.StoreId == sr.StoreId && sr1.Time == 12).
-                Select(sr1 => new { Total=sr1.Sum(sr1=>sr1.NumOfPeople) });
-            if (s.Seats <= sr1.FirstOrDefault().Total)
+            var sr1 = _db.StoreReserveds.Where(s=>s.StoreId==sr.StoreId).Select(s => s);
+            var gsr1 = sr1.GroupBy(sr => sr.Time, sr => sr.NumOfPeople, (time, num) => new
             {
+                Time= time,
+                Sum = num.Sum()
+            });
+            if (s.Seats <= gsr1.Where(g=>g.Time== sr.Time).FirstOrDefault().Sum)
+            {
+                // 容客量已滿
                 return RedirectToAction("Index", "Home");
             }
-            else 
+            else
             {
                 _db.StoreReserveds.Add(sr);
                 _db.SaveChanges();
                 return RedirectToAction("Restaurant", "Store", new { id = sr.StoreId });
             }
-            
+
         }
         public IActionResult GetName(string keyword)
         {

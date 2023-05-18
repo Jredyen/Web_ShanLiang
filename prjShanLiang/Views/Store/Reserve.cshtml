@@ -34,7 +34,7 @@
                     <span asp-validation-for="StoreId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Date" class="control-label"></label>
+                    <label asp-for="Date" class="control-label">日期</label>
                     <input asp-for="Date" class="form-control" />
                     <span asp-validation-for="Date" class="text-danger"></span>
                 </div>
@@ -140,7 +140,7 @@
                 </table>
                 <div class="form-group" >
                     <label asp-for="Time" class="control-label"></label>
-                    <input asp-for="Time" class="form-control" id="Time" readonly/>
+                    <input asp-for="Time" class="form-control" id="Time" />
                     <span asp-validation-for="Time" class="text-danger"></span>
                 </div>
                 <div class="form-group" hidden>
@@ -149,12 +149,12 @@
                     <span asp-validation-for="MemberId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="NumOfPeople" class="control-label"></label>
+                    <label asp-for="NumOfPeople" class="control-label">人數</label>
                     <input asp-for="NumOfPeople" class="form-control" min="1" max="10" />
                     <span asp-validation-for="NumOfPeople" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="CouponId" class="control-label"></label>
+                    <label asp-for="CouponId" class="control-label">Coupon號碼</label>
                     <input asp-for="CouponId" class="form-control" />
                     <span asp-validation-for="CouponId" class="text-danger"></span>
                 </div>
@@ -172,14 +172,11 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
-        const button = document.querySelectorAll('.btn');
-        const checked = document.querySelectorAll('.min-click').checked;
-        console.log(checked);
+        const button = document.querySelectorAll('.min-click');
         const time = document.getElementById('Time');
         for (var i = 0; i < button.length; i++) {
             button[i].addEventListener('click', async function () {
-                time.value = checked.getAttribute('data-hour');
-                
+                time.value = this.getAttribute("data-hour");                
             });
         }
 
