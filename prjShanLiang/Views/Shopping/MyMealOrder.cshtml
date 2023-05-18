@@ -187,8 +187,12 @@
                                 @item.Remark
                             </td>
                             <td>
+                            @*<div class="tab-content d-flex justify-content-center" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"> @await Html.PartialAsync("~/Views/Shopping/MyMealOrderDetail.cshtml")</div>
+                            </div>*@ 
+                               
                                 <!-- Button trigger modal -->
-                                <div type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <div type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">                                   
                                     查看
                                 </div>
                                 @Html.ActionLink("查看", "MyMealOrderDetail","Shopping", new {  id=item.OrderId  },new{@class = "btn btn-primary "})

@@ -202,7 +202,7 @@ namespace prjShanLiang.Controllers
 
             Member member = JsonSerializer.Deserialize<Member>(jsonUser);  //字串轉會員資料物件
             if (member.MemberId == id) 
-            {  
+            {   
                 IEnumerable<MealOrder> datas = from s in _db.MealOrders.Include(m => m.OrderStatusNavigation)
                                            where s.MemberId == id
                                            select s;
