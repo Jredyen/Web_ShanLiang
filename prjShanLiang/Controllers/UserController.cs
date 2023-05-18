@@ -376,7 +376,7 @@ namespace prjShanLiang.Controllers
         {
             ShanLiang21Context sl = new ShanLiang21Context();
             var isStoreAccountExists = sl.Stores.Any(s => s.AccountName == name);
-            var isMemberAccountExists = sl.Stores.Any(s => s.AccountName == name);
+            var isMemberAccountExists = sl.Members.Any(m => m.Email == name);
             var exists = isStoreAccountExists || isMemberAccountExists;
             return Content(exists.ToString());
         }

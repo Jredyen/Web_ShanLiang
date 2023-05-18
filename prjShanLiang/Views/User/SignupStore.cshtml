@@ -218,7 +218,7 @@
             //檢查帳號是否存在
             const response = await fetch('@Url.Content("~/User/CheckStoreName")?name=' + inpAccount.value);
             const isExists = await response.text();  //True or False
-            let message = "帳號不存在";
+            let message = "";
             if(isExists === "True"){
                 message = "帳號已存在";
             }
