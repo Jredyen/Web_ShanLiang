@@ -19,7 +19,7 @@
             </div>
         </div><!-- End Breadcrumbs -->       
         <div style="margin:20px; font-size:16px;">
-            <table class="table">
+            <table class="table table-striped">
                 <tr>
                     <th>
                         序號
@@ -43,8 +43,6 @@
                 @{
                     int count = 0;
                     decimal pay = 0;
-                    decimal tax = 0;
-                    decimal sum = 0;
 
                     foreach (var item in Model)
                     {
@@ -69,21 +67,16 @@
                                 @Html.ActionLink("刪除", "Delete","Shopping", new {  id=item.mealmenu.MealId  }, new { onclick = "return confirm('確定要刪除嗎?')", Class = "btn btn-danger" })
                             </td>
                         </tr>
-                    }
-                    tax = pay * 0.1M;
-                    sum = pay + tax;
+                    }                    
                 }
-
             </table>
             <br />
-            <li>餐點金額:NT$@pay.ToString("###,###,##0")</li>
-            <li>服 務 費:NT$@tax.ToString("###,###,##0")</li>
-            <li>應付金額:NT$@sum.ToString("###,###,##0")</li>
+            <div style="text-align:end;color:red;font-size:30px;margin-right:150px;">總計: $@pay 元</div>   
             <br />
-            <p>
+            <div style="text-align:center">                
                 @Html.ActionLink("確認訂單", "CheckoutCart", "Shopping", null, new { @class = "btn btn-primary" })
                 @Html.ActionLink("繼續點餐", "Menu", "Shopping", new{StoreId=1}, new { @class = "btn btn-primary" })
-            </p>
+            </div>
         </div>        
     </div>
 </main><!-- End #main -->

@@ -4,6 +4,122 @@
     ViewData["Title"] = "我的訂單紀錄";
 }
 
+@section Styles{
+.modal {
+  display: none; 
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+}
+
+@section Scripts{
+   @* <script>
+        const stars = document.querySelectorAll('.stars');
+        function getStar(event, n) {            
+            for (let i = 1; i <= n; i++) {
+                event.target.innerHTML += '<i class="bi bi-star-fill"></i>';
+            }
+            for (let i = 1; i <= (5 - n); i++) {
+                event.target.innerHTML += '<i class="bi bi-star"></i>';
+            }
+        }
+        for (i = 0; i < stars.length; i++) {
+            stars[i].click();
+        }
+        
+    </script>*@
+    <script>
+        
+        var myModal = document.getElementById('myModal')
+        var myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', function () {
+            myInput.focus()
+        })
+
+        
+    </script>
+    }
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">訂單明細</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                序號
+                            </th>
+                            <th>
+                                餐點名稱
+                            </th>
+                            <th>
+                                數量
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int count = 0;
+                            foreach (var item in Model)
+                            {
+                                count++;
+                                <tr>
+                                    <td>
+                                        @count
+                                    </td>
+                                    <td>
+                                        
+                                    </td>
+                                    <td>
+                                        
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <!-- ======= Breadcrumbs ======= -->
@@ -15,12 +131,15 @@
             </div>
         </div><!-- End Breadcrumbs -->
 
-        <table class="table">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>
                         序號
-                    </th>                   
+                    </th>   
+                    <th>
+                        訂單編號
+                    </th>
                     <th>
                         店家
                     </th>
@@ -34,38 +153,50 @@
                     <th>
                         訂單時間
                     </th>
-                    <th></th>
+                    <th>
+                        備註
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 @{
-                    int count = 0;
+                    int count1 = 0;
                     foreach (var item in Model)
                     {
-                        count++;
+                        count1++;
                         <tr>
                             <td>
-                                @count
+                                @count1
+                            </td>
+                            <td>
+                                 @item.OrderId
+                            </td>
+                            <td>
+                                膳糧食堂 大安店 
+                            </td>
+                            <td>                                
+                                $:@Convert.ToInt16(item.Total)
+                            </td>
+                            <td>
+                                @item.OrderStatusNavigation.StatusName
                             </td>                            
                             <td>
-                                @Html.DisplayFor(modelItem => item.Store.RestaurantName)
+                                @item.OrderDate
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Total)
+                                @item.Remark
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.OrderStatusNavigation.StatusName)
-                            </td>                            
-                            <td>
-                                @Html.DisplayFor(modelItem => item.OrderDate)
-                            </td>
-                            <td>
-                                @Html.ActionLink("查看", "MyMealOrderDetail","Shopping", new {  id=item.OrderId  },new{@class = "btn btn-primary"})
+                                <!-- Button trigger modal -->
+                                <div type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    查看
+                                </div>
+                                @Html.ActionLink("查看", "MyMealOrderDetail","Shopping", new {  id=item.OrderId  },new{@class = "btn btn-primary "})
                             </td>
                         </tr>
                     }
                 }
             </tbody>
-        </table>
+        </table>        
     </div>
 </main><!-- End #main -->

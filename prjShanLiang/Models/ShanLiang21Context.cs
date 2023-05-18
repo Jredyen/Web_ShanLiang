@@ -75,7 +75,7 @@ public partial class ShanLiang21Context : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=tcp:karamucho.asuscomm.com,1433;Initial Catalog=ShanLiang2.1;User ID=ispan_304_a;Password=aaaa1111bbbb2222;TrustServerCertificate=true");
+        => optionsBuilder.UseSqlServer("Data Source=tcp:karamucho.asuscomm.com,1433;Initial Catalog=ShanLiang2.1;User ID=ispan_304_a;Password=aaaa1111bbbb2222;TrustServerCertificate=true;MultipleActiveResultSets=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -119,10 +119,6 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.AdminId).HasColumnName("AdminID");
             entity.Property(e => e.AdminName).HasMaxLength(50);
             entity.Property(e => e.Passwoed).HasMaxLength(50);
-
-            entity.HasOne(d => d.IdentificationNavigation).WithMany(p => p.Admins)
-                .HasForeignKey(d => d.Identification)
-                .HasConstraintName("FK_Admin_Identification");
         });
 
         modelBuilder.Entity<Blog>(entity =>
@@ -149,10 +145,6 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.CityId).HasColumnName("CityID");
             entity.Property(e => e.CityName).HasMaxLength(10);
             entity.Property(e => e.RegionId).HasColumnName("RegionID");
-
-            entity.HasOne(d => d.Region).WithMany(p => p.Cities)
-                .HasForeignKey(d => d.RegionId)
-                .HasConstraintName("FK_City_Region");
         });
 
         modelBuilder.Entity<Coupon>(entity =>
