@@ -24,6 +24,10 @@ namespace prjShanLiang.ViewModels
             get { return _member; }
             set { _member = value; }
         }
+        public string? storeDecorationImagePath { get; set; }
+        public int? memberFavorateCount { get; set; }
+        public IEnumerable<string>? storeMealImages { get; set; } 
+
 
     }
 }

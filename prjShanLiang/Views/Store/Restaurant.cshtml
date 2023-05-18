@@ -1,6 +1,5 @@
 ﻿@model prjShanLiang.ViewModels.CShowRestaurantViewModel
 
-
 <link rel="stylesheet" href="~/css/Restaurant.css" />
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v16.0" nonce="aqWRwhk5"></script>
@@ -12,11 +11,12 @@
         <div class="container">
             <div class="row justify-content-between gy-5">
                 <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
-                    <h2 data-aos="fade-up">@Html.DisplayFor(modelItem => item.RestaurantName)</h2>
-                    <p data-aos="fade-up" data-aos-delay="100">@item.StoreEvaluates.FirstOrDefault()?.Comments</p>
+                    <h2 data-aos="fade-up">@item.RestaurantName</h2>
+                    <div id="storeType" data-aos="fade-up">
+                    </div>
                 </div>
                 <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
-                    <img src="~/Images/@item.StoreDecorationImages.FirstOrDefault()?.ImagePath" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300" />
+                    <img src="~/Images/store/decoration/@Model.storeDecorationImagePath" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300" />
                 </div>
             </div>
         </div>
@@ -29,42 +29,42 @@
             <div class="container content-r" data-aos="fade-up">
 
                 <div class="row gy-4">
-                    <div class="col-lg-8 position-relative about-img" @*style="background: url('@Url.Content("~/assets/img/about.jpg")') ;"*@ data-aos="fade-up" data-aos-delay="150">
+                    <!-- Left Block -->
+                    <div class="col-lg-8 position-relative about-img" data-aos="fade-up" data-aos-delay="150">
                         <div class=" main-block">
                             <div class="st1">
                                 <div class="rating" style="font-size:2rem">
-                                    <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label>@item.MemberActions.Where(x => x.ActionId == 2 && x.StoreId == item.StoreId).Count()</label></div>
+                                    <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label>@Model.memberFavorateCount</label></div>
                                     <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@item.StoreEvaluates.Where(x => x.StoreId == item.StoreId).Count()</label></div>
-                                    <div id="star" class="vertical" style="color:#ffc107;margin-right:10px;" onload="getStar(event, @item.Rating)"></div>
+                                    <div id="star" class="vertical" style="color:#ffc107;margin-right:10px; pointer-events: none;" onclick="getStar(event,@item.Rating)"></div>
                                 </div>
                             </div>
-
 
                             <br>
                             <hr>  <!-- 分隔線 -->
                             <div class="st1">
                                 <label class="t1">地址</label>
-                                <label>@Html.DisplayFor(modelItem => item.RestaurantAddress)</label>
+                                <label>@item.RestaurantAddress</label>
                             </div>
                             <hr>  <!-- 分隔線 -->
                             <div class="st1">
                                 <label class="t1">連絡電話</label>
-                                <label>@Html.DisplayFor(modelItem => item.RestaurantPhone)</label>
+                                <label>@item.RestaurantPhone</label>
                             </div>
                             <hr>  <!-- 分隔線 -->
                             <div class="st1">
                                 <label class="t1">營業時間</label>
-                                <label>@Html.DisplayFor(modelItem => item.OpeningTime) - @Html.DisplayFor(modelItem => item.ClosingTime)</label>
+                                <label>@item.OpeningTime - @item.ClosingTime</label>
                             </div>
                             <hr>  <!-- 分隔線 -->
                             <div class="st1">
                                 <label class="t1">電子郵件</label>
-                                <label>@Html.DisplayFor(modelItem => item.StoreMail)</label>
+                                <label>@item.StoreMail</label>
                             </div>
                             <hr>  <!-- 分隔線 -->
                             <div class="st1">
                                 <label class="t1">官方網站</label>
-                                <label><a href="@Html.DisplayFor(modelItem => item.Website)">@Html.DisplayFor(modelItem => item.Website)</a></label>
+                                <label><a href="@item.Website">@item.Website</a></label>
                             </div>
                         </div>
 
@@ -93,16 +93,14 @@
                                                                     </p>
                                                                     @foreach (var m in Model.member.Where(y => y.MemberId == se.MemberId))
                                                                     {
-                                                                        <h3>@m.MemberName</h3>
+                                                                        <h4>@m.MemberName</h4>
                                                                     }
-                                                                    <h4>@se.EvaluateDate</h4>
-                                                                    <div id="@se.EvaluateNo" class="stars">
-                                                                        <i class="bi bi-star-fill"></i>
-                                                                    </div>
+                                                                    <h5>@se.EvaluateDate</h5>
+                                                                    <div id="@se.EvaluateNo" class="stars" style="pointer-events: none;" onclick="getStar(event,@se.Rating)"></div>
                                                                 </div>
                                                             </div>
-                                                            <div class="col-lg-2 text-center">   
-                                                                <img src="~/Images/man_person_icon.png" class="img-fluid testimonial-img" alt="">
+                                                            <div class="col-lg-2 text-center" style="width:120px;">
+                                                                <img src="~/Images/Restaurant/man_person_icon.png" class="img-fluid testimonial-img" alt="">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -121,53 +119,76 @@
                             <div class="st1">
                                 <div class="vertical" style="font-size:2rem">照片</div>
                             </div>
-                        </div>
-                    </div>
+                            <!-- ======= Gallery Section ======= -->
+                            <section id="gallery" class="gallery section-bg">
+                                <div class="container" data-aos="fade-up">
 
-
-                    <div class="col-lg-4 d-flex position-relative about-img" data-aos="fade-up" data-aos-delay="300">
-                        <div>
-                            <div class="content ps-0 ps-lg-5 why-us mobiled">
-                                <div class="btn-group d-flex" role="group" aria-label="Button group with nested dropdown">
-                                    <!--Dropdowns-->
-                                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <a class="" asp-area="" asp-controller="Store" asp-action="Share"><i class="bi bi-share ic-t"></i>分享</a>
-                                    </button>
-                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                        <a class="dropdown-item fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1&amp;src=sdkpreparse">
-                                            <i class="bi bi-facebook"></i> Facebook
-                                        </a>
-                                        <a class="dropdown-item" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1"
-                                           target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
-                                        <a class="dropdown-item" href="mailto:@Html.DisplayFor(modelItem => item.StoreMail)"><i class="bi bi-envelope"></i> E-mail</a>
-                                        <a class="dropdown-item" href="javascript:copyUrl();"><i class="bi bi-link"></i> 複製連結</a>
+                                    <div class="gallery-slider swiper">
+                                        <div class="swiper-wrapper align-items-center">
+                                            @foreach (var smi in Model.storeMealImages)
+                                            {
+                                                <div class="swiper-slide">
+                                                    <a class="glightbox" data-gallery="images-gallery" href="~/Images/Restaurant/@smi">
+                                                        <img src="~/Images/Restaurant/@smi" class="img-fluid" alt="">
+                                                    </a>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="swiper-pagination"></div>
                                     </div>
-
-                                    <button type="button" class="btn btn-secondary">
-                                        <a class="" asp-area="" asp-controller="Store" asp-action="Comment"><i class="bi bi-chat-left ic-t"></i>評論</a>
-                                    </button>
-                                    <button type="button" class="btn btn-secondary">
-                                        <a class="" asp-area="" asp-controller="Store" asp-action="Favorate"><i class="bi bi-suit-heart ic-t"></i>@*<i class="bi bi-suit-heart-fill"></i>*@收藏</a>
-                                    </button>
 
                                 </div>
+                            </section><!-- End Gallery Section -->
+                        </div>
+                    </div><!-- End Left Block -->
+                    <!-- Right Block -->
+                    <div class="col-lg-4 d-flex position-relative about-img" data-aos="fade-up" data-aos-delay="300">
+                        <div class="content ps-0 ps-lg-5 why-us mobiled">
+                            <div class="btn-group d-flex" role="group" aria-label="Button group with nested dropdown">
+                                <!--Dropdowns-->
+                                <button id="btnGroupDrop1" type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a href="#btnGroupDrop1"><i class="bi bi-share ic-t"></i>分享</a>
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                    <a class="dropdown-item fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1&amp;src=sdkpreparse">
+                                        <i class="bi bi-facebook"></i> Facebook
+                                    </a>
+                                    <a class="dropdown-item" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1"
+                                   target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
+                                    <a class="dropdown-item" href="mailto: ?subject=與您分享一間美味的餐廳，@item.RestaurantName！&body=@item.StoreMail"><i class="bi bi-envelope"></i> E-mail</a>
+                                    <a class="dropdown-item" href="javascript:copyUrl();"><i class="bi bi-link"></i> 複製連結</a>
+                                </div><!--End Dropdowns-->
+                                <button type="button" class="btn btn-secondary">
+                                    <!--<a id="comment" asp-controller="Store" asp-action="AddComment" asp-route-id="@item.StoreId"><i class="bi bi-chat-left ic-t"></i>評論</a>-->
+                                    <a id="comment" href="../AddComment/@item.StoreId"><i class="bi bi-chat-left ic-t"></i>評論</a>
+                                </button>
+                                <button type="button" class="btn btn-secondary">
+                                    <a href="##" id="favorate"><i class="bi bi-suit-heart ic-t"></i>收藏</a>
+                                </button>
+                            </div>
 
-                                <div class="why-box d-flex shopBook">
-                                    <div class="more-btn">
-                                        <a class="" asp-area="" asp-controller="Store" asp-action="Reserve" asp-route-id="@item.StoreId"><i class="bi bi-calendar-event ic-t"></i>線上訂位</a>
-                                    </div>
-                                    <div class="more-btn">
-                                        <a class="" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-StoreId="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
-                                    </div>
+                            <div class="btn-group d-flex">
+                                <div class="main-block" style="margin:0;padding:10px; text-align:center;">容客量：@item.Seats 人</div>
+                            </div>
+
+                            <div class="why-box d-flex shopBook">
+                                <div class="more-btn">
+                                    <a class="" asp-area="" asp-controller="Store" asp-action="Reserve" asp-route-id="@item.StoreId"><i class="bi bi-calendar-event ic-t"></i>線上訂位</a>
+                                </div>
+                                <div class="more-btn">
+                                    <a class="" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-id="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
                                 </div>
                             </div>
+
                         </div>
-                    </div>
+
+                    </div><!-- End Right Block -->
                 </div>
             </div>
         </section><!-- End About Section -->
 
     </main>
+
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact">
         <div class="container" data-aos="fade-up">
@@ -177,29 +198,32 @@
             <div class="mb-3">
                 <iframe style="border:0; width: 100%; height: 350px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1278.101707603652!2d121.54386081424009!3d25.033478882048225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abd379a5ec97%3A0xedc006d25a9e35df!2z6LOH5bGV5ZyL6Zqb6IKh5Lu95pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1682580771029!5m2!1szh-TW!2stw" frameborder="0" allowfullscreen></iframe>
             </div><!-- End Google Maps -->
+
         </div>
     </section>
-
-
     <button onclick="topFunction()" id="myBtn" title="回頁首"><i class="bi bi-chevron-double-up"></i></button>
+
     <script src="~/js/Restaurant.js"></script>
     <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
     @section Scripts{
     <script>
-        //const star = document.querySelector('#star');
-        function getStar(e, n) {
-            var level = document.getElementById(e.target.id).innerHTML;
-            //let level = '';
+        // 生成評價星星
+        const sRate = document.getElementById('star');
+        const cRate = document.querySelectorAll('.stars');
+        async function getStar(event, n) {
             for (let i = 1; i <= n; i++) {
-                level += '<i class="bi bi-star-fill"></i>';
+                event.target.innerHTML += '<i class="bi bi-star-fill"></i>';
             }
             for (let i = 1; i <= (5 - n); i++) {
-                level += '<i class="bi bi-star"></i>';
+                event.target.innerHTML += '<i class="bi bi-star"></i>';
             }
-            //return level;
         }
-        //star.innerHTML = getStar(@item.Rating);
+        sRate.click();
+        for (i = 0; i < cRate.length; i++) {
+            cRate[i].click();
+        }
 
+        // 複製連結
         function copyUrl() {
             var dummy = document.createElement('input'), text = window.location.href;
             document.body.appendChild(dummy);
@@ -209,6 +233,45 @@
             document.body.removeChild(dummy);
         }
 
+        // 取得餐廳類型列表、餐廳類型
+        const StoreType = document.querySelector('#storeType');
+        async function getRtype() {
+            const response = await fetch('@Url.Content("~/Store/GetRestaurantType/")' + @item.StoreId);
+            const datas = await response.json();
+            const shop = datas.map(data => {
+                return (
+                    StoreType.innerHTML += `<a style="margin-right:10px;" href="../searchRestaurantType/${data.restaurantTypeNum}"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
+                )
+            })
+        }
+        getRtype();
+
+        // 載入時判斷Favorate紅或白
+        const favorate = document.getElementById('favorate');
+        async function showFavorate() {
+            const response = await fetch('@Url.Content("~/Store/ShowFavorate/")' + @item.StoreId);
+            const datas = await response.json();
+            if (datas == null) {
+                return (favorate.innerHTML = `<i class="bi bi-suit-heart ic-t"></i>收藏`);
+            }
+            else {
+                return (favorate.innerHTML = `<i class="bi bi-suit-heart-fill ic-t" style="color:red;"></i>收藏`);
+            }
+        };
+        showFavorate();
+        // Favorate鍵變色、加入收藏
+        favorate.addEventListener('click', async function () {
+            const response = await fetch('@Url.Content("~/Store/AddToFavorate/")' + @item.StoreId);
+            const datas = await response.json();
+            // 未收藏：變紅、新增
+            if (datas.memberNotes == "新增收藏") {
+                return (favorate.innerHTML = `<i class="bi bi-suit-heart-fill ic-t" style="color:red;"></i>收藏`);
+            }
+            // 已收藏：變白、刪除
+            else {
+                return (favorate.innerHTML = `<i class="bi bi-suit-heart ic-t"></i>收藏`);
+            }
+        });
 
     </script>
     }
