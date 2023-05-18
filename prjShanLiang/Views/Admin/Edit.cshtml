@@ -8,9 +8,9 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>修改管理者作業</h1>
+<h1>修改管理員資訊</h1>
 
-<h4>輸入管理者資料</h4>
+<h4>輸入管理員資料</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,18 +19,17 @@
             <input type="hidden" name="AdminId" value="@Model.AdminId" />
             <div class="form-group">
                 <label asp-for="AdminName" class="control-label" placeholder="">管理者帳號</label>
-                <input asp-for="AdminName" class="form-control" />
+                <input asp-for="AdminName" class="form-control" required/>
                 <span asp-validation-for="AdminName" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Passwoed" class="control-label" placeholder="">管理者密碼</label>
-                <input asp-for="Passwoed" class="form-control" />
+                <input asp-for="Passwoed" class="form-control" type="password" required/>
                 <span asp-validation-for="Passwoed" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Identification" class="control-label" placeholder="">權限設定</label>
-                <select name="Identification">
-                    <option>請選擇</option>
+                <select name="Identification" asp-for="Identification" class="form-control">
                     @{
                         ShanLiang21Context db = new ShanLiang21Context();
                         var data = db.Identifications.ToList();

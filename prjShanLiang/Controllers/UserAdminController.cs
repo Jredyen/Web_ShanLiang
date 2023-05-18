@@ -14,33 +14,46 @@ namespace prjShanLiang.Controllers
         public IActionResult List()
         {
             ShanLiang21Context db = new ShanLiang21Context();
-            var datas = from m in db.Members.Include(s => s.AccountStatusNavigation).Include(e => e.StoreEvaluates)
+            var datas = from m in db.Members.Include(s => s.AccountStatusNavigation)
                         select m;
 
             return View(datas);
-
-            //var members = db.Members.Include(s => s.AccountStatusNavigation).ToList();
-            //var storeEvaluate =db.StoreEvaluates.ToList();
-            //var model = new Tuple<List<Member>, List<StoreEvaluate>>(members, storeEvaluate);
-            //return View(model);
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Edit(int? id)
         {
             ShanLiang21Context db = new ShanLiang21Context();
-            Member mb = db.Members.FirstOrDefault(m => m.MemberId == id);
-            if (mb != null)
+            Member mem = db.Members.FirstOrDefault(m => m.MemberId == id);
+            if (mem == null)
             {
-                // 刪除關聯資料
-                var evaluations = db.StoreEvaluates.Where(e => e.MemberId == mb.MemberId);
-                if(evaluations != null)
-                db.StoreEvaluates.RemoveRange(evaluations);
+                return RedirectToAction("List");
+            }
+            return View(mem);
+        }
+        [HttpPost]
+        public IActionResult Edit(Member m)
+        {
+            ShanLiang21Context db = new ShanLiang21Context();
+            Member mem = db.Members.FirstOrDefault(mem => mem.MemberId == m.MemberId);
+            if (mem != null)
+            {
+                mem.Email = m.Email;
+                mem.MemberName = m.MemberName;
+                mem.Memberphone = m.Memberphone;
+                mem.BrithDate = m.BrithDate;
+                mem.Address = m.Address;
+                mem.AccountStatus = m.AccountStatus;
 
-                // 刪除主記錄
-                db.Members.Remove(mb);
                 db.SaveChanges();
             }
             return RedirectToAction("List");
+        }
+
+        public IActionResult CheckStatus(int? status)
+        {
+            ShanLiang21Context db = new ShanLiang21Context();
+            var exists = db.AccountStatuses.Any(e => e.StatusId == status);
+            return Content(exists.ToString());
         }
     }
 }

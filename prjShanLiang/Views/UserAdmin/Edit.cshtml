@@ -1,0 +1,74 @@
+﻿@model prjShanLiang.Models.Member
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>修改會員資訊</h1>
+
+<h4>輸入會員資料</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="MemberId" value="@Model.MemberId" />
+            <div class="form-group">
+                <label asp-for="Email" class="control-label" placeholder="">會員帳號</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MemberName" class="control-label" placeholder="">會員名稱</label>
+                <input asp-for="MemberName" class="form-control" />
+                <span asp-validation-for="MemberName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Memberphone" class="control-label" placeholder="">會員電話</label>
+                <input asp-for="Memberphone" class="form-control" />
+                <span asp-validation-for="Memberphone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BrithDate" class="control-label" placeholder="">會員生日</label>
+                <input asp-for="BrithDate" class="form-control" type="date" />
+                <span asp-validation-for="BrithDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label" placeholder="">會員地址</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountStatus" class="control-label" placeholder="">會員狀態</label>
+                <select name="AccountStatus" asp-for="AccountStatus" class="form-control">                   
+                    @{
+                        ShanLiang21Context db = new ShanLiang21Context();
+                        var data = db.AccountStatuses.ToList();
+                        foreach (var item in data)
+                        {
+                            <option value="@item.StatusId">@item.StatusName</option>
+                        }
+                    }
+                </select>
+                <span asp-validation-for="AccountStatus" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="送出" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<hr />
+<div>
+    <a asp-action="List" class="btn btn-outline-danger">取消</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
