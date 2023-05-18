@@ -30,6 +30,7 @@ namespace prjShanLiang.ViewModels
 
         public string districtName { get; set; }
 
+        public string storeDistrict { get; set; }
         public DateTime OpenningTime { get; set; }
         public DateTime ClosingTime { get; set; }
     }

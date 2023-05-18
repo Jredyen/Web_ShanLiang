@@ -69,7 +69,8 @@ namespace prjShanLiang.Controllers
         public IActionResult logOut() {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) != null)
             {
-                HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "");
+                HttpContext.Session.Remove(CDictionary.SK_LOGINED_USER);
+                HttpContext.Session.Remove(CDictionary.SK_LOGINED_USER_ROLE);
             }
             return View("Login");
 
@@ -123,7 +124,6 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult Signup()
         {
-            
             return View();
         }
         [HttpPost]
@@ -141,6 +141,7 @@ namespace prjShanLiang.Controllers
                 Address = vm.Address,
                 CustomerLevel = 0,
                 Password = vm.AccountPassword
+                
             };
             //Account acc = new Account()
             //{
@@ -161,7 +162,7 @@ namespace prjShanLiang.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult SignupStore(CCreateStoreAccountViewModel vm)
+        public IActionResult SignupStore(CCreateStoreAccountViewModel vm, IFormFile StoreImage)
         {
             ShanLiang21Context db = new ShanLiang21Context();
             Store sto = new Store()
@@ -171,27 +172,24 @@ namespace prjShanLiang.Controllers
                 RestaurantName = vm.RestaurantName,
                 RestaurantAddress = vm.RestaurantAddress,
                 RestaurantPhone = vm.RestaurantPhone,
-                DistrictId = vm.DistrictId,
+                DistrictId = 1,
                 Seats = vm.Seats,
                 StoreMail = vm.StoreMail,
                 Password = vm.AccountPassword
+                
             };
-            
-
-
-            if (vm.StoreImage != null)
+            string storeDistrict = vm.storeDistrict;
+            sto.DistrictId = db.Districts.FirstOrDefault(p => p.DistrictName == storeDistrict).DistrictId;
+            if (StoreImage != null)
             {
                 string photoName = vm.RestaurantName + ".jpg";
                 string path = _enviro.WebRootPath + "/images/store/" + photoName;
-                System.IO.File.Copy("vm.StoreImage", path);
+                
 
-                //vm.StoreImage.CopyTo(new FileStream(path, FileMode.Create));
+                StoreImage.CopyTo(new FileStream(path, FileMode.Create));
 
+                //sto.StoreImage = photoName;
             }
-
-
-
-
 
             //Account acc = new Account()
             //{
