@@ -7,7 +7,7 @@ public partial class StoreType
 {
     public int No { get; set; }
 
-    public int RestaurantTypeNum { get; set; }
+    public int? RestaurantTypeNum { get; set; }
 
     public int? StoreId { get; set; }
 

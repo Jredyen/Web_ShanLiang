@@ -20,7 +20,10 @@ namespace prjShanLiang.Controllers
                 datas = from c in db.Blogs
                         select c;
             else
-                datas = db.Blogs.Where(b => b.BlogHeader.Contains(vm.txtKeyword));
+                datas = db.Blogs.Where(b => b.BlogHeader.Contains(vm.txtKeyword) ||
+                b.CityName.Contains(vm.txtKeyword) || 
+                b.DistrictName.Contains(vm.txtKeyword) ||
+                b.RestaurantName.Contains(vm.txtKeyword));
             return View(datas);
         }
         public IActionResult BloggerCreate()
@@ -71,11 +74,21 @@ namespace prjShanLiang.Controllers
                 }
                 blog.BlogHeader = p.BlogHeader;
                 blog.BlogContent = p.BlogContent;
+                blog.CityName = p.CityName;
+                blog.DistrictName = p.DistrictName;
+                blog.RestaurantName = p.RestaurantName;
                
                 db.SaveChanges();
             }
+                return RedirectToAction("BloggerList");         
+        }
+        public IActionResult BloggerDetail(int? id)
+        {
+            ShanLiang21Context db = new ShanLiang21Context();
+            Blog blog = db.Blogs.FirstOrDefault(t => t.BlogId == id);
+            if (blog == null)
                 return RedirectToAction("BloggerList");
-            
+            return View(blog);
         }
     }
 }

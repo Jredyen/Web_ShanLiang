@@ -1,7 +1,7 @@
 ﻿@model prjShanLiang.Models.Blog
 
 @{
-    ViewData["Title"] = "BloggerEdit";
+    ViewData["Title"] = "BloggerDetail";
 }
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
@@ -9,64 +9,56 @@
         <div class="breadcrumbs">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h1>文章修改</h1>
+                    <h1>文章內容</h1>
                 </div>
             </div>
         </div><!-- End Breadcrumbs -->
-        <h4>輸入內容</h4>
         <hr />
         <div class="row">
-                <form asp-action="BloggerEdit" enctype="multipart/form-data">
+                <form asp-action="BloggerDetail">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="BlogId" />
+                <input type="hidden" asp-for="BlogId" readonly="value" />
                 <div class="form-group">
                     <label asp-for="CityName" class="control-label">所在城市</label>
-                    <input asp-for="CityName" class="form-control" />
+                    <input asp-for="CityName" class="form-control" readonly="value" />
                     <span asp-validation-for="CityName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="DistrictName" class="control-label">行政區</label>
-                    <input asp-for="DistrictName" class="form-control" />
+                    <input asp-for="DistrictName" class="form-control" readonly="value" />
                     <span asp-validation-for="DistrictName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="RestaurantName" class="control-label">餐廳名稱</label>
-                    <input asp-for="RestaurantName" class="form-control" />
+                    <input asp-for="RestaurantName" class="form-control" readonly="value" />
                     <span asp-validation-for="RestaurantName" class="text-danger"></span>
                 </div>
-                    <div class="form-group">
+                <div class="form-group">
                         <label asp-for="BlogHeader" class="control-label">主題</label>
-                        <input asp-for="BlogHeader" class="form-control" />
+                    <input asp-for="BlogHeader" class="form-control" readonly="value" />
                         <span asp-validation-for="BlogHeader" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
-                        <label asp-for="BlogContent" class="control-label">內容</label>
-                    <textarea asp-for="BlogContent" class="form-control" id="story"></textarea>
+                        <label asp-for="BlogContent" class="control-label">推薦內容</label>
+                    <textarea asp-for="BlogContent" class="form-control" readonly="value" id="story"></textarea>
                         <span asp-validation-for="BlogContent" class="text-danger"></span>
                     <script src="~/js/Blog.js"></script>
                     </div>
-                    <div class="form-group">
-                    <label class="control-label">文章圖片</label>
-                    <input type="file" name="photo" id="photo" class="form-control-file" />
-                    <img src="~/Images/Blog/@Model.BlogPic" width="100" />
-                    </div>
-                <br />
-                <hr />
-                    <div class="form-group">
-                        <input type="submit" value="送出" class="btn btn-primary" />
+                <div style="border:1px #cccccc dashed;">
+                    <label asp-for="BlogPic" class="control-label" >店家照片</label>
+                    <img src="~/Images/Blog/@Model.BlogPic" width="1000" />
+                    <span asp-validation-for="BlogPic" class="text-danger"></span>
                     </div>
                 </form>
         </div>
+        <br />
+        <hr />
         <div>
             <a asp-action="BloggerList">回到文章列表</a>
         </div>
-
-        @section Scripts {
-            @{
-                await Html.RenderPartialAsync("_ValidationScriptsPartial");
-            }
-        }
-
     </div>
         </main>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
