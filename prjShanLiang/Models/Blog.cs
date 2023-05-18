@@ -12,10 +12,8 @@ public partial class Blog
     public string? BlogContent { get; set; }
 
     public string? BlogPic { get; set; }
-
     public string? CityName { get; set; }
-
     public string? DistrictName { get; set; }
-
     public string? RestaurantName { get; set; }
+
 }

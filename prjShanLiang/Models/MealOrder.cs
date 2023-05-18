@@ -11,14 +11,14 @@ public partial class MealOrder
 
     public int? StoreId { get; set; }
 
-    public decimal? Total { get; set; }
+    public int? Total { get; set; }
 
     public int? OrderStatus { get; set; }
 
     public string? Remark { get; set; }
 
     public string? OrderDate { get; set; }
-
+  
     public virtual ICollection<MealOrderDetail> MealOrderDetails { get; set; } = new List<MealOrderDetail>();
 
     public virtual Member? Member { get; set; }
