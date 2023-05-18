@@ -51,8 +51,9 @@
                 <form asp-action="Signup" class="mx-1 mx-md-4">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" required type="email"class="form-control inputFont" />
+                        <label asp-for="Email" class="control-label">Email(帳號)</label>
+                        <input asp-for="Email"  id="InputAccount" required type="email"class="form-control inputFont" />
+                        <div id="accountHelp"style="color:red" class="form-text"></div>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                    
@@ -124,7 +125,19 @@
                 let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
                 let result = false
 
-
+                const inpAccount = document.getElementById('InputAccount');
+                const divAccount = document.getElementById('accountHelp');
+                    inpAccount.addEventListener('blur',async ()=>{
+                      //  divAccount.innerHTML =inpAccount.value;
+                        //檢查帳號是否存在
+                        const response = await fetch('@Url.Content("~/User/CheckName")?name=' + inpAccount.value);
+                        const isExists = await response.text();  //True or False
+                        let message = "";
+                        if(isExists === "True"){
+                            message = "帳號已存在";
+                        }
+                        divAccount.innerHTML = message;
+                    })
 
                 Password1.addEventListener('input',
                     function (event) {

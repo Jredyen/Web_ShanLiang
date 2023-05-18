@@ -505,18 +505,15 @@ public partial class ShanLiang21Context : DbContext
 
         modelBuilder.Entity<StoreReserved>(entity =>
         {
-            entity.HasKey(e => e.ReservationNo);
+            entity.HasKey(e => e.ReservationId);
 
             entity.ToTable("Store_Reserved", "dbo");
 
-            entity.Property(e => e.ReservationNo).HasColumnName("ReservationNo.");
+            entity.Property(e => e.ReservationId).HasColumnName("ReservationId.");
             entity.Property(e => e.Date).HasColumnType("date");
-            entity.Property(e => e.OrderId).HasColumnName("OrderID");
+
             entity.Property(e => e.StoreId).HasColumnName("StoreID");
 
-            entity.HasOne(d => d.Order).WithMany(p => p.StoreReserveds)
-                .HasForeignKey(d => d.OrderId)
-                .HasConstraintName("FK_Store_Reserved_Order");
 
             entity.HasOne(d => d.Store).WithMany(p => p.StoreReserveds)
                 .HasForeignKey(d => d.StoreId)
