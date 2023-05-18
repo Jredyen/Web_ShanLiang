@@ -32,40 +32,48 @@ namespace prjShanLiang.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login(CAccountPasswordViewModel vm)
         {
-            ShanLiang21Context db = new ShanLiang21Context();
-            Store sto = db.Stores.FirstOrDefault(a => a.AccountName == vm.AccountName && a.Password == vm.AccountPassword);
-            Member mem = db.Members.FirstOrDefault(a => a.Email == vm.AccountName && a.Password == vm.AccountPassword);
-            //Account acc = db.Accounts.FirstOrDefault(a => a.AccountName == vm.AccountName && a.AccountPassword == vm.AccountPassword);
-            Admin admin = db.Admins.FirstOrDefault(a => a.AdminName == vm.AccountName && a.Passwoed == vm.AccountPassword);
-            if (sto != null || mem != null || admin !=null)
+            try
             {
-                string json;
-                if (sto != null)
+                ShanLiang21Context db = new ShanLiang21Context();
+                Store sto = db.Stores.FirstOrDefault(a => a.AccountName == vm.AccountName && a.Password == vm.AccountPassword);
+                Member mem = db.Members.FirstOrDefault(a => a.Email == vm.AccountName && a.Password == vm.AccountPassword);
+                //Account acc = db.Accounts.FirstOrDefault(a => a.AccountName == vm.AccountName && a.AccountPassword == vm.AccountPassword);
+                Admin admin = db.Admins.FirstOrDefault(a => a.AdminName == vm.AccountName && a.Passwoed == vm.AccountPassword);
+                if (sto != null || mem != null || admin != null)
                 {
-                    json = JsonSerializer.Serialize(sto);
-                    HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "2");
-                }
+                    string json;
+                    if (sto != null)
+                    {
+                        json = JsonSerializer.Serialize(sto);
+                        HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "2");
+                    }
 
-                else if (mem != null)
-                {
-                    json = JsonSerializer.Serialize(mem);
-                    HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "1");
-                }
-                else  {
+                    else if (mem != null)
+                    {
+                        json = JsonSerializer.Serialize(mem);
+                        HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "1");
+                    }
+                    else
+                    {
 
-                    json = JsonSerializer.Serialize(admin);
-                    HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "0");
-                }
+                        json = JsonSerializer.Serialize(admin);
+                        HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "0");
+                    }
 
-                HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER, json);
-                if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "0")
-                {
-                    return RedirectToAction("Index", "Admin");
-                }
+                    HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER, json);
+                    if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "0")
+                    {
+                        return RedirectToAction("Index", "Admin");
+                    }
 
-                return RedirectToAction("Index", "Home");
-            }
+                    return RedirectToAction("Index", "Home");
+                }
                 return View("Login");
+            }
+            catch (Exception ex)
+            {
+                return Json(ex);
+            }
         }
         public IActionResult logOut() {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) != null)
