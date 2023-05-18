@@ -11,7 +11,7 @@ public partial class Admin
 
     public string? Passwoed { get; set; }
 
-    public int? IdentificationID { get; set; }
+    public int? IdentificationId { get; set; }
 
     public virtual Identification? Identification { get; set; }
 }
