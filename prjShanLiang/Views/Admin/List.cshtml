@@ -34,7 +34,7 @@
                         <tr>
                             <td>@count</td>
                             <td>@Html.DisplayFor(modelItem => item.AdminName)</td>
-                            <td>@Html.DisplayFor(modelItem => item.IdentificationNavigation.IdentificationName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Identification.IdentificationName)</td>
                             <td>
                                 @Html.ActionLink("修改", "Edit", new { id = item.AdminId }, new {Class="btn btn-outline-primary"}) |
                                 @Html.ActionLink("刪除", "Delete","Admin", new {  id=item.AdminId },new {onclick="return confirm('確定刪除嗎?')", Class="btn btn-outline-danger"})
