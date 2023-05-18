@@ -213,7 +213,7 @@
 
 
                 <div class="row">
-                    @foreach (var advertisement in Model.Item1.Take(4))
+                    @foreach (var advertisement in Model.Item1.Skip(4).Take(4))
                     {
                         string imgName = advertisement.RestaurantName + ".jpg";
                         <div class="col-sm-3">
