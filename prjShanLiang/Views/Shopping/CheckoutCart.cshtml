@@ -5,6 +5,10 @@
 }
 @section Styles{
     <style>
+        body {
+            font-size: 15px;
+            background-color: #fff;
+        }
         .marg {
             margin: 15px 50px 0px 50px;
             width: 120px;
@@ -39,8 +43,8 @@
 }
 @section Scripts{
     <script>
-        @*此方法可以取得總金額和備註並傳回後端 myBtn是按鈕*@
-                    const myBtn = document.getElementById('myBtn')
+        @*此方法可以取得總金額和備註並傳回後端 myBtn是前往付款按鈕*@
+            const myBtn = document.getElementById('myBtn')
         myBtn.addEventListener('click', () => {
             let remark = saveRemark();
             let pay = savepay();
@@ -160,7 +164,7 @@
                         <hr />
                         
                         <div style="margin-bottom:10px; color:red;font-size:30px;">
-                            優惠後金額: $<span id="finalAmount">@fin</span> 元
+                            <span id="finalAmount">應付:$ @fin 元</span>
                         </div>
                         <div>
                             
@@ -168,15 +172,18 @@
                             <input type="text" value="" name="coupon" id="txtcoupon" />
                             <input type="button" value="確定" class="btn btn-primary" id="coupon" />
                             <br />
-                            <input type="button" value="優惠碼Demo" id="coupondemo" />
-                            <input type="button" value="備註Demo" id="remarkdemo" />
-                            <br />
+                            
                             <label>備註:</label>
                             <input type="text" id="txtremark" name="txtremark" style="width:350px;">
                             <br />
-                            <br />
+                            
                             <input type="button" id="myBtn" value="前往付款" class="btn btn-primary" />
                             @Html.ActionLink("取消", "Menu", "Shopping", null, new { @class = "btn btn-danger " } )
+                            <br />
+                            <br />
+                            <input type="button" value="優惠碼Demo" id="coupondemo" />
+                            <input type="button" value="備註Demo" id="remarkdemo" />
+                            
                         </div>
                     </div>
                 </div>
@@ -197,13 +204,13 @@
                         if (txtcoupon === coupon1) {
                         discount = 0.9;
                         finValue = payValue * discount
-                        document.getElementById("finalAmount").textContent = finValue;
-                        alert('成功使用優惠碼 享有9折優惠')
+                            document.getElementById("finalAmount").textContent = '應付:$ ' +finValue+' 元 已使用優惠碼';
+                            alert('成功使用優惠碼 享有9折優惠')
                     }
                     else {
                         discount = 1.0;
                         finValue = payValue;
-                        document.getElementById("finalAmount").textContent = finValue;
+                            document.getElementById("finalAmount").textContent = '應付:$ ' + finValue + ' 元';
                         alert('請輸入正確優惠碼')
                     }
                 })
@@ -214,7 +221,7 @@
                 })
                 const remarkdemo = document.getElementById('remarkdemo')
                 remarkdemo.addEventListener('click',()=>{
-                    txtremark.value = '寫程式壓力好大 來個大辣~'
+                    txtremark.value = '我不要餐具'
                 })
             </script>
         </form>

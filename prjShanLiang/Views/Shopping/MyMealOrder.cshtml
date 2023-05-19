@@ -3,47 +3,26 @@
 @{
     ViewData["Title"] = "我的訂單紀錄";
 }
-
 @section Styles{
-.modal {
-  display: none; 
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5); 
-}
+    <style>
+        body {
+            font-size: 15px;
+            background-color: #fff;
+        }
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 10% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            border: 3px solid red;
+            width: 100%;
+        }
+    </style>
 }
-
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-}
-
 @section Scripts{
-   @* <script>
+    @* <script>
         const stars = document.querySelectorAll('.stars');
-        function getStar(event, n) {            
+        function getStar(event, n) {
             for (let i = 1; i <= n; i++) {
                 event.target.innerHTML += '<i class="bi bi-star-fill"></i>';
             }
@@ -53,36 +32,36 @@
         }
         for (i = 0; i < stars.length; i++) {
             stars[i].click();
-        }        
+        }
     </script>*@
-    <script>   
-       async function con(id) {
-            
-            
-            const dataTbody = document.getElementById('table1')
-            const res = await fetch('@Url.Content("~/Shopping/MyMealOrderDetail")?id=' + id);
-        const data = await res.json();
+    <script>
+        @*顯示訂單明細
+        按下明細按鈕觸發這個方法並傳OrderId進來
+        傳回後端撈明細資料 再傳回json解析成data
+        使用map把每一筆資料拿出來v=value,i=序列
+        排成清單表格放到Model*@
+            async function con(id) {
+                const dataTbody = document.getElementById('table1')
+                const res = await fetch('@Url.Content("~/Shopping/MyMealOrderDetail")?id=' + id);
+                const data = await res.json();
 
+                const htmlData = data.map((v, i) => {
+                    return `<tr><td>${i + 1}</td><td>${v.mealName}</td><td>${v.quantity}</td><td>${v.mealPrice}</td></tr>`
+                });
+                dataTbody.innerHTML = htmlData.join("");
+            };
 
-            const htmlData = data.map((v, i) => {
-
-                return `<tr><td>${i + 1}</td><td>${v.mealName}</td><td>${v.quantity}</td><td>${v.mealPrice}</td></tr>`
-            });
-            
-            dataTbody.innerHTML = htmlData.join("");     
-        };
-        
     </script>
     }
-<!-- Modal -->
+<!-- Modal互動視窗 -->
 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">訂單明細</h5>
+                <h5 class="modal-title" id="exampleModalLabel" style="font-size:30px; margin-left:150px;">訂單明細</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">                
+            <div class="modal-body">
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -102,7 +81,7 @@
                         </tr>
                     </thead>
                     <tbody id="table1">
-                       @*訂單明細出現在這*@
+                        @*訂單明細出現在這*@
                     </tbody>
                 </table>
             </div>
@@ -127,7 +106,7 @@
                 <tr>
                     <th>
                         序號
-                    </th>   
+                    </th>
                     <th>
                         訂單編號
                     </th>
@@ -140,7 +119,7 @@
                     <th>
                         訂單狀態
                     </th>
-                    
+
                     <th>
                         訂單時間
                     </th>
@@ -160,33 +139,33 @@
                                 @count1
                             </td>
                             <td>
-                                 @item.OrderId
+                                @item.OrderId
                             </td>
                             <td>
-                                膳糧食堂 大安店 
+                                膳糧食堂 大安店
                             </td>
-                            <td>                                
+                            <td>
                                 $:@Convert.ToInt16(item.Total)
                             </td>
                             <td>
                                 @item.OrderStatusNavigation.StatusName
-                            </td>                            
+                            </td>
                             <td>
                                 @item.OrderDate
                             </td>
                             <td>
                                 @item.Remark
                             </td>
-                            <td>                 
-                                <!-- Button trigger modal -->
+                            <td>
+                                <!-- 按下觸發Model互動視窗 並觸發con(OrderId)方法 -->
                                 <div type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal" onclick="con(@item.OrderId)">
                                     明細
-                                </div>                                
+                                </div>
                             </td>
                         </tr>
                     }
                 }
             </tbody>
-        </table>        
+        </table>
     </div>
 </main><!-- End #main -->

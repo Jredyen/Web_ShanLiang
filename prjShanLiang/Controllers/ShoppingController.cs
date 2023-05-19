@@ -213,7 +213,7 @@ namespace prjShanLiang.Controllers
         }
         
         public IActionResult MyMealOrderDetail(int? id)
-        {  //顯示選到的訂單明細
+        {  //顯示選到的訂單明細 傳OrderId進來-
             var datas = _db.MealOrderDetails.Include(m => m.Meal).Where(t => t.OrderId == id).Select(t =>new { t.Meal.MealName, t.Quantity,t.Meal.MealPrice});
             return Json(datas);
         }

@@ -43,6 +43,10 @@
                 outline: none;
             }
         /*=====================以上是回到最上層的CSS=========================*/
+        body{
+        font-size:15px;
+        background-color:#fff;
+        }
         .my-image {
             width: 600px;
             height: auto;
@@ -76,9 +80,10 @@
 
         .card {
             width: 400px;
-            height: 450px;           
-            margin: 10px 0px 20px 20px;
-            padding:15px;
+            height: 450px;
+            margin: 10px 0px 20px 20px; 
+            border:3px solid orange;  
+            
         }
         @*價錢數量按鈕區塊*@
         .divCountMoney{            
@@ -108,9 +113,9 @@
                 }
             }).scroll();
         });
-        //使用Ajax非同步(完成)
+        //使用Ajax非同步增加餐點到購物車
         function con(id) {
-            var mealId = id;
+            
             var count = $('#' + id).val();
             const liveToastBtn = document.getElementById('liveToastBtn')
             const toastLiveExample = document.getElementById('liveToast')
@@ -184,16 +189,7 @@
                 </div>
                 <div class="carousel-item" data-bs-interval="3000">
                     <img src="~/images/Menu/top/9.jpg" class="d-block w-100 ">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="~/images/Menu/top/10.jpg" class="d-block w-100 ">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="~/images/Menu/top/11.jpg" class="d-block w-100 ">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="~/images/Menu/top/12.jpg" class="d-block w-100 ">
-                </div>
+                </div>               
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -253,13 +249,13 @@
                             <div class="divCountMoney">
                                 <input class="txtMealId" type="hidden" name="txtMealId" value="@item.MealId" />
                                 <p class="CountMoney"style="font-size:18px;">                                    
-                                    NT$:@Convert.ToInt16(item.MealPrice)
+                                    NT$@Convert.ToInt16(item.MealPrice)
                                 </p>
                                 <p class="CountMoney">
                                     @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control ",id=item.MealId , style="width:100px;"})
                                 </p>
                                 <p class="CountMoney">
-                                    <input type="button" value="加入購物車" class="btn btn-primary " onclick="con(@item.MealId)" id="liveToastBtn" />
+                                    <input type="button" value="加入購物車" class="btn btn-warning " onclick="con(@item.MealId)" id="liveToastBtn" />
                                 </p>
                             </div>                            
                             <p >@item.Recommendation</p>
