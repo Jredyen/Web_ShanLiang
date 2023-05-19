@@ -53,32 +53,37 @@
         }
         for (i = 0; i < stars.length; i++) {
             stars[i].click();
-        }
-        
+        }        
     </script>*@
-    <script>
-        
-        var myModal = document.getElementById('myModal')
-        var myInput = document.getElementById('myInput')
+    <script>   
+       async function con(id) {
+            
+            
+            const dataTbody = document.getElementById('table1')
+            const res = await fetch('@Url.Content("~/Shopping/MyMealOrderDetail")?id=' + id);
+        const data = await res.json();
 
-        myModal.addEventListener('shown.bs.modal', function () {
-            myInput.focus()
-        })
 
+            const htmlData = data.map((v, i) => {
+
+                return `<tr><td>${i + 1}</td><td>${v.mealName}</td><td>${v.quantity}</td><td>${v.mealPrice}</td></tr>`
+            });
+            
+            dataTbody.innerHTML = htmlData.join("");     
+        };
         
     </script>
     }
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">訂單明細</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-
-                <table class="table">
+            <div class="modal-body">                
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>
@@ -90,28 +95,14 @@
                             <th>
                                 數量
                             </th>
+                            <th>
+                                單價
+                            </th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @{
-                            int count = 0;
-                            foreach (var item in Model)
-                            {
-                                count++;
-                                <tr>
-                                    <td>
-                                        @count
-                                    </td>
-                                    <td>
-                                        
-                                    </td>
-                                    <td>
-                                        
-                                    </td>
-                                </tr>
-                            }
-                        }
+                    <tbody id="table1">
+                       @*訂單明細出現在這*@
                     </tbody>
                 </table>
             </div>
@@ -186,16 +177,11 @@
                             <td>
                                 @item.Remark
                             </td>
-                            <td>
-                            @*<div class="tab-content d-flex justify-content-center" id="myTabContent">
-                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab"> @await Html.PartialAsync("~/Views/Shopping/MyMealOrderDetail.cshtml")</div>
-                            </div>*@ 
-                               
+                            <td>                 
                                 <!-- Button trigger modal -->
-                                <div type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">                                   
-                                    查看
-                                </div>
-                                @Html.ActionLink("查看", "MyMealOrderDetail","Shopping", new {  id=item.OrderId  },new{@class = "btn btn-primary "})
+                                <div type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal" onclick="con(@item.OrderId)">
+                                    明細
+                                </div>                                
                             </td>
                         </tr>
                     }

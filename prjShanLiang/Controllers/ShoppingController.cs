@@ -203,7 +203,7 @@ namespace prjShanLiang.Controllers
             Member member = JsonSerializer.Deserialize<Member>(jsonUser);  //字串轉會員資料物件
             if (member.MemberId == id) 
             {   
-                IEnumerable<MealOrder> datas = from s in _db.MealOrders.Include(m => m.OrderStatusNavigation)
+                IEnumerable<MealOrder> datas = from s in _db.MealOrders.Include(m => m.OrderStatusNavigation).Include(m => m.MealOrderDetails)
                                            where s.MemberId == id
                                            select s;
             return View(datas);
@@ -211,11 +211,11 @@ namespace prjShanLiang.Controllers
             return RedirectToAction("Menu");//如果傳進來的Id不是登入者的Id轉跳回Menu
 
         }
-       
+        
         public IActionResult MyMealOrderDetail(int? id)
         {  //顯示選到的訂單明細
-            IEnumerable<MealOrderDetail> datas = _db.MealOrderDetails.Include(m => m.Meal).Where(t => t.OrderId == id);
-            return View(datas);
+            var datas = _db.MealOrderDetails.Include(m => m.Meal).Where(t => t.OrderId == id).Select(t =>new { t.Meal.MealName, t.Quantity,t.Meal.MealPrice});
+            return Json(datas);
         }
     }
 }
