@@ -7,7 +7,7 @@
     <style>
         body {
             font-size: 15px;
-            background-color: #fff;
+            background-color: #E0E0E0;
         }
         .marg {
             margin: 15px 50px 0px 50px;
@@ -178,7 +178,7 @@
                             <br />
                             
                             <input type="button" id="myBtn" value="前往付款" class="btn btn-primary" />
-                            @Html.ActionLink("取消", "Menu", "Shopping", null, new { @class = "btn btn-danger " } )
+                            @Html.ActionLink("取消", "Menu", "Shopping", new{id=1}, new { @class = "btn btn-danger " } )
                             <br />
                             <br />
                             <input type="button" value="優惠碼Demo" id="coupondemo" />

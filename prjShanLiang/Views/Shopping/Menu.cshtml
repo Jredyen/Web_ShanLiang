@@ -45,7 +45,7 @@
         /*=====================以上是回到最上層的CSS=========================*/
         body{
         font-size:15px;
-        background-color:#fff;
+        background-color:#E0E0E0;
         }
         .my-image {
             width: 600px;
@@ -201,40 +201,17 @@
             </button>
         </div>
                
-        @*店家資訊*@
-        @*{
-            string a="";
-            string b="";
-            string c="";
-            foreach (var item in Model)
-            {
-                a = item.Store.RestaurantName;
-                b = item.Store.RestaurantAddress;
-                c = item.Store.RestaurantPhone;
-            }
-        <div>
+        @*店家資訊*@        
+          <div>
            <div class=" shadow p-3 mb-5 bg-white rounded" style="margin:30px 30px 0px 30px;">
              <div style="margin:10px 30px 30px 30px;">
-              <h1 style="font-size:40px;">@a</h1>
-              <p>@b</p>
-              <p>@c</p>
+              <h1 style="font-size:40px;">@ViewBag.RestaurantName</h1>
+              <p>@ViewBag.RestaurantAddress</p>
+              <p>@ViewBag.RestaurantPhone</p>
              </div>
            </div>
         </div> 
-         }*@
-        <div>
-           <div class=" shadow p-3 mb-5 bg-white rounded" style="margin:30px 30px 0px 30px;">
-             <div style="margin:10px 30px 30px 30px;">
-              <h1 style="font-size:40px;">膳糧食堂 大安店 </h1>
-              <p>台北市大安區復興南路一段390號2樓 </p>
-              <p>(02)6631-6588 </p>
-             </div>
-           </div>
-        </div> 
-            
-            
-        
-        
+     
         @*商品區塊*@
         <div class="row">
             @foreach (var item in Model)

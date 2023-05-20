@@ -16,26 +16,29 @@ namespace prjShanLiang.Controllers
         {
             _db = db;
         }
-        //public IActionResult Menu(int? StoreId)
-        //傳入店家ID  缺點:讀取很久
-        public IActionResult Menu()
-        {
-            //IEnumerable<MealMenu> datas = _db.MealMenus.Include(m => m.Store).Where(t => t.StoreId == StoreId);  //傳參數找店家讀取速度7秒
-            //IEnumerable<MealMenu> datas = _db.MealMenus.Include(m => m.Store);  //讀取速度3秒
-            IEnumerable<MealMenu> datas = _db.MealMenus;  //讀取速度不到1秒
+        public IActionResult Menu(int? StoreId)
+        {    //店家餐點頁面  傳入店家Id
+            IEnumerable<MealMenu> datas = _db.MealMenus.Where(t => t.StoreId == StoreId);
+            var storeinfo = _db.Stores.Where(t=>t.StoreId ==StoreId).Select(t=>new{t.RestaurantAddress,t.RestaurantName,t.RestaurantPhone});
+            foreach (var item in storeinfo) 
+            {
+                ViewBag.RestaurantAddress=item.RestaurantAddress;
+                ViewBag.RestaurantName =item.RestaurantName;
+                ViewBag.RestaurantPhone = item.RestaurantPhone;
+            }            
             return View(datas);
         }        
 
         [Route("api/shoppingcart/add-to-cart")]
         public ActionResult AddToCart(int? id, int? count)
-        {   //增加到購物車
+        {   //增加到購物車 傳入餐點Id 購買數量
             MealMenu menu = _db.MealMenus.FirstOrDefault(t => t.MealId == id);
             if (menu != null)
             {
                 string json = "";
                 List<CShoppingCartItem> cart = new List<CShoppingCartItem>();
                 if (HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
-                { //如果比對有KEY就把json的值取出 cart還原回來
+                { //如果比對有KEY就把json的值取出 轉換成物件cart
                     json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
                     cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
                 }
@@ -75,17 +78,18 @@ namespace prjShanLiang.Controllers
         public IActionResult CartView()
         {  //檢視購物車
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
-                return RedirectToAction("Menu");
+                return RedirectToAction("Menu", new { StoreId = 1});//如果Session購物車沒東西
+
             string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
 
-            if (json != "")
-            {   //如果Session購物車沒東西
+            if (json != null)
+            {   
                 List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
                 if (cart == null || cart.Count == 0)
-                    return RedirectToAction("Menu");  //如果購物車是空的 回到Menu繼續點餐
+                    return RedirectToAction("Menu", new { StoreId = 1 });  //如果購物車是空的 回到Menu繼續點餐
                 return View(cart);
             }
-            return RedirectToAction("Menu");
+            return RedirectToAction("Menu", new { StoreId = 1 });
 
         }
 
@@ -103,41 +107,38 @@ namespace prjShanLiang.Controllers
             for (int i = cart.Count - 1; i >= 0; i--)
             {
                 if (cart[i].mealId == id)
-                {
                     cart.RemoveAt(i);
-                }
             }
 
             json = JsonSerializer.Serialize(cart);
 
             HttpContext.Session.SetString(CDictionary.SK_PURCHASED_MENU_LIST, json);
             if (cart.Count == 0)
-            {
-                return RedirectToAction("Menu");
-            }
+                return RedirectToAction("Menu", new { StoreId = 1 });
+
             return RedirectToAction("CartView");
         }
+
+
         public IActionResult CheckoutCart()
         {   //確認訂單
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
-                return RedirectToAction("Menu");
+                return RedirectToAction("Menu", new { StoreId = 1 });
 
             string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
 
             List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
 
             if (cart == null || cart.Count == 0)
-                return RedirectToAction("Menu");  //如果購物車是空的 回到Menu繼續點餐
+                return RedirectToAction("Menu", new { StoreId = 1 });  //如果購物車是空的 回到Menu繼續點餐
 
 
             //找出登入者資訊
             string logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             //如果沒有登入轉跳登入頁面
             if (logginedUser == null)
-            {
-
-                return RedirectToAction("Login", "User");
-            }
+              return RedirectToAction("Login", "User");
+            
             Member datas = JsonSerializer.Deserialize<Member>(logginedUser);
             ViewBag.MemberName = datas.MemberName;
             ViewBag.MemberPhone = datas.Memberphone;
@@ -147,7 +148,7 @@ namespace prjShanLiang.Controllers
         public IActionResult CreateOrder(int? pay, string remark)
         {   //付款後完成訂單
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
-                return RedirectToAction("Menu");//如果購物車沒東西 回點餐頁面
+                return RedirectToAction("Menu", new { StoreId = 1 });//如果購物車沒東西 回點餐頁面
 
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USER))
                 return RedirectToAction("Login", "User");//如果沒登入 回登入頁面
@@ -157,7 +158,7 @@ namespace prjShanLiang.Controllers
             List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json); //字串轉購物車物件
 
             if (cart == null || cart.Count == 0)
-                return RedirectToAction("Menu");  //如果購物車商品數量是0 回到Menu繼續點餐
+                return RedirectToAction("Menu", new { StoreId = 1 });  //如果購物車商品數量是0 回到Menu繼續點餐
 
 
             string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER); //Session裡會員資料轉字串
@@ -201,6 +202,7 @@ namespace prjShanLiang.Controllers
             string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER); //Session裡會員資料轉字串
 
             Member member = JsonSerializer.Deserialize<Member>(jsonUser);  //字串轉會員資料物件
+
             if (member.MemberId == id) 
             {   
                 IEnumerable<MealOrder> datas = from s in _db.MealOrders.Include(m => m.OrderStatusNavigation).Include(m => m.MealOrderDetails)
@@ -208,12 +210,12 @@ namespace prjShanLiang.Controllers
                                            select s;
             return View(datas);
             }
-            return RedirectToAction("Menu");//如果傳進來的Id不是登入者的Id轉跳回Menu
+            return RedirectToAction("memberManagement", "User");//如果傳進來的Id不是登入者的Id轉跳回會員頁面
 
         }
         
         public IActionResult MyMealOrderDetail(int? id)
-        {  //顯示選到的訂單明細 傳OrderId進來-
+        {  //顯示選到的訂單明細 傳OrderId進來
             var datas = _db.MealOrderDetails.Include(m => m.Meal).Where(t => t.OrderId == id).Select(t =>new { t.Meal.MealName, t.Quantity,t.Meal.MealPrice});
             return Json(datas);
         }
