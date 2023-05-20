@@ -11,15 +11,17 @@ namespace prjShanLiang.Controllers
     public class ShoppingController : Controller
     {
         private readonly ShanLiang21Context _db;
-
-        public ShoppingController(ShanLiang21Context db)
+        private IWebHostEnvironment _enviro;
+        public ShoppingController(ShanLiang21Context db, IWebHostEnvironment p)
         {
             _db = db;
+            _enviro = p;
         }
         public IActionResult Menu(int? StoreId)
         {    //店家餐點頁面  傳入店家Id
             IEnumerable<MealMenu> datas = _db.MealMenus.Where(t => t.StoreId == StoreId);
             var storeinfo = _db.Stores.Where(t=>t.StoreId ==StoreId).Select(t=>new{t.RestaurantAddress,t.RestaurantName,t.RestaurantPhone});
+            ViewBag.StoreId = StoreId;
             foreach (var item in storeinfo) 
             {
                 ViewBag.RestaurantAddress=item.RestaurantAddress;
@@ -217,6 +219,40 @@ namespace prjShanLiang.Controllers
         {  //顯示選到的訂單明細 傳OrderId進來
             var datas = _db.MealOrderDetails.Include(m => m.Meal).Where(t => t.OrderId == id).Select(t =>new { t.Meal.MealName, t.Quantity,t.Meal.MealPrice});
             return Json(datas);
+        }
+        public IActionResult StoreMenuList(int? id)
+        {   //店家餐點列表 傳入店家Id
+            IEnumerable<MealMenu> datas = _db.MealMenus.Where(t => t.StoreId == id);
+            ViewBag.storeId = id;
+            return View(datas);                
+        }
+        public IActionResult CreateStoreMenu(int? id)
+        {   //新增餐點  傳入店家Id
+            ViewBag.storeId = id;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult CreateStoreMenu(CCreateMealViewModel vm,IFormFile MealImage)
+        { 
+        MealMenu mealMenu = new MealMenu() 
+        {
+        StoreId = vm.StoreId,
+        MealName = vm.MealName,
+        MealPrice = vm.MealPrice,
+        MealImagePath = vm.MealImagePath,
+        Recommendation = vm.Recommendation
+        };
+            if (MealImage != null)
+            {
+                string photoName = vm.MealName + ".jpg";
+                string path = _enviro.WebRootPath + "/images/Menu/" + photoName;
+
+                MealImage.CopyTo(new FileStream(path, FileMode.Create));
+                mealMenu.MealImagePath = path;
+            }
+            _db.Add(mealMenu);
+            _db.SaveChanges();
+            return RedirectToAction("StoreMenuList", new { id = 1 });
         }
     }
 }

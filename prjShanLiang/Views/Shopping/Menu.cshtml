@@ -161,7 +161,7 @@
         <!-- ======= Breadcrumbs ======= -->
         
         @*照片輪播*@
-        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel"style="margin-top:50px;">
             <div class="carousel-inner">          
                 <div class="carousel-item active" data-bs-interval="3000">
                     <img src="~/images/Menu//top/1.jpg" class="d-block w-100 ">
@@ -203,11 +203,12 @@
                
         @*店家資訊*@        
           <div>
-           <div class=" shadow p-3 mb-5 bg-white rounded" style="margin:30px 30px 0px 30px;">
-             <div style="margin:10px 30px 30px 30px;">
+           <div class=" shadow p-3 mb-5 bg-white rounded rounded-pill border border-0" style="margin:30px 30px 0px 30px;">
+             <div style="text-align:center">
               <h1 style="font-size:40px;">@ViewBag.RestaurantName</h1>
               <p>@ViewBag.RestaurantAddress</p>
               <p>@ViewBag.RestaurantPhone</p>
+              <input type="hidden" value="@ViewBag.StoreId" />
              </div>
            </div>
         </div> 
@@ -217,9 +218,9 @@
             @foreach (var item in Model)
             {
                 <div class="col-10 col-md-10 col-lg-4 " >
-                    <div class="card shadow p-3 mb-5 bg-white rounded" >
+                    <div class="card shadow p-3 mb-5 bg-white rounded-5" >
 
-                        <img src="~/Images/Menu/@item.MealImagePath" class="Meal-image" style="margin-top:20px;">
+                        <img src="~/Images/Menu/@item.MealImagePath" class="Meal-image rounded-4" style="margin-top:20px;">
 
                         <div class="card-body">
                             <h1 class=text-center>@item.MealName</h1>

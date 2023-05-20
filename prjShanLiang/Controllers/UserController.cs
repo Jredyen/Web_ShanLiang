@@ -245,6 +245,7 @@ namespace prjShanLiang.Controllers
             Store datas = JsonSerializer.Deserialize<Store>(logginedUser);
             var data = sl.Stores.Where(t => t.AccountName.Contains(datas.AccountName));
             ViewBag.storeName = datas.AccountName;
+            ViewBag.storeId = datas.StoreId;
             return View(data);
         }
 
