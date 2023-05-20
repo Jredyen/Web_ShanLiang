@@ -211,7 +211,6 @@ namespace prjShanLiang.Controllers
             return View(datas);
             }
             return RedirectToAction("memberManagement", "User");//如果傳進來的Id不是登入者的Id轉跳回會員頁面
-
         }
         
         public IActionResult MyMealOrderDetail(int? id)
