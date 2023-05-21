@@ -2,7 +2,7 @@
 
 namespace prjShanLiang.ViewModels
 {
-    public class CCreateMealViewModel
+    public class CMealViewModel
     {
 
         public int MealId { get; set; }
@@ -14,7 +14,7 @@ namespace prjShanLiang.ViewModels
         public decimal? MealPrice { get; set; }
         [DisplayName("照片")]
         public string? MealImagePath { get; set; }
-        [DisplayName("描述")]
+        [DisplayName("餐點介紹")]
         public string? Recommendation { get; set; }
         public IFormFile? MealImage { get; set; }
     }

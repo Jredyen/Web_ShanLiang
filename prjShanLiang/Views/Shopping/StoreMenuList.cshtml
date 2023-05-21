@@ -76,7 +76,7 @@
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2>@ViewData["Title"]</h2>
-                    @Html.ActionLink("新增餐點", "CreateStoreMenu","Shopping", new { id=ViewBag.storeId },new{ @class = "btn btn-primary"})
+                    @Html.ActionLink("新增餐點", "CreateMenu","Shopping",null,new{ @class = "btn btn-primary"})
                 </div>               
             </div>
         </div><!-- End Breadcrumbs -->
@@ -130,7 +130,7 @@
                                 @item.Recommendation
                             </td>
                             <td>
-                                @Html.ActionLink("修改", "Edit", new { /* id=item.PrimaryKey */ },new{ @class = "btn btn-warning"})
+                                @Html.ActionLink("修改", "EditMenu","Shopping",new{ MealId=item.MealId },new{ @class = "btn btn-warning"})
                             </td>
                             <td>
                                 @Html.ActionLink("刪除", "Delete", new { /* id=item.PrimaryKey */ },new{ @class = "btn btn-danger"})

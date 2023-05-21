@@ -20,16 +20,16 @@ namespace prjShanLiang.Controllers
         public IActionResult Menu(int? StoreId)
         {    //店家餐點頁面  傳入店家Id
             IEnumerable<MealMenu> datas = _db.MealMenus.Where(t => t.StoreId == StoreId);
-            var storeinfo = _db.Stores.Where(t=>t.StoreId ==StoreId).Select(t=>new{t.RestaurantAddress,t.RestaurantName,t.RestaurantPhone});
+            var storeinfo = _db.Stores.Where(t => t.StoreId == StoreId).Select(t => new { t.RestaurantAddress, t.RestaurantName, t.RestaurantPhone });
             ViewBag.StoreId = StoreId;
-            foreach (var item in storeinfo) 
+            foreach (var item in storeinfo)
             {
-                ViewBag.RestaurantAddress=item.RestaurantAddress;
-                ViewBag.RestaurantName =item.RestaurantName;
+                ViewBag.RestaurantAddress = item.RestaurantAddress;
+                ViewBag.RestaurantName = item.RestaurantName;
                 ViewBag.RestaurantPhone = item.RestaurantPhone;
-            }            
+            }
             return View(datas);
-        }        
+        }
 
         [Route("api/shoppingcart/add-to-cart")]
         public ActionResult AddToCart(int? id, int? count)
@@ -75,17 +75,17 @@ namespace prjShanLiang.Controllers
                 json = JsonSerializer.Serialize(cart);  //購物車資料變回json
                 HttpContext.Session.SetString(CDictionary.SK_PURCHASED_MENU_LIST, json);
             }
-            return Json(new { success = true });            
+            return Json(new { success = true });
         }
         public IActionResult CartView()
         {  //檢視購物車
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
-                return RedirectToAction("Menu", new { StoreId = 1});//如果Session購物車沒東西
+                return RedirectToAction("Menu", new { StoreId = 1 });//如果Session購物車沒東西
 
             string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
 
             if (json != null)
-            {   
+            {
                 List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
                 if (cart == null || cart.Count == 0)
                     return RedirectToAction("Menu", new { StoreId = 1 });  //如果購物車是空的 回到Menu繼續點餐
@@ -139,8 +139,8 @@ namespace prjShanLiang.Controllers
             string logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             //如果沒有登入轉跳登入頁面
             if (logginedUser == null)
-              return RedirectToAction("Login", "User");
-            
+                return RedirectToAction("Login", "User");
+
             Member datas = JsonSerializer.Deserialize<Member>(logginedUser);
             ViewBag.MemberName = datas.MemberName;
             ViewBag.MemberPhone = datas.Memberphone;
@@ -205,53 +205,102 @@ namespace prjShanLiang.Controllers
 
             Member member = JsonSerializer.Deserialize<Member>(jsonUser);  //字串轉會員資料物件
 
-            if (member.MemberId == id) 
-            {   
+            if (member.MemberId == id)
+            {
                 IEnumerable<MealOrder> datas = from s in _db.MealOrders.Include(m => m.OrderStatusNavigation).Include(m => m.MealOrderDetails)
-                                           where s.MemberId == id
-                                           select s;
-            return View(datas);
+                                               where s.MemberId == id
+                                               select s;
+                return View(datas);
             }
             return RedirectToAction("memberManagement", "User");//如果傳進來的Id不是登入者的Id轉跳回會員頁面
         }
-        
+
         public IActionResult MyMealOrderDetail(int? id)
         {  //顯示選到的訂單明細 傳OrderId進來
-            var datas = _db.MealOrderDetails.Include(m => m.Meal).Where(t => t.OrderId == id).Select(t =>new { t.Meal.MealName, t.Quantity,t.Meal.MealPrice});
+            var datas = _db.MealOrderDetails.Include(m => m.Meal).Where(t => t.OrderId == id).Select(t => new { t.Meal.MealName, t.Quantity, t.Meal.MealPrice });
             return Json(datas);
         }
-        public IActionResult StoreMenuList(int? id)
-        {   //店家餐點列表 傳入店家Id
-            IEnumerable<MealMenu> datas = _db.MealMenus.Where(t => t.StoreId == id);
-            ViewBag.storeId = id;
-            return View(datas);                
+        //===============================以上會員部分===================================
+
+
+
+        public IActionResult StoreMenuList()
+        {   //店家餐點列表
+            if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USER))
+                return RedirectToAction("Login", "User");//如果沒登入 回登入頁面
+
+            string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER); //Session裡店家資料轉字串
+            Store store = JsonSerializer.Deserialize < Store>(jsonUser);  //字串轉店家資料物件
+
+            var datas = _db.MealMenus.Where(t => t.StoreId == store.StoreId);
+            
+            return View(datas);
         }
-        public IActionResult CreateStoreMenu(int? id)
-        {   //新增餐點  傳入店家Id
-            ViewBag.storeId = id;
+        public IActionResult CreateMenu()
+        {   //新增餐點 
+            string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER); //Session裡店家資料轉字串
+            Store store = JsonSerializer.Deserialize<Store>(jsonUser);  //字串轉店家資料物件
+            ViewBag.storeId = store.StoreId;
             return View();
         }
         [HttpPost]
-        public IActionResult CreateStoreMenu(CCreateMealViewModel vm)
-        { 
-        MealMenu mealMenu = new MealMenu() 
-        {
-        StoreId = vm.StoreId,
-        MealName = vm.MealName,
-        MealPrice = vm.MealPrice,
-        Recommendation = vm.Recommendation            
-        };
+        public IActionResult CreateMenu(CMealViewModel vm)
+        {   //新增餐點 傳入新增的ViewModel進來
+            MealMenu mealMenu = new MealMenu()
+            {
+                StoreId = vm.StoreId,
+                MealName = vm.MealName,
+                MealPrice = vm.MealPrice,
+                Recommendation = vm.Recommendation
+            };
             if (vm.MealImage != null)
             {
-                string photoName = vm.MealName + ".jpg";
-                string path = _enviro.WebRootPath + "/images/Menu/" + photoName;
+                string ImageName = vm.MealName + ".jpg";
+                string path = _enviro.WebRootPath + "/images/Menu/" + ImageName;
 
                 vm.MealImage.CopyTo(new FileStream(path, FileMode.Create));
-                mealMenu.MealImagePath = photoName;
+                mealMenu.MealImagePath = ImageName;
             }
             _db.Add(mealMenu);
+            //_db.SaveChanges();
+            return RedirectToAction("StoreMenuList");
+        }
+        public IActionResult EditMenu(int? MealId)
+        {   //修改餐點  傳入餐點Id
+            //先找要修改的餐點
+            MealMenu mealMenu = _db.MealMenus.FirstOrDefault(t => t.MealId == MealId);
+            
+            if (mealMenu == null)
+                return RedirectToAction("StoreMenuList");
+            //把資料放到ViewModel
+            CMealViewModel vm = new CMealViewModel();
+            vm.MealId=mealMenu.MealId;
+            vm.StoreId = mealMenu.StoreId;
+            vm.MealName=mealMenu.MealName;
+            vm.MealPrice=mealMenu.MealPrice;
+            vm.Recommendation = mealMenu.Recommendation;
+            vm.MealImagePath=mealMenu.MealImagePath;
+            
+            return View(vm);
+        }
+        [HttpPost]
+        public IActionResult EditMenu(CMealViewModel vm)
+        {  //傳入修改後的ViewModel
+            //資料放回MealMenu
+            MealMenu mealMenu = _db.MealMenus.FirstOrDefault(t => t.MealId == vm.MealId);
+            mealMenu.MealName = vm.MealName;
+            mealMenu.MealPrice = vm.MealPrice;
+            mealMenu.Recommendation = vm.Recommendation;
+            if (vm.MealImage != null)
+            {
+                string ImageName = vm.MealName + ".jpg";
+                string path = _enviro.WebRootPath + "/images/Menu/" + ImageName;
+
+                vm.MealImage.CopyTo(new FileStream(path, FileMode.Create));
+                mealMenu.MealImagePath = ImageName;
+            }
             _db.SaveChanges();
-            return RedirectToAction("StoreMenuList", new { id = 1 });
+            return RedirectToAction("StoreMenuList");           
         }
     }
 }

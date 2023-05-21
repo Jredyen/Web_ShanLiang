@@ -1,12 +1,9 @@
-﻿@model prjShanLiang.ViewModels.CCreateMealViewModel
+﻿@model prjShanLiang.ViewModels.CMealViewModel
 
 @{
-    ViewData["Title"] = "新增餐點";
+    ViewData["Title"] = "修改餐點";
 }
-<style>
 
-
-</style>
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <div class="breadcrumbs">
@@ -17,14 +14,14 @@
             </div>
         </div><!-- End Breadcrumbs -->
         <!-- ======= Breadcrumbs ======= -->
-
-
         <div class="row">
             <div class="col-md-4">
-                <form asp-action="CreateStoreMenu" method="post" enctype="multipart/form-data">
+                <form asp-action="EditMenu" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                     
+                    <input type="hidden" value=@Model.StoreId name="StoreId" />
+                    <input type="hidden" value=@Model.MealId name="MealId" />
 
-                    <input type="hidden" value="@ViewBag.storeId" name="StoreId" />
                     <div class="form-group">
                         <label asp-for="MealName" class="control-label"></label>
                         <input asp-for="MealName" class="form-control" />
@@ -34,23 +31,20 @@
                         <label asp-for="MealPrice" class="control-label"></label>
                         <input asp-for="MealPrice" class="form-control" />
                         <span asp-validation-for="MealPrice" class="text-danger"></span>
-                    </div>
-
+                    </div>              
                     <div class="form-group">
-                        <label asp-for="Recommendation" class="control-label"></label>
+                        <label class="control-label">餐點介紹</label>
                         <input asp-for="Recommendation" class="form-control" />
                         <span asp-validation-for="Recommendation" class="text-danger"></span>
                     </div>
-
                     <div class="form-group">
                         <label class="control-label">餐點圖片</label>
                         <input type="file" name="MealImage" class="form-control" onchange="readURL(this)" targetID="preview_progressbarTW_img" />
                         <img id="preview_progressbarTW_img" style="margin-top:10px" src="#" alt="請選擇要上傳的圖片" />
                     </div>
-
                     <div class="form-group">
-                        <input type="submit" value="確認" class="btn btn-primary" />
-                        @Html.ActionLink("返回", "StoreMenuList", new {  id=ViewBag.storeId  },new{ @class = "btn btn-danger"})
+                        <input type="submit" value="儲存" class="btn btn-primary" />
+                        @Html.ActionLink("返回", "StoreMenuList","Shopping", null ,new{ @class = "btn btn-danger"})
                     </div>
                 </form>
             </div>
@@ -60,19 +54,19 @@
 @section Scripts {
     <script>
         @*此方法為顯示要上傳的照片*@
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+            function readURL(input) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
 
-                reader.onload = function (e) {
-                    $('#preview_progressbarTW_img')
-                        .attr('src', e.target.result)
-                        .width(200)
-                        .height(200);
-                };
-                reader.readAsDataURL(input.files[0]);
+                    reader.onload = function (e) {
+                        $('#preview_progressbarTW_img')
+                            .attr('src', e.target.result)
+                            .width(200)
+                            .height(200);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
             }
-        }
     </script>
 
 }
