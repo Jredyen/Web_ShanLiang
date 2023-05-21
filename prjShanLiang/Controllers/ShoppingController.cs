@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Plugins;
 using prjShanLiang.Models;
@@ -18,7 +19,7 @@ namespace prjShanLiang.Controllers
             _enviro = p;
         }
         public IActionResult Menu(int? StoreId)
-        {    //店家餐點頁面  傳入店家Id
+        {    //店家餐點頁面  傳入店家Id            
             IEnumerable<MealMenu> datas = _db.MealMenus.Where(t => t.StoreId == StoreId);
             var storeinfo = _db.Stores.Where(t => t.StoreId == StoreId).Select(t => new { t.RestaurantAddress, t.RestaurantName, t.RestaurantPhone });
             ViewBag.StoreId = StoreId;
@@ -27,14 +28,24 @@ namespace prjShanLiang.Controllers
                 ViewBag.RestaurantAddress = item.RestaurantAddress;
                 ViewBag.RestaurantName = item.RestaurantName;
                 ViewBag.RestaurantPhone = item.RestaurantPhone;
-            }
+            }            
             return View(datas);
         }
 
+        [Route("api/shoppingcart/showcartcount")]
+        public ActionResult ShowCartCount()
+        {
+            // 顯示購物車裡的數量
+            string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
+            List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
+            int cartCount = cart.Count;
+
+            return Json(new { success = true, CartCount = cartCount });
+        }
         [Route("api/shoppingcart/add-to-cart")]
         public ActionResult AddToCart(int? id, int? count)
         {   //增加到購物車 傳入餐點Id 購買數量
-            MealMenu menu = _db.MealMenus.FirstOrDefault(t => t.MealId == id);
+            MealMenu menu = _db.MealMenus.FirstOrDefault(t => t.MealId == id);           
             if (menu != null)
             {
                 string json = "";
@@ -66,7 +77,7 @@ namespace prjShanLiang.Controllers
                     item.mealId = (int)id;
                     item.count = (int)count;
                     cart.Add(item);
-                }
+                }                 
                 //Todo假設沒有庫存回傳訊息
                 //if (//沒庫存)
                 //{ 
@@ -90,7 +101,7 @@ namespace prjShanLiang.Controllers
                 if (cart == null || cart.Count == 0)
                     return RedirectToAction("Menu", new { StoreId = 1 });  //如果購物車是空的 回到Menu繼續點餐
                 return View(cart);
-            }
+            }            
             return RedirectToAction("Menu", new { StoreId = 1 });
 
         }

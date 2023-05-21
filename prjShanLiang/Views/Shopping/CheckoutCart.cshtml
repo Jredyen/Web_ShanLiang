@@ -121,11 +121,15 @@
                         }
                     </table>
                     <br />
-                    <div style="margin-bottom:10px; color:red;font-size:30px;">
+                    <div style=" color:red;font-size:30px;">
                         <input type="hidden" name="txtpay" id="txtpay" value="@fin" />
                         總計: $@pay 元                 
                     </div>
-
+                    
+                    <div style=" color:red;font-size:30px;">
+                        <p id="finalAmount">應付:$ @fin 元</p>
+                        <p id="finalAmount1"></p>
+                    </div>
                 </div>
             </div>
 
@@ -163,9 +167,7 @@
                         </div>
                         <hr />
                         
-                        <div style="margin-bottom:10px; color:red;font-size:30px;">
-                            <span id="finalAmount">應付:$ @fin 元</span>
-                        </div>
+                        
                         <div>
                             
                             <label>優惠碼 :</label>
@@ -204,7 +206,8 @@
                         if (txtcoupon === coupon1) {
                         discount = 0.9;
                         finValue = payValue * discount
-                            document.getElementById("finalAmount").textContent = '應付:$ ' +finValue+' 元 已使用優惠碼';
+                            document.getElementById("finalAmount").textContent = '應付:$ ' +finValue+' 元';
+                            document.getElementById("finalAmount1").textContent = '已使用9折優惠碼';
                             alert('成功使用優惠碼 享有9折優惠')
                     }
                     else {

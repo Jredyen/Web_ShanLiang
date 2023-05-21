@@ -51,10 +51,18 @@
     * Author: BootstrapMade.com
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
-    <style>
-        body{
-           /* font-size: 1.5rem;  */          
-        }       
+    <style>        
+        .cartQuantity {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            right: -10px;
+            top: -15px;
+        }
     </style>
     @await RenderSectionAsync("Styles",required:false)
 </head>
@@ -100,14 +108,16 @@
                     </li>
                 </ul>
             </nav>
-
+           
             <div>
                 <!--<input type="text" class="textbox-book-a-table" id="txtKeyword" placeholder="搜尋餐廳">-->
-                <!--<a class="button-book-a-table" href="#book-a-table">搜尋</a>-->
-                <a href="@Url.Action("CartView", "Shopping")" >
-                    <img src="~/images/Menu/購物車.png" style="width:30px;" />
-                </a>
-
+                <!--<a class="button-book-a-table" href="#book-a-table">搜尋</a>-->                
+                <div class="container pt-5">
+                    <a class="position-relative" href="@Url.Action("CartView", "Shopping")">
+                        <img class="shopping-cart" src="~/images/Menu/購物車.png" style="width:40px;" />
+                        <span class="cartQuantity text-white bg-warning">0</span>
+                    </a>
+                </div>
             </div>
 
 

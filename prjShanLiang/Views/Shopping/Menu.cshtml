@@ -112,37 +112,57 @@
                     $('#BackTop').stop().fadeOut(222);
                 }
             }).scroll();
-        });
-        //使用Ajax非同步增加餐點到購物車
-        function con(id) {
-            
-            var count = $('#' + id).val();
-            const liveToastBtn = document.getElementById('liveToastBtn')
-            const toastLiveExample = document.getElementById('liveToast')
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
-            $.ajax({
-                url: "/api/shoppingcart/add-to-cart?id=" + id + "&count=" + count,
-                type: "GET",
-
-                success: function (data) {
-                    if (data.success) {
-                        toastBootstrap.show()
-                    } else {
-                        alert(data.message);
-                    }
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    alert("加入購物車失敗");
-                }
-            });
-        };
+        }); 
     </script>
+     
+<script>
+    // 使用Ajax非同步增加餐點到購物車
+
+     function con(id) {
+
+        var count = $('#' + id).val();
+        const liveToastBtn = document.getElementById('liveToastBtn')
+        const toastLiveExample = document.getElementById('liveToast')
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+
+
+        $.ajax({
+            url: "/api/shoppingcart/add-to-cart?id=" + id + "&count=" + count,
+            type: "GET",
+
+            success: function (data) {
+                if (data.success) {
+                    toastBootstrap.show();
+                    
+                    $('.cartQuantity').text(data.CartCount);
+                     //在成功回應中發起另一個AJAX請求來更新購物車數量
+                    $.ajax({
+                        url: "/api/shoppingcart/showcartcount",
+                        type: "POST",
+                        success: function (data) {
+                            if (data.success) {
+                                $('.cartQuantity').text(data.CartCount); // 更新顯示購物車數量的元素
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert("無法獲取購物車數量");
+                        }
+                    });
+                } else {
+                    alert(data.message);
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                alert("加入購物車失敗");
+            }
+        });
+    };
+</script>   
 }
 <button type="button" id="BackTop" class="toTop-arrow"></button>   @*回到最上層按鈕*@
 
 @*跳出已加入購物車視窗*@
-
-<div class="toast-container position-fixed bottom-0 end-0 p-3" style="width:250px;">
+<div class="toast-container position-fixed top-0 end-0 p-3" style="width:250px;">
     <div id="liveToast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
 
@@ -159,7 +179,7 @@
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <!-- ======= Breadcrumbs ======= -->
-        
+ 
         @*照片輪播*@
         <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel"style="margin-top:50px;">
             <div class="carousel-inner">          
@@ -212,7 +232,7 @@
              </div>
            </div>
         </div> 
-     
+         
         @*商品區塊*@
         <div class="row">
             @foreach (var item in Model)
