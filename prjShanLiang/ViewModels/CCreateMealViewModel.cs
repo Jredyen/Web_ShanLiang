@@ -16,6 +16,6 @@ namespace prjShanLiang.ViewModels
         public string? MealImagePath { get; set; }
         [DisplayName("描述")]
         public string? Recommendation { get; set; }
-        public byte[]? MealImage { get; set; }
+        public IFormFile? MealImage { get; set; }
     }
 }

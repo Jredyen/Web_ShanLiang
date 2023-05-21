@@ -3,60 +3,76 @@
 @{
     ViewData["Title"] = "新增餐點";
 }
+<style>
+
+
+</style>
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <div class="breadcrumbs">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2>@ViewData["Title"]</h2>                   
+                    <h2>@ViewData["Title"]</h2>
                 </div>
             </div>
         </div><!-- End Breadcrumbs -->
         <!-- ======= Breadcrumbs ======= -->
 
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateStoreMenu">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="CreateStoreMenu" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                     <input type="hidden" value="@ViewBag.storeId" name="StoreId" />
-            <div class="form-group">
-                <label asp-for="MealName" class="control-label"></label>
-                <input asp-for="MealName" class="form-control" />
-                <span asp-validation-for="MealName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MealPrice" class="control-label"></label>
-                <input asp-for="MealPrice" class="form-control" />
-                <span asp-validation-for="MealPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MealImagePath" class="control-label"></label>
-                <input asp-for="MealImagePath" class="form-control" />
-                <span asp-validation-for="MealImagePath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Recommendation" class="control-label"></label>
-                <input asp-for="Recommendation" class="form-control" />
-                <span asp-validation-for="Recommendation" class="text-danger"></span>
-            </div>
-
                     <div class="form-group">
-                        <label class="control-label">餐廳圖片</label>
-                        <input name="StoreImage" type="file" class="form-control" onchange="readURL(this)" targetID="preview_progressbarTW_img" accept="image/gif, image/jpeg, image/png" />
-                        <img id="preview_progressbarTW_img" style="margin-top:10px" src="#" width="200" height="200" alt="請選擇要上傳的圖片" />
+                        <label asp-for="MealName" class="control-label"></label>
+                        <input asp-for="MealName" class="form-control" />
+                        <span asp-validation-for="MealName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MealPrice" class="control-label"></label>
+                        <input asp-for="MealPrice" class="form-control" />
+                        <span asp-validation-for="MealPrice" class="text-danger"></span>
                     </div>
 
-            <div class="form-group">
+                    <div class="form-group">
+                        <label asp-for="Recommendation" class="control-label"></label>
+                        <input asp-for="Recommendation" class="form-control" />
+                        <span asp-validation-for="Recommendation" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label">餐點圖片</label>
+                        <input type="file" name="MealImage" class="form-control" onchange="readURL(this)" targetID="preview_progressbarTW_img" />
+                        <img id="preview_progressbarTW_img" style="margin-top:10px" src="#" alt="請選擇要上傳的圖片" />
+                    </div>
+
+                    <div class="form-group">
                         <input type="submit" value="確認" class="btn btn-primary" />
                         @Html.ActionLink("返回", "StoreMenuList", new {  id=ViewBag.storeId  },new{ @class = "btn btn-danger"})
                     </div>
-        </form>
-    </div>
-</div>
+                </form>
+            </div>
+        </div>
     </div>
 </main><!-- End #main -->
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        @*此方法為顯示要上傳的照片*@
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#preview_progressbarTW_img')
+                        .attr('src', e.target.result)
+                        .width(200)
+                        .height(200);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+
 }

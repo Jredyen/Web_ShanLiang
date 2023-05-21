@@ -232,23 +232,22 @@ namespace prjShanLiang.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult CreateStoreMenu(CCreateMealViewModel vm,IFormFile MealImage)
+        public IActionResult CreateStoreMenu(CCreateMealViewModel vm)
         { 
         MealMenu mealMenu = new MealMenu() 
         {
         StoreId = vm.StoreId,
         MealName = vm.MealName,
         MealPrice = vm.MealPrice,
-        MealImagePath = vm.MealImagePath,
-        Recommendation = vm.Recommendation
+        Recommendation = vm.Recommendation            
         };
-            if (MealImage != null)
+            if (vm.MealImage != null)
             {
                 string photoName = vm.MealName + ".jpg";
                 string path = _enviro.WebRootPath + "/images/Menu/" + photoName;
 
-                MealImage.CopyTo(new FileStream(path, FileMode.Create));
-                mealMenu.MealImagePath = path;
+                vm.MealImage.CopyTo(new FileStream(path, FileMode.Create));
+                mealMenu.MealImagePath = photoName;
             }
             _db.Add(mealMenu);
             _db.SaveChanges();
