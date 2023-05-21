@@ -133,7 +133,7 @@
                                 @Html.ActionLink("修改", "EditMenu","Shopping",new{ MealId=item.MealId },new{ @class = "btn btn-warning"})
                             </td>
                             <td>
-                                @Html.ActionLink("刪除", "Delete", new { /* id=item.PrimaryKey */ },new{ @class = "btn btn-danger"})
+                                @Html.ActionLink("刪除", "DeleteMenu","Shopping", new {  MealId=item.MealId  },new{ @class = "btn btn-danger",onclick ="return confirm ('確定要刪除嗎?')"})
                             </td>
                         </tr>
                     }

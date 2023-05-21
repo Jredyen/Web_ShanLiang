@@ -220,8 +220,7 @@ namespace prjShanLiang.Controllers
             var datas = _db.MealOrderDetails.Include(m => m.Meal).Where(t => t.OrderId == id).Select(t => new { t.Meal.MealName, t.Quantity, t.Meal.MealPrice });
             return Json(datas);
         }
-        //===============================以上會員部分===================================
-
+        //===============================以上是會員部分===================================
 
 
         public IActionResult StoreMenuList()
@@ -236,8 +235,10 @@ namespace prjShanLiang.Controllers
             
             return View(datas);
         }
+
+        //========================================新增餐點================================================
         public IActionResult CreateMenu()
-        {   //新增餐點 
+        {   
             string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER); //Session裡店家資料轉字串
             Store store = JsonSerializer.Deserialize<Store>(jsonUser);  //字串轉店家資料物件
             ViewBag.storeId = store.StoreId;
@@ -262,12 +263,12 @@ namespace prjShanLiang.Controllers
                 mealMenu.MealImagePath = ImageName;
             }
             _db.Add(mealMenu);
-            //_db.SaveChanges();
+            _db.SaveChanges();
             return RedirectToAction("StoreMenuList");
         }
+        //========================================修改餐點================================================
         public IActionResult EditMenu(int? MealId)
-        {   //修改餐點  傳入餐點Id
-            //先找要修改的餐點
+        {    //傳入餐點Id 先找要修改的餐點
             MealMenu mealMenu = _db.MealMenus.FirstOrDefault(t => t.MealId == MealId);
             
             if (mealMenu == null)
@@ -301,6 +302,18 @@ namespace prjShanLiang.Controllers
             }
             _db.SaveChanges();
             return RedirectToAction("StoreMenuList");           
+        }
+        //========================================刪除餐點================================================
+        public IActionResult DeleteMenu(int? MealId)
+        {
+            
+            MealMenu mealMenu = _db.MealMenus.FirstOrDefault(t => t.MealId == MealId);
+            if (mealMenu != null)
+            {
+                _db.Remove(mealMenu);
+                _db.SaveChanges();
+            }
+            return RedirectToAction("StoreMenuList");
         }
     }
 }
