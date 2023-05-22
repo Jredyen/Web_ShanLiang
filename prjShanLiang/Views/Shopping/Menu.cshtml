@@ -73,6 +73,7 @@
         .row {
             display: block;
             margin: auto;
+            padding:10px;
             max-width: 100%;
             max-height: 100%;
             font-size: 14px;
@@ -81,14 +82,14 @@
         .card {
             width: 400px;
             height: 450px;
-            margin: 10px 0px 20px 20px; 
+            margin: auto;
             border:3px solid orange;  
             
         }
         @*價錢數量按鈕區塊*@
         .divCountMoney{            
             display: flex;
-            margin: 10px 10px 10px 30px;
+            margin: 0px 20px 0px 20px;
         }
         @*價錢數量按鈕三個元素*@
         .CountMoney{
@@ -172,35 +173,39 @@
         </div> 
          
         @*商品區塊*@
-        <div class="row">
+             <h1>本周人氣排行前6名</h1>
+        <div class="row " >
             @foreach (var item in Model.Take(6))
             {
-                <div class="col-10 col-md-10 col-lg-4 " >
+                <div class="col-10 col-md-10 col-lg-4 " >                    
                     <div class="card shadow p-3 mb-5 bg-white rounded-5" >
-
-                        <img src="~/Images/Menu/@item.MealImagePath" class="Meal-image rounded-4" style="margin-top:20px;">
+                        <div class="vertical stars" style="color:#ffc107;margin-right:10px;">@*星星*@
+                          @for (int i = 1; i <= 5; i++){
+                          if (i <= 5){<i class="bi bi-star-fill"></i>}
+                          else{<i class="bi bi-star"></i>}}
+                        </div>
+                        <img src="~/Images/Menu/@item.MealImagePath" class="Meal-image rounded-4" style="margin-top:20px;">@*圖片*@
 
                         <div class="card-body">
-                            <h1 class=text-center>@item.MealName</h1>
-                            <div class="divCountMoney">
-                                <input class="txtMealId" type="hidden" name="txtMealId" value="@item.MealId" />
+                            <h1 class=text-center>@item.MealName</h1>@*名稱*@
+                            <div class="divCountMoney">                               
                                 <p class="CountMoney"style="font-size:18px;">                                    
-                                    NT$@Convert.ToInt16(item.MealPrice)
+                                    NT$@Convert.ToInt16(item.MealPrice)@*價格*@
                                 </p>
-                                <p class="CountMoney">
+                                <p class="CountMoney">@*選取數量*@
                                     @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control ",id=item.MealId , style="width:100px;"})
                                 </p>
                                 <p class="CountMoney">
                                     <input type="button" value="加入購物車" class="btn btn-warning " onclick="con(@item.MealId)" id="liveToastBtn" />
                                 </p>
-                            </div>                            
+                            </div>                
                             <p >@item.Recommendation</p>
                         </div>
                     </div>
                 </div>
             }
         </div>
-        <hr />
+        <h1>人氣必點</h1>
         <div class="row">
             @foreach (var item in Model.Skip(6))
             {
@@ -292,4 +297,18 @@
      
     };
 </script>   
+ <script>
+        const stars = document.querySelectorAll('.stars');
+        function getStar(event, n) {
+            for (let i = 1; i <= n; i++) {
+                event.target.innerHTML += '<i class="bi bi-star-fill"></i>';
+            }
+            for (let i = 1; i <= (5 - n); i++) {
+                event.target.innerHTML += '<i class="bi bi-star"></i>';
+            }
+        }
+        for (i = 0; i < stars.length; i++) {
+            stars[i].click();
+        }
+    </script>
 }
