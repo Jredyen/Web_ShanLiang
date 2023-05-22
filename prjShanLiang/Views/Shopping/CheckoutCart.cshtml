@@ -41,29 +41,7 @@
         }
     </style>
 }
-@section Scripts{
-    <script>
-        @*此方法可以取得總金額和備註並傳回後端 myBtn是前往付款按鈕*@
-            const myBtn = document.getElementById('myBtn')
-        myBtn.addEventListener('click', () => {
-            let remark = saveRemark();
-            let pay = savepay();
-            let finalAmount = pay * discount;
-            window.location.replace('@Url.Content("~/Shopping/CreateOrder")?pay=' + finalAmount + '&remark=' + remark)
-        })
-        function saveRemark() {
-            const textarea = document.getElementById("txtremark");
-            const remark = textarea.value;
-            return remark
-        }
-        function savepay() {
-            const textarea = document.getElementById("txtpay");
-            const pay = textarea.value;
-            return pay
-        }
-        
-    </script>
-}
+
 
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
@@ -230,3 +208,26 @@
         </form>
     </div>
 </main><!-- End #main -->
+
+@section Scripts{
+    <script>
+        @*此方法可以取得總金額和備註並傳回後端 myBtn是前往付款按鈕*@
+                    const myBtn = document.getElementById('myBtn')
+        myBtn.addEventListener('click', () => {
+            let remark = saveRemark();
+            let pay = savepay();
+            let finalAmount = pay * discount;
+            window.location.replace('@Url.Content("~/Shopping/CreateOrder")?pay=' + finalAmount + '&remark=' + remark)
+        })
+        function saveRemark() {
+            const textarea = document.getElementById("txtremark");
+            const remark = textarea.value;
+            return remark
+        }
+        function savepay() {
+            const textarea = document.getElementById("txtpay");
+            const pay = textarea.value;
+            return pay
+        }
+    </script>
+}

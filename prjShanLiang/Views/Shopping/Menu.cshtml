@@ -97,6 +97,141 @@
     </style>
 }
 
+<button type="button" id="BackTop" class="toTop-arrow"></button>   @*回到最上層按鈕*@
+
+@*跳出已加入購物車視窗*@
+<div class="toast-container position-fixed top-0 end-0 p-3" style="width:250px;">
+    <div id="liveToast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+
+            <strong class="me-auto">提示</strong>
+
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" style="font-size:16px; text-align:center">
+            已加入購物車
+        </div>
+    </div>
+</div>
+
+<main id="main">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <!-- ======= Breadcrumbs ======= -->
+ 
+        @*照片輪播*@
+        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel" style="margin-top:30px;">
+            <div class="carousel-inner">          
+                <div class="carousel-item active" data-bs-interval="3000">
+                    <img src="~/images/Menu//top/1.jpg" class="d-block w-100 ">
+                </div>                
+                <div class="carousel-item" data-bs-interval="3000">
+                    <img src="~/images/Menu//top/2.jpg" class="d-block w-100 ">
+                </div>
+                <div class="carousel-item" data-bs-interval="3000">
+                    <img src="~/images/Menu//top/3.jpg" class="d-block w-100 ">
+                </div>
+                <div class="carousel-item" data-bs-interval="3000">
+                    <img src="~/images/Menu//top/4.jpg" class="d-block w-100 ">
+                </div>
+                <div class="carousel-item" data-bs-interval="3000">
+                    <img src="~/images/Menu//top/5.jpg" class="d-block w-100 ">
+                </div>
+                <div class="carousel-item" data-bs-interval="3000">
+                    <img src="~/images/Menu//top/6.jpg" class="d-block w-100 ">
+                </div>
+                <div class="carousel-item" data-bs-interval="3000">
+                    <img src="~/images/Menu//top/7.jpg" class="d-block w-100 ">
+                </div>
+                <div class="carousel-item" data-bs-interval="3000">
+                    <img src="~/images/Menu/top/8.jpg" class="d-block w-100 ">
+                </div>
+                <div class="carousel-item" data-bs-interval="3000">
+                    <img src="~/images/Menu/top/9.jpg" class="d-block w-100 ">
+                </div>               
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+               
+        @*店家資訊*@        
+          <div>
+           <div class=" shadow p-3 mb-5 bg-white rounded rounded-pill border border-0" style="margin:30px 30px 0px 30px;">
+             <div style="text-align:center">
+              <h1 style="font-size:40px;">@ViewBag.RestaurantName</h1>
+              <p>@ViewBag.RestaurantAddress</p>
+              <p>@ViewBag.RestaurantPhone</p>
+              <input type="hidden" value="@ViewBag.StoreId" />
+             </div>
+           </div>
+        </div> 
+         
+        @*商品區塊*@
+        <div class="row">
+            @foreach (var item in Model.Take(6))
+            {
+                <div class="col-10 col-md-10 col-lg-4 " >
+                    <div class="card shadow p-3 mb-5 bg-white rounded-5" >
+
+                        <img src="~/Images/Menu/@item.MealImagePath" class="Meal-image rounded-4" style="margin-top:20px;">
+
+                        <div class="card-body">
+                            <h1 class=text-center>@item.MealName</h1>
+                            <div class="divCountMoney">
+                                <input class="txtMealId" type="hidden" name="txtMealId" value="@item.MealId" />
+                                <p class="CountMoney"style="font-size:18px;">                                    
+                                    NT$@Convert.ToInt16(item.MealPrice)
+                                </p>
+                                <p class="CountMoney">
+                                    @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control ",id=item.MealId , style="width:100px;"})
+                                </p>
+                                <p class="CountMoney">
+                                    <input type="button" value="加入購物車" class="btn btn-warning " onclick="con(@item.MealId)" id="liveToastBtn" />
+                                </p>
+                            </div>                            
+                            <p >@item.Recommendation</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <hr />
+        <div class="row">
+            @foreach (var item in Model.Skip(6))
+            {
+                <div class="col-10 col-md-10 col-lg-4 " >
+                    <div class="card shadow p-3 mb-5 bg-white rounded-5" >
+
+                        <img src="~/Images/Menu/@item.MealImagePath" class="Meal-image rounded-4" style="margin-top:20px;">
+
+                        <div class="card-body">
+                            <h1 class=text-center>@item.MealName</h1>
+                            <div class="divCountMoney">
+                                <input class="txtMealId" type="hidden" name="txtMealId" value="@item.MealId" />
+                                <p class="CountMoney"style="font-size:18px;">                                    
+                                    NT$@Convert.ToInt16(item.MealPrice)
+                                </p>
+                                <p class="CountMoney">
+                                    @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control ",id=item.MealId , style="width:100px;"})
+                                </p>
+                                <p class="CountMoney">
+                                    <input type="button" value="加入購物車" class="btn btn-warning " onclick="con(@item.MealId)" id="liveToastBtn" />
+                                </p>
+                            </div>                            
+                            <p >@item.Recommendation</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</main><!-- End #main -->
+
 @section Scripts{
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
@@ -158,108 +293,3 @@
     };
 </script>   
 }
-<button type="button" id="BackTop" class="toTop-arrow"></button>   @*回到最上層按鈕*@
-
-@*跳出已加入購物車視窗*@
-<div class="toast-container position-fixed top-0 end-0 p-3" style="width:250px;">
-    <div id="liveToast" class="toast align-items-center text-bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-
-            <strong class="me-auto">提示</strong>
-
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body" style="font-size:16px; text-align:center">
-            已加入購物車
-        </div>
-    </div>
-</div>
-
-<main id="main">
-    <div class="container aos-init aos-animate" data-aos="fade-up">
-        <!-- ======= Breadcrumbs ======= -->
- 
-        @*照片輪播*@
-        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-            <div class="carousel-inner">          
-                <div class="carousel-item active" data-bs-interval="3000">
-                    <img src="~/images/Menu//top/1.jpg" class="d-block w-100 ">
-                </div>                
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="~/images/Menu//top/2.jpg" class="d-block w-100 ">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="~/images/Menu//top/3.jpg" class="d-block w-100 ">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="~/images/Menu//top/4.jpg" class="d-block w-100 ">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="~/images/Menu//top/5.jpg" class="d-block w-100 ">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="~/images/Menu//top/6.jpg" class="d-block w-100 ">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="~/images/Menu//top/7.jpg" class="d-block w-100 ">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="~/images/Menu/top/8.jpg" class="d-block w-100 ">
-                </div>
-                <div class="carousel-item" data-bs-interval="3000">
-                    <img src="~/images/Menu/top/9.jpg" class="d-block w-100 ">
-                </div>               
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-               
-        @*店家資訊*@        
-          <div>
-           <div class=" shadow p-3 mb-5 bg-white rounded rounded-pill border border-0" style="margin:30px 30px 0px 30px;">
-             <div style="text-align:center">
-              <h1 style="font-size:40px;">@ViewBag.RestaurantName</h1>
-              <p>@ViewBag.RestaurantAddress</p>
-              <p>@ViewBag.RestaurantPhone</p>
-              <input type="hidden" value="@ViewBag.StoreId" />
-             </div>
-           </div>
-        </div> 
-         
-        @*商品區塊*@
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                <div class="col-10 col-md-10 col-lg-4 " >
-                    <div class="card shadow p-3 mb-5 bg-white rounded-5" >
-
-                        <img src="~/Images/Menu/@item.MealImagePath" class="Meal-image rounded-4" style="margin-top:20px;">
-
-                        <div class="card-body">
-                            <h1 class=text-center>@item.MealName</h1>
-                            <div class="divCountMoney">
-                                <input class="txtMealId" type="hidden" name="txtMealId" value="@item.MealId" />
-                                <p class="CountMoney"style="font-size:18px;">                                    
-                                    NT$@Convert.ToInt16(item.MealPrice)
-                                </p>
-                                <p class="CountMoney">
-                                    @Html.DropDownList("txtCount", new SelectList(new List<int> { 1, 2, 3, 4, 5}), new { @class = "form-control ",id=item.MealId , style="width:100px;"})
-                                </p>
-                                <p class="CountMoney">
-                                    <input type="button" value="加入購物車" class="btn btn-warning " onclick="con(@item.MealId)" id="liveToastBtn" />
-                                </p>
-                            </div>                            
-                            <p >@item.Recommendation</p>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-    </div>
-</main><!-- End #main -->

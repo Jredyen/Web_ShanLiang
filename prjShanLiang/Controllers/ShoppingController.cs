@@ -251,16 +251,36 @@ namespace prjShanLiang.Controllers
         }
 
 
-        public IActionResult CheckMealOrder()
+        public IActionResult CheckMealOrderList()
         {     //店家訂單列表
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USER))
                 return RedirectToAction("Login", "User");//如果沒登入 回登入頁面
             string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER); //Session裡店家資料轉字串
             Store store = JsonSerializer.Deserialize<Store>(jsonUser);  //字串轉店家資料物件
 
-            var datas = _db.MealOrders.Where(t => t.StoreId == store.StoreId);
+            var datas = _db.MealOrders.Include(t =>t.Member).Include(t =>t.OrderStatusNavigation).Where(t => t.StoreId == store.StoreId);
 
             return View(datas);
+        }
+
+        [Route("api/shoppingcart/CheckOrder")]
+        public IActionResult CheckOrder(int? orderId, int? status)
+        {   //訂單狀態修改
+            if (orderId == null || status == null)
+            {
+                return BadRequest("Invalid request parameters");
+            }
+
+            var order = _db.MealOrders.FirstOrDefault(t => t.OrderId == orderId);
+            if (order == null)
+            {
+                return NotFound("Order not found");
+            }
+
+            order.OrderStatus = status;
+            _db.SaveChanges();
+      
+            return Json(new { success = true });
         }
 
         //========================================新增餐點================================================
