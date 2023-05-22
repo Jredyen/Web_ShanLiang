@@ -1,0 +1,20 @@
+﻿body {
+}
+
+.hour_num {
+}
+
+.btn {
+    color: white;
+    background-color: #0000FA;
+}
+
+    .btn.focus, .btn:focus {
+        background-color: white;
+        font-weight: bold;
+    }
+
+.col-md-5-alter {
+    width: 41%;
+    margin: 0 auto;
+}

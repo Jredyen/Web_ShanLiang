@@ -42,14 +42,14 @@ namespace prjShanLiang.Controllers
                       Include(s => s.StoreEvaluates)
                       where s.StoreId == id
                       select s;
-            IEnumerable<Member> mbs = from m in _db.Members
-                                      orderby m.MemberId
-                                      select new Member { MemberId = m.MemberId, MemberName = m.MemberName };
+            //IEnumerable<Member> mbs = from m in _db.Members
+            //                          orderby m.MemberId
+            //                          select new Member { MemberId = m.MemberId, MemberName = m.MemberName };
             var sdp = from sd in _db.StoreDecorationImages where sd.StoreId == id select sd.ImagePath;
             var mfc = from ma in _db.MemberActions where ma.ActionId == 2 && ma.StoreId == id select ma;
             var smi = from sm in _db.StoreMealImages where sm.StoreId == id select sm.ImagePath;
             datas.store = sts;
-            datas.member = mbs;
+            //datas.member = mbs;
             datas.storeDecorationImagePath = sdp.FirstOrDefault();
             datas.memberFavorateCount = mfc.Count();
             datas.storeMealImages = smi;
@@ -174,19 +174,26 @@ namespace prjShanLiang.Controllers
                 return RedirectToAction("Login", "User");
             }
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
-            Member mem = JsonSerializer.Deserialize<Member>(json);
-            var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).FirstOrDefault();
-            var sr1 = _db.StoreReserveds.Where(s => s.StoreId == sr.StoreId).Select(s => s);
-            var gsr1 = sr1.GroupBy(sr => sr.Time, sr => sr.NumOfPeople, (time, num) => new
+            Member mem = JsonSerializer.Deserialize<Member>(json);// 取得[登入會員]
+            sr.MemberId = mem.MemberId;
+
+            var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).FirstOrDefault();// 取得[該店家]
+            var sr1 = _db.StoreReserveds.Where(s => s.StoreId == sr.StoreId && s.Date== sr.Date).Select(s => s);// 取得[該店家][當天]訂單 
+            var gsr1 = sr1.GroupBy(x => x.Time, y => y.NumOfPeople, (time, num) => new // 以[時間]分組，每組輸出{時間，訂位人數總和}
             {
                 Time = time,
                 Sum = num.Sum()
             });
-            if (gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum >= s.Seats)
-            {
-                // 跳出視窗：該時段已滿
-                sr.NumOfPeople = 0;
+            var sumResult = gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum;
+            if (sumResult >= s.Seats)// 如果[訂位人數總和] >= [容客量]，跳出視窗：該時段已滿
+            {                
+                sr.NumOfPeople = 0; 
                 return Json(sr);
+            }
+            else if ((sumResult+sr.NumOfPeople) >= s.Seats) // 如果[訂位人數總和+欲訂位人數] >= [容客量]，跳出視窗：選擇人數已超過容客量
+            {                
+                sr.NumOfPeople = s.Seats- sumResult;
+                return Json(sr1);
             }
             else
             {
@@ -196,6 +203,23 @@ namespace prjShanLiang.Controllers
             }
 
         }
+        //public IActionResult IfNumOver(string time)
+        //{            
+        //    StoreReserved sr = JsonSerializer.Deserialize<StoreReserved>(time);
+        //    var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).FirstOrDefault();// 取得[該店家]
+        //    var sr1 = _db.StoreReserveds.Where(s => s.StoreId == sr.StoreId && s.Date == sr.Date).Select(s => s);// 取得[該店家][當天]訂單 
+        //    var gsr1 = sr1.GroupBy(x => x.Time, y => y.NumOfPeople, (time, num) => new // 以[時間]分組，每組輸出{時間，訂位人數總和}
+        //    {
+        //        Time = time,
+        //        Sum = num.Sum()
+        //    });
+        //    if (gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum >= s.Seats) // 如果[訂位人數總和] >= [容客量]，跳出視窗：該時段已滿
+        //    {                
+        //        return Json("false");
+        //    }
+        //    else { return Json("true"); }                        
+        //}
+
         public IActionResult GetName(string keyword)
         {
             IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword)).Select(s => s.RestaurantName);

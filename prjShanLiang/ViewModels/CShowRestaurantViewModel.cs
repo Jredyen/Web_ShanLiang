@@ -10,7 +10,7 @@ namespace prjShanLiang.ViewModels
         public CShowRestaurantViewModel()
         {
             ShanLiang21Context db = new ShanLiang21Context(); 
-            _store = db.Stores.ToList();
+            //_store = db.Stores.ToList();
             _member = db.Members.ToList();
         }
 

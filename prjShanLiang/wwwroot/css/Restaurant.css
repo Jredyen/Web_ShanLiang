@@ -113,7 +113,7 @@ a {
     font-weight: 700;
     font-style: normal;
     font-family: var(--font-default);
-    color: WindowText;
+    color: white;
 }
 
 .mobiled {
@@ -139,8 +139,4 @@ a {
     padding: 5px;
     margin-bottom: 20px;
     width:100%;
-}
-
-.min-click{
-    background-color:aliceblue;
 }
