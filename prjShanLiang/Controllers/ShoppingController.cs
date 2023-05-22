@@ -109,7 +109,7 @@ namespace prjShanLiang.Controllers
         public IActionResult Delete(int? id)
         {   //刪除購物車裡的餐點
             if (id == null)
-                return RedirectToAction("Menu");
+                return RedirectToAction("Menu", new { StoreId = 1 });
 
             string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
             List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);

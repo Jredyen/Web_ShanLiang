@@ -133,15 +133,13 @@
             success: function (data) {
                 if (data.success) {
                     toastBootstrap.show();
-                    
-                    $('.cartQuantity').text(data.CartCount);
                      //在成功回應中發起另一個AJAX請求來更新購物車數量
                     $.ajax({
                         url: "/api/shoppingcart/showcartcount",
                         type: "POST",
                         success: function (data) {
                             if (data.success) {
-                                $('.cartQuantity').text(data.CartCount); // 更新顯示購物車數量的元素
+                                $('.cartQuantity').text(data.cartCount); // 更新顯示購物車數量的元素
                             }
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
@@ -181,7 +179,7 @@
         <!-- ======= Breadcrumbs ======= -->
  
         @*照片輪播*@
-        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel"style="margin-top:50px;">
+        <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
             <div class="carousel-inner">          
                 <div class="carousel-item active" data-bs-interval="3000">
                     <img src="~/images/Menu//top/1.jpg" class="d-block w-100 ">
