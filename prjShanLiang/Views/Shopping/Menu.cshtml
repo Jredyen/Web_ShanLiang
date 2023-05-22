@@ -95,7 +95,26 @@
         .CountMoney{
         margin:10px;
         }
+        
     </style>
+    <style>
+.custom-border {
+  border: 4px solid orange;
+  transition: border-color 0.5s ease-in-out;
+}
+
+.custom-border:hover {
+    /*border-image: linear-gradient(to right, #ff0000, #00ff00, #0000ff) 1;
+  border-image-slice: 1;*/
+  border-color: #5151A2;
+}
+/*.custom-border {
+  border: 4px solid;
+  border-image: linear-gradient(to right, #ff0000, #00ff00, #0000ff) 1;
+  border-image-slice: 1;
+}*/
+
+</style>
 }
 
 <button type="button" id="BackTop" class="toTop-arrow"></button>   @*回到最上層按鈕*@
@@ -159,10 +178,10 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-               
+    
         @*店家資訊*@        
           <div>
-           <div class=" shadow p-3 mb-5 bg-white rounded rounded-pill border border-0" style="margin:30px 30px 0px 30px;">
+           <div class=" shadow p-3 mb-5 bg-white rounded rounded-pill custom-border " style="margin:30px 30px 0px 30px;">
              <div style="text-align:center">
               <h1 style="font-size:40px;">@ViewBag.RestaurantName</h1>
               <p>@ViewBag.RestaurantAddress</p>
@@ -178,7 +197,7 @@
             @foreach (var item in Model.Take(6))
             {
                 <div class="col-10 col-md-10 col-lg-4 " >                    
-                    <div class="card shadow p-3 mb-5 bg-white rounded-5" >
+                    <div class="card shadow p-3 mb-5 bg-white rounded-5 custom-border" >
                         <div class="vertical stars" style="color:#ffc107;margin-right:10px;">@*星星*@
                           @for (int i = 1; i <= 5; i++){
                           if (i <= 5){<i class="bi bi-star-fill"></i>}
@@ -210,7 +229,7 @@
             @foreach (var item in Model.Skip(6))
             {
                 <div class="col-10 col-md-10 col-lg-4 " >
-                    <div class="card shadow p-3 mb-5 bg-white rounded-5" >
+                    <div class="card shadow p-3 mb-5 bg-white rounded-5 custom-border" >
 
                         <img src="~/Images/Menu/@item.MealImagePath" class="Meal-image rounded-4" style="margin-top:20px;">
 
