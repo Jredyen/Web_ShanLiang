@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "BuyAdv";
 }
+
+
 <head>
 <style>
    
@@ -13,7 +15,7 @@
         <span style="position: absolute; top: 200px; left: 400px; color: white; font-size: 44px; font-weight: bold;">透過膳糧推廣您的「膳糧」，膳糧平台擁有數百萬會員</span>
         <span style="position: absolute; top: 300px; left: 600px; color: white; font-size: 44px; font-weight: bold;">客製化行銷方案，擁有整個城市</span>
     </div>
-    </div>
+    
     <main id="main">
 
     <!-- ======= Breadcrumbs ======= -->
@@ -24,10 +26,8 @@
                 <ol>
                     <li><a a asp-controller="Home" asp-action="Index">Home</a></li>
                     <li>Index</li>
-                
                 </ol>
             </div>
-
         </div>
     </div><!-- End Breadcrumbs -->
 
@@ -35,27 +35,17 @@
         <div class="container" data-aos="fade-up">
             <!--==============================================-->
             <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">-->
-         
-
-
 
             <p>
                 @Html.ActionLink("檢視購物車", "CartView")
             </p>
-
-            <div>
-        
-            </div>
-
-
-
             <table class="table">
                 <tr>
                     <th>
                         序
                     </th>
                     <th>
-                        行銷管道1
+                        行銷管道
                     </th>
                     <th>
                         價錢
@@ -76,17 +66,21 @@
                                 @count
                             </td>
                             <td>
-                                                                 
+                                    @foreach (var adImage in Model.Item2.Where(ai => ai.StoreId == item.StoreId))
+                                    {
+                                        string imgName = item.RestaurantName + ".jpg";
+                                        <img src="~/images/test/@imgName" class="carousel-image"width="200px" height="200px" />
+                                    }
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.RestaurantPhone)
+                                @Html.DisplayFor(modelItem => item.StoreId)
                             </td>
                             <td></td>
                             <td></td>
                             <td>
-                                @using (Html.BeginForm("AddToAdvCart", "Advertisement", FormMethod.Post))
+                                    @using (Html.BeginForm("AddAdvToCart", "Advertisement", FormMethod.Post))
                                 {
-                                    <input type="hidden" name="txtStoreId" value="@item.StoreId" />
+                                        <input type="hidden" name="txtStoreID" value="@item.StoreId" />
                                     <div class="form-group">
                                         <div class="col-md-offset-0 col-md-10">
                                             數量
