@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--<link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
     <link href="~/assets/css/loading.css" rel="stylesheet">
-    <link href="~/assets/css/checkbox.css" rel="stylesheet" />
+    <link href="~/assets/css/checkbox.css" rel="stylesheet">
     <style type="text/css">
         .btn {
             margin-bottom: 5px;
@@ -175,6 +175,11 @@
 
         li {
             margin-top: 1em;
+        }
+
+        #map {
+            height: 500px;
+            width: 100%;
         }
     </style>
 </head>
@@ -349,20 +354,38 @@
                                     </div>
                                 </div>
 
-
-                                <div class="table-responsive">
-                                            <div id="loading">
-                                                @*LoadingCSS*@
+                                    <nav>
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">列表顯示</button>
+                                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">地圖顯示</button>
+                                        </div>
+                                    </nav>
+                                    <div class="tab-content" id="nav-tabContent">
+                                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                            
+                                            <div class="table-responsive">
+                                                        <div id="loading">
+                                                            @*LoadingCSS*@
+                                                        </div>
+                                                <table class="table table-hover">
+                                                    <tbody id="storeList">
+                                                        @*把搜尋到的資料顯示在這裡*@
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                    <table class="table table-hover">
-                                        <tbody id="storeList">
+
+                                        </div>
+                                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                            
+                                            <h3>My Google Maps Demo</h3>
+                                            <!--這裡載入地圖API -->
+                                            <div id="map"></div>
+
+                                        </div>
+                                    </div>
 
 
-                                        </tbody>
-                                    </table>
-                                </div>
-
-
+                                    @*翻頁功能，暫緩
                                     <ul class="pagination">
                                         <li class="disabled"><a href="#">«</a></li>
                                         <li class="active"><a href="#">1</a></li>
@@ -372,6 +395,7 @@
                                         <li><a href="#">5</a></li>
                                         <li><a href="#">»</a></li>
                                     </ul>
+                                    *@
 
                                 </div>
 
@@ -393,8 +417,9 @@
 </body>
 @section Scripts{
     <script src="~/assets/js/checkbox.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXNdG0SasvzekItgtkTqukL_xV4WDS2j8&callback=initMap"></script>
     <script>
-
         //====================================================================================================================================
         //TODO:類型裡面有幾間餐廳
         //TODO:使用Google API載入地區圖釘、或是在地圖上顯示登記在我們網站的店家
@@ -551,24 +576,64 @@
             SelectCount.innerHTML = `查詢到 ${datasum} 筆資料`;
         }
 
-                //================================================================================
-                //var checkboxes = document.querySelectorAll('input.subOption'),
-                //    checkall = document.getElementById('option');
+        //====================================================================================================================================
+        //var checkboxes = document.querySelectorAll('input.subOption'),
+        //    checkall = document.getElementById('option');
 
-                //for (var i = 0; i < checkboxes.length; i++) {
-                //    checkboxes[i].onclick = function () {
-                //        var checkedCount = document.querySelectorAll('input.subOption:checked').length;
+        //for (var i = 0; i < checkboxes.length; i++) {
+        //    checkboxes[i].onclick = function () {
+        //        var checkedCount = document.querySelectorAll('input.subOption:checked').length;
 
-                //        checkall.checked = checkedCount > 0;
-                //        checkall.indeterminate = checkedCount > 0 && checkedCount < checkboxes.length;
-                //    }
-                //}
+        //        checkall.checked = checkedCount > 0;
+        //        checkall.indeterminate = checkedCount > 0 && checkedCount < checkboxes.length;
+        //    }
+        //}
 
-                //checkall.onclick = function () {
-                //    for (var i = 0; i < checkboxes.length; i++) {
-                //        checkboxes[i].checked = this.checked;
-                //    }
-                //}
+        //checkall.onclick = function () {
+        //    for (var i = 0; i < checkboxes.length; i++) {
+        //        checkboxes[i].checked = this.checked;
+        //    }
+        //}
+        //====================================================================================================================================
+        //Google地圖API
+        let map;
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 10,
+                center: new google.maps.LatLng(25.034526, 121.564026),
+                mapTypeId: "roadmap",
+            });
+
+            // Create a <script> tag and set the USGS URL as the source.
+            const script = document.createElement("script");
+
+            // This example uses a local copy of the GeoJSON stored at
+            // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
+            //script.src =
+            //    "https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js"
+            //    //"https://localhost:44351/Store/GetMapPoint";
+            //document.getElementsByTagName("head")[0].appendChild(script);
+            map.data.loadGeoJson('GetMapPoint');
+        }
+
+        // Loop through the results array and place a marker for each
+        // set of coordinates.
+        const eqfeed_callback = function (results) {
+            for (let i = 0; i < results.features.length; i++) {
+                const coords = results.features[i].geometry.coordinates;
+                const latLng = new google.maps.LatLng(coords[1], coords[0]);
+
+                new google.maps.Marker({
+                    position: latLng,
+                    map: map,
+                });
+            }
+            console.log(results);
+        };
+
+        window.initMap = initMap;
+        window.eqfeed_callback = eqfeed_callback;
 
     </script>
 }

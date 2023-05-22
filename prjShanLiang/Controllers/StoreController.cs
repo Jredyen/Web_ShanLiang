@@ -246,11 +246,13 @@ namespace prjShanLiang.Controllers
                 int[]? type = null;
                 try
                 {
-                    if (types != "undefined")
+                    if (types != "undefined" && types != null)
                         type = JsonSerializer.Deserialize<int[]>(types.Replace("\"", ""));
                 }
                 catch
-                { }
+                {
+                    return RedirectToAction("Error", "Home");
+                }
                 if (type != null && type.Length > 0)
                 {
                     list = list.Join(_db.StoreTypes, s => s.StoreId, st => st.StoreId, (s, st) => new { s, st })
@@ -263,11 +265,13 @@ namespace prjShanLiang.Controllers
                 int[]? district = null;
                 try
                 {
-                    if (districts != "undefined")
+                    if (districts != "undefined" && districts != null)
                         district = JsonSerializer.Deserialize<int[]>(districts.Replace("\"", ""));
                 }
                 catch
-                { }
+                {
+                    return RedirectToAction("Error", "Home");
+                }
                 if (district != null && district.Length > 0)
                 {
                     list = list.Where(s => district.Contains(s.DistrictId));
@@ -326,7 +330,7 @@ namespace prjShanLiang.Controllers
             }
             catch (Exception ex)
             {
-                return Json("資料傳輸時發生錯誤 : " + ex);
+                return Json("系統錯誤 : " + ex.Message);
             }
         }
 
@@ -352,5 +356,30 @@ namespace prjShanLiang.Controllers
             return Json(regions);
         }
 
+        public IActionResult GetMapPoint()
+        {
+            IQueryable datas = _db.Stores.Select(s => new
+            {
+                features = new
+                {
+                    type = "Feature",
+                    geometry = new
+                    {
+                        type = "Point",
+                        coordinates = new
+                        {
+                            s.Longitude,
+                            s.Latitude
+                        },
+                    },
+                    properties = new
+                    {
+                        name = s.RestaurantName,
+                        type = "Point of Interest"
+                    },
+                }
+            });
+            return Json(datas);
+        }
     }
 }
