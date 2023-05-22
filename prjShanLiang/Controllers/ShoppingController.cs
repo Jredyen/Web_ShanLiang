@@ -36,10 +36,13 @@ namespace prjShanLiang.Controllers
         public ActionResult ShowCartCount()
         {
             // 顯示購物車裡的數量
+            int cartCount = 0;  //初始顯示0
             string json = HttpContext.Session.GetString(CDictionary.SK_PURCHASED_MENU_LIST);
-            List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
-            int cartCount = cart.Count;
-
+            if(json != null)
+            {    //購物車有東西才顯示數量
+                 List<CShoppingCartItem> cart = JsonSerializer.Deserialize<List<CShoppingCartItem>>(json);
+                 cartCount = cart.Count;
+            }
             return Json(new { success = true, CartCount = cartCount });
         }
         [Route("api/shoppingcart/add-to-cart")]

@@ -125,35 +125,36 @@
         const toastLiveExample = document.getElementById('liveToast')
         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
 
+      $.ajax({
+                //增加到購物車
+                url: "/api/shoppingcart/add-to-cart?id=" + id + "&count=" + count,
+                type: "GET",
 
-        $.ajax({
-            url: "/api/shoppingcart/add-to-cart?id=" + id + "&count=" + count,
-            type: "GET",
-
-            success: function (data) {
-                if (data.success) {
-                    toastBootstrap.show();
-                     //在成功回應中發起另一個AJAX請求來更新購物車數量
-                    $.ajax({
-                        url: "/api/shoppingcart/showcartcount",
-                        type: "POST",
-                        success: function (data) {
-                            if (data.success) {
-                                $('.cartQuantity').text(data.cartCount); // 更新顯示購物車數量的元素
+                success: function (data) {
+                    if (data.success) {
+                        toastBootstrap.show();
+                        //在成功回應中發起另一個AJAX請求來更新購物車數量
+                        $.ajax({
+                            url: "/api/shoppingcart/showcartcount",
+                            type: "POST",
+                            success: function (data) {
+                                if (data.success) {
+                                    $('.cartQuantity').text(data.cartCount); // 更新顯示購物車數量的元素
+                                }
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                alert("無法獲取購物車數量");
                             }
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            alert("無法獲取購物車數量");
-                        }
-                    });
-                } else {
-                    alert(data.message);
+                        });
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("加入購物車失敗");
                 }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                alert("加入購物車失敗");
-            }
-        });
+            });
+     
     };
 </script>   
 }
