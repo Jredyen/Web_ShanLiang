@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Index";
+}
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Index</h1>
+<div class="col-xl-6">
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-chart-bar me-1"></i>
+            註冊餐廳總類
+        </div>
+        <div class="card-body"><canvas id="resSignupBarChart"></canvas></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const resBar = document.getElementById("resSignupBarChart").getContext("2d");
+        //const chart = document.getElementById("chartAdmin");
+  
+        //chart.addEventListener('click', async()=>{
+                async function  showChart(){
+           
+            const response = await fetch('@Url.Content("~/ChartAdmin/GetStoreTypeCount")');
+            const datas = await response.json();
+         console.log(datas);
+            const labels = datas.map(item => item.storeType);
+            const counts = datas.map(item => item.count);
+
+        const stoTypeCount = new Chart(resBar, {
+            // 參數設定
+            type: "pie", // 圖表類型
+            data: {
+                    labels: labels, // 標題
+                datasets: [{
+                        label: "123", // 標籤
+                        data: counts, // 資料
+                    backgroundColor: [ // 背景色
+                            "#FF9797",
+                            "#A6FFA6",
+                            "#97CBFF",
+                            "#DCB5FF",
+                            "#CAFFFF",
+                            "#FFFFB9",
+                            "#FFCBB3",
+                            "#D9B3B3",
+                            "#CDCD9A",
+                            "#A3D1D1",
+                            "#D2A2CC",
+                            "#E0E0E0",
+                    ],
+                    borderWidth: 1 // 外框寬度
+                }]
+            },
+                options: {
+                    tooltips: {
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                const dataset = data.datasets[tooltipItem.datasetIndex];
+                                const currentValue = dataset.data[tooltipItem.index];
+                                const total = dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((currentValue / total) * 100).toFixed(2) + "%";
+                                return data.labels[tooltipItem.index] + ": " + currentValue + " (" + percentage + ")";
+                            }
+                        }
+                    },
+                    legend: {  //圖例:位於圖表的一側（如右側、左側、上側或下側），並與圖表的內容相關聯。
+                        position: 'right' // 將標題搬到右側
+                    }
+                }
+        })
+        }
+        showChart();
+ //});
+    </script>
+}
