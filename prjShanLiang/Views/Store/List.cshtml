@@ -406,9 +406,13 @@
         const OrderSelect = document.querySelector('.selectOrder');
         const SelectCount = document.getElementById('selectCount');
         //在載入資料前顯示載入的CSS(10行)
-        for (let i = 0; i < 11; i++){
+        loadingcss();
+        function loadingcss(){
+            for (let i = 0; i < 11; i++){
             Loading.innerHTML += `<div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>`
         }
+        }
+        
         //第一次載入網頁時獲取所有店家列表
         search();
 
@@ -427,6 +431,8 @@
         //搜尋鍵
         SerachButton.addEventListener('click', async () => {
             try {
+                //先跑loading畫面
+                loadingcss();
 
                 //獲得排序編號
                 const orderBy = OrderSelect.value;
