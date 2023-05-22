@@ -61,7 +61,14 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult GetType()
         {
-            IQueryable datas = _db.RestaurantTypes.Select(r => new { r.TypeName, r.RestaurantTypeNum });
+            IQueryable datas = _db.RestaurantTypes.Select(rt => new 
+            { 
+                rt.TypeName, 
+                rt.RestaurantTypeNum, 
+                Qty = _db.StoreTypes
+                .Where(st => st.RestaurantTypeNum == rt.RestaurantTypeNum)
+                .Count()
+            });
             return Json(datas);
         }
         /// <summary>

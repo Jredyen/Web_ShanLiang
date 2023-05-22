@@ -394,6 +394,12 @@
 @section Scripts{
     <script src="~/assets/js/checkbox.js"></script>
     <script>
+
+        //====================================================================================================================================
+        //TODO:類型裡面有幾間餐廳
+        //TODO:使用Google API載入地區圖釘、或是在地圖上顯示登記在我們網站的店家
+        //====================================================================================================================================
+
         const Keyword = document.querySelector('#txtSearch');
         const KeywordResult = document.querySelector('#searchTxtResult');
         const SearchResule = document.querySelector('#searchResule');
@@ -405,17 +411,13 @@
         const Loading = document.getElementById('loading');
         const OrderSelect = document.querySelector('.selectOrder');
         const SelectCount = document.getElementById('selectCount');
+        //====================================================================================================================================
         //在載入資料前顯示載入的CSS(10行)
-        loadingcss();
-        function loadingcss(){
-            for (let i = 0; i < 11; i++){
+        for (let i = 0; i < 11; i++) {
             Loading.innerHTML += `<div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>`
         }
-        }
-        
-        //第一次載入網頁時獲取所有店家列表
-        search();
-
+        search(); //第一次載入網頁時獲取所有店家列表
+        //====================================================================================================================================
         //輸入關鍵字跳出提示
         Keyword.addEventListener('input', async () => {
             const response = await fetch('@Url.Content("~/Store/GetName")?keyword=' + Keyword.value);
@@ -428,11 +430,10 @@
             SearchResule.innerHTML = shop.join("");
         })
 
+        //====================================================================================================================================
         //搜尋鍵
         SerachButton.addEventListener('click', async () => {
             try {
-                //先跑loading畫面
-                loadingcss();
 
                 //獲得排序編號
                 const orderBy = OrderSelect.value;
@@ -451,8 +452,8 @@
                 //除錯用資料===========
                 console.log(checkedType);
                 console.log(checkedDistrict);
-                console.log('評級 : '+Rating);
-                console.log('排序方式 : '+orderBy);
+                console.log('評級 : ' + Rating);
+                console.log('排序方式 : ' + orderBy);
                 //==================
 
                 //執行搜尋function
@@ -471,6 +472,7 @@
             }
         });
 
+        //====================================================================================================================================
         //獲得所有類型
         getType();
         async function getType() {
@@ -478,25 +480,26 @@
             const datas = await response.json();
             const shop = datas.map(data => {
                 return (
-                    StoreType.innerHTML += `<div class="checkbox"><label><input type="checkbox" class="icheck typeCheckbox" name="${data.restaurantTypeNum}"> ${data.typeName}</label></div>`
+                    StoreType.innerHTML += `<div class="checkbox"><label><input type="checkbox" class="icheck typeCheckbox" name="${data.restaurantTypeNum}"> ${data.typeName} (${data.qty})</label></div>`
                 )
             })
         }
 
+        //====================================================================================================================================
         //(new)無法載入JavaScript的垃圾，直接把它寫死在html裡面了
         //getRACAD();
         async function getRACAD() {
             const response = await fetch('@Url.Content("~/store/GetRACAD")');
             const datas = await response.json();
-            const add = datas.map(data =>{
+            const add = datas.map(data => {
                 return (
                     `
-                     <li>
-                     <span class="facetselector" >${data.regionName}</span>
-                     <ul>
-                     ${c(data.cities)}
-                     </ul>
-                     </li>`
+                             <li>
+                             <span class="facetselector" >${data.regionName}</span>
+                             <ul>
+                             ${c(data.cities)}
+                             </ul>
+                             </li>`
                 )
             })
             RACAD.innerHTML = `<ul class="iossearchfacets">${add.join("")}</ul>`;
@@ -505,11 +508,12 @@
             const city = cities.map(data => `<li><span class="facetselector">${data.cityName}</span><ul>${d(data.districts)}</ul></li>`)
             return city.join("");
         }
-        function d(districts){
+        function d(districts) {
             const district = districts.map(data => `<li><span class="facetselector"><input class="selectedDistricts" value="${data.districtID}" type="checkbox"></input> ${data.districtName}</span></li>`)
             return district.join("");
         }
 
+        //====================================================================================================================================
         async function search(checkedType, checkedDistrict, Rating, orderBy) {
             //把關鍵字、類型、地區及評價串接後進行查詢
             const response = await fetch(`@Url.Content("~/Store/SearchStore")?keyword=${Keyword.value}&types=${JSON.stringify(checkedType)}&districts=${JSON.stringify(checkedDistrict)}&rating=${Rating}&order=${OrderSelect.value}`);
@@ -530,14 +534,14 @@
                         stars += '<i class="fa fa-star-o"></i>'; // 否則加上空心星星
                     }
                 }
-                    datasum = data.datasum;
-                    return `<tr>
-                     <td class="number text-center">${index + 1}</td>
-                     <td class="image"><a href="Restaurant/${data.storeId}"><img src="../../images/store/decoration/${data.imagePath}" alt="${data.restaurantName}"></a></td>
-                     <td class="product"><a href="Restaurant/${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}</a></td>
-                     <td class="rate text-right"><span>${stars}</span></td>
-                     <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
-                     </tr>`
+                datasum = data.datasum;
+                return `<tr>
+                             <td class="number text-center">${index + 1}</td>
+                             <td class="image"><a href="Restaurant/${data.storeId}"><img src="../../images/store/decoration/${data.imagePath}" alt="${data.restaurantName}"></a></td>
+                             <td class="product"><a href="Restaurant/${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}</a></td>
+                             <td class="rate text-right"><span>${stars}</span></td>
+                             <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
+                             </tr>`
             });
             //延遲2秒
             setTimeout(function () {
@@ -547,24 +551,24 @@
             SelectCount.innerHTML = `查詢到 ${datasum} 筆資料`;
         }
 
-        //================================================================================
-        //var checkboxes = document.querySelectorAll('input.subOption'),
-        //    checkall = document.getElementById('option');
+                //================================================================================
+                //var checkboxes = document.querySelectorAll('input.subOption'),
+                //    checkall = document.getElementById('option');
 
-        //for (var i = 0; i < checkboxes.length; i++) {
-        //    checkboxes[i].onclick = function () {
-        //        var checkedCount = document.querySelectorAll('input.subOption:checked').length;
+                //for (var i = 0; i < checkboxes.length; i++) {
+                //    checkboxes[i].onclick = function () {
+                //        var checkedCount = document.querySelectorAll('input.subOption:checked').length;
 
-        //        checkall.checked = checkedCount > 0;
-        //        checkall.indeterminate = checkedCount > 0 && checkedCount < checkboxes.length;
-        //    }
-        //}
+                //        checkall.checked = checkedCount > 0;
+                //        checkall.indeterminate = checkedCount > 0 && checkedCount < checkboxes.length;
+                //    }
+                //}
 
-        //checkall.onclick = function () {
-        //    for (var i = 0; i < checkboxes.length; i++) {
-        //        checkboxes[i].checked = this.checked;
-        //    }
-        //}
-        
+                //checkall.onclick = function () {
+                //    for (var i = 0; i < checkboxes.length; i++) {
+                //        checkboxes[i].checked = this.checked;
+                //    }
+                //}
+
     </script>
 }
