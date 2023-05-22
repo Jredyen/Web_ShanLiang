@@ -215,9 +215,9 @@
                 })
                 )
             }
-            );//fetch結束
-            console.log(response);//檢視用
-            const datas = await response.json();
+            ).then(function (response) {
+                return response.json();
+            });//fetch結束
             const order = JSON.parse(datas);
             return (
                 alert(`不好意思：</br>您所選擇的人數(${order.NumOfPeople}人)已超過該時段的上限，請重新選擇或更換時段，謝謝。`)
