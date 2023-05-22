@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using prjShanLiang.Models;
 
 namespace prjShanLiang.Controllers
@@ -7,13 +8,17 @@ namespace prjShanLiang.Controllers
     {
         public IActionResult Index()
         {
+            //if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE)  == null)
+            //{
+            //    return RedirectToAction( "Login", "User");
+            //}
             return View();
         }
 
         public IActionResult List()
         {
             ShanLiang21Context db = new ShanLiang21Context();
-            var datas = from a in db.Admins
+            var datas = from a in db.Admins.Include(i => i.Identification)
                         select a;
 
             return View(datas);
@@ -27,7 +32,7 @@ namespace prjShanLiang.Controllers
         public IActionResult Create(Admin a)
         {
             ShanLiang21Context db = new ShanLiang21Context();
-            if (a.Identification != 0)
+            if (a.IdentificationID != 3)
             {
                 ViewBag.Message = "無法修改權限";
                 return View();
@@ -69,7 +74,7 @@ namespace prjShanLiang.Controllers
             {
                 ad.AdminName = a.AdminName;
                 ad.Passwoed = a.Passwoed;
-                ad.Identification =a.Identification;
+                ad.IdentificationID =a.IdentificationID;
                 db.SaveChanges();
             }
             return RedirectToAction("List");

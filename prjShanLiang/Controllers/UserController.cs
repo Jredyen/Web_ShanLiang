@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
@@ -28,47 +29,57 @@ namespace prjShanLiang.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Login(CAccountPasswordViewModel vm)
         {
-            ShanLiang21Context db = new ShanLiang21Context();
-            Store sto = db.Stores.FirstOrDefault(a => a.AccountName == vm.AccountName && a.Password == vm.AccountPassword);
-            Member mem = db.Members.FirstOrDefault(a => a.Email == vm.AccountName && a.Password == vm.AccountPassword);
-            //Account acc = db.Accounts.FirstOrDefault(a => a.AccountName == vm.AccountName && a.AccountPassword == vm.AccountPassword);
-            Admin admin = db.Admins.FirstOrDefault(a => a.AdminName == vm.AccountName && a.Passwoed == vm.AccountPassword);
-            if (sto != null || mem != null || admin !=null)
+            try
             {
-                string json;
-                if (sto != null)
+                ShanLiang21Context db = new ShanLiang21Context();
+                Store sto = db.Stores.FirstOrDefault(a => a.AccountName == vm.AccountName && a.Password == vm.AccountPassword);
+                Member mem = db.Members.FirstOrDefault(a => a.Email == vm.AccountName && a.Password == vm.AccountPassword);
+                //Account acc = db.Accounts.FirstOrDefault(a => a.AccountName == vm.AccountName && a.AccountPassword == vm.AccountPassword);
+                Admin admin = db.Admins.FirstOrDefault(a => a.AdminName == vm.AccountName && a.Passwoed == vm.AccountPassword);
+                if (sto != null || mem != null || admin != null)
                 {
-                    json = JsonSerializer.Serialize(sto);
-                    HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "2");
-                }
+                    string json;
+                    if (sto != null)
+                    {
+                        json = JsonSerializer.Serialize(sto);
+                        HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "2");
+                    }
 
-                else if (mem != null)
-                {
-                    json = JsonSerializer.Serialize(mem);
-                    HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "1");
-                }
-                else  {
+                    else if (mem != null)
+                    {
+                        json = JsonSerializer.Serialize(mem);
+                        HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "1");
+                    }
+                    else
+                    {
 
-                    json = JsonSerializer.Serialize(admin);
-                    HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "0");
-                }
+                        json = JsonSerializer.Serialize(admin);
+                        HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "0");
+                    }
 
-                HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER, json);
-                if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "0")
-                {
-                    return RedirectToAction("Index", "Admin");
-                }
+                    HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER, json);
+                    if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "0")
+                    {
+                        return RedirectToAction("Index", "Admin");
+                    }
 
-                return RedirectToAction("Index", "Home");
-            }
+                    return RedirectToAction("Index", "Home");
+                }
                 return View("Login");
+            }
+            catch (Exception ex)
+            {
+                return Json(ex);
+            }
         }
         public IActionResult logOut() {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) != null)
             {
-                HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "");
+                HttpContext.Session.Remove(CDictionary.SK_LOGINED_USER);
+                HttpContext.Session.Remove(CDictionary.SK_LOGINED_USER_ROLE);
             }
             return View("Login");
 
@@ -122,7 +133,6 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult Signup()
         {
-            
             return View();
         }
         [HttpPost]
@@ -140,6 +150,7 @@ namespace prjShanLiang.Controllers
                 Address = vm.Address,
                 CustomerLevel = 0,
                 Password = vm.AccountPassword
+                
             };
             //Account acc = new Account()
             //{
@@ -151,6 +162,10 @@ namespace prjShanLiang.Controllers
             //db.Add(acc);
             db.SaveChanges();
             return RedirectToAction("Login");
+
+
+
+
         }
         public IActionResult SignupStore()
         {
@@ -160,7 +175,7 @@ namespace prjShanLiang.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult SignupStore(CCreateStoreAccountViewModel vm)
+        public IActionResult SignupStore(CCreateStoreAccountViewModel vm, IFormFile StoreImage)
         {
             ShanLiang21Context db = new ShanLiang21Context();
             Store sto = new Store()
@@ -170,27 +185,24 @@ namespace prjShanLiang.Controllers
                 RestaurantName = vm.RestaurantName,
                 RestaurantAddress = vm.RestaurantAddress,
                 RestaurantPhone = vm.RestaurantPhone,
-                DistrictId = vm.DistrictId,
+                DistrictId = 1,
                 Seats = vm.Seats,
                 StoreMail = vm.StoreMail,
                 Password = vm.AccountPassword
+                
             };
-            
-
-
-            if (vm.StoreImage != null)
+            string storeDistrict = vm.storeDistrict;
+            sto.DistrictId = db.Districts.FirstOrDefault(p => p.DistrictName == storeDistrict).DistrictId;
+            if (StoreImage != null)
             {
                 string photoName = vm.RestaurantName + ".jpg";
                 string path = _enviro.WebRootPath + "/images/store/" + photoName;
-                System.IO.File.Copy("vm.StoreImage", path);
+                
 
-                //vm.StoreImage.CopyTo(new FileStream(path, FileMode.Create));
+                StoreImage.CopyTo(new FileStream(path, FileMode.Create));
 
+                //sto.StoreImage = photoName;
             }
-
-
-
-
 
             //Account acc = new Account()
             //{
@@ -356,9 +368,27 @@ namespace prjShanLiang.Controllers
 
             return Json(districts);
         }
+
+        public IActionResult CheckName(string name)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            var exists = sl.Members.Any(m => m.Email == name);
+            return Content(exists.ToString());
+        }
+        public IActionResult CheckStoreName(string name)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            var exists = sl.Stores.Any(s => s.AccountName == name);     
+            return Content(exists.ToString());
+        }
+        public IActionResult CheckLoginAccount(string name)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            var isStoreAccountExists = sl.Stores.Any(s => s.AccountName == name);
+            var isMemberAccountExists = sl.Members.Any(m => m.Email == name);
+            var exists = isStoreAccountExists || isMemberAccountExists;
+            return Content(exists.ToString());
+        }
         
-
-
-
     }
 }

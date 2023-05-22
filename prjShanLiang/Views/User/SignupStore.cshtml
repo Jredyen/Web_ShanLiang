@@ -4,6 +4,42 @@
     ViewData["Title"] = "註冊店家";
 
 }
+
+<style>
+
+    .card-registration .select-input.form-control[readonly]:not([disabled]) {
+        font-size: 1rem;
+        line-height: 2.15;
+        padding-left: .75em;
+        padding-right: .75em;
+    }
+
+    .card-registration .select-arrow {
+        top: 13px;
+    }
+
+    .gradient-custom-2 {
+        /* fallback for old browsers */
+        background: #a1c4fd;
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: -webkit-linear-gradient(to right, rgba(161, 196, 253, 1), rgba(194, 233, 251, 1));
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: linear-gradient(to right, #F0FFF0 /*rgba(161, 196, 253, 1)*/, rgba(194, 233, 251, 1))
+    }
+
+    .bg-indigo {
+        background-color: #CAFFFF;
+    }
+
+    .inputFont {
+        font-size: 16px;
+        font-family: Microsoft JhengHei;
+        height: 40px;
+        width: 500px;
+        margin-bottom: 5px
+    }
+
+</style>
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <!-- ======= Breadcrumbs ======= -->
@@ -24,98 +60,138 @@
         <hr />
         <h4>請輸入店家基本資料</h4>
         <hr />
-        <div class="row">
-            <div class="col-md-4">
-                <form asp-action="SignupStore" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label asp-for="AccountName" class="control-label"></label>
-                        <input asp-for="AccountName" required class="form-control" />
-                        <span asp-validation-for="AccountName" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label asp-for="AccountPassword" class="control-label"></label>
-                        <input type="checkbox" id="chkShowPassword" />顯示密碼
-                        <input type="password" required id="storePassword" maxlength="16" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" asp-for="AccountPassword" class="form-control" />
-                        <span asp-validation-for="AccountPassword" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label  class="control-label">確認密碼</label>
-                        <input required type="password" class="form-control" id="storePasswordChecking" />
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="註冊" id="btnDataRevision" class="btn btn-primary" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="TaxID" class="control-label"></label>
-                        <input asp-for="TaxID" required class="form-control" />
-                        <span asp-validation-for="TaxID" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="RestaurantName" class="control-label"></label>
-                        <input asp-for="RestaurantName" required class="form-control" />
-                        <span asp-validation-for="RestaurantName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="RestaurantPhone" class="control-label"></label>
-                        <input asp-for="RestaurantPhone"  maxlength="10"  required class="form-control" />
-                        <span asp-validation-for="RestaurantPhone" class="text-danger"></span>
-                    </div>
-                    
-                    <div id="errorMessage1"></div>
-                    <div class="form-group">
-                        <label  class="control-label">縣市</label>
-                        <select class="form-control" id="storeCity"></select>
-                        <span class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="DistrictId" class="control-label">地區</label>
-                        <select asp-for="DistrictId" class="form-control" name="storeDistrict" id="storeDistrict"></select>
-                        <span asp-validation-for="DistrictId" class="text-danger"></span>
-                    </div>
+<section class="h-100 h-custom gradient-custom-2">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+          <div class="card-body p-0">
+            <div class="row g-0">
 
-                    <div class="form-group">
-                        <label asp-for="RestaurantAddress" class="control-label"></label>
-                        <input asp-for="RestaurantAddress" id="storeAddress"  required class="form-control" />
-                        <span asp-validation-for="RestaurantAddress" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="OpenningTime" class="control-label">開始營業時間</label>
-                        <input asp-for="OpenningTime" required class="form-control" type="time" />
-                        <span asp-validation-for="OpenningTime" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="ClosingTime" class="control-label">結束營業時間</label>
-                        <input asp-for="ClosingTime" required class="form-control" type="time" />
-                        <span asp-validation-for="ClosingTime" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Website" class="control-label">餐廳網站</label>
-                        <input type="url" asp-for="Website" required class="form-control" />
-                        <span asp-validation-for="Website" class="text-danger"></span>
-                    </div>
+ <form asp-action="SignupStore" method="post" enctype="multipart/form-data">
+              <div class="col-lg-6">
+                <div class="p-5">
 
-                    <div class="form-group">
-                        <label  class="control-label">餐廳圖片</label>
-                        <input name="StoreImage"  type="file"  class="form-control" />
-                    </div>
 
-                    <div class="form-group">
-                        <label asp-for="Seats" class="control-label"></label>
-                        <input asp-for="Seats" required class="form-control" />
-                        <span asp-validation-for="Seats" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="StoreMail" class="control-label"></label>
-                        <input asp-for="StoreMail" type="email" required  class="form-control" />
-                        <span asp-validation-for="StoreMail" class="text-danger"></span>
-                    </div>
-                    
-                </form>
+                                                <h3 class="fw-normal mb-5" style="color: #4835d4;"></h3>@*General Infomation*@
+                  
+                  <div class="row">
+                   
+
+                                            <div class="form-group">
+                                                <label asp-for="AccountName" class="control-label"></label>
+                                                <input asp-for="AccountName" id="InputAccount" required class="form-control inputFont" />
+                                                <div id="accountHelp" style="color:red" class="form-text"></div>
+                                                <span asp-validation-for="AccountName" class="text-danger"></span>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label asp-for="RestaurantName" class="control-label"></label>
+                                                        <input asp-for="RestaurantName" required class="form-control inputFont" />
+                                                <span asp-validation-for="RestaurantName" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="RestaurantPhone" class="control-label"></label>
+                                                        <input asp-for="RestaurantPhone" maxlength="10" required class="form-control inputFont" />
+                                                <span asp-validation-for="RestaurantPhone" class="text-danger"></span>
+                                            </div>
+
+
+                                            <div class="form-group">
+                                                <label class="control-label">縣市</label>
+                                                        <select style="height:40px" class="form-control inputFont" id="storeCity"></select>
+                                                <span class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group">
+                                                <label asp-for="DistrictId" class="control-label">地區</label>
+                                                        <select asp-for="DistrictId" style="height:40px"  class="form-control inputFont" name="storeDistrict" id="storeDistrict"></select>
+                                                <span asp-validation-for="DistrictId" class="text-danger"></span>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label asp-for="RestaurantAddress" class="control-label"></label>
+                                                        <input asp-for="RestaurantAddress" id="storeAddress" required class="form-control inputFont " />
+                                                <span asp-validation-for="RestaurantAddress" class="text-danger"></span>
+                                            </div>
+                                                    <div class="form-group">
+                                                        <label asp-for="OpenningTime" class="control-label">開始營業時間</label>
+                                                        <input asp-for="OpenningTime" required class="form-control inputFont" type="time" />
+                                                        <span asp-validation-for="OpenningTime" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label asp-for="ClosingTime" class="control-label">結束營業時間</label>
+                                                        <input asp-for="ClosingTime" required class="form-control inputFont" type="time" />
+                                                        <span asp-validation-for="ClosingTime" class="text-danger"></span>
+                                                    </div>
+                                            
+
+                  </div>
+
+                </div>
+              </div>
+
+              @*第二張card*@
+              <div class="col-lg-6 bg-indigo @*text-white*@">
+                <div class="p-5">
+                                                <h3 class="fw-normal mb-5"></h3>@*Contact Details*@
+                                                
+                                               
+                                                <div class="form-group">
+                                                    <label asp-for="Website" class="control-label">餐廳網站</label>
+                                                    <input type="url" asp-for="Website" required class="form-control inputFont" />
+                                                    <span asp-validation-for="Website" class="text-danger"></span>
+                                                </div>
+                                        <div class="form-group">
+                                            <label class="control-label">餐廳圖片</label>
+                                                    <input name="StoreImage" type="file" class="form-control" onchange="readURL(this)" targetID="preview_progressbarTW_img" accept="image/gif, image/jpeg, image/png" />
+                                                    
+                                                    <img id="preview_progressbarTW_img" style="margin-top:10px" src="#" width="400" height="350"  alt="請選擇要上傳的圖片"/>
+                        
+                                        
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="Seats" class="control-label"></label>
+                                                    <input asp-for="Seats" min="0" max="500" required class="form-control inputFont" />
+                                            <span asp-validation-for="Seats" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="StoreMail" class="control-label"></label>
+                                                    <input asp-for="StoreMail" type="email" required class="form-control inputFont" />
+                                            <span asp-validation-for="StoreMail" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label asp-for="AccountPassword" class="control-label"></label>
+                                            <input type="checkbox" id="chkShowPassword" />顯示密碼
+                                                    <input type="password" required id="storePassword" maxlength="16" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" asp-for="AccountPassword" class="form-control inputFont" />
+                                            <span asp-validation-for="AccountPassword" class="text-danger"></span>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label">確認密碼</label>
+                                                    <input required type="password" class="form-control inputFont" id="storePasswordChecking" />
+                                        </div>
+                                        <div id="errorMessage1" style="color:red" ></div>
+                                        <div class="form-group">
+                                            <input type="submit" value="註冊" id="btnDataRevision" class="btn btn-primary" />
+                                        </div>
+
+
+
+                </div>
+              </div>
+
+                            </form>
             </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
        @section Scripts {
     <script>
@@ -127,16 +203,38 @@
         const btnDataRevision = document.getElementById('btnDataRevision');
         const chkShowPassword = document.getElementById('chkShowPassword');
         const storeDataRevision = document.getElementById('storeDataRevision');
-        const storeCity = document.getElementById('storeCity');
-        const storeDistrict = document.getElementById('storeDistrict');
+        const storeCity1 = document.getElementById('storeCity1');
+        const storeDistrict1 = document.getElementById('storeDistrict1');
         const storeAddress = document.getElementById('storeAddress');
 
         let errorString = '';
         btnDataRevision.disabled = false
         let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
         let result = false
-
-
+        const inpAccount = document.getElementById('InputAccount');
+        const divAccount = document.getElementById('accountHelp');
+        inpAccount.addEventListener('blur',async ()=>{
+          //  divAccount.innerHTML =inpAccount.value;
+            //檢查帳號是否存在
+            const response = await fetch('@Url.Content("~/User/CheckStoreName")?name=' + inpAccount.value);
+            const isExists = await response.text();  //True or False
+            let message = "";
+            if(isExists === "True"){
+                message = "帳號已存在";
+            }
+            divAccount.innerHTML = message;
+        })
+                function readURL(input) {
+                    if (input.files && input.files[0]) {
+                        var imageTagID = input.getAttribute("targetID");
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            var img = document.getElementById(imageTagID);
+                            img.setAttribute("src", e.target.result)
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                }
 
         Password1.addEventListener('input',
         function (event) {
@@ -145,16 +243,16 @@
                 errorString = ''
                 result = pattern.test(Password1.value)
                 if (!Password1.value) {
-                errorString += '請填寫密碼'
+                errorString += '*請填寫密碼\n'
                 }
                 if (!Password2.value) {
-                errorString += ' 請確認密碼'
+                errorString += ' *請確認密碼\n'
                 }
                 if (Password1.value !== Password2.value) {
-                errorString += ' 兩次輸入的密碼不同'
+                errorString += ' *兩次輸入的密碼不同\n'
                 }
                 if (!result) {
-                errorString += ' 密碼強度不足'
+                errorString += ' *密碼強度不足\n'
                 }
                 errorMessage.innerText = (errorString) ? errorString : '密碼一致'
 
@@ -173,16 +271,16 @@
             errorString = ''
             result = pattern.test(Password1.value)
                 if (!Password1.value) {
-                errorString += ' 密碼沒填'
+                errorString += ' *密碼沒填\n'
                 }
                 if (!Password2.value) {
-                errorString += ' 密碼確認沒填'
+                errorString += ' *密碼確認沒填\n'
                 }
                 if (Password1.value !== Password2.value) {
-                errorString += ' 兩次輸入的密碼不同'
+                errorString += ' *兩次輸入的密碼不同\n'
                 }
                 if (!result) {
-                errorString += ' 密碼強度不足'
+                errorString += ' *密碼強度不足\n'
                 }
                 errorMessage.innerText = (errorString) ? errorString : '密碼一致'
 

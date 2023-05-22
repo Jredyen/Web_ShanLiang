@@ -39,20 +39,162 @@ namespace prjShanLiang.Controllers
                 return RedirectToAction("Reconnend");
             CShowRestaurantViewModel datas = new CShowRestaurantViewModel();
             var sts = from s in _db.Stores.
-                        Include(s => s.StoreDecorationImages).
-                        Include(s => s.StoreEvaluates).
-                        Include(s => s.MemberActions)
+                      Include(s => s.StoreEvaluates)
                       where s.StoreId == id
                       select s;
-            var mbs = from m in _db.Members
-                      orderby m.MemberId
-                      select m;
+            IEnumerable<Member> mbs = from m in _db.Members
+                                      orderby m.MemberId
+                                      select new Member { MemberId = m.MemberId, MemberName = m.MemberName };
+            var sdp = from sd in _db.StoreDecorationImages where sd.StoreId == id select sd.ImagePath;
+            var mfc = from ma in _db.MemberActions where ma.ActionId == 2 && ma.StoreId == id select ma;
+            var smi = from sm in _db.StoreMealImages where sm.StoreId == id select sm.ImagePath;
             datas.store = sts;
             datas.member = mbs;
-
-            if (datas == null)
-                return RedirectToAction("Reconnend");
+            datas.storeDecorationImagePath = sdp.FirstOrDefault();
+            datas.memberFavorateCount = mfc.Count();
+            datas.storeMealImages = smi;
             return View(datas);
+        }
+        public IActionResult GetRestaurantType(int id)
+        {
+            IQueryable datas = from s in _db.StoreTypes
+                               join r in _db.RestaurantTypes
+                               on s.RestaurantTypeNum equals r.RestaurantTypeNum
+                               where s.StoreId == id
+                               select new { s.No, s.RestaurantTypeNum, s.StoreId, r.TypeName };
+            return Json(datas);
+        }
+        public IActionResult SearchRestaurantType(int? id)
+        {
+            IQueryable<Store> datas = from s in _db.StoreTypes.Include(s => s.Store)
+                                      where s.RestaurantTypeNum == id
+                                      orderby s.StoreId
+                                      select s.Store;
+            var data = from s in _db.RestaurantTypes
+                       where s.RestaurantTypeNum == id
+                       select s.TypeName;
+            ViewBag.TypeName = data.FirstOrDefault();
+            ViewBag.Id = id;
+            return View(datas);
+        }
+        public IActionResult ShowFavorate(int id)
+        {
+            MemberAction ma = null;
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+                return Json(ma);
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            ma = _db.MemberActions.Where(ma => ma.ActionId == 2 && ma.MemberId == mem.MemberId && ma.StoreId == id).FirstOrDefault();
+            return Json(ma);
+        }
+        public IActionResult AddToFavorate(int id)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            var ma = _db.MemberActions.Where(ma => ma.ActionId == 2 && ma.MemberId == mem.MemberId && ma.StoreId == id).FirstOrDefault();
+            if (ma != null)
+            {
+                _db.MemberActions.Remove(ma);
+                _db.SaveChanges();
+                ma.MemberNotes = "";
+                return Json(ma);
+            }
+            else if (ma == null)
+            {
+                ma = new MemberAction();
+                ma.ActionId = 2;
+                ma.MemberId = mem.MemberId;
+                ma.StoreId = id;
+                ma.MemberNotes = "新增收藏";
+                _db.MemberActions.Add(ma);
+                _db.SaveChanges();
+                return Json(ma);
+            }
+            else
+                return RedirectToAction("Login", "User");
+        }
+        public IActionResult AddComment(int? id)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            ViewBag.Id = id;
+            ViewBag.mid = mem.MemberId;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddComment(StoreEvaluate se)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            var se1 = _db.StoreEvaluates.Where(se => se.MemberId == mem.MemberId).FirstOrDefault();
+            if (se1 == null)
+            {
+                _db.StoreEvaluates.Add(se);
+                _db.SaveChanges();
+                return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
+            }
+            else
+            {
+                se1.Comments = se.Comments;
+                se1.Rating = se.Rating;
+                se1.EvaluateDate = se.EvaluateDate;
+                _db.SaveChanges();
+                return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
+            }
+        }
+        public IActionResult Reserve(int? id)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            ViewBag.Id = id;
+            ViewBag.mid = mem.MemberId;
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Reserve(StoreReserved sr)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);
+            var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).FirstOrDefault();
+            var sr1 = _db.StoreReserveds.Where(s => s.StoreId == sr.StoreId).Select(s => s);
+            var gsr1 = sr1.GroupBy(sr => sr.Time, sr => sr.NumOfPeople, (time, num) => new
+            {
+                Time = time,
+                Sum = num.Sum()
+            });
+            if (gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum >= s.Seats)
+            {
+                // 跳出視窗：該時段已滿
+                sr.NumOfPeople = 0;
+                return Json(sr);
+            }
+            else
+            {
+                _db.StoreReserveds.Add(sr);
+                _db.SaveChanges();
+                return RedirectToAction("Restaurant", "Store", new { id = sr.StoreId });
+            }
+
         }
         public IActionResult GetName(string keyword)
         {

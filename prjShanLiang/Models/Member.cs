@@ -36,4 +36,6 @@ public partial class Member
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
     public virtual ICollection<StoreEvaluate> StoreEvaluates { get; set; } = new List<StoreEvaluate>();
+
+    public virtual ICollection<StoreReserved> StoreReserveds { get; set; } = new List<StoreReserved>();
 }

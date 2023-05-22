@@ -53,7 +53,7 @@
     ======================================================== -->
     <style>
         body{
-            font-size: 1.5rem;            
+           /* font-size: 1.5rem;  */          
         }       
     </style>
     @await RenderSectionAsync("Styles",required:false)
@@ -86,9 +86,9 @@
                     <li>
                         <a class="nav-link text-dark" asp-area="" asp-controller="Blogger" asp-action="BloggerList">膳糧專欄</a>
                     </li>
-                    <li>
+                    @*<li>
                         <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">登入</a>
-                    </li>
+                    </li>*@
                     <li>
                         <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Mypage">我的首頁</a>
                     </li>
@@ -102,8 +102,8 @@
             </nav>
 
             <div>
-                <input type="text" class="textbox-book-a-table" id="txtKeyword" placeholder="搜尋餐廳">
-                <a class="button-book-a-table" href="#book-a-table">搜尋</a>
+                <!--<input type="text" class="textbox-book-a-table" id="txtKeyword" placeholder="搜尋餐廳">-->
+                <!--<a class="button-book-a-table" href="#book-a-table">搜尋</a>-->
                 <a href="@Url.Action("CartView", "Shopping")" >
                     <img src="~/images/Menu/購物車.png" style="width:30px;" />
                 </a>

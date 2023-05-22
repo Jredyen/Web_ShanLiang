@@ -93,7 +93,7 @@
 }
 
 .t1 {
-    width: 80px;
+    width: 100px;
     float: left;
     text-align: left;
 }
@@ -138,4 +138,9 @@ a {
     background-color: #eee;
     padding: 5px;
     margin-bottom: 20px;
+    width:100%;
+}
+
+.min-click{
+    background-color:aliceblue;
 }

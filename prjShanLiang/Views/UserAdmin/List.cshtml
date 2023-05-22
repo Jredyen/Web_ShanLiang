@@ -1,5 +1,4 @@
-﻿@*@model Tuple<List<prjShanLiang.Models.Member>,List<prjShanLiang.Models.StoreEvaluate>>*@
-@model IEnumerable<prjShanLiang.Models.Member>
+﻿@model IEnumerable<prjShanLiang.Models.Member>
 
 @{
     ViewData["Title"] = "List";
@@ -12,12 +11,12 @@
 <h1>會員資料一覽表</h1>
 <div class="card mb-4">
     <div class="card-header">
-        <i class="fa-solid fa-users"></i>
+        <i class="fa-solid fa-store"></i>
         會員資料
     </div>
     <div class="card-body">
 
-        <table id="datatables" class="hover cell-border order-column order-column">
+        <table id="datatables" class="hover cell-border order-column order-column compact">
             <thead>
                 <tr>
                     <th>會員編號</th>
@@ -46,8 +45,7 @@
                             <td>@Html.DisplayFor(modelItem => item.AccountStatusNavigation.StatusName)</td>
 
                             <td>
-                                @Html.ActionLink("修改", "Edit", new { id = item.MemberId }, new {Class="btn btn-outline-primary"}) |
-                                @Html.ActionLink("刪除", "Delete","UserAdmin", new {  id=item.MemberId },new {onclick="return confirmDelete();", Class="btn btn-outline-danger"})
+                                @Html.ActionLink("修改", "Edit", new { id = item.MemberId }, new {Class="btn btn-outline-primary"})                                
                             </td>
                         </tr>
                     }
@@ -56,56 +54,3 @@
         </table>
     </div>
 </div>
-
-
-@*@section Scripts{
-       @foreach(var item in Model){
-    <script>
-        function confirmDelete() {
-            if(@item.StoreEvaluates.Where(e => e.MemberId == item.MemberId).Any())
-            {
-                    if (confirm('會員評論紀錄存在資料確定一併刪除嗎?')) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-            }
-            else
-            {
-                   if (confirm('確定刪除嗎?')) {
-                        return true;
-                   } else {
-                        return false;
-                   }   
-            }
-            
-        }
-    </script>
-}
-}*@
-
-@*@section Scripts{
-    <script>
-    @foreach (var item in Model)
-    {
-      
-           function confirmDelete() {
-                if (item.StoreEvaluates.Any(e => e.MemberId == item.MemberId)) {
-                        @confirm('會員評論紀錄存在資料確定一併刪除嗎?'))
-                            return true;
-                    } else {
-                        return false;
-                    }
-           }
-                else {
-                    if (confirm('確定刪除嗎?')) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            }
-    </script>
-}*@
-
-    

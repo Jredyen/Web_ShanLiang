@@ -3,6 +3,21 @@
 @{
     ViewData["Title"] = "註冊會員";
 }
+.....
+<script>
+
+.inputFont{
+    font-size:20px;
+    font-family:Microsoft JhengHei;
+    height: 50px;
+    width: 500px;
+    margin-bottom: 20px
+}
+
+
+</script>
+
+........
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <!-- ======= Breadcrumbs ======= -->
@@ -20,29 +35,28 @@
             </div>
         </div><!-- End Breadcrumbs -->
 
+        <section class="vh-100" style="background-color: #eee;">
+            <div class="container h-100">
+                <div class="row d-flex justify-content-center align-items-center h-150">
+                    <div class="col-lg-12 col-xl-11">
+                        <div class="card text-black" style="border-radius: 25px;">
+                            <div class="card-body p-md-5">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
         <hr />
         <h4>請輸入會員基本資料</h4>
         <hr />
         <div class="row">
-            <div class="col-md-4">
-                <form asp-action="Signup">
+            <div @*class="col-md-4"*@>
+                <form asp-action="Signup" class="mx-1 mx-md-4">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
-                        <label asp-for="Email" class="control-label"></label>
-                        <input asp-for="Email" required type="email"class="form-control" />
+                        <label asp-for="Email" class="control-label">Email(帳號)</label>
+                        <input asp-for="Email"  id="InputAccount" required type="email"class="form-control inputFont" />
+                        <div id="accountHelp"style="color:red" class="form-text"></div>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="AccountPassword" class="control-label"></label>
-                        <input type="checkbox" id="chkShowPassword" />顯示密碼
-                        <input type="password" required id="memberPassword"  maxlength="16" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" asp-for="AccountPassword" class="form-control" />
-                        <span asp-validation-for="AccountPassword" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label for="memberPasswordChecking" asp-for="AccountPassword2" class="control-label">確認密碼</label>
-                        <input type="password" required asp-for="AccountPassword2"  placeholder="請再次輸入密碼" id="memberPasswordChecking" class="form-control" maxlength="16"/>
-                        <span asp-validation-for="AccountPassword2" class="text-danger"></span>
-                    </div>
+                   
                     <div class="form-group">
                         <label asp-for="Memberphone" class="control-label"></label>
                         <input asp-for="Memberphone" placeholder="請輸入數字，範例：0912323656"maxlength="10" required class="form-control" />
@@ -60,17 +74,41 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Address" class="control-label"></label>
-                        <input asp-for="Address" required class="form-control" />
+                        <input asp-for="Address" required class="form-control"onchange="readURL(this)" targetID="preview_progressbarTW_img" accept="image/gif, image/jpeg, image/png" />
+                         
                         <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
+                     <div class="form-group">
+                        <label asp-for="AccountPassword" class="control-label"></label>
+                        <input type="checkbox" id="chkShowPassword" />顯示密碼
+                        <input type="password" required id="memberPassword" maxlength="16" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" asp-for="AccountPassword" class="form-control inputFont" />
+                        <span asp-validation-for="AccountPassword" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="memberPasswordChecking" asp-for="AccountPassword2" class="control-label">確認密碼</label>
+                        <input type="password" required asp-for="AccountPassword2"  placeholder="請再次輸入密碼" id="memberPasswordChecking" class="form-control inputFont" maxlength="16"/>
+                        <span asp-validation-for="AccountPassword2" class="text-danger"></span>
+                    </div>
+                       
+                        <div id="errorMessage1" style="color:red"></div>
                     <div class="form-group">
                         <input id="btnDataRevision"  type="submit" value="送出" class="btn btn-primary" />
                     </div>
                 </form>
-                <div id="errorMessage1"></div>
+                
             </div>
         </div>
+                  </div>
+                        <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
 
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"   class="img-fluid" alt="Sample image">
+
+                        </div>
+                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         @section Scripts {
             <script>
 
@@ -87,7 +125,19 @@
                 let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
                 let result = false
 
-
+                const inpAccount = document.getElementById('InputAccount');
+                const divAccount = document.getElementById('accountHelp');
+                    inpAccount.addEventListener('blur',async ()=>{
+                      //  divAccount.innerHTML =inpAccount.value;
+                        //檢查帳號是否存在
+                        const response = await fetch('@Url.Content("~/User/CheckName")?name=' + inpAccount.value);
+                        const isExists = await response.text();  //True or False
+                        let message = "";
+                        if(isExists === "True"){
+                            message = "帳號已存在";
+                        }
+                        divAccount.innerHTML = message;
+                    })
 
                 Password1.addEventListener('input',
                     function (event) {
@@ -96,16 +146,16 @@
                             errorString = ''
                             result = pattern.test(Password1.value)
                             if (!Password1.value) {
-                                errorString += '請填寫密碼'
+                                errorString += ' *請填寫密碼\n'
                             }
                             if (!Password2.value) {
-                                errorString += ' 請確認密碼'
+                                errorString += ' *請確認密碼\n'
                             }
                             if (Password1.value !== Password2.value) {
-                                errorString += ' 兩次輸入的密碼不同'
+                                errorString += ' *兩次輸入的密碼不同\n'
                             }
                             if (!result) {
-                                errorString += ' 密碼強度不足'
+                                errorString += ' *密碼強度不足\n'
                             }
                             errorMessage.innerText = (errorString) ? errorString : '密碼一致'
 
@@ -157,12 +207,26 @@
                         Password2.type = "password"
                     }
                 })
-            
-            
+
+                        function readURL(input) {
+                            if (input.files && input.files[0]) {
+                                var imageTagID = input.getAttribute("targetID");
+                                var reader = new FileReader();
+                                reader.onload = function (e) {
+                                    var img = document.getElementById(imageTagID);
+                                    img.setAttribute("src", e.target.result)
+                                }
+                                reader.readAsDataURL(input.files[0]);
+                            }
+                        }
             @{
                 //await Html.RenderPartialAsync("_ValidationScriptsPartial");
             }
             </script>
         }
-    </div>
+            </div>
+        </section>
 </main>
+
+
+                        
