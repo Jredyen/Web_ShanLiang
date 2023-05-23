@@ -8,24 +8,24 @@
         <div class="breadcrumbs">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h1>文章專欄</h1>
-                    <p>
+                    <h1 style="font-size:30px">文章專欄</h1>
+                    <p style ="font-size:20px">
                         <a asp-action="BloggerCreate">我要投稿</a>
                     </p>
                 </div>
             </div>
         </div><!-- End Breadcrumbs -->
-        <p>
+        <p >
             @using (Html.BeginForm())
             {
-                @:關鍵字 @Html.TextBox("txtKeyword") <input type="submit" value="查詢文章主題">
+                @:關鍵字 @Html.TextBox("txtKeyword") <input type="submit" value="查詢">
             }
         </p>
-        <table class="table table-hover">
+        <table class="table table-striped table-hover">
             <thead>
-                <tr>
+                <tr style="font-size:20px" >
                     <th>
-                        文章編號
+                        編號
                     </th>
                     <th>
                         文章主題
@@ -37,7 +37,7 @@
                         城市
                     </th>
                     <th>
-                        行政區
+                        區
                     </th>
                     <th>
                         餐廳名稱
@@ -51,15 +51,15 @@
                     foreach (var item in Model)
                     {
                         count++;
-                        <tr>
-                        <td>
+                        <tr style="font-size:16px">
+                            <td>
                         @count
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.BlogHeader)
+                           @Html.ActionLink( item.BlogHeader, "BloggerDetail", new { id=item.BlogId })
                         </td>
                         <td>
-                                <img src="~/Images/Blog/@item.BlogPic" width="200"/>
+                                <img src="~/Images/Blog/@item.BlogPic" width="160" height="90" />
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.CityName)
@@ -71,7 +71,6 @@
                             @Html.DisplayFor(modelItem => item.RestaurantName)
                         </td>
                         <td>
-                                @Html.ActionLink("內容", "BloggerDetail", new { id=item.BlogId }) |
                                 @Html.ActionLink("修改", "BloggerEdit", new { id=item.BlogId }) |
                                 @Html.ActionLink("刪除", "BloggerDelete", "Blogger", new { id=item.BlogId }, new {onclick="return confirm('確定刪除嗎?')"})
                         </td>

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<prjShanLiang.Models.Blog>
+
+@{
+    ViewData["Title"] = "BloggerCard";
+}
+
+<h1>BloggerCard</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.BlogHeader)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BlogContent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BlogPic)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CityName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DistrictName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RestaurantName)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.BlogHeader)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BlogContent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BlogPic)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CityName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DistrictName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RestaurantName)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.BlogId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.BlogId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.BlogId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
