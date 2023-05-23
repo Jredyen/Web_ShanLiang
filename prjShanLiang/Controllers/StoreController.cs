@@ -37,7 +37,7 @@ namespace prjShanLiang.Controllers
         {
             if (id == null)
                 return RedirectToAction("Reconnend");
-            CShowRestaurantViewModel datas = new CShowRestaurantViewModel();
+            CShowRestaurantViewModel datas = new();
             var sts = from s in _db.Stores.
                       Include(s => s.StoreEvaluates)
                       where s.StoreId == id
@@ -177,7 +177,7 @@ namespace prjShanLiang.Controllers
             Member mem = JsonSerializer.Deserialize<Member>(json);// 取得[登入會員]
             sr.MemberId = mem.MemberId;
 
-            var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).FirstOrDefault();// 取得[該店家]
+            var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).Select(st=>st).FirstOrDefault();// 取得[該店家]
             var sr1 = _db.StoreReserveds.Where(s => s.StoreId == sr.StoreId && s.Date== sr.Date).Select(s => s);// 取得[該店家][當天]訂單 
             var gsr1 = sr1.GroupBy(x => x.Time, y => y.NumOfPeople, (time, num) => new // 以[時間]分組，每組輸出{時間，訂位人數總和}
             {

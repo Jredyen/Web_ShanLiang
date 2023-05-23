@@ -167,7 +167,7 @@
                     <span asp-validation-for="CouponId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="送出" class="btn" />
+                    <input id="submit" type="submit" value="送出" class="btn btn-primary" />
                     <a asp-action="Restaurant" asp-route-id="@ViewBag.Id">取消</a>
                 </div>
             </form>
@@ -186,7 +186,8 @@
     <script>
         const radio = document.querySelectorAll('.min-click');
         const time = document.getElementById('Time');
-        const submitPost = document.querySelector('input[type="submit"]');
+        const nofp = document.getElementById('NumOfPeople');
+        const submitPost = document.querySelector('#submit');
 
         //日期
         const dateControl = document.querySelector('input[type="date"]');
@@ -207,25 +208,25 @@
             //ifNumOver(i);
         }
 
-        submitPost.addEventListener('click', async function () {
+        submitPost.addEventListener('click', function(){
+            getAlert();
+        }, false);
+        async function getAlert() {
             const response = await fetch('@Url.Content("~/Store/Reserve/")', {
                 method: 'POST',
-                body: StoreReserved(JSON.stringify({
+                body: (JSON.stringify({
                     StoreId: @ViewBag.Id,
                     Date: dateControl.value,
-                    Time: time.value
+                    Time: time.value,
+                    MemberId: @ViewBag.mid,
+                    NumOfPeople: nofp.value
                 })
                 )
-            }
-            );//fetch結束
-            const order = await JSON.parse(datas);
-            return (
-                alert(`不好意思：</br>您所選擇的人數(${order.NumOfPeople}人)已超過該時段的上限，請重新選擇或更換時段，謝謝。`)
-            )
-        });
+            })
+            .then(response => response.json())
+                .then(json => JSON.parse(json))
+                .then(order => alert(`不好意思：</br>您所選擇的人數(${order.NumOfPeople}人)已超過該時段的上限，請重新選擇或更換時段，謝謝。`))//fetch.then結束
+        }; //getAlert結束
 
     </script>
 }
-@*.then(function (response) {
-                return response.json();
-            })*@
