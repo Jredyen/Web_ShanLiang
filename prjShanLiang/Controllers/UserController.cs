@@ -11,6 +11,8 @@ using System.Net.Mail;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Text.Json;
+using static System.Net.WebRequestMethods;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace prjShanLiang.Controllers
 {
@@ -429,19 +431,47 @@ namespace prjShanLiang.Controllers
             return Content(exists.ToString());
         }
 
-        public void sendEmail()
+        
+
+
+        public IActionResult forgetPwd()
         {
+            
+
+            return View();
+        }
+
+
+        public IActionResult sendEmail(string AccountName)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            string pwd = "Acfdefeoeko123";
+            sl.SaveChanges();
+
+
+            Member forgettingMember =  sl.Members.FirstOrDefault(m => m.Email == AccountName);
+            if (forgettingMember != null) {
+                forgettingMember.Password = pwd;
+            }    
+                
+                
+
+
             // 使用 Google Mail Server 發信
-            string GoogleID = ""; //Google 發信帳號
+            string GoogleID = "kingsley110011@gmail.com"; //Google 發信帳號
             string TempPwd = ""; //應用程式密碼
-            string ReceiveMail = ""; //接收信箱
+            string ReceiveMail = "cleverpooh101@tahoo.com"; //接收信箱
 
             string SmtpServer = "smtp.gmail.com";
             int SmtpPort = 587;
             MailMessage mms = new MailMessage();
             mms.From = new MailAddress(GoogleID);
             mms.Subject = "信件主題";
-            mms.Body = "信件內容";
+            
+
+            string link = string.Format("https://localhost:7131/User/Login/?AccountName.value={0}&AccountPassword.value={1}", AccountName,pwd);
+
+            mms.Body = link;
             mms.IsBodyHtml = true;
             mms.SubjectEncoding = Encoding.UTF8;
             mms.To.Add(new MailAddress(ReceiveMail));
@@ -451,6 +481,8 @@ namespace prjShanLiang.Controllers
                 client.Credentials = new NetworkCredential(GoogleID, TempPwd);//寄信帳密 
                 client.Send(mms); //寄出信件
             }
+
+            return View();
         }
 
         //[HttpPost]
