@@ -1,4 +1,6 @@
-﻿@model prjShanLiang.ViewModels.CCreateStoreAccountViewModel
+﻿Sign up store
+…
+@model prjShanLiang.ViewModels.CCreateStoreAccountViewModel
 
 @{
     ViewData["Title"] = "註冊店家";
@@ -60,63 +62,63 @@
         <hr />
         <h4>請輸入店家基本資料</h4>
         <hr />
-<section class="h-100 h-custom gradient-custom-2">
-  <div class="container py-5 h-100">
-    <div class="row d-flex justify-content-center align-items-center h-100">
-      <div class="col-12">
-        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
-          <div class="card-body p-0">
-            <div class="row g-0">
+        <section class="h-100 h-custom gradient-custom-2">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-12">
+                        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                            <div class="card-body p-0">
+                                <div class="row g-0">
 
- <form asp-action="SignupStore" method="post" enctype="multipart/form-data">
-              <div class="col-lg-6">
-                <div class="p-5">
+                                    <form asp-action="SignupStore" method="post" enctype="multipart/form-data">
+                                        <div class="col-lg-6">
+                                            <div class="p-5">
 
 
                                                 <h3 class="fw-normal mb-5" style="color: #4835d4;"></h3>@*General Infomation*@
-                  
-                  <div class="row">
-                   
 
-                                            <div class="form-group">
-                                                <label asp-for="AccountName" class="control-label"></label>
-                                                <input asp-for="AccountName" id="InputAccount" required class="form-control inputFont" />
-                                                <div id="accountHelp" style="color:red" class="form-text"></div>
-                                                <span asp-validation-for="AccountName" class="text-danger"></span>
-                                            </div>
+                                                <div class="row">
 
 
-                                            <div class="form-group">
-                                                <label asp-for="RestaurantName" class="control-label"></label>
+                                                    <div class="form-group">
+                                                        <label asp-for="AccountName" class="control-label"></label>
+                                                        <input asp-for="AccountName" id="InputAccount" required class="form-control inputFont" />
+                                                        <div id="accountHelp" style="color:red" class="form-text"></div>
+                                                        <span asp-validation-for="AccountName" class="text-danger"></span>
+                                                    </div>
+
+
+                                                    <div class="form-group">
+                                                        <label asp-for="RestaurantName" class="control-label"></label>
                                                         <input asp-for="RestaurantName" required class="form-control inputFont" />
-                                                <span asp-validation-for="RestaurantName" class="text-danger"></span>
-                                            </div>
-                                            <div class="form-group">
-                                                <label asp-for="RestaurantPhone" class="control-label"></label>
+                                                        <span asp-validation-for="RestaurantName" class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label asp-for="RestaurantPhone" class="control-label"></label>
                                                         <input asp-for="RestaurantPhone" maxlength="10" required class="form-control inputFont" />
-                                                <span asp-validation-for="RestaurantPhone" class="text-danger"></span>
-                                            </div>
+                                                        <span asp-validation-for="RestaurantPhone" class="text-danger"></span>
+                                                    </div>
 
 
-                                            <div class="form-group">
-                                                <label class="control-label">縣市</label>
+                                                    <div class="form-group">
+                                                        <label class="control-label">縣市</label>
                                                         <select style="height:40px" class="form-control inputFont" id="storeCity"></select>
-                                                <span class="text-danger"></span>
-                                            </div>
-                                            <div class="form-group">
-                                                <label asp-for="DistrictId" class="control-label">地區</label>
-                                                        <select asp-for="DistrictId" style="height:40px"  class="form-control inputFont" name="storeDistrict" id="storeDistrict"></select>
-                                                <span asp-validation-for="DistrictId" class="text-danger"></span>
-                                            </div>
+                                                        <span class="text-danger"></span>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label asp-for="DistrictId" class="control-label">地區</label>
+                                                        <select asp-for="DistrictId" style="height:40px" class="form-control inputFont" name="storeDistrict" id="storeDistrict"></select>
+                                                        <span asp-validation-for="DistrictId" class="text-danger"></span>
+                                                    </div>
 
-                                            <div class="form-group">
-                                                <label asp-for="RestaurantAddress" class="control-label"></label>
+                                                    <div class="form-group">
+                                                        <label asp-for="RestaurantAddress" class="control-label"></label>
                                                         <input asp-for="RestaurantAddress" id="storeAddress" required class="form-control inputFont " />
-                                                <span asp-validation-for="RestaurantAddress" class="text-danger"></span>
-                                            </div>
+                                                        <span asp-validation-for="RestaurantAddress" class="text-danger"></span>
+                                                    </div>
                                                     <div class="form-group">
                                                         <label asp-for="OpenningTime" class="control-label">開始營業時間</label>
-                                                        <input asp-for="OpenningTime" required class="form-control inputFont" type="time" />
+                                                        <input asp-for="OpenningTime" name="OpeningTime" required class="form-control inputFont" type="time" />
                                                         <span asp-validation-for="OpenningTime" class="text-danger"></span>
                                                     </div>
                                                     <div class="form-group">
@@ -124,106 +126,250 @@
                                                         <input asp-for="ClosingTime" required class="form-control inputFont" type="time" />
                                                         <span asp-validation-for="ClosingTime" class="text-danger"></span>
                                                     </div>
-                                            
 
-                  </div>
 
-                </div>
-              </div>
+                                                </div>
 
-              @*第二張card*@
-              <div class="col-lg-6 bg-indigo @*text-white*@">
-                <div class="p-5">
+                                            </div>
+                                        </div>
+
+                                        @*第二張card*@
+                                        <div class="col-lg-6 bg-indigo @*text-white*@">
+                                            <div class="p-5">
                                                 <h3 class="fw-normal mb-5"></h3>@*Contact Details*@
-                                                
-                                               
+
+
                                                 <div class="form-group">
                                                     <label asp-for="Website" class="control-label">餐廳網站</label>
                                                     <input type="url" asp-for="Website" required class="form-control inputFont" />
                                                     <span asp-validation-for="Website" class="text-danger"></span>
                                                 </div>
-                                        <div class="form-group">
-                                            <label class="control-label">餐廳圖片</label>
-                                                    <input name="StoreImage" type="file" class="form-control" onchange="readURL(this)" targetID="preview_progressbarTW_img" accept="image/gif, image/jpeg, image/png" />
-                                                    
-                                                    <img id="preview_progressbarTW_img" style="margin-top:10px" src="#" width="400" height="350"  alt="請選擇要上傳的圖片"/>
-                        
-                                        
-                                        </div>
+                                                @*  <div class="form-group">
+                                                <label class="control-label">餐廳圖片</label>
+                                                <input name="StoreImage" type="file" class="form-control" onchange="readURL(this)" targetID="preview_progressbarTW_img" accept="image/gif, image/jpeg, image/png" />
 
-                                        <div class="form-group">
-                                            <label asp-for="Seats" class="control-label"></label>
+                                                <img id="preview_progressbarTW_img" style="margin-top:10px" src="#" width="400" height="350"  alt="請選擇要上傳的圖片"/>
+
+
+                                                </div>*@
+
+                                                <div class="form-group">
+                                                    <label asp-for="Seats" class="control-label"></label>
                                                     <input asp-for="Seats" min="0" max="500" required class="form-control inputFont" />
-                                            <span asp-validation-for="Seats" class="text-danger"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="StoreMail" class="control-label"></label>
+                                                    <span asp-validation-for="Seats" class="text-danger"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label asp-for="StoreMail" class="control-label"></label>
                                                     <input asp-for="StoreMail" type="email" required class="form-control inputFont" />
-                                            <span asp-validation-for="StoreMail" class="text-danger"></span>
-                                        </div>
+                                                    <span asp-validation-for="StoreMail" class="text-danger"></span>
+                                                </div>
 
-                                        <div class="form-group">
-                                            <label asp-for="AccountPassword" class="control-label"></label>
-                                            <input type="checkbox" id="chkShowPassword" />顯示密碼
+                                                <div class="form-group">
+                                                    <label asp-for="AccountPassword" class="control-label"></label>
+                                                    <input type="checkbox" id="chkShowPassword" />顯示密碼
                                                     <input type="password" required id="storePassword" maxlength="16" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" asp-for="AccountPassword" class="form-control inputFont" />
-                                            <span asp-validation-for="AccountPassword" class="text-danger"></span>
-                                        </div>
+                                                    <span asp-validation-for="AccountPassword" class="text-danger"></span>
+                                                </div>
 
-                                        <div class="form-group">
-                                            <label class="control-label">確認密碼</label>
+                                                <div class="form-group">
+                                                    <label class="control-label">確認密碼</label>
                                                     <input required type="password" class="form-control inputFont" id="storePasswordChecking" />
+                                                </div>
+                                                <div id="errorMessage1" style="color:red"></div>
+                                                <div class="upload-pic">
+                                                    <label class="up-lab" for="add-pic-btn">上傳圖片</label>
+                                                    <input class="up-file" name="files" type="file" accept="image/*" multiple id="add-pic-btn" style="margin:5px">
+                                                </div>
+
+
+                                                <div class="group-coms-pic" id="groupTu">
+                                                    <div class="item">
+                                                        <div class="pic-box">
+                                                            @*<img src="" style="width:30px; height:30px " />*@
+                                                        </div>
+                                                        @*<div class="tk">111.jpg</div>*@
+                                                        <span class="del"></span>
+                                                    </div>
+                                                </div>
+                                                @*             .................
+                                                <div class="form-group">
+                                                <input type="file" id="add-pic-btn"  name="files" multiple accept="image/gif, image/jpeg, image/png" />
+                                                <div id="preview_progressbarTW_imgs" style="width:100%; height: 300px; overflow:scroll;">
+                                                <p>目前沒有圖片</p>
+                                                </div>
+                                                </div>*@
+                                                @*<input type="file" id="add-pic-btn" accept="image/gif, image/jpeg, image/png" multiple />
+                                                <div id="preview_progressbarTW_imgs" style="width:100%; height: 300px; overflow:scroll;">
+                                                <p>目前沒有圖片</p>
+                                                </div>.....................*@
+
+
+
+
+
+
+
+
+
+                                                <div class="form-group">
+                                                    <input type="submit" value="註冊" id="btnDataRevision" class="btn btn-primary" />
+                                                </div>
+
+
+
+                                            </div>
                                         </div>
-                                        <div id="errorMessage1" style="color:red" ></div>
-                                        <div class="form-group">
-                                            <input type="submit" value="註冊" id="btnDataRevision" class="btn btn-primary" />
-                                        </div>
 
-
-
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-
-                            </form>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+            @*<h1>上傳圖片</h1>
+
+            <form method="post" enctype="multipart/form-data" asp-controller="User" asp-action="Requester">
+            </form>*@
+
+        </section>
 
 
-       @section Scripts {
-    <script>
-        
-   
-        const Password1 = document.getElementById('storePassword');
-        const Password2 = document.getElementById('storePasswordChecking');
-        const errorMessage = document.getElementById('errorMessage1');
-        const btnDataRevision = document.getElementById('btnDataRevision');
-        const chkShowPassword = document.getElementById('chkShowPassword');
-        const storeDataRevision = document.getElementById('storeDataRevision');
-        const storeCity1 = document.getElementById('storeCity1');
-        const storeDistrict1 = document.getElementById('storeDistrict1');
-        const storeAddress = document.getElementById('storeAddress');
+        @section Scripts {
+            <script>
 
-        let errorString = '';
-        btnDataRevision.disabled = false
-        let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
-        let result = false
-        const inpAccount = document.getElementById('InputAccount');
-        const divAccount = document.getElementById('accountHelp');
-        inpAccount.addEventListener('blur',async ()=>{
-          //  divAccount.innerHTML =inpAccount.value;
-            //檢查帳號是否存在
-            const response = await fetch('@Url.Content("~/User/CheckStoreName")?name=' + inpAccount.value);
-            const isExists = await response.text();  //True or False
-            let message = "";
-            if(isExists === "True"){
-                message = "帳號已存在";
-            }
-            divAccount.innerHTML = message;
-        })
+
+                const Password1 = document.getElementById('storePassword');
+                const Password2 = document.getElementById('storePasswordChecking');
+                const errorMessage = document.getElementById('errorMessage1');
+                const btnDataRevision = document.getElementById('btnDataRevision');
+                const chkShowPassword = document.getElementById('chkShowPassword');
+                const storeDataRevision = document.getElementById('storeDataRevision');
+                const storeCity1 = document.getElementById('storeCity1');
+                const storeDistrict1 = document.getElementById('storeDistrict1');
+                const storeAddress = document.getElementById('storeAddress');
+
+                let errorString = '';
+                btnDataRevision.disabled = false
+                let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
+                let result = false
+                const inpAccount = document.getElementById('InputAccount');
+                const divAccount = document.getElementById('accountHelp');
+
+
+                @*//上傳多個文件方法*@
+                @* //input file已增加multiple屬性，按住ctrl可選擇多圖*@
+                    document.getElementById("add-pic-btn").addEventListener("change", function () {
+                        var obj = this,
+                            length = obj.files.length,
+                            arrTitle = []; /*存標題名*/
+                        _html = '';
+
+                        for (var i = 0; i < length; i++) {
+                            var reader = new FileReader();
+                            if (!reader) {
+                                console.log('對不起，您的瀏覽器不支持！請更換瀏覽器試一下');
+                                return
+                            }
+                @* //存儲上傳的多張圖片名字*@
+                                arrTitle.push(obj.files[i].name)
+                            reader.error = function (e) {
+                                console.log("讀取異常")
+                            }
+                @*//iffi語法*@
+                                                                   ; (function (i) {
+                @* //讀取成功*@
+                                    reader.onload=function(e) {
+                @* //console.log(e)*@
+                                                                   var _src = e.target.result;
+                @*//節點*@
+                                                                   var divItem = document.createElement('div');
+                                        divItem.setAttribute('class', 'item');
+                                        var divPic = document.createElement('div');
+                                        divPic.setAttribute('class', 'pic-box');
+                                        var img = document.createElement('img');
+                                        img.setAttribute('class', 'img');
+                                        img.setAttribute('src', _src);
+                                        img.setAttribute('width', '100px')
+                                        img.setAttribute('height', '100px')
+                                        var divTk = document.createElement('div');
+                                        divTk.setAttribute('class', 'tk')
+                                        var spanDel = document.createElement('span');
+                                        spanDel.setAttribute('class', 'del');
+                                        spanDel.setAttribute('style', 'color:red');
+                                        spanDel.setAttribute('title', arrTitle[i]);
+                                        spanDel.innerText = '刪除圖片';
+                                        divTk.innerHTML = "圖片檔名：" + arrTitle[i];
+                                        divItem.appendChild(divPic);
+                                        divPic.appendChild(img);
+                                        divItem.appendChild(divTk);
+                                        divItem.appendChild(spanDel);
+                @*                               //增加節點結構*@
+                                var groupTu = document.getElementById('groupTu');
+                                        groupTu.insertBefore(divItem, groupTu.firstChild);
+                @*                               //刪除節點方法*@
+                                            spanDel.onclick=function() {
+                                                removeItem(this);
+                                                return false;
+                                            };
+                                    };
+                            })(i)
+                            reader.onloadstart = function () {
+                            }
+                            reader.onprogress = function (e) {
+                                if (e.lengthComputable) {
+                                    console.log("正在讀取文件")
+                                }
+                            };
+                            reader.readAsDataURL(obj.files[i]);
+                        }
+                    })
+                @*                               //刪除圖片                *@
+                    function removeItem(delNode) {
+                        var itemNode = delNode.parentNode,
+                            title = delNode.getAttribute('title');
+                        var flag = confirm("確認要刪除：" + title + "？");
+                        if (flag) {
+                            itemNode.parentNode.removeChild(itemNode);
+                            console.log('刪除成功~')
+                        }
+                        return false;
+                    }
+
+
+
+                //        $("#add-pic-btn").change(function(){
+                //  $("#preview_progressbarTW_imgs").html(""); // 清除預覽
+                //  readURL(this);
+                //});
+
+                //function readURL(input){
+                //  if (input.files && input.files.length >= 0) {
+                //    for(var i = 0; i < input.files.length; i ++){
+                //      var reader = new FileReader();
+                //      reader.onload = function (e) {
+                //        var img = $("<img width='300' height='200'>").attr('src', e.target.result);
+                //        $("#preview_progressbarTW_imgs").append(img);
+                //      }
+                //      reader.readAsDataURL(input.files[i]);
+                //    }
+                //  }else{
+                //     var noPictures = $("<p>目前沒有圖片</p>");
+                //     $("#preview_progressbarTW_imgs").append(noPictures);
+                //  }
+                //}
+
+                inpAccount.addEventListener('blur', async () => {
+                    //  divAccount.innerHTML =inpAccount.value;
+                    //檢查帳號是否存在
+                    const response = await fetch('@Url.Content("~/User/CheckStoreName")?name=' + inpAccount.value);
+                    const isExists = await response.text();  //True or False
+                    let message = "";
+                    if (isExists === "True") {
+                        message = "帳號已存在";
+                    }
+                    divAccount.innerHTML = message;
+                })
                 function readURL(input) {
                     if (input.files && input.files[0]) {
                         var imageTagID = input.getAttribute("targetID");
@@ -236,103 +382,103 @@
                     }
                 }
 
-        Password1.addEventListener('input',
-        function (event) {
-        // 錯誤訊息用字串
-            if (Password1.value){
-                errorString = ''
-                result = pattern.test(Password1.value)
-                if (!Password1.value) {
-                errorString += '*請填寫密碼\n'
-                }
-                if (!Password2.value) {
-                errorString += ' *請確認密碼\n'
-                }
-                if (Password1.value !== Password2.value) {
-                errorString += ' *兩次輸入的密碼不同\n'
-                }
-                if (!result) {
-                errorString += ' *密碼強度不足\n'
-                }
-                errorMessage.innerText = (errorString) ? errorString : '密碼一致'
+                Password1.addEventListener('input',
+                    function (event) {
+                        // 錯誤訊息用字串
+                        if (Password1.value) {
+                            errorString = ''
+                            result = pattern.test(Password1.value)
+                            if (!Password1.value) {
+                                errorString += '*請填寫密碼\n'
+                            }
+                            if (!Password2.value) {
+                                errorString += ' *請確認密碼\n'
+                            }
+                            if (Password1.value !== Password2.value) {
+                                errorString += ' *兩次輸入的密碼不同\n'
+                            }
+                            if (!result) {
+                                errorString += ' *密碼強度不足\n'
+                            }
+                            errorMessage.innerText = (errorString) ? errorString : '密碼一致'
 
-                if (!errorString) {
-                btnDataRevision.disabled = false
-                }
-                if (errorString) {
-                btnDataRevision.disabled = true
-                }
-            }
-        })
-        Password2.addEventListener('input',
-        function (event) {
-        // 錯誤訊息用字串
-            if (Password1.value){
-            errorString = ''
-            result = pattern.test(Password1.value)
-                if (!Password1.value) {
-                errorString += ' *密碼沒填\n'
-                }
-                if (!Password2.value) {
-                errorString += ' *密碼確認沒填\n'
-                }
-                if (Password1.value !== Password2.value) {
-                errorString += ' *兩次輸入的密碼不同\n'
-                }
-                if (!result) {
-                errorString += ' *密碼強度不足\n'
-                }
-                errorMessage.innerText = (errorString) ? errorString : '密碼一致'
+                            if (!errorString) {
+                                btnDataRevision.disabled = false
+                            }
+                            if (errorString) {
+                                btnDataRevision.disabled = true
+                            }
+                        }
+                    })
+                Password2.addEventListener('input',
+                    function (event) {
+                        // 錯誤訊息用字串
+                        if (Password1.value) {
+                            errorString = ''
+                            result = pattern.test(Password1.value)
+                            if (!Password1.value) {
+                                errorString += ' *密碼沒填\n'
+                            }
+                            if (!Password2.value) {
+                                errorString += ' *密碼確認沒填\n'
+                            }
+                            if (Password1.value !== Password2.value) {
+                                errorString += ' *兩次輸入的密碼不同\n'
+                            }
+                            if (!result) {
+                                errorString += ' *密碼強度不足\n'
+                            }
+                            errorMessage.innerText = (errorString) ? errorString : '密碼一致'
 
-                if (!errorString) {
-                btnDataRevision.disabled = false
-                }
-                if (errorString) {
-                btnDataRevision.disabled = true
-                }
-            }
-        })
-        //await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                            if (!errorString) {
+                                btnDataRevision.disabled = false
+                            }
+                            if (errorString) {
+                                btnDataRevision.disabled = true
+                            }
+                        }
+                    })
+                //await Html.RenderPartialAsync("_ValidationScriptsPartial");
                 chkShowPassword.addEventListener('click', (event) => {
                     if (event.currentTarget.checked) {
                         Password1.type = "text"
                         Password2.type = "text"
-                        
+
                     }
                     else {
                         Password1.type = "password"
                         Password2.type = "password"
                     }
                 })
-        storeCity.addEventListener('mousedown',async ()=>{
-           const response = await fetch('@Url.Content("~/User/GetCities")')
-           const datas = await response.json();
-           const cities = datas.map(data=>{
-               return(
-                    `<option value=${data}>${data}</option>`
-               )
-           })
+                storeCity.addEventListener('mousedown', async () => {
+                    const response = await fetch('@Url.Content("~/User/GetCities")')
+                    const datas = await response.json();
+                    const cities = datas.map(data => {
+                        return (
+                            `<option value=${data}>${data}</option>`
+                        )
+                    })
                     storeCity.innerHTML = cities.join("");
-        })
+                })
 
-        storeDistrict.addEventListener('mousedown', async () => {
-             let num = storeCity.selectedIndex
-             let chosenCity= storeCity.options[num].text
+                storeDistrict.addEventListener('mousedown', async () => {
+                    let num = storeCity.selectedIndex
+                    let chosenCity = storeCity.options[num].text
 
                     const response = await fetch('@Url.Content("~/User/GetDistricts")?storeCity=' + chosenCity)
-             const datas = await response.json();
-                   
-             const districts = datas.map(data=>{
-                 return(
-                    `<option value=${data}>${data}</option>`
-                 )
-            })
-            storeDistrict.innerHTML = districts.join("");
-        })
+                    const datas = await response.json();
 
-        let addressString=""
-        let chosenCity =""
-                    storeCity.addEventListener('change', function(){
+                    const districts = datas.map(data => {
+                        return (
+                            `<option value=${data}>${data}</option>`
+                        )
+                    })
+                    storeDistrict.innerHTML = districts.join("");
+                })
+
+                let addressString = ""
+                let chosenCity = ""
+                storeCity.addEventListener('change', function () {
                     addressString = ""
                     let num = storeCity.selectedIndex
                     let chosenCity = storeCity.options[num].text
@@ -342,24 +488,24 @@
                 })
 
                 storeDistrict.addEventListener('change', function () {
-                   //if (addressString.contains(chosenDistrict)){
-                   //     addressString = ""
-                   // }
+                    //if (addressString.contains(chosenDistrict)){
+                    //     addressString = ""
+                    // }
                     let num = storeDistrict.selectedIndex
                     let chosenDistrict = storeDistrict.options[num].text
                     addressString += chosenDistrict
                     storeAddress.value = addressString
                 })
-                
-                
 
-    @{
-        //await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
 
-        </script>
-}
+
+                @{
+                    //await Html.RenderPartialAsync("_ValidationScriptsPartial");
+                }
+
+            </script>
+        }
     </div>
 
-    
+
 </main>

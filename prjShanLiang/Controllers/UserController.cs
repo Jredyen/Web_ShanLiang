@@ -1,12 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
 using System;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Runtime.Intrinsics.X86;
+using System.Text;
 using System.Text.Json;
 
 namespace prjShanLiang.Controllers
@@ -17,12 +20,13 @@ namespace prjShanLiang.Controllers
         private IWebHostEnvironment _enviro;
 
 
-        public UserController(IWebHostEnvironment p) {
+        public UserController(IWebHostEnvironment p)
+        {
             _enviro = p;
         }
         public IActionResult Login()
         {
-            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) !=null)
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) != null)
             {
                 return RedirectToAction("Mypage");
             }
@@ -75,7 +79,8 @@ namespace prjShanLiang.Controllers
                 return Json(ex);
             }
         }
-        public IActionResult logOut() {
+        public IActionResult logOut()
+        {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) != null)
             {
                 HttpContext.Session.Remove(CDictionary.SK_LOGINED_USER);
@@ -114,7 +119,7 @@ namespace prjShanLiang.Controllers
             }
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "0")
             {
-                return RedirectToAction("Index","Admin");
+                return RedirectToAction("Index", "Admin");
             }
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "2")
             {
@@ -150,7 +155,7 @@ namespace prjShanLiang.Controllers
                 Address = vm.Address,
                 CustomerLevel = 0,
                 Password = vm.AccountPassword
-                
+
             };
             //Account acc = new Account()
             //{
@@ -171,13 +176,14 @@ namespace prjShanLiang.Controllers
         {
             ViewBag.chosenCity = "";
             ViewBag.chosenDistrict = "";
-            
+
             return View();
         }
         [HttpPost]
-        public IActionResult SignupStore(CCreateStoreAccountViewModel vm, IFormFile StoreImage)
+        public IActionResult SignupStore(CCreateStoreAccountViewModel vm, List<IFormFile> files, Store stoView)
         {
             ShanLiang21Context db = new ShanLiang21Context();
+
             Store sto = new Store()
             {
                 AccountName = vm.AccountName,
@@ -185,24 +191,57 @@ namespace prjShanLiang.Controllers
                 RestaurantName = vm.RestaurantName,
                 RestaurantAddress = vm.RestaurantAddress,
                 RestaurantPhone = vm.RestaurantPhone,
+                Website = vm.Website,
+                OpeningTime = stoView.OpeningTime,
+                ClosingTime = stoView.ClosingTime,
                 DistrictId = 1,
                 Seats = vm.Seats,
                 StoreMail = vm.StoreMail,
                 Password = vm.AccountPassword
-                
+
             };
             string storeDistrict = vm.storeDistrict;
             sto.DistrictId = db.Districts.FirstOrDefault(p => p.DistrictName == storeDistrict).DistrictId;
-            if (StoreImage != null)
+
+            db.Add(sto);
+            //db.Add(acc);
+            db.SaveChanges();
+
+            foreach (var file in files)
             {
-                string photoName = vm.RestaurantName + ".jpg";
-                string path = _enviro.WebRootPath + "/images/store/" + photoName;
-                
+                if (file.Length > 0)
+                {
+                    string substring = Guid.NewGuid().ToString();
+                    string photoName = substring.Substring(0, 10) + ".jpg";
+                    string filePath = _enviro.WebRootPath + "/images/" + "/store/" + photoName;
+                    //p.photo.CopyTo(new FileStream(path, FileMode.Create));
+                    //prod.FImagePath = photoName;
+                    //string filePath = "儲存的路徑" + "檔名";
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        //程式寫入的本地資料夾裡面
+                        file.CopyToAsync(stream);
+                    }
+                    int sdiStoreID = db.Stores.FirstOrDefault(s => s.AccountName == vm.AccountName).StoreId;
 
-                StoreImage.CopyTo(new FileStream(path, FileMode.Create));
+                    StoreDecorationImage sdi = new StoreDecorationImage { StoreId = sdiStoreID, ImagePath = photoName };
 
-                //sto.StoreImage = photoName;
+                    db.Add(sdi);
+                    db.SaveChanges();
+
+
+                }
             }
+
+            //if (StoreImage != null)
+            //{
+            //    string photoName = vm.RestaurantName + ".jpg";
+            //    string path = _enviro.WebRootPath + "/images/store/" + photoName;
+
+            //    StoreImage.CopyTo(new FileStream(path, FileMode.Create));
+
+            //    //sto.StoreImage = photoName;
+            //}
 
             //Account acc = new Account()
             //{
@@ -210,9 +249,9 @@ namespace prjShanLiang.Controllers
             //    AccountPassword = vm.AccountPassword,
             //    Identification = 2
             //};
-            db.Add(sto);
+            //db.Add(sto);
             //db.Add(acc);
-            db.SaveChanges();
+            //db.SaveChanges();
             return RedirectToAction("Login");
         }
         //public IActionResult Mypage()
@@ -260,8 +299,8 @@ namespace prjShanLiang.Controllers
 
 
             return View(mem);
-            
-            
+
+
         }
         void getCustomerLevel(Member mem)
         {
@@ -284,7 +323,7 @@ namespace prjShanLiang.Controllers
 
             ShanLiang21Context sl = new ShanLiang21Context();
             //CAccountPasswordViewModel vm = new CAccountPasswordViewModel();
-            Store sto = sl.Stores.FirstOrDefault(s => s.AccountName == AccountName);
+            Store sto = sl.Stores.Include(s => s.StoreDecorationImages).FirstOrDefault(s => s.AccountName == AccountName);
             if (sto == null)
                 return RedirectToAction("storeManagement");
             return View(sto);
@@ -295,16 +334,18 @@ namespace prjShanLiang.Controllers
         {
             ShanLiang21Context sl = new ShanLiang21Context();
             Member mem = sl.Members.FirstOrDefault(p => p.Email == m.Email);
-            if (mem != null) {
+            if (mem != null)
+            {
                 if (m.Password != null)
                 {
-                    mem.Memberphone =  m.Memberphone;
+                    mem.Memberphone = m.Memberphone;
                     mem.MemberName = m.MemberName;
                     mem.Address = m.Address;
                     mem.Password = m.Password;
                 }
-                
-                if (m.Password == null) {
+
+                if (m.Password == null)
+                {
                     mem.Memberphone = m.Memberphone;
                     mem.MemberName = m.MemberName;
                     mem.Address = m.Address;
@@ -314,10 +355,10 @@ namespace prjShanLiang.Controllers
             return RedirectToAction("memberManagement");
         }
 
-        public IActionResult storeDataRevision2( CStoreWrap s)
+        public IActionResult storeDataRevision2(Store s)
         {
             ShanLiang21Context sl = new ShanLiang21Context();
-            Store sto = sl.Stores.FirstOrDefault(p => p.AccountName == s.AccountName);
+            Store sto = sl.Stores.FirstOrDefault(p => p.StoreId == s.StoreId);
             if (sto != null)
             {
                 if (s.Password != null)
@@ -331,9 +372,6 @@ namespace prjShanLiang.Controllers
                     sto.ClosingTime = s.ClosingTime;
                     sto.Website = s.Website;
                     sto.StoreMail = s.StoreMail;
-
-
-
 
                 }
 
@@ -378,7 +416,7 @@ namespace prjShanLiang.Controllers
         public IActionResult CheckStoreName(string name)
         {
             ShanLiang21Context sl = new ShanLiang21Context();
-            var exists = sl.Stores.Any(s => s.AccountName == name);     
+            var exists = sl.Stores.Any(s => s.AccountName == name);
             return Content(exists.ToString());
         }
         public IActionResult CheckLoginAccount(string name)
@@ -386,9 +424,69 @@ namespace prjShanLiang.Controllers
             ShanLiang21Context sl = new ShanLiang21Context();
             var isStoreAccountExists = sl.Stores.Any(s => s.AccountName == name);
             var isMemberAccountExists = sl.Members.Any(m => m.Email == name);
-            var exists = isStoreAccountExists || isMemberAccountExists;
+            var isAdminAccountExists = sl.Admins.Any(a => a.AdminName == name);
+            var exists = isStoreAccountExists || isMemberAccountExists || isAdminAccountExists;
             return Content(exists.ToString());
         }
-        
+
+        public void sendEmail()
+        {
+            // 使用 Google Mail Server 發信
+            string GoogleID = ""; //Google 發信帳號
+            string TempPwd = ""; //應用程式密碼
+            string ReceiveMail = ""; //接收信箱
+
+            string SmtpServer = "smtp.gmail.com";
+            int SmtpPort = 587;
+            MailMessage mms = new MailMessage();
+            mms.From = new MailAddress(GoogleID);
+            mms.Subject = "信件主題";
+            mms.Body = "信件內容";
+            mms.IsBodyHtml = true;
+            mms.SubjectEncoding = Encoding.UTF8;
+            mms.To.Add(new MailAddress(ReceiveMail));
+            using (SmtpClient client = new SmtpClient(SmtpServer, SmtpPort))
+            {
+                client.EnableSsl = true;
+                client.Credentials = new NetworkCredential(GoogleID, TempPwd);//寄信帳密 
+                client.Send(mms); //寄出信件
+            }
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Requester(List<IFormFile> files)
+        //{
+        //    long size = files.Sum(f => f.Length);
+
+        //    foreach (var file in files)
+        //    {
+        //        if (file.Length > 0)
+        //        {
+
+        //            string photoName = Guid.NewGuid().ToString() + ".jpg";
+        //            string filePath = _enviro.WebRootPath + "/images/" + photoName;
+        //            //p.photo.CopyTo(new FileStream(path, FileMode.Create));
+        //            //prod.FImagePath = photoName;
+
+        //            //string filePath = "儲存的路徑" + "檔名";
+
+        //            using (var stream = System.IO.File.Create(filePath))
+        //            {
+        //                //程式寫入的本地資料夾裡面
+        //                await file.CopyToAsync(stream);
+        //            }
+        //        }
+        //    }
+
+        //    return RedirectToAction("User", "storeDataRevision");
+        //}
+
+
+
+
+
+
+
     }
 }
