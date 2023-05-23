@@ -139,19 +139,37 @@
     </div><!-- End Breadcrumbs -->
 
     <section class="sample-page">
-        <span class="left-img">
-                <img src="~/Images/store/PRIMEONE牛排館.jpg" alt="Placeholder Image" height="600px" width="210px" id="left-img-element" />
+            @{
+                int index = 0;
+            }
 
-            <span class="carousel-caption">
-              123456             
-            </span>
-        </span>
-        <span class="right-img" >
-                <img src="~/Images/store/PRIMEONE牛排館.jpg" alt="Placeholder Image" height="600px" width="210px" id="right-img-element" />
-            <span class="carousel-caption">
-            123456
-            </span>
-        </span>
+            @foreach (var ADIm in Model.Item2)
+            {
+                if (index == 5) // 注意索引从0开始计数，所以第5个元素的索引是4
+                {
+                    foreach (var advertisement in Model.Item1.Skip(6).Take(1))
+                    {
+                        <span class="left-img">
+                            <img src="~/Images/store/@ADIm.Adimage" alt="Placeholder Image" height="600px" width="210px" id="left-img-element" />
+                            <span class="carousel-caption">
+                                @advertisement.RestaurantName
+                            </span>
+                        </span>
+                        <span class="right-img">
+                            <img src="~/Images/store/@ADIm.Adimage" alt="Placeholder Image" height="600px" width="210px" id="right-img-element" />
+                            <span class="carousel-caption">
+                                @advertisement.RestaurantName
+                            </span>
+                        </span>
+
+                        
+                    }
+                }
+
+                index++;
+            }
+
+
          <div class="container" data-aos="fade-up">
 
             <!--==============================================-->
@@ -188,7 +206,6 @@
     }
 </div>
 
-
                 <!-- 左右箭頭 -->
                 <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
                     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -198,11 +215,7 @@
                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>            
-
 </div>
-
-
-
                 <div class="indexTitle">
                     <div class="iconStyle">
                         <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <!-- 使用 Font Awesome 图标类 -->
@@ -211,7 +224,6 @@
                     <div class="fs-s fc-secondary">HOT</div>
                 </div>
 
-
                 <div class="row">
                     @foreach (var advertisement in Model.Item1.Skip(4).Take(4))
                     {
@@ -219,10 +231,8 @@
                         <div class="col-sm-3">
                             <div class="card rounded" style="width: 32rem;">
                                 <a href="@Url.Action("Restaurant", "store", new { id = advertisement.StoreId })">
-                                    <div class="image-wrapper">
-                                    
-                                        <img src="~/images/test/@imgName" class="img-fluid carousel-image" alt="...">
-                                    
+                                    <div class="image-wrapper">                 
+                                        <img src="~/images/test/@imgName" class="img-fluid carousel-image" alt="...">                    
                                     </div>
                                     <div class="card-body-123" >
                                         
@@ -239,14 +249,8 @@
                                             </div>
                                            <div>
                                                 @Evaluate.Comments
-                                           </div>
-                                           
-                                           
-                                            
-                                            
-                                            
-                                        }
-                                        
+                                           </div>                       
+                                        }                
                                     </div>
                                 </a>
                             </div>

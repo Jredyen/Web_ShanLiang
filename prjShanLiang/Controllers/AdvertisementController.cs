@@ -16,30 +16,17 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult BuyAdv()
         {
-            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == null)
-            {
-                // 未登入，到登入页面
-                return RedirectToAction("Login", "User");
-
-            }
-            //string loginedUserRole = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE);
-            //if (string.IsNullOrEmpty(loginedUserRole))
-            //{
-            //    // 未登录，重定向到登录页面
-            //    return RedirectToAction("Login", "User");
-            //}
-            //else if (loginedUserRole != "2")
-            //{
-            //    return RedirectToAction("Login", "User");
-            //    // 非 store 登录，执行其他处理
-            //    // ...
-            //}
+            
+           
+            //string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER); //Session裡會員資料轉字串
+            //Store datas = JsonSerializer.Deserialize<Store>(jsonUser);  //字串轉會員資料物件
 
             var stores = _db.Stores.ToList();
             var AdImages = _db.StoreAdImages.ToList();
             var model = new Tuple<List<Store>, List<StoreAdImage>>(stores, AdImages);
             return View(model);
             
+           
         }
 
         public IActionResult AddAdvToCart(int? id)
@@ -53,8 +40,16 @@ namespace prjShanLiang.Controllers
         [HttpPost]
         public IActionResult AddAdvToCart(CAddAdvToCartViewModel vm)
         {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == null)
+            {
+                // 未登入，到登入页面
+                return RedirectToAction("Login", "User");
+            }
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "2")
+            {
 
-            StoreAdImage adv = _db.StoreAdImages.FirstOrDefault(t => t.StoreId == vm.txtStoreID);
+
+                StoreAdImage adv = _db.StoreAdImages.FirstOrDefault(t => t.StoreId == vm.txtStoreID);
 
 
 
@@ -83,6 +78,8 @@ namespace prjShanLiang.Controllers
 
             }
             return RedirectToAction("BuyAdv");
+            }
+            return RedirectToAction("Login", "User");
         }
         public IActionResult Delete(int? id)
         {   //刪除購物車裡的餐點
