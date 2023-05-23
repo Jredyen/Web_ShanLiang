@@ -211,21 +211,28 @@
         submitPost.addEventListener('click', function(){
             getAlert();
         }, false);
+
         async function getAlert() {
             const response = await fetch('@Url.Content("~/Store/Reserve/")', {
                 method: 'POST',
-                body: (JSON.stringify({
-                    StoreId: @ViewBag.Id,
-                    Date: dateControl.value,
-                    Time: time.value,
-                    MemberId: @ViewBag.mid,
-                    NumOfPeople: nofp.value
+                headers: {
+                    'Accept': 'application/json',
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                body: JSON.stringify({                   
+                        StoreId: @ViewBag.Id,
+                        Date: dateControl.value,
+                        Time: time.value,
+                        MemberId: @ViewBag.mid,
+                        NumOfPeople: nofp.value                    
                 })
-                )
-            })
-            .then(response => response.json())
-                .then(json => JSON.parse(json))
-                .then(order => alert(`不好意思：</br>您所選擇的人數(${order.NumOfPeople}人)已超過該時段的上限，請重新選擇或更換時段，謝謝。`))//fetch.then結束
+            });
+            const datas = await response.json();
+            const order = JSON.parse(datas);
+            return (alert(`不好意思：</br>您所選擇的人數(${order.NumOfPeople}人)已超過該時段的上限，請重新選擇或更換時段，謝謝。`))            
+            //.then(response => response.json())
+             //   .then(json => JSON.parse(json))
+              //  .then(order => alert(`不好意思：</br>您所選擇的人數(${order.NumOfPeople}人)已超過該時段的上限，請重新選擇或更換時段，謝謝。`))//fetch.then結束
         }; //getAlert結束
 
     </script>

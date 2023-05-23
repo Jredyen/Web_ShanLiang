@@ -7,6 +7,7 @@ using prjShanLiang.ViewModels;
 using System;
 using System.Linq;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace prjShanLiang.Controllers
 {
@@ -167,7 +168,7 @@ namespace prjShanLiang.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Reserve(StoreReserved sr)
+        public async Task<IActionResult> Reserve([FromBody] StoreReserved sr)
         {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
             {
@@ -175,10 +176,9 @@ namespace prjShanLiang.Controllers
             }
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Member mem = JsonSerializer.Deserialize<Member>(json);// 取得[登入會員]
-            sr.MemberId = mem.MemberId;
 
-            var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).Select(st=>st).FirstOrDefault();// 取得[該店家]
-            var sr1 = _db.StoreReserveds.Where(s => s.StoreId == sr.StoreId && s.Date== sr.Date).Select(s => s);// 取得[該店家][當天]訂單 
+            var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).Select(st => st).FirstOrDefault();// 取得[該店家]
+            var sr1 = _db.StoreReserveds.Where(s => s.StoreId == sr.StoreId && s.Date == sr.Date).Select(s => s);// 取得[該店家][當天]訂單 
             var gsr1 = sr1.GroupBy(x => x.Time, y => y.NumOfPeople, (time, num) => new // 以[時間]分組，每組輸出{時間，訂位人數總和}
             {
                 Time = time,
@@ -186,13 +186,13 @@ namespace prjShanLiang.Controllers
             });
             var sumResult = gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum;
             if (sumResult >= s.Seats)// 如果[訂位人數總和] >= [容客量]，跳出視窗：該時段已滿
-            {                
-                sr.NumOfPeople = 0; 
+            {
+                sr.NumOfPeople = 0;
                 return Json(sr);
             }
-            else if ((sumResult+sr.NumOfPeople) >= s.Seats) // 如果[訂位人數總和+欲訂位人數] >= [容客量]，跳出視窗：選擇人數已超過容客量
-            {                
-                sr.NumOfPeople = s.Seats- sumResult;
+            else if ((sumResult + sr.NumOfPeople) >= s.Seats) // 如果[訂位人數總和+欲訂位人數] >= [容客量]，跳出視窗：選擇人數已超過容客量
+            {
+                sr.NumOfPeople = s.Seats - sumResult;
                 return Json(sr1);
             }
             else
@@ -316,7 +316,7 @@ namespace prjShanLiang.Controllers
                 rt => rt.RestaurantTypeNum,
                 (st, rt) => rt.TypeName).ToList(),
                     datasum,
-                //TODO:地址
+                    //TODO:地址
                     //address = _db.Districts 
                     //.Join( _db.Cities,
                     //d => d.CityId,
