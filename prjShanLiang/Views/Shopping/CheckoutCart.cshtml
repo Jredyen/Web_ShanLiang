@@ -221,7 +221,6 @@
                     selectedPaymentMethod = radioButton.value;
                     break;
                 }
-
             }
             window.location.replace('@Url.Content("~/Shopping/CreateOrder")?pay=' + finalAmount + '&remark=' + remark + '&paymethod=' + selectedPaymentMethod)
         })
@@ -234,7 +233,7 @@
             const textarea = document.getElementById("txtpay");
             const pay = textarea.value;
             return pay
-        }       
+        }
     </script>
    
 }
