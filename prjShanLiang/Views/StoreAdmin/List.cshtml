@@ -69,7 +69,8 @@
                             </td>
                             <td>@Html.DisplayFor(modelItem => item.AccountStatusNavigation.StatusName)</td>
                             <td>
-                                @Html.ActionLink("修改", "Edit", new { id = item.StoreId }, new {Class="btn btn-outline-primary"})
+                                @Html.ActionLink("修改", "Edit", new { id = item.StoreId }, new {Class="btn btn-outline-primary"}) |
+                                @Html.ActionLink("驗證", "Verify", new {  id=item.StoreId },new {onclick="return confirm('確定發送驗證信嗎?')", Class="btn btn-outline-danger"})
                             </td>
                         </tr>
                     }
