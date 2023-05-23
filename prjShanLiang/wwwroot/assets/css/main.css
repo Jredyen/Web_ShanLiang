@@ -64,9 +64,9 @@ section {
     /*    padding: 80px 0;*/
 }
 
-.section-bg {
+/*.section-bg {
     background-color: #fff;
-}
+}*/
 
 .section-header {
     text-align: center;
@@ -1523,7 +1523,7 @@ section {
     background-size: cover;
     position: relative;
     min-height: 60vh;
-    padding: 100px 0 30px 0;
+    padding: 100px 0 30px 0;    
 }
 
     .hero h2 {

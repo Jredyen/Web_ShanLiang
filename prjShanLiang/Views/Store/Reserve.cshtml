@@ -39,6 +39,7 @@
                     <input asp-for="Date" class="form-control" type="date" />
                     <span asp-validation-for="Date" class="text-danger"></span>
                 </div>
+
                 <table class="table">
                     <thead class="future-reserve-header" id="future_reserve_header" style="display: table-header-group;">
                         <tr>
@@ -54,96 +55,97 @@
                     <tbody id="future_reserve_button" class="future-reserve-button">
                         <tr>
                             <td><span class="hour_num">11</span></td>
-                            <td><input type="button" id="hour_11_min_00" class="btn min-click fc-quaternary" value="11:00" data-min="00" data-hour="11"></td>
-                            <td><input type="button" id="hour_11_min_10" class="btn min-click fc-quaternary" value="11:10" data-min="10" data-hour="11"></td>
-                            <td><input type="button" id="hour_11_min_20" class="btn min-click fc-quaternary" value="11:20" data-min="20" data-hour="11"></td>
-                            <td><input type="button" id="hour_11_min_30" class="btn min-click fc-quaternary" value="11:30" data-min="30" data-hour="11"></td>
-                            <td><input type="button" id="hour_11_min_40" class="btn min-click fc-quaternary" value="11:40" data-min="40" data-hour="11"></td>
-                            <td><input type="button" id="hour_11_min_50" class="btn min-click fc-quaternary" value="11:50" data-min="50" data-hour="11"></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_11_min_00" class="btn min-click fc-quaternary" value="11:00" data-min="00" data-hour="11">11:00</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_11_min_10" class="btn min-click fc-quaternary" value="11:10" data-min="10" data-hour="11">11:10</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_11_min_20" class="btn min-click fc-quaternary" value="11:20" data-min="20" data-hour="11">11:20</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_11_min_30" class="btn min-click fc-quaternary" value="11:30" data-min="30" data-hour="11">11:30</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_11_min_40" class="btn min-click fc-quaternary" value="11:40" data-min="40" data-hour="11">11:40</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_11_min_50" class="btn min-click fc-quaternary" value="11:50" data-min="50" data-hour="11">11:50</label></td>
                         </tr>
                         <tr>
                             <td><span class="hour_num">12</span></td>
-                            <td><input type="button" id="hour_12_min_00" class="btn min-click fc-quaternary" value="12:00" data-min="00" data-hour="12"></td>
-                            <td><input type="button" id="hour_12_min_10" class="btn min-click fc-quaternary" value="12:10" data-min="10" data-hour="12"></td>
-                            <td><input type="button" id="hour_12_min_20" class="btn min-click fc-quaternary" value="12:20" data-min="20" data-hour="12"></td>
-                            <td><input type="button" id="hour_12_min_30" class="btn min-click fc-quaternary" value="12:30" data-min="30" data-hour="12"></td>
-                            <td><input type="button" id="hour_12_min_40" class="btn min-click fc-quaternary" value="12:40" data-min="40" data-hour="12"></td>
-                            <td><input type="button" id="hour_12_min_50" class="btn min-click fc-quaternary" value="12:50" data-min="50" data-hour="12"></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_12_min_00" class="btn min-click fc-quaternary" value="12:00" data-min="00" data-hour="12">12:00</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_12_min_10" class="btn min-click fc-quaternary" value="12:10" data-min="10" data-hour="12">12:10</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_12_min_20" class="btn min-click fc-quaternary" value="12:20" data-min="20" data-hour="12">12:20</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_12_min_30" class="btn min-click fc-quaternary" value="12:30" data-min="30" data-hour="12">12:30</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_12_min_40" class="btn min-click fc-quaternary" value="12:40" data-min="40" data-hour="12">12:40</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_12_min_50" class="btn min-click fc-quaternary" value="12:50" data-min="50" data-hour="12">12:50</label></td>
                         </tr>
                         <tr>
                             <td><span class="hour_num">13</span></td>
-                            <td><input type="button" id="hour_13_min_00" class="btn min-click fc-quaternary" value="13:00" data-min="00" data-hour="13"></td>
-                            <td><input type="button" id="hour_13_min_10" class="btn min-click fc-quaternary" value="13:10" data-min="10" data-hour="13"></td>
-                            <td><input type="button" id="hour_13_min_20" class="btn min-click fc-quaternary" value="13:20" data-min="20" data-hour="13"></td>
-                            <td><input type="button" id="hour_13_min_30" class="btn min-click fc-quaternary" value="13:30" data-min="30" data-hour="13"></td>
-                            <td><input type="button" id="hour_13_min_40" class="btn min-click fc-quaternary" value="13:40" data-min="40" data-hour="13"></td>
-                            <td><input type="button" id="hour_13_min_50" class="btn min-click fc-quaternary" value="13:50" data-min="50" data-hour="13"></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_13_min_00" class="btn min-click fc-quaternary" value="13:00" data-min="00" data-hour="13">13:00</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_13_min_10" class="btn min-click fc-quaternary" value="13:10" data-min="10" data-hour="13">13:10</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_13_min_20" class="btn min-click fc-quaternary" value="13:20" data-min="20" data-hour="13">13:20</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_13_min_30" class="btn min-click fc-quaternary" value="13:30" data-min="30" data-hour="13">13:30</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_13_min_40" class="btn min-click fc-quaternary" value="13:40" data-min="40" data-hour="13">13:40</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_13_min_50" class="btn min-click fc-quaternary" value="13:50" data-min="50" data-hour="13">13:50</label></td>
                         </tr>
                         <tr>
                             <td><span class="hour_num">14</span></td>
-                            <td><input type="button" id="hour_14_min_00" class="btn min-click fc-quaternary" value="14:00" data-min="00" data-hour="14"></td>
-                            <td><input type="button" id="hour_14_min_10" class="btn min-click fc-quaternary" value="14:10" data-min="10" data-hour="14"></td>
-                            <td><input type="button" id="hour_14_min_20" class="btn min-click fc-quaternary" value="14:20" data-min="20" data-hour="14"></td>
-                            <td><input type="button" id="hour_14_min_30" class="btn min-click fc-quaternary" value="14:30" data-min="30" data-hour="14"></td>
-                            <td><input type="button" id="hour_14_min_40" class="btn min-click fc-quaternary" value="14:40" data-min="40" data-hour="14"></td>
-                            <td><input type="button" id="hour_14_min_50" class="btn min-click fc-quaternary" value="14:50" data-min="50" data-hour="14"></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_14_min_00" class="btn min-click fc-quaternary" value="14:00" data-min="00" data-hour="14">14:00</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_14_min_10" class="btn min-click fc-quaternary" value="14:10" data-min="10" data-hour="14">14:10</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_14_min_20" class="btn min-click fc-quaternary" value="14:20" data-min="20" data-hour="14">14:20</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_14_min_30" class="btn min-click fc-quaternary" value="14:30" data-min="30" data-hour="14">14:30</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_14_min_40" class="btn min-click fc-quaternary" value="14:40" data-min="40" data-hour="14">14:40</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_14_min_50" class="btn min-click fc-quaternary" value="14:50" data-min="50" data-hour="14">14:50</label></td>
                         </tr>
                         <tr>
                             <td><span class="hour_num">15</span></td>
-                            <td><input type="button" id="hour_15_min_00" class="btn min-click fc-quaternary" value="15:00" data-min="00" data-hour="15"></td>
-                            <td><input type="button" id="hour_15_min_10" class="btn min-click fc-quaternary" value="15:10" data-min="10" data-hour="15"></td>
-                            <td><input type="button" id="hour_15_min_20" class="btn min-click fc-quaternary" value="15:20" data-min="20" data-hour="15"></td>
-                            <td><input type="button" id="hour_15_min_30" class="btn min-click fc-quaternary" value="15:30" data-min="30" data-hour="15"></td>
-                            <td><input type="button" id="hour_15_min_40" class="btn min-click fc-quaternary" value="15:40" data-min="40" data-hour="15"></td>
-                            <td><input type="button" id="hour_15_min_50" class="btn min-click fc-quaternary" value="15:50" data-min="50" data-hour="15"></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_15_min_00" class="btn min-click fc-quaternary" value="15:00" data-min="00" data-hour="15">15:00</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_15_min_10" class="btn min-click fc-quaternary" value="15:10" data-min="10" data-hour="15">15:10</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_15_min_20" class="btn min-click fc-quaternary" value="15:20" data-min="20" data-hour="15">15:20</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_15_min_30" class="btn min-click fc-quaternary" value="15:30" data-min="30" data-hour="15">15:30</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_15_min_40" class="btn min-click fc-quaternary" value="15:40" data-min="40" data-hour="15">15:40</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_15_min_50" class="btn min-click fc-quaternary" value="15:50" data-min="50" data-hour="15">15:50</label></td>
                         </tr>
                         <tr>
                             <td><span class="hour_num">16</span></td>
-                            <td><input type="button" id="hour_16_min_00" class="btn min-click fc-quaternary" value="16:00" data-min="00" data-hour="16"></td>
-                            <td><input type="button" id="hour_16_min_10" class="btn min-click fc-quaternary" value="16:10" data-min="10" data-hour="16"></td>
-                            <td><input type="button" id="hour_16_min_20" class="btn min-click fc-quaternary" value="16:20" data-min="20" data-hour="16"></td>
-                            <td><input type="button" id="hour_16_min_30" class="btn min-click fc-quaternary" value="16:30" data-min="30" data-hour="16"></td>
-                            <td><input type="button" id="hour_16_min_40" class="btn min-click fc-quaternary" value="16:40" data-min="40" data-hour="16"></td>
-                            <td><input type="button" id="hour_16_min_50" class="btn min-click fc-quaternary" value="16:50" data-min="50" data-hour="16"></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_16_min_00" class="btn min-click fc-quaternary" value="16:00" data-min="00" data-hour="16">16:00</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_16_min_10" class="btn min-click fc-quaternary" value="16:10" data-min="10" data-hour="16">16:10</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_16_min_20" class="btn min-click fc-quaternary" value="16:20" data-min="20" data-hour="16">16:20</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_16_min_30" class="btn min-click fc-quaternary" value="16:30" data-min="30" data-hour="16">16:30</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_16_min_40" class="btn min-click fc-quaternary" value="16:40" data-min="40" data-hour="16">16:40</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_16_min_50" class="btn min-click fc-quaternary" value="16:50" data-min="50" data-hour="16">16:50</label></td>
                         </tr>
                         <tr>
                             <td><span class="hour_num">17</span></td>
-                            <td><input type="button" id="hour_17_min_00" class="btn min-click fc-quaternary" value="17:00" data-min="00" data-hour="17"></td>
-                            <td><input type="button" id="hour_17_min_10" class="btn min-click fc-quaternary" value="17:10" data-min="10" data-hour="17"></td>
-                            <td><input type="button" id="hour_17_min_20" class="btn min-click fc-quaternary" value="17:20" data-min="20" data-hour="17"></td>
-                            <td><input type="button" id="hour_17_min_30" class="btn min-click fc-quaternary" value="17:30" data-min="30" data-hour="17"></td>
-                            <td><input type="button" id="hour_17_min_40" class="btn min-click fc-quaternary" value="17:40" data-min="40" data-hour="17"></td>
-                            <td><input type="button" id="hour_17_min_50" class="btn min-click fc-quaternary" value="17:50" data-min="50" data-hour="17"></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_17_min_00" class="btn min-click fc-quaternary" value="17:00" data-min="00" data-hour="17">17:00</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_17_min_10" class="btn min-click fc-quaternary" value="17:10" data-min="10" data-hour="17">17:10</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_17_min_20" class="btn min-click fc-quaternary" value="17:20" data-min="20" data-hour="17">17:20</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_17_min_30" class="btn min-click fc-quaternary" value="17:30" data-min="30" data-hour="17">17:30</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_17_min_40" class="btn min-click fc-quaternary" value="17:40" data-min="40" data-hour="17">17:40</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_17_min_50" class="btn min-click fc-quaternary" value="17:50" data-min="50" data-hour="17">17:50</label></td>
                         </tr>
                         <tr>
                             <td><span class="hour_num">18</span></td>
-                            <td><input type="button" id="hour_18_min_00" class="btn min-click fc-quaternary" value="18:00" data-min="00" data-hour="18"></td>
-                            <td><input type="button" id="hour_18_min_10" class="btn min-click fc-quaternary" value="18:10" data-min="10" data-hour="18"></td>
-                            <td><input type="button" id="hour_18_min_20" class="btn min-click fc-quaternary" value="18:20" data-min="20" data-hour="18"></td>
-                            <td><input type="button" id="hour_18_min_30" class="btn min-click fc-quaternary" value="18:30" data-min="30" data-hour="18"></td>
-                            <td><input type="button" id="hour_18_min_40" class="btn min-click fc-quaternary" value="18:40" data-min="40" data-hour="18"></td>
-                            <td><input type="button" id="hour_18_min_50" class="btn min-click fc-quaternary" value="18:50" data-min="50" data-hour="18"></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_18_min_00" class="btn min-click fc-quaternary" value="18:00" data-min="00" data-hour="18">18:00</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_18_min_10" class="btn min-click fc-quaternary" value="18:10" data-min="10" data-hour="18">18:10</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_18_min_20" class="btn min-click fc-quaternary" value="18:20" data-min="20" data-hour="18">18:20</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_18_min_30" class="btn min-click fc-quaternary" value="18:30" data-min="30" data-hour="18">18:30</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_18_min_40" class="btn min-click fc-quaternary" value="18:40" data-min="40" data-hour="18">18:40</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_18_min_50" class="btn min-click fc-quaternary" value="18:50" data-min="50" data-hour="18">18:50</label></td>
                         </tr>
                         <tr>
                             <td><span class="hour_num">19</span></td>
-                            <td><input type="button" id="hour_19_min_00" class="btn min-click fc-quaternary" value="19:00" data-min="00" data-hour="19"></td>
-                            <td><input type="button" id="hour_19_min_10" class="btn min-click fc-quaternary" value="19:10" data-min="10" data-hour="19"></td>
-                            <td><input type="button" id="hour_19_min_20" class="btn min-click fc-quaternary" value="19:20" data-min="20" data-hour="19"></td>
-                            <td><input type="button" id="hour_19_min_30" class="btn min-click fc-quaternary" value="19:30" data-min="30" data-hour="19"></td>
-                            <td><input type="button" id="hour_19_min_40" class="btn min-click fc-quaternary" value="19:40" data-min="40" data-hour="19"></td>
-                            <td><input type="button" id="hour_19_min_50" class="btn min-click fc-quaternary" value="19:50" data-min="50" data-hour="19"></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_19_min_00" class="btn min-click fc-quaternary" value="19:00" data-min="00" data-hour="19">19:00</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_19_min_10" class="btn min-click fc-quaternary" value="19:10" data-min="10" data-hour="19">19:10</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_19_min_20" class="btn min-click fc-quaternary" value="19:20" data-min="20" data-hour="19">19:20</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_19_min_30" class="btn min-click fc-quaternary" value="19:30" data-min="30" data-hour="19">19:30</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_19_min_40" class="btn min-click fc-quaternary" value="19:40" data-min="40" data-hour="19">19:40</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_19_min_50" class="btn min-click fc-quaternary" value="19:50" data-min="50" data-hour="19">19:50</label></td>
                         </tr>
                         <tr>
                             <td><span class="hour_num">20</span></td>
-                            <td><input type="button" id="hour_20_min_00" class="btn min-click fc-quaternary" value="20:00" data-min="00" data-hour="20"></td>
-                            <td><input type="button" id="hour_20_min_10" class="btn min-click fc-quaternary" value="20:10" data-min="10" data-hour="20"></td>
-                            <td><input type="button" id="hour_20_min_20" class="btn min-click fc-quaternary" value="20:20" data-min="20" data-hour="20"></td>
-                            <td><input type="button" id="hour_20_min_30" class="btn min-click fc-quaternary" value="20:30" data-min="30" data-hour="20"></td>
-                            <td><input type="button" id="hour_20_min_40" class="btn min-click fc-quaternary" value="20:40" data-min="40" data-hour="20"></td>
-                            <td><input type="button" id="hour_20_min_50" class="btn min-click fc-quaternary" value="20:50" data-min="50" data-hour="20"></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_20_min_00" class="btn min-click fc-quaternary" value="20:00" data-min="00" data-hour="20">20:00</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_20_min_10" class="btn min-click fc-quaternary" value="20:10" data-min="10" data-hour="20">20:10</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_20_min_20" class="btn min-click fc-quaternary" value="20:20" data-min="20" data-hour="20">20:20</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_20_min_30" class="btn min-click fc-quaternary" value="20:30" data-min="30" data-hour="20">20:30</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_20_min_40" class="btn min-click fc-quaternary" value="20:40" data-min="40" data-hour="20">20:40</label></td>
+                            <td><label class="min-active"><input type="radio" name="reserve-radio" style="display:none;" id="hour_20_min_50" class="btn min-click fc-quaternary" value="20:50" data-min="50" data-hour="20">20:50</label></td>
                         </tr>
                     </tbody>
                 </table>
+
                 <div class="form-group" hidden>
                     <label asp-for="Time" class="control-label"></label>
                     <input asp-for="Time" class="form-control" id="Time" />
@@ -182,7 +184,7 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     <script>
-        const button = document.querySelectorAll('.min-click');
+        const radio = document.querySelectorAll('.min-click');
         const time = document.getElementById('Time');
         const submitPost = document.querySelector('input[type="submit"]');
 
@@ -196,9 +198,9 @@
         dateControl.value = today;
         dateControl.min = today;
 
-        for (var i = 0; i < button.length; i++) {
+        for (var i = 0; i < radio.length; i++) {
             //讓所有時段點擊時取得Time
-            button[i].addEventListener('click', async function () {
+            radio[i].addEventListener('click', function () {
                 time.value = this.getAttribute("data-hour") + this.getAttribute("data-min");
             });
             //判斷該時段人數
@@ -215,10 +217,8 @@
                 })
                 )
             }
-            ).then(function (response) {
-                return response.json();
-            });//fetch結束
-            const order = JSON.parse(datas);
+            );//fetch結束
+            const order = await JSON.parse(datas);
             return (
                 alert(`不好意思：</br>您所選擇的人數(${order.NumOfPeople}人)已超過該時段的上限，請重新選擇或更換時段，謝謝。`)
             )
@@ -226,3 +226,6 @@
 
     </script>
 }
+@*.then(function (response) {
+                return response.json();
+            })*@

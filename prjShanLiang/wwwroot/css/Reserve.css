@@ -1,20 +1,43 @@
 ﻿body {
 }
 
-.hour_num {
-}
-
-.btn {
-    color: white;
-    background-color: #0000FA;
-}
-
-    .btn.focus, .btn:focus {
-        background-color: white;
-        font-weight: bold;
-    }
-
 .col-md-5-alter {
     width: 41%;
     margin: 0 auto;
+}
+
+.min-active {
+    color: white;
+    background-color: #0000FA;
+    box-shadow: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+#hour11min00 {
+    color: white;
+    background-color: #0000FA;
+    box-shadow: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+option:checked {
+    color: black;
+    background-color: white;
+    font-weight: bold;
+    box-shadow: 0 0 0 0.25rem rgba(0,255,255,1);
+}
+
+label:has(input:checked) {
+    color: black;
+    background-color: white;
+    font-weight: bold;
+    box-shadow: 0 0 0 0.25rem rgba(0,255,255,1);
+}
+
+label:has(input:focus) {
+    background-color: white;
+    font-weight: bold;
+    box-shadow: 0 0 0 0.25rem rgba(0,255,255,1);
 }
