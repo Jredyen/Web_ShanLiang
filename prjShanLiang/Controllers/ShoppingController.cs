@@ -138,7 +138,12 @@ namespace prjShanLiang.Controllers
         public IActionResult CheckoutCart()
         {   //確認訂單
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
-                return RedirectToAction("Menu", new { StoreId = 1 });
+                return RedirectToAction("Menu", new { StoreId = 1 });//如果Session購物車沒東西去點餐頁
+                                                                     
+            string logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+                //如果沒有登入轉跳登入頁面
+                if (logginedUser == null)
+                    return RedirectToAction("Login", "User");
 
             string jsonRole = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE);
             if (jsonRole == "1")//判斷登入者是否為一般會員
@@ -151,11 +156,7 @@ namespace prjShanLiang.Controllers
                     return RedirectToAction("Menu", new { StoreId = 1 });  //如果購物車是空的 回到Menu繼續點餐
 
 
-                //找出登入者資訊
-                string logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
-                //如果沒有登入轉跳登入頁面
-                if (logginedUser == null)
-                    return RedirectToAction("Login", "User");
+                
 
                 Member datas = JsonSerializer.Deserialize<Member>(logginedUser);
                 ViewBag.MemberName = datas.MemberName;
@@ -165,7 +166,7 @@ namespace prjShanLiang.Controllers
             }
             return RedirectToAction("Menu", new { StoreId = 1 });
         }
-        public IActionResult CreateOrder(int? pay, string remark)
+        public IActionResult CreateOrder(int? pay, string remark,int paymethod)
         {   //付款後完成訂單
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
                 return RedirectToAction("Menu", new { StoreId = 1 });//如果購物車沒東西 回點餐頁面
@@ -185,6 +186,11 @@ namespace prjShanLiang.Controllers
 
             Member datas = JsonSerializer.Deserialize<Member>(jsonUser);  //字串轉會員資料物件
 
+            if (paymethod == 1)
+                ViewBag.paymethod = "信用卡付款";
+            else if (paymethod == 2)
+                ViewBag.paymethod = "現金付款";
+
             ViewBag.MemberId = datas.MemberId;
             ViewBag.MemberName = datas.MemberName;
             ViewBag.MemberPhone = datas.Memberphone;
@@ -195,7 +201,7 @@ namespace prjShanLiang.Controllers
             mealOrder.MemberId = datas.MemberId;
             mealOrder.StoreId = 1;     //寫死店家ID:1
             mealOrder.Total = pay;
-            mealOrder.OrderStatus = 2; //訂單狀態:已付款
+            mealOrder.OrderStatus = paymethod; //訂單狀態
             mealOrder.OrderDate = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             mealOrder.Remark = remark;
             _db.MealOrders.Add(mealOrder);
@@ -255,7 +261,7 @@ namespace prjShanLiang.Controllers
         }
 
 
-        public IActionResult CheckMealOrderList()
+        public IActionResult MealOrderList()
         {     //店家訂單列表
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_LOGINED_USER))
                 return RedirectToAction("Login", "User");//如果沒登入 回登入頁面

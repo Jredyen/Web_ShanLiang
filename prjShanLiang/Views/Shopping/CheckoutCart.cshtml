@@ -27,7 +27,6 @@
             height: 600px;
             font-size: 16px;
             text-align: center;
-
         }
     </style>
 }
@@ -124,11 +123,13 @@
                             <div class="marg">
                                 <p>付款方式</p>
 
-                                @Html.RadioButton("paymentMethod", "creditCard")
-                                @Html.Label("paymentMethod", "現金")
+                                <input type="radio" name="paymentMethod" value="1" id="creditCard">
+                                <label for="creditCard">信用卡</label>
+                                
                                 <br>
-                                @Html.RadioButton("paymentMethod", "cash")
-                                @Html.Label("paymentMethod", "信用卡")
+                                <input type="radio" name="paymentMethod" value="2" id="cash">
+                                <label for="cash">現金</label>
+                                
                             </div>
                         </div>
                         <div>
@@ -206,12 +207,23 @@
 @section Scripts{
     <script>
         @*此方法可以取得總金額和備註並傳回後端 myBtn是前往付款按鈕*@
-                                    const myBtn = document.getElementById('myBtn')
+            const myBtn = document.getElementById('myBtn')
         myBtn.addEventListener('click', () => {
             let remark = saveRemark();
             let pay = savepay();
+            //let paymethod = savepaymethod();
             let finalAmount = pay * discount;
-            window.location.replace('@Url.Content("~/Shopping/CreateOrder")?pay=' + finalAmount + '&remark=' + remark)
+
+            const radioButtons = document.querySelectorAll('input[name="paymentMethod"]');
+            let selectedPaymentMethod;
+            for (const radioButton of radioButtons) {
+                if (radioButton.checked) {
+                    selectedPaymentMethod = radioButton.value;
+                    break;
+                }
+
+            }
+            window.location.replace('@Url.Content("~/Shopping/CreateOrder")?pay=' + finalAmount + '&remark=' + remark + '&paymethod=' + selectedPaymentMethod)
         })
         function saveRemark() {
             const textarea = document.getElementById("txtremark");
@@ -223,5 +235,30 @@
             const pay = textarea.value;
             return pay
         }
+        //function savepaymethod() {
+
+        //    const radioButtons = document.querySelectorAll('input[name="paymentMethod"]');
+
+
+        //    const textarea = document.getElementById("txtpaymethod");
+        //    const paymethod = textarea.value;
+        //    return paymethod
+        //}
     </script>
+    @*<script>
+        const radiobtncheck = document.querySelector('#radiobtncheck');        
+        const radioButtons = document.querySelectorAll('input[name="paymentMethod"]');
+        radiobtncheck.addEventListener("click", () => {
+            let selectedPaymentMethod;
+            for (const radioButton of radioButtons) {
+                if (radioButton.checked) {
+                    selectedPaymentMethod = radioButton.value;
+                    break;
+                }
+
+            }
+            console.log(selectedPaymentMethod);
+            output.innerText = selectedPaymentMethod;
+        });
+    </script>*@
 }
