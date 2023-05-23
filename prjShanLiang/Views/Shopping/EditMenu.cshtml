@@ -43,7 +43,7 @@
                         <img id="preview_progressbarTW_img" style="margin-top:10px" src="#" alt="請選擇要上傳的圖片" />
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="儲存" class="btn btn-primary" />
+                        <input type="submit" value="儲存" class="btn btn-primary" , onclick="return confirm ('確定要修改嗎?')" />
                         @Html.ActionLink("返回", "StoreMenuList","Shopping", null ,new{ @class = "btn btn-danger"})
                     </div>
                 </form>

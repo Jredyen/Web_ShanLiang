@@ -206,7 +206,7 @@
 </main><!-- End #main -->
 @section Scripts{
     <script>
-        @*此方法可以取得總金額和備註並傳回後端 myBtn是前往付款按鈕*@
+        @*此方法可以取得總金額，備註，付款方式並傳回後端 myBtn是前往付款按鈕*@
             const myBtn = document.getElementById('myBtn')
         myBtn.addEventListener('click', () => {
             let remark = saveRemark();
@@ -234,31 +234,7 @@
             const textarea = document.getElementById("txtpay");
             const pay = textarea.value;
             return pay
-        }
-        //function savepaymethod() {
-
-        //    const radioButtons = document.querySelectorAll('input[name="paymentMethod"]');
-
-
-        //    const textarea = document.getElementById("txtpaymethod");
-        //    const paymethod = textarea.value;
-        //    return paymethod
-        //}
+        }       
     </script>
-    @*<script>
-        const radiobtncheck = document.querySelector('#radiobtncheck');        
-        const radioButtons = document.querySelectorAll('input[name="paymentMethod"]');
-        radiobtncheck.addEventListener("click", () => {
-            let selectedPaymentMethod;
-            for (const radioButton of radioButtons) {
-                if (radioButton.checked) {
-                    selectedPaymentMethod = radioButton.value;
-                    break;
-                }
-
-            }
-            console.log(selectedPaymentMethod);
-            output.innerText = selectedPaymentMethod;
-        });
-    </script>*@
+   
 }
