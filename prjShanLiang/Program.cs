@@ -15,6 +15,8 @@ builder.Services.AddDbContext<ShanLiang21Context>(
 
 // Add EmailSender service
 builder.Services.AddTransient<IEmailSender, YourEmailSenderService>();
+// Configure IHttpContextAccessor
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

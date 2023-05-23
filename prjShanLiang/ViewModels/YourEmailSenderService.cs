@@ -9,10 +9,12 @@
     public class YourEmailSenderService : IEmailSender
     {
         private readonly IConfiguration _configuration;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public YourEmailSenderService(IConfiguration configuration)
+        public YourEmailSenderService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public Task SendEmailAsync(string? email, string subject, string message, int? id)
@@ -38,8 +40,13 @@
                 IsBodyHtml = true
             };
 
+            // 获取当前请求的主机名和端口号
+            var request = _httpContextAccessor.HttpContext.Request;
+            string host = request.Host.Host;
+            int port = (int)request.Host.Port;
+
             // 构建邮件正文，包括验证链接
-            string verificationLink = $"https://localhost:7131/StoreAdmin/CompleteVerification/?id={id}"; // 根据传入的 id 构建验证链接
+            string verificationLink = $"https://{host}:{port}/StoreAdmin/CompleteVerification/?id={id}"; // 根据传入的 id 构建验证链接
             string emailBody = $"<p>{message}</p>";
             emailBody += $"<p>请点击以下链接进行验证：</p>";
             emailBody += $"<p><a href=\"{verificationLink}\">驗證連結</a></p>";
