@@ -7,7 +7,7 @@
    
 
          <style>
-      
+        
 
         .image-container {
             width:100%;
@@ -111,9 +111,6 @@
         .fs-s {
             font-size: .8rem;
         }
-
-       
-
         
 </style>
 
@@ -121,7 +118,7 @@
        </head>
 
 
-       <body>
+       <body style="background-color:gainsboro">
     <main id="main">
 
     <!-- ======= Breadcrumbs ======= -->
@@ -147,16 +144,16 @@
             {
                 if (index == 5) // 注意索引从0开始计数，所以第5个元素的索引是4
                 {
-                    foreach (var advertisement in Model.Item1.Skip(6).Take(1))
+                    foreach (var advertisement in Model.Item1.Take(1))
                     {
                         <span class="left-img">
-                            <img src="~/Images/store/@ADIm.Adimage" alt="Placeholder Image" height="600px" width="210px" id="left-img-element" />
+                            <img src="~/Images/store/@ADIm.ADColumn" alt="Placeholder Image" height="600px" width="210px" id="left-img-element" />
                             <span class="carousel-caption">
                                 @advertisement.RestaurantName
                             </span>
                         </span>
                         <span class="right-img">
-                            <img src="~/Images/store/@ADIm.Adimage" alt="Placeholder Image" height="600px" width="210px" id="right-img-element" />
+                            <img src="~/Images/store/@ADIm.ADColumn" alt="Placeholder Image" height="600px" width="210px" id="right-img-element" />
                             <span class="carousel-caption">
                                 @advertisement.RestaurantName
                             </span>

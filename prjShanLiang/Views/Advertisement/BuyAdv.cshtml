@@ -57,23 +57,25 @@
                 @{
                     int count = 0;
 
-                    foreach (var item in Model.Item1.Take(8))
+                    foreach (var item in Model.Item1.Take(2))
                     {
-
+                            @foreach (var adImage in Model.Item2.Where(ai => ai.StoreId == item.StoreId))
+                            {
+                                string imgName = item.RestaurantName + ".jpg";
                         count++;
                         <tr>
                             <td>
                                 @count
                             </td>
                             <td>
-                                    @foreach (var adImage in Model.Item2.Where(ai => ai.StoreId == item.StoreId))
-                                    {
-                                        string imgName = item.RestaurantName + ".jpg";
+                                    
+                                       @adImage.Eximage
+
                                         <img src="~/images/test/@imgName" class="carousel-image"width="200px" height="200px" />
-                                    }
+                                    
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.StoreId)
+                                @Html.DisplayFor(modelItem => adImage.ADPrice)
                             </td>
                             <td></td>
                             <td></td>
@@ -81,23 +83,24 @@
                                     @using (Html.BeginForm("AddAdvToCart", "Advertisement", FormMethod.Post))
                                 {
                                         <input type="hidden" name="txtStoreID" value="@item.StoreId" />
+                                    //<div class="form-group">
+                                    //    <div class="col-md-offset-0 col-md-10">
+                                    //        數量
+                                    //    </div>
+                                    //    <div class="col-md-10">
+                                    //        @Html.TextBox("txtCount", "1", new { htmlAttributes = new { @class = "form-control" } })
+                                    //    </div>
+                                    //</div>
                                     <div class="form-group">
                                         <div class="col-md-offset-0 col-md-10">
-                                            數量
-                                        </div>
-                                        <div class="col-md-10">
-                                            @Html.TextBox("txtCount", "1", new { htmlAttributes = new { @class = "form-control" } })
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-offset-0 col-md-10">
-                                            <input type="submit" value="加入購物車" class="btn btn-default" />
+                                            <input type="submit" value="購買此方案" class="btn btn-default" />
                                             
                                         </div>
                                     </div>
                                 }
                             </td>
                         </tr>
+                            }
                     }
                 }
 

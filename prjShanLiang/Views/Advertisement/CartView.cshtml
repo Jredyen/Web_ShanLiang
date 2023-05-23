@@ -22,9 +22,7 @@
 
         <section class="sample-page">
             <div class="container" data-aos="fade-up">
-<p>
-    @Html.ActionLink("結帳", "Create")
-</p>
+
 <table class="table">
     <tr>
         <th>
@@ -34,9 +32,7 @@
         <th>
             品項
         </th>
-        <th>
-            採購量
-        </th>
+      
         <th>
             售價
         </th>
@@ -61,25 +57,25 @@
                 </td>
                 <td>
                   
-                    @Html.DisplayFor(modelItem => item.storeAdImage.Adimage)
+                    @Html.DisplayFor(modelItem => item.storeAdImage.Eximage)
                 </td>
+              
                 <td>
-                    @Html.DisplayFor(modelItem => item.count)
+                    @Html.DisplayFor(modelItem => item.price)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.price)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.小計)
-                </td>
-                <td>
                     @Html.ActionLink("確認訂單", "CheckoutCart", "Advertisement", null, new { @class = "btn btn-primary" })
-                    @Html.ActionLink("取消", "BuyAdv","Advertisement", new {  id=item.StoreID })
+                    @Html.ActionLink("取消", "BuyAdv","Advertisement", new {  id=item.StoreID ,Class = "btn btn-danger"})
                     @Html.ActionLink("刪除", "Delete","Advertisement", new {  id=item.storeAdImage.StoreId  }, new { onclick = "return confirm('確定要刪除嗎?')", Class = "btn btn-danger" })
                                
                 </td>
-            </tr>
-        }
+                            </tr>
+                            pay = item.price;
+                        }
+      
         tax = pay * 0.05M;
         sum = pay + tax;
     }
