@@ -376,8 +376,6 @@
 
                                         </div>
                                         <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                                            
-                                            <h3>My Google Maps Demo</h3>
                                             <!--這裡載入地圖API -->
                                             <div id="map"></div>
 
@@ -417,8 +415,7 @@
 </body>
 @section Scripts{
     <script src="~/assets/js/checkbox.js"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXNdG0SasvzekItgtkTqukL_xV4WDS2j8&callback=initMap"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXNdG0SasvzekItgtkTqukL_xV4WDS2j8&callback=initMap"></script>
     <script>
         //====================================================================================================================================
         //TODO:類型裡面有幾間餐廳
@@ -545,13 +542,15 @@
             const datas = await response.json();
             //將結果回傳HTML
 
-            //<i class="fa fa-star"></i> 1
-            //<i class="fa fa-star-half-o"></i> 0.5
-            //<i class="fa fa-star-o"></i> 0
+
+            
+            initMap(datas);
             let datasum = 0;//查詢到的資料數
             const shop = datas.map((data, index) => {
-
                 let stars = '';
+                //<i class="fa fa-star"></i> 1
+                //<i class="fa fa-star-half-o"></i> 0.5
+                //<i class="fa fa-star-o"></i> 0
                 for (let i = 1; i <= 5; i++) { // 產生 5 顆星星
                     if (i <= data.rating) {
                         stars += '<i class="fa fa-star"></i>'; // 如果該顆星星應該被填滿，則加上實心星星
@@ -563,7 +562,7 @@
                 return `<tr>
                              <td class="number text-center">${index + 1}</td>
                              <td class="image"><a href="Restaurant/${data.storeId}"><img src="../../images/store/decoration/${data.imagePath}" alt="${data.restaurantName}"></a></td>
-                             <td class="product"><a href="Restaurant/${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}</a></td>
+                             <td class="product"><a href="Restaurant/${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}<br>${data.restaurantAddress}</a></td>
                              <td class="rate text-right"><span>${stars}</span></td>
                              <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
                              </tr>`
@@ -575,65 +574,23 @@
             StoreList.innerHTML = shop.join("");
             SelectCount.innerHTML = `查詢到 ${datasum} 筆資料`;
         }
-
-        //====================================================================================================================================
-        //var checkboxes = document.querySelectorAll('input.subOption'),
-        //    checkall = document.getElementById('option');
-
-        //for (var i = 0; i < checkboxes.length; i++) {
-        //    checkboxes[i].onclick = function () {
-        //        var checkedCount = document.querySelectorAll('input.subOption:checked').length;
-
-        //        checkall.checked = checkedCount > 0;
-        //        checkall.indeterminate = checkedCount > 0 && checkedCount < checkboxes.length;
-        //    }
-        //}
-
-        //checkall.onclick = function () {
-        //    for (var i = 0; i < checkboxes.length; i++) {
-        //        checkboxes[i].checked = this.checked;
-        //    }
-        //}
-        //====================================================================================================================================
-        //Google地圖API
-        let map;
-
-        function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 10,
-                center: new google.maps.LatLng(25.034526, 121.564026),
-                mapTypeId: "roadmap",
-            });
-
-            // Create a <script> tag and set the USGS URL as the source.
-            const script = document.createElement("script");
-
-            // This example uses a local copy of the GeoJSON stored at
-            // http://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_week.geojsonp
-            //script.src =
-            //    "https://developers.google.com/maps/documentation/javascript/examples/json/earthquake_GeoJSONP.js"
-            //    //"https://localhost:44351/Store/GetMapPoint";
-            //document.getElementsByTagName("head")[0].appendChild(script);
-            map.data.loadGeoJson('GetMapPoint');
-        }
-
-        // Loop through the results array and place a marker for each
-        // set of coordinates.
-        const eqfeed_callback = function (results) {
-            for (let i = 0; i < results.features.length; i++) {
-                const coords = results.features[i].geometry.coordinates;
-                const latLng = new google.maps.LatLng(coords[1], coords[0]);
-
-                new google.maps.Marker({
-                    position: latLng,
-                    map: map,
+        //====================================================GOOGLE=API======================================================================
+        function initMap(datas) {
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    zoom: 7,
+                    center: new google.maps.LatLng(25.034526, 121.564026)
                 });
-            }
-            console.log(results);
-        };
-
-        window.initMap = initMap;
-        window.eqfeed_callback = eqfeed_callback;
-
+            for (let i = 0; i < datas.length; i++) {
+                    const lat = datas[i].latitude;
+                    const lng = datas[i].longitude;
+                    const position = new google.maps.LatLng(lat,lng);
+                    new google.maps.Marker({
+                        position:position,
+                        map:map,
+                    });
+                }
+                window.initMap = initMap;
+                }
+        //====================================================GOOGLE=API======================================================================
     </script>
 }

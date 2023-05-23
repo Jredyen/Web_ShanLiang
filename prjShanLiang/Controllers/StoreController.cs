@@ -198,7 +198,7 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult GetName(string keyword)
         {
-            IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword)).Select(s => s.RestaurantName);
+            IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword) && s.AccountStatus == 1).Select(s => s.RestaurantName);
             return Json(storeList);
         }
         public IActionResult GetType()
@@ -208,7 +208,8 @@ namespace prjShanLiang.Controllers
                 rt.TypeName, 
                 rt.RestaurantTypeNum, 
                 Qty = _db.StoreTypes
-                .Where(st => st.RestaurantTypeNum == rt.RestaurantTypeNum)
+                .Join(_db.Stores, st => st.StoreId, s => s.StoreId, (st, s) => new { st, s })
+                .Where(x => x.st.RestaurantTypeNum == rt.RestaurantTypeNum && x.s.AccountStatus == 1)
                 .Count()
             });
             return Json(datas);
@@ -232,14 +233,14 @@ namespace prjShanLiang.Controllers
                 //評價搜尋 : 完成
 
                 IQueryable<Store> list = null;
-                //如果關鍵字不是null的話就用關鍵字搜尋
+                //如果關鍵字不是null的話就用關鍵字搜尋，且要是審核通過的店家
                 if (keyword != null)
                 {
-                    list = _db.Stores.Where(s => s.RestaurantName.Contains(keyword));
+                    list = _db.Stores.Where(s => s.RestaurantName.Contains(keyword) && s.AccountStatus == 1);
                 }
                 else
                 {
-                    list = _db.Stores.Select(s => s);
+                    list = _db.Stores.Where(s => s.AccountStatus == 1).Select(s => s);
                 }
 
                 //有選取類型的話，把傳回來的類型字串變回陣列並防例外狀況，再篩選類型
@@ -293,6 +294,8 @@ namespace prjShanLiang.Controllers
                     s.ClosingTime,
                     s.RestaurantPhone,
                     s.RestaurantAddress,
+                    s.Latitude,
+                    s.Longitude,
                     imagePath = _db.StoreDecorationImages
                         .Where(x => x.StoreId == s.StoreId)
                         .Select(x => x.ImagePath).ToList(),
@@ -303,12 +306,9 @@ namespace prjShanLiang.Controllers
                 rt => rt.RestaurantTypeNum,
                 (st, rt) => rt.TypeName).ToList(),
                     datasum,
-                //TODO:地址
-                    //address = _db.Districts 
-                    //.Join( _db.Cities,
-                    //d => d.CityId,
-                    //c => c.CityId,
-                    //(c, d) => s.DistrictId == c.DistrictId)
+                    like = _db.MemberActions
+                    .Where(ma => ma.StoreId == s.StoreId && ma.ActionId == 2)
+                    .Count()
                 }).Skip(step * 10).Take(take);
 
                 //if (step > 0)
@@ -356,28 +356,12 @@ namespace prjShanLiang.Controllers
             return Json(regions);
         }
 
-        public IActionResult GetMapPoint()
+        public IActionResult getpoint()
         {
             IQueryable datas = _db.Stores.Select(s => new
             {
-                features = new
-                {
-                    type = "Feature",
-                    geometry = new
-                    {
-                        type = "Point",
-                        coordinates = new
-                        {
-                            s.Longitude,
-                            s.Latitude
-                        },
-                    },
-                    properties = new
-                    {
-                        name = s.RestaurantName,
-                        type = "Point of Interest"
-                    },
-                }
+                s.Latitude,
+                s.Longitude
             });
             return Json(datas);
         }
