@@ -126,36 +126,39 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult ConfirmADOrder()
         {
-            string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER); //Session裡會員資料轉字串
+            string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Store datas = JsonSerializer.Deserialize<Store>(jsonUser);
+            var adImages = _db.StoreAdImages.Where(x => x.StoreId == datas.StoreId).ToList();
 
-            Store datas = JsonSerializer.Deserialize<Store>(jsonUser);  //字串轉會員資料物件
+            bool isFirstTrueFound = false;
 
-            //var adImages = _db.StoreAdImages.Where(x => x.StoreId == datas.StoreId).ToList();
-            var adImage = _db.StoreAdImages.FirstOrDefault(x => x.StoreId == datas.StoreId);
+            foreach (var image in adImages)
+            {
+                if (image.ADColumn == "true")
+                {
+                    if (!isFirstTrueFound)
+                    {
+                        isFirstTrueFound = true;
+                    }
+                    else
+                    {
+                        image.ADColumn = "false";
+                        break; // 将第一个 "true" 的记录设置为 "false" 后，结束循环
+                    }
+                }
+            }
+
+            var adImage = adImages.FirstOrDefault(x => x.ADColumn != "true");
             if (adImage != null)
             {
-                // 将ADColumn列的值从false更改为true
                 adImage.ADColumn = "true";
-
-                //int previousTrueIndex = -1;
-                //for (int i = 0; i < adImages.Count; i++)
-                //{
-                //    if (adImages[i].ADColumn == "true")
-                //    {
-                //        previousTrueIndex = i;
-                //        break;
-                //    }
-                //}
-                //// 找到上一个为true的位置
-                //adImages[previousTrueIndex].ADColumn = "false";
-
-                // 保存更改到数据库
                 _db.SaveChanges();
             }
 
             return RedirectToAction("index", "Home");
-
         }
+
+
 
 
 
