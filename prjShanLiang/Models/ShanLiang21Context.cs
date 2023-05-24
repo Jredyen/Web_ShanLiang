@@ -118,7 +118,12 @@ public partial class ShanLiang21Context : DbContext
 
             entity.Property(e => e.AdminId).HasColumnName("AdminID");
             entity.Property(e => e.AdminName).HasMaxLength(50);
+            entity.Property(e => e.IdentificationId).HasColumnName("IdentificationId");
             entity.Property(e => e.Passwoed).HasMaxLength(50);
+
+            entity.HasOne(d => d.Identification).WithMany(p => p.Admins)
+                .HasForeignKey(d => d.IdentificationId)
+                .HasConstraintName("FK_Admin_Identification");
         });
 
         modelBuilder.Entity<Blog>(entity =>
@@ -145,6 +150,10 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.CityId).HasColumnName("CityID");
             entity.Property(e => e.CityName).HasMaxLength(10);
             entity.Property(e => e.RegionId).HasColumnName("RegionID");
+
+            entity.HasOne(d => d.Region).WithMany(p => p.Cities)
+                .HasForeignKey(d => d.RegionId)
+                .HasConstraintName("FK_City_Region");
         });
 
         modelBuilder.Entity<Coupon>(entity =>
@@ -184,7 +193,7 @@ public partial class ShanLiang21Context : DbContext
         {
             entity.ToTable("Identification", "dbo");
 
-            entity.Property(e => e.IdentificationId).HasColumnName("IdentificationID");
+            entity.Property(e => e.IdentificationId).HasColumnName("IdentificationId");
             entity.Property(e => e.IdentificationName).HasMaxLength(10);
         });
 
@@ -259,7 +268,7 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.AccountName).HasMaxLength(20);
             entity.Property(e => e.Address).HasMaxLength(50);
             entity.Property(e => e.BrithDate).HasColumnType("datetime");
-            entity.Property(e => e.Email).HasMaxLength(20);
+            entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.MemberName).HasMaxLength(10);
             entity.Property(e => e.Memberphone).HasMaxLength(20);
             entity.Property(e => e.Password).HasMaxLength(50);
@@ -509,11 +518,19 @@ public partial class ShanLiang21Context : DbContext
 
             entity.ToTable("Store_Reserved", "dbo");
 
-            entity.Property(e => e.ReservationId).HasColumnName("ReservationId.");
+            entity.Property(e => e.ReservationId).HasColumnName("ReservationID");
+            entity.Property(e => e.CouponId).HasColumnName("CouponID");
             entity.Property(e => e.Date).HasColumnType("date");
-
+            entity.Property(e => e.MemberId).HasColumnName("MemberID");
             entity.Property(e => e.StoreId).HasColumnName("StoreID");
 
+            entity.HasOne(d => d.Coupon).WithMany(p => p.StoreReserveds)
+                .HasForeignKey(d => d.CouponId)
+                .HasConstraintName("FK_Store_Reserved_Coupon");
+
+            entity.HasOne(d => d.Member).WithMany(p => p.StoreReserveds)
+                .HasForeignKey(d => d.MemberId)
+                .HasConstraintName("FK_Store_Reserved_Member");
 
             entity.HasOne(d => d.Store).WithMany(p => p.StoreReserveds)
                 .HasForeignKey(d => d.StoreId)

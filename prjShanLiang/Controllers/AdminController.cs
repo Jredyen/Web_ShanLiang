@@ -38,7 +38,7 @@ namespace prjShanLiang.Controllers
         public IActionResult Create(Admin a)
         {
             ShanLiang21Context db = new ShanLiang21Context();
-            if (a.IdentificationID != 3)
+            if (a.IdentificationId != 3)
             {
                 ViewBag.Message = "無法修改權限";
                 return View();
@@ -80,7 +80,7 @@ namespace prjShanLiang.Controllers
             {
                 ad.AdminName = a.AdminName;
                 ad.Passwoed = a.Passwoed;
-                ad.IdentificationID =a.IdentificationID;
+                ad.IdentificationId =a.IdentificationId;
                 db.SaveChanges();
             }
             return RedirectToAction("List");

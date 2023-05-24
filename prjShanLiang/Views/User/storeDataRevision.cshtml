@@ -1,43 +1,44 @@
-﻿@model prjShanLiang.Models.Store
+﻿Storedata revivsion
+..
+@model prjShanLiang.Models.Store
 
 @{
     ViewData["Title"] = "storeDataRevision";
 }
 
 <style>
-    
-.card-registration .select-input.form-control[readonly]:not([disabled]) {
-font-size: 1rem;
-line-height: 2.15;
-padding-left: .75em;
-padding-right: .75em;
-}
-.card-registration .select-arrow {
-top: 13px;
-}
 
-.gradient-custom-2 {
-/* fallback for old browsers */
-background: #a1c4fd;
+    .card-registration .select-input.form-control[readonly]:not([disabled]) {
+        font-size: 1rem;
+        line-height: 2.15;
+        padding-left: .75em;
+        padding-right: .75em;
+    }
 
-/* Chrome 10-25, Safari 5.1-6 */
-background: -webkit-linear-gradient(to right, rgba(161, 196, 253, 1), rgba(194, 233, 251, 1));
+    .card-registration .select-arrow {
+        top: 13px;
+    }
 
-/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-background: linear-gradient(to right, #F0FFF0/*rgba(161, 196, 253, 1)*/, rgba(194, 233, 251, 1))
-}
+    .gradient-custom-2 {
+        /* fallback for old browsers */
+        background: #a1c4fd;
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: -webkit-linear-gradient(to right, rgba(161, 196, 253, 1), rgba(194, 233, 251, 1));
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        background: linear-gradient(to right, #F0FFF0 /*rgba(161, 196, 253, 1)*/, rgba(194, 233, 251, 1))
+    }
 
-.bg-indigo {
+    .bg-indigo {
         background-color: #CAFFFF;
-}
+    }
 
-.inputFont{
-    font-size:16px; 
-    font-family:Microsoft JhengHei;
-    height: 50px;
-    width: 500px;
-    margin-bottom: 15px
-}
+    .inputFont {
+        font-size: 16px;
+        font-family: Microsoft JhengHei;
+        height: 50px;
+        width: 500px;
+        margin-bottom: 15px
+    }
 
 </style>
 
@@ -58,24 +59,24 @@ background: linear-gradient(to right, #F0FFF0/*rgba(161, 196, 253, 1)*/, rgba(19
     </div>
 </div><!-- End Breadcrumbs -->
 <section class="h-100 h-custom gradient-custom-2">
-   
+
     <form asp-action="storeDataRevision2">
-    <div class="container py-5 h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-12">
-                <div class="card card-registration card-registration-2" style="border-radius: 15px;">
-                    <div class="card-body p-0">
-                        <div class="row g-0">
-                            <div class="col-lg-6">
-                                <div class="p-5">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col-12">
+                    <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+                        <div class="card-body p-0">
+                            <div class="row g-0">
+                                <div class="col-lg-6">
+                                    <div class="p-5">
                                         <h3 class="fw-normal mb-5" style="color: #4835d4;"></h3>@*General Infomation*@
 
-                                    <div class="row">
+                                        <div class="row">
                                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                             <input type="hidden" value="@Model.StoreId" name="StoreId" />
                                             <div class="form-group">
                                                 <label asp-for="AccountName" class="control-label">帳號</label>
-                                                <label asp-for="AccountName" class="form-control form-control-lg inputFont">@Model.AccountName </label>
+                                                <label asp-for="AccountName" name="AccountName" class="form-control form-control-lg inputFont">@Model.AccountName </label>
                                                 <span asp-validation-for="AccountName" class="text-danger"></span>
                                             </div>
 
@@ -124,19 +125,39 @@ background: linear-gradient(to right, #F0FFF0/*rgba(161, 196, 253, 1)*/, rgba(19
                                                 <input asp-for="Website" class="form-control inputFont" />
                                                 <span asp-validation-for="Website" class="text-danger"></span>
                                             </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-6 bg-indigo ">
-                                <div class="p-5">
+                                <div class="col-lg-6 bg-indigo ">
+                                    <div class="p-5">
                                         <h3 class="fw-normal mb-5"></h3>@*Contact Details*@
 
                                         <div class="form-group">
                                             <label asp-for="StoreImage" class="control-label" style="display:block">餐廳圖片</label>
+
                                             @{
-                                                string imageName = Model.RestaurantName + ".jpg";
+
+                                                var imp = Model.StoreDecorationImages.Where(i => i.StoreId == Model.StoreId).ToList();
+                                                foreach (var item in imp)
+                                                {
+                                                    <img src="~/images/store/@item.ImagePath" alt="店內環境 " style="flex:auto;" width="60" height="60" />
+                                                    @Html.ActionLink("刪除", "Delete","User", new {  sip = item.ImagePath },new {onclick="return confirm('確定刪除嗎?')"})
+
+                                                }
                                             }
-                                            <img src="~/images/store/@imageName" alt="店內環境" style="flex:auto;" width="450" height="300" />
+                                            <div class="upload-pic">
+                                                <label class="up-lab" for="add-pic-btn">上傳圖片</label>
+                                                <input class="up-file" name="files" type="file" accept="image/*" multiple id="add-pic-btn" style="margin:5px">
+                                            </div>
+                                            <div class="group-coms-pic" id="groupTu">
+                                                <div class="item">
+                                                    <div class="pic-box">
+                                                        @*<img src="" style="width:30px; height:30px " />*@
+                                                    </div>
+                                                    @*<div class="tk">111.jpg</div>*@
+                                                    <span class="del"></span>
+                                                </div>
+                                            </div>
 
                                             <span asp-validation-for="StoreImage" class="text-danger"></span>
                                         </div>
@@ -148,7 +169,20 @@ background: linear-gradient(to right, #F0FFF0/*rgba(161, 196, 253, 1)*/, rgba(19
                                         </div>
                                         <div class="form-group">
                                             <label asp-for="Rating" class="control-label">評分</label>
-                                            <label asp-for="Rating" class="form-control inputFont">@Model.Rating</label>
+                                            @{
+                                                if (Model.Rating != null)
+                                                {
+                                                    <label asp-for="Rating" class="form-control inputFont">@Model.Rating</label>
+                                                }
+                                                if (Model.Rating == null)
+                                                {
+                                                    <label asp-for="Rating" class="form-control inputFont">尚未評分</label>
+                                                }
+
+                                            }
+
+
+
                                             <span asp-validation-for="Rating" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
@@ -164,23 +198,23 @@ background: linear-gradient(to right, #F0FFF0/*rgba(161, 196, 253, 1)*/, rgba(19
                                             <input type="password" name="passwordChecking" placeholder="請再次輸入密碼" id="storePasswordChecking" class="form-control form-control-lg inputFont" maxlength="16" />
                                         </div>
                                         <div id="errorMessage1" style="color:red"></div>
-                                        <div class="form-group" >
+                                        <div class="form-group">
                                             <input type="submit" value="送出" class="btn btn-primary inputFont" id="btnDataRevision" />
                                         </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            </div>
-    </form> 
+    </form>
     <div>
         <a asp-action="storeManagement">回到餐廳管理中心</a>
     </div>
     </div>
-    
-    
+
+
 
     @section Scripts {
         <script>
@@ -198,6 +232,92 @@ background: linear-gradient(to right, #F0FFF0/*rgba(161, 196, 253, 1)*/, rgba(19
             btnDataRevision.disabled = false
             let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
             let result = false
+
+
+            @*//上傳多個文件方法*@
+            @* //input file已增加multiple屬性，按住ctrl可選擇多圖*@
+                document.getElementById("add-pic-btn").addEventListener("change", function () {
+                    var obj = this,
+                        length = obj.files.length,
+                        arrTitle = []; /*存標題名*/
+                    _html = '';
+
+                    for (var i = 0; i < length; i++) {
+                        var reader = new FileReader();
+                        if (!reader) {
+                            console.log('對不起，您的瀏覽器不支持！請更換瀏覽器試一下');
+                            return
+                        }
+            @* //存儲上傳的多張圖片名字*@
+                            arrTitle.push(obj.files[i].name)
+                        reader.error = function (e) {
+                            console.log("讀取異常")
+                        }
+            @*//iffi語法*@
+                                                                               ; (function (i) {
+            @* //讀取成功*@
+                                reader.onload=function(e) {
+            @* //console.log(e)*@
+                                                                               var _src = e.target.result;
+            @*//節點*@
+                                                                               var divItem = document.createElement('div');
+                                    divItem.setAttribute('class', 'item');
+                                    var divPic = document.createElement('div');
+                                    divPic.setAttribute('class', 'pic-box');
+                                    var img = document.createElement('img');
+                                    img.setAttribute('class', 'img');
+                                    img.setAttribute('src', _src);
+                                    img.setAttribute('width', '100px')
+                                    img.setAttribute('height', '100px')
+                                    var divTk = document.createElement('div');
+                                    divTk.setAttribute('class', 'tk')
+                                    var spanDel = document.createElement('span');
+                                    spanDel.setAttribute('class', 'del');
+                                    spanDel.setAttribute('style', 'color:red');
+                                    spanDel.setAttribute('title', arrTitle[i]);
+                                    spanDel.innerText = '刪除圖片';
+                                    divTk.innerHTML = "圖片檔名：" + arrTitle[i];
+                                    divItem.appendChild(divPic);
+                                    divPic.appendChild(img);
+                                    divItem.appendChild(divTk);
+                                    divItem.appendChild(spanDel);
+            @*                               //增加節點結構*@
+                                            var groupTu = document.getElementById('groupTu');
+                                    groupTu.insertBefore(divItem, groupTu.firstChild);
+            @*                               //刪除節點方法*@
+                                        spanDel.onclick=function() {
+                                            removeItem(this);
+                                            return false;
+                                        };
+                                };
+                        })(i)
+                        reader.onloadstart = function () {
+                        }
+                        reader.onprogress = function (e) {
+                            if (e.lengthComputable) {
+                                console.log("正在讀取文件")
+                            }
+                        };
+                        reader.readAsDataURL(obj.files[i]);
+                    }
+                })
+            @*                               //刪除圖片                *@
+                function removeItem(delNode) {
+                    var itemNode = delNode.parentNode,
+                        title = delNode.getAttribute('title');
+                    var flag = confirm("確認要刪除：" + title + "？");
+                    if (flag) {
+                        itemNode.parentNode.removeChild(itemNode);
+                        console.log('刪除成功~')
+                    }
+                    return false;
+                }
+
+
+
+
+
+
 
             Password1.addEventListener('input',
                 function (event) {
@@ -241,7 +361,7 @@ background: linear-gradient(to right, #F0FFF0/*rgba(161, 196, 253, 1)*/, rgba(19
                         }
                         if (Password1.value !== Password2.value) {
                             errorString += ' *兩次輸入的密碼不同\n'
-                            
+
                         }
                         if (!result) {
                             errorString += ' *密碼強度不足\n'
@@ -322,5 +442,4 @@ background: linear-gradient(to right, #F0FFF0/*rgba(161, 196, 253, 1)*/, rgba(19
     }
 </section>
 @*<section class="sample-page">*@
-    <div class="container" data-aos="fade-up">
-       
+<div class="container" data-aos="fade-up">

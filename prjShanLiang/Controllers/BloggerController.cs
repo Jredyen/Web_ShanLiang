@@ -26,6 +26,20 @@ namespace prjShanLiang.Controllers
                 b.RestaurantName.Contains(vm.txtKeyword));
             return View(datas);
         }
+        public IActionResult BloggerCard(CKeywordViewModel vm)
+        {
+            ShanLiang21Context db = new ShanLiang21Context();
+            IEnumerable<Blog> datas = null;
+            if (string.IsNullOrEmpty(vm.txtKeyword))
+                datas = from c in db.Blogs
+                        select c;
+            else
+                datas = db.Blogs.Where(b => b.BlogHeader.Contains(vm.txtKeyword) ||
+                b.CityName.Contains(vm.txtKeyword) ||
+                b.DistrictName.Contains(vm.txtKeyword) ||
+                b.RestaurantName.Contains(vm.txtKeyword));
+            return View(datas);
+        }
         public IActionResult BloggerCreate()
         {
             return View();

@@ -5,61 +5,32 @@
 }
 @section Styles{
     <style>
+        body {
+            font-size: 15px;
+            background-color: #E0E0E0;
+        }
+
+@*訂單資料的上面四個區塊*@
         .marg {
-            margin: 15px 50px 0px 50px;
-            width: 120px;
-            height: 90px;
+         margin: 20px 30px 0px 30px;
+            width: 200px;
+            height: 100px;
         }
 
         .btn {
-            width: 80px;
+            width: 100px;
         }
 
-        li {
-            font-size: 20px;
-        }
-
-        .divcard {
-            margin: 30px 50px 30px 100px;
+@*整個card區塊*@ 
+        .mealcard {
+        margin: 20px;
+            height: 600px;
             font-size: 16px;
             text-align: center;
         }
-
-        .card {
-            width: 500px;
-            height: 600px;
-            margin: 10px 0px 20px 20px;
-            padding: 15px;
-        }
-
-        label {
-            font-size: 20px;
-        }
     </style>
 }
-@section Scripts{
-    <script>
-        @*此方法可以取得總金額和備註並傳回後端 myBtn是按鈕*@
-                    const myBtn = document.getElementById('myBtn')
-        myBtn.addEventListener('click', () => {
-            let remark = saveRemark();
-            let pay = savepay();
-            let finalAmount = pay * discount;
-            window.location.replace('@Url.Content("~/Shopping/CreateOrder")?pay=' + finalAmount + '&remark=' + remark)
-        })
-        function saveRemark() {
-            const textarea = document.getElementById("txtremark");
-            const remark = textarea.value;
-            return remark
-        }
-        function savepay() {
-            const textarea = document.getElementById("txtpay");
-            const pay = textarea.value;
-            return pay
-        }
-        
-    </script>
-}
+
 
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
@@ -72,151 +43,206 @@
                 </div>
             </div>
         </div><!-- End Breadcrumbs -->
-        <form action="CreateOrder">
-            <div class="col-15 col-md-10 col-lg-4 divcard">
-                <div class="card shadow p-3 mb-5 bg-white rounded">
-                    <h2 class=text-center style="margin:20px; font-size:40px;">餐點內容</h2>
-
-                    <table class="table table-striped">
-                        <tr>
-                            <th>
-                                餐點
-                            </th>
-                            <th>
-                                數量
-                            </th>
-                            <th>
-                                售價
-                            </th>
-                            <th>
-                                小計
-                            </th>
-                        </tr>
-                        @{
-                            int pay = 0;
-                            decimal fin = 0;
-                            foreach (var item in Model)
-                            {
-                                pay += item.小計;
-                                <tr>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.mealmenu.MealName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.count)
-                                    </td>
-                                    <td>
-                                        NT$ @Html.DisplayFor(modelItem => item.price)
-                                    </td>
-                                    <td>
-                                        NT$ @Html.DisplayFor(modelItem => item.小計)
-                                    </td>
-                                </tr>
+        
+            <div class="col-12 col-md-12 col-lg-6 ">
+                <div class=" shadow p-3 mb-5 bg-light rounded-5 mealcard">
+                    <div>
+                        <h1 class="text-center " style="margin:10px; font-size:40px;">餐點內容</h1>
+                        <table class="table table-hover">
+                            <tr>
+                                <th>
+                                    餐點
+                                </th>
+                                <th>
+                                    數量
+                                </th>
+                                <th>
+                                    售價
+                                </th>
+                                <th>
+                                    小計
+                                </th>
+                            </tr>
+                            @{
+                                int pay = 0;
+                                decimal fin = 0;
+                                foreach (var item in Model)
+                                {
+                                    pay += item.小計;
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.mealmenu.MealName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.count)
+                                        </td>
+                                        <td>
+                                            NT$ @Html.DisplayFor(modelItem => item.price)
+                                        </td>
+                                        <td>
+                                            NT$ @Html.DisplayFor(modelItem => item.小計)
+                                        </td>
+                                    </tr>
+                                }
+                                fin = pay;
                             }
-                            fin = pay;
-                        }
-                    </table>
-                    <br />
-                    <div style="margin-bottom:10px; color:red;font-size:30px;">
-                        <input type="hidden" name="txtpay" id="txtpay" value="@fin" />
-                        總計: $@pay 元                 
+                        </table>
+                        <br />
+                        <div style=" color:red;font-size:30px;">
+                            <input type="hidden" name="txtpay" id="txtpay" value="@fin" />
+                            總計: $@pay 元
+                            <p id="finalAmount">應付:$ @fin 元</p>
+                        </div>
                     </div>
-
                 </div>
             </div>
 
-            <div class="col-15 col-md-10 col-lg-4 divcard ">
-                <div class="card shadow p-3 mb-5 bg-white rounded">
-                    <h2 class=text-center style="margin:20px; font-size:40px;">訂單資料</h2>
-                    <hr>
+            <div class="col-12 col-md-12 col-lg-6 ">
+                <div class=" shadow p-3 mb-5 rounded-5 bg-light mealcard">
+                    <h1 class="text-center" style="margin:10px; font-size:40px;">訂單資料</h1>
                     <div class="card-body">
                         <div style="display:flex;">
                             <div class="marg">
-                                <label>訂購人姓名</label>
+                                <p>訂購人姓名</p>
                                 <p>@ViewBag.MemberName</p>
                             </div>
                             <div class="marg">
-                                <label>訂購人電話</label>
+                                <p>訂購人電話</p>
                                 <p>@ViewBag.MemberPhone</p>
                             </div>
+
                         </div>
-                        <hr />
                         <div style="display:flex;">
                             <div class="marg">
-                                <label>訂單狀態</label>
-                                <br>
-                                <p style="color:red;">尚未付款</p>
+                                <p>訂單狀態</p>
+                                <p style="color:red;">訂單尚未成立</p>
                             </div>
                             <div class="marg">
-                                <label>付款方式</label>
+                                <p>付款方式</p>
+
+                                <input type="radio" name="paymentMethod" value="1" id="creditCard">
+                                <label for="creditCard">信用卡</label>
+                                
                                 <br>
-                                @Html.RadioButton("paymentMethod", "creditCard")
-                                @Html.Label("paymentMethod", "信用卡")
-                                <br>
-                                @Html.RadioButton("paymentMethod", "cash")
-                                @Html.Label("paymentMethod", "現金")
+                                <input type="radio" name="paymentMethod" value="2" id="cash">
+                                <label for="cash">現金</label>
+                                
                             </div>
                         </div>
-                        <hr />
-                        
-                        <div style="margin-bottom:10px; color:red;font-size:30px;">
-                            優惠後金額: $<span id="finalAmount">@fin</span> 元
-                        </div>
                         <div>
-                            
-                            <label>優惠碼 :</label>
-                            <input type="text" value="" name="coupon" id="txtcoupon" />
-                            <input type="button" value="確定" class="btn btn-primary" id="coupon" />
-                            <br />
-                            <input type="button" value="優惠碼Demo" id="coupondemo" />
-                            <input type="button" value="備註Demo" id="remarkdemo" />
-                            <br />
-                            <label>備註:</label>
-                            <input type="text" id="txtremark" name="txtremark" style="width:350px;">
-                            <br />
-                            <br />
-                            <input type="button" id="myBtn" value="前往付款" class="btn btn-primary" />
-                            @Html.ActionLink("取消", "Menu", "Shopping", null, new { @class = "btn btn-danger " } )
+
+
+                            <div>
+                                <br />
+                                <label>優惠碼 :</label>
+                                <input type="text" value="" name="coupon" id="txtcoupon" />
+                                <input type="button" value="輸入" class="btn btn-primary" id="coupon" />
+                                <br />
+                                <p id="finalAmount1" style=" color:red;font-size:20px;">無使用優惠</p>
+
+
+                                <label>備註:</label>
+                                <input type="text" id="txtremark" name="txtremark" style="width:350px;">
+                                <br />
+                                <input type="button" value="優惠碼Demo" id="coupondemo" />
+                                <input type="button" value="備註Demo" id="remarkdemo" />
+                                <br />
+                                <br />
+                                <input type="button" id="myBtn" value="前往付款" class="btn btn-primary"/>
+                                @Html.ActionLink("取消", "Menu", "Shopping", new{StoreId=1}, new { @class = "btn btn-danger " } )
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <script>
+@section Scripts{
+<script>
                 @*此方法可以取得輸入的優惠碼 判斷折價多少*@
                 @*先取得輸入的優惠碼*@
-                const coupon = document.getElementById('coupon')@*確認按鈕*@
-                const textarea = document.getElementById("txtcoupon"); @*輸入的優惠碼*@
-                var discount = 1.0; @*初始折扣值*@
-                var payValue = @pay; @*折扣前金額*@
-                var finValue = @fin; @*折扣後金額*@
+                                                const coupon = document.getElementById('coupon')@*確認按鈕*@
+                                                const textarea = document.getElementById("txtcoupon"); @*輸入的優惠碼*@
+                                                var discount = 1.0; @*初始折扣值*@
+                                                var payValue = @pay; @*折扣前金額*@
+                                                var finValue = @fin; @*折扣後金額*@
 
                 @*確認按鈕監聽點擊事件*@
                     coupon.addEventListener('click', () => {
-                    const txtcoupon = textarea.value;
-                    const coupon1 = 'ispan666'
+                        const txtcoupon = textarea.value;
+                        const coupon1 = 'ISpan666'
                         if (txtcoupon === coupon1) {
-                        discount = 0.9;
-                        finValue = payValue * discount
-                        document.getElementById("finalAmount").textContent = finValue;
-                        alert('成功使用優惠碼 享有9折優惠')
-                    }
-                    else {
-                        discount = 1.0;
-                        finValue = payValue;
-                        document.getElementById("finalAmount").textContent = finValue;
-                        alert('請輸入正確優惠碼')
-                    }
-                })
+                            discount = 0.9;
+                            finValue = payValue * discount
+                            document.getElementById("finalAmount").textContent = '應付:$ ' + finValue + ' 元 ';
+                            document.getElementById("finalAmount1").textContent = '已使用優惠碼享9折';
+                            alert('成功使用優惠碼 享有9折優惠')
+                        }
+                        else {
+                            discount = 1.0;
+                            finValue = payValue;
+                            document.getElementById("finalAmount").textContent = '應付:$ ' + finValue + ' 元';
+                            document.getElementById("finalAmount1").textContent = '無使用優惠';
+                            alert('請輸入正確優惠碼')
+                        }
+                    })
                 @*Demo優惠碼*@
-                        const coupondemo = document.getElementById('coupondemo')
+                const coupondemo = document.getElementById('coupondemo')
                 coupondemo.addEventListener('click', () => {
-                    textarea.value = 'ispan666'                    
+                    textarea.value = 'ISpan666'
                 })
                 const remarkdemo = document.getElementById('remarkdemo')
-                remarkdemo.addEventListener('click',()=>{
-                    txtremark.value = '寫程式壓力好大 來個大辣~'
+                remarkdemo.addEventListener('click', () => {
+                    txtremark.value = '不要餐具 小辣'
                 })
-            </script>
-        </form>
+</script>
+       <script>      
+        @*此方法可以取得總金額，備註，付款方式並傳回後端*@
+            const myBtn = document.getElementById('myBtn')  @*前往付款按鈕*@
+            const radioButtons = document.querySelectorAll('input[name="paymentMethod"]');@*付款方式的選取按鈕*@
+            let selectedPaymentMethod;  @*抓取選到的是(信用卡)1或(現金)2*@
+            
+            
+            
+        myBtn.addEventListener('click', () => {
+            
+            for (const radioButton of radioButtons) {
+                if (radioButton.checked) {
+                    selectedPaymentMethod = radioButton.value;
+                    break;
+                }
+            }
+         if( selectedPaymentMethod != null)
+         {     
+            if (confirm('確定要使用' + selectedPayment() + '付款嗎?')) 
+            {   
+             let remark = saveRemark(); @*備註*@
+             let pay = savepay();     @*總金額*@
+             let finalAmount = pay * discount; @*折價後應付款*@                       
+            window.location.replace('@Url.Content("~/Shopping/CreateOrder")?pay=' + finalAmount + '&remark=' + remark + '&paymethod=' + selectedPaymentMethod) 
+            }
+         }
+        else{ confirm('請選擇付款方式')  }
+        })
+
+        function selectedPayment(){
+            if(selectedPaymentMethod == 1)
+            {return '信用卡'}
+            else if(selectedPaymentMethod == 2)
+            {return '現金'}
+        }
+        function saveRemark() {
+            const textarea = document.getElementById("txtremark");
+            const remark = textarea.value;
+            return remark
+        }
+        function savepay() {
+            const textarea = document.getElementById("txtpay");
+            const pay = textarea.value;
+            return pay
+        }
+    </script> }
     </div>
 </main><!-- End #main -->
+
+    
+   
+

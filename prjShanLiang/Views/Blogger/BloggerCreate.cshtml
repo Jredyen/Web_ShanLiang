@@ -13,13 +13,27 @@
                 </div>
             </div>
         </div><!-- End Breadcrumbs -->
-
-        <h4>您的文章</h4>
+       
         <hr />
-<div class="row">
-
+        <div class="row" style="font-size:16px">
             <form asp-action="BloggerCreate" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div> 
+            <div class="form-group">
+                <label asp-for="BlogHeader" class="control-label">主題</label>
+                <input asp-for="BlogHeader" class="form-control" />
+                <span asp-validation-for="BlogHeader" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                    
+                <label asp-for="BlogContent" class="control-label">內容</label>
+                    <textarea asp-for="BlogContent" class="form-control" rows="20" ></textarea>
+                <span asp-validation-for="BlogContent" class="text-danger"></span>
+            </div>
+                <div class="form-group">
+                    <label asp-for="RestaurantName" class="control-label">餐廳名稱</label>
+                    <input asp-for="RestaurantName" class="form-control" />
+                    <span asp-validation-for="RestaurantName" class="text-danger"></span>
+                </div>
                 <div class="form-group">
                     <label asp-for="CityName" class="control-label">所在城市</label>
                     <input asp-for="CityName" class="form-control" />
@@ -30,37 +44,19 @@
                     <input asp-for="DistrictName" class="form-control" />
                     <span asp-validation-for="DistrictName" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="RestaurantName" class="control-label">餐廳名稱</label>
-                    <input asp-for="RestaurantName" class="form-control" />
-                    <span asp-validation-for="RestaurantName" class="text-danger"></span>
-                </div>
-            <div class="form-group">
-                <label asp-for="BlogHeader" class="control-label">主題</label>
-                <input asp-for="BlogHeader" class="form-control" />
-                <span asp-validation-for="BlogHeader" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
-                <label asp-for="BlogContent" class="control-label">內容</label>
-                    <textarea asp-for="BlogContent" class="form-control" rows="20" id="story">
-                    <script src="~/js/Blog.js"></script>
-                    </textarea>
-                <span asp-validation-for="BlogContent" class="text-danger"></span>
-            </div>
             <div>
                     <label class="control-label">上傳圖片</label>
                     <input type="file" name="photo" class="form-control" />
             </div>
             <br />
             <hr />
-            <div class="form-group">
-                <input type="submit" value="上傳" class="btn btn-primary" />
+                <div class="form-group" >
+                    <input type="submit" value="上傳" class="btn btn-primary" style="font-size:16px" />
             </div>
         </form>
 </div>
-<div>
-            <a asp-action="BloggerList">回到文章列表</a>
+        <div style="font-size:16px">
+            <a asp-action="BloggerList">回到文章管理</a>
 </div>
 
         @section Scripts {

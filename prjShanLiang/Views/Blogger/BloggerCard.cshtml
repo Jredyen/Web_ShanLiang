@@ -1,0 +1,62 @@
+﻿@model IEnumerable<prjShanLiang.Models.Blog>
+
+@{
+    ViewData["Title"] = "BloggerCard";
+}
+<main id="main">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 style="font-size:30px">文章專欄</h1>
+                    <p style="font-size:20px; ">
+                        <a asp-action="BloggerCreate">我要投稿</a>
+                    </p>
+                </div>
+            </div>
+        </div><!-- End Breadcrumbs -->
+        <div>
+            <a asp-action="BloggerList" style="font-size:18px">文章管理</a>
+        </div>
+        <p>
+            @using (Html.BeginForm())
+            {
+                @:關鍵字 @Html.TextBox("txtKeyword") <input type="submit" value="查詢" class=" btn btn-primary" style="font-size: 14px;">
+            }
+        </p>
+            @foreach (var item in Model)
+            {
+            <div class="card mb-3 bg-light text-dark" style="max-width: 1500px; ">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                            <img src="~/Images/Blog/@item.BlogPic" class="img-fluid rounded-start" />
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h1 class="card-title">@Html.ActionLink( item.BlogHeader, "BloggerDetail", new { id=item.BlogId })</h1>
+                            <br>
+                            <p class="card-text"
+                               style="font-size:18px; font-family:NSimSun;
+                                            display: -webkit-box; -webkit-box-orient: vertical;-webkit-line-clamp: 5; overflow: hidden;">
+                                            @*顯示部分文字(5行以內)*@
+                                            @item.BlogContent
+                             </p>
+                            <br>
+                            <br>
+                            <p class="card-text"><small class="text-body-secondary">
+                                    <img src="~/Images/Blog/city_icon.png" />
+                                    @item.CityName @item.DistrictName
+                                    <img src="~/Images/Blog/restaurant_icon.png" />
+                                    @item.RestaurantName
+                                </small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+    </div>
+        </main>
+
+   

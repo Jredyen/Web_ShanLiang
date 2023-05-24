@@ -1,0 +1,74 @@
+﻿
+@{
+    ViewData["Title"] = "AddAdvToCart";
+}
+
+
+<head>
+
+</head>
+<body>
+<main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>購買廣告頁面</h2>
+                <ol>
+                    <li><a a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li>Index</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- End Breadcrumbs -->
+
+    <section class="sample-page">
+        <div class="container" data-aos="fade-up">
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>輸入購買數量</h4>
+        <hr />
+
+        <input type="hidden" name="txtStoreID" value="@ViewBag.StoreID" />
+        <div class="form-group">
+            <div class="col-md-offset-0 col-md-10">
+                數量
+            </div>
+            <div class="col-md-10">
+                @Html.TextBox("txtCount", "1", new { htmlAttributes = new { @class = "form-control" } })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-0 col-md-10">
+                <input type="submit" value="購買" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+@Html.ActionLink("取消", "BuyAdv")
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<button type="button" id="BackTop" class="toTop-arrow"></button>
+<script>
+
+</script>
+</body>
