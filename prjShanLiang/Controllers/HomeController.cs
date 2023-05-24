@@ -21,7 +21,7 @@ namespace prjShanLiang.Controllers
             
 
             var Image = _db.Stores.ToList();
-            var AdImages = _db.StoreAdImages.ToList();
+            var AdImages = _db.StoreAdImages.Where(sa => sa.ADColumn == "true").ToList();
             var Evaluate = _db.StoreEvaluates.ToList();
             var member = _db.Members.ToList();
             var blog = _db.Blogs.ToList();

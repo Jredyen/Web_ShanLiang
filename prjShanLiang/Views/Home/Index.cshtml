@@ -7,7 +7,9 @@
    
 
          <style>
-      
+        a:hover {
+            cursor: pointer;
+        }
 
         .image-container {
             width:100%;
@@ -111,9 +113,6 @@
         .fs-s {
             font-size: .8rem;
         }
-
-       
-
         
 </style>
 
@@ -121,7 +120,7 @@
        </head>
 
 
-       <body>
+       <body style="background-color:gainsboro">
     <main id="main">
 
     <!-- ======= Breadcrumbs ======= -->
@@ -129,7 +128,7 @@
         <div class="container">
 
             <div class="d-flex justify-content-between align-items-center">
-                <h2>膳糧</h2>
+                <h2></h2>
                 <ol>
                    @* <li><a a asp-controller="Home" asp-action="Index">Home</a></li>
                     <li>Index</li>*@
@@ -139,19 +138,44 @@
     </div><!-- End Breadcrumbs -->
 
     <section class="sample-page">
-        <span class="left-img">
-                <img src="~/Images/store/PRIMEONE牛排館.jpg" alt="Placeholder Image" height="600px" width="210px" id="left-img-element" />
+            @{
+                int index = 0;
+            }
 
-            <span class="carousel-caption">
-              123456             
-            </span>
-        </span>
-        <span class="right-img" >
-                <img src="~/Images/store/PRIMEONE牛排館.jpg" alt="Placeholder Image" height="600px" width="210px" id="right-img-element" />
-            <span class="carousel-caption">
-            123456
-            </span>
-        </span>
+            @foreach (var advertisement in Model.Item1.Take(2))
+            {
+                var adImage = Model.Item2.ElementAtOrDefault(index);
+
+                if (index == 0) // 左图
+                {
+                    <span class="left-img">
+                        <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
+                        <img src="~/Images/store/@(adImage?.Adimage)" alt="Placeholder Image" height="600px" width="210px" id="left-img-element" />
+                        </a>
+                        <span class="carousel-caption">
+                            @(adImage?.Adimage?.Replace(".jpg", ""))
+                         
+                        </span>
+                    </span>
+                }
+                else if (index == 1) // 右图
+                {
+                    <span class="right-img">
+                        <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
+                        <img src="~/Images/store/@(adImage?.Adimage)" alt="Placeholder Image" height="600px" width="210px" id="right-img-element" />
+                        </a>
+                        <span class="carousel-caption">
+                            @(adImage?.Adimage?.Replace(".jpg", ""))
+                        </span>
+                    </span>
+                }
+
+                index++;
+            }
+
+
+
+
          <div class="container" data-aos="fade-up">
 
             <!--==============================================-->
@@ -169,15 +193,15 @@
 <!-- 輪播內容 -->
 <div class="carousel-inner" role="listbox">
     @foreach (var advertisement in Model.Item1.Take(4))
-    {
+                        {
+                            string imgName = advertisement.RestaurantName + ".jpg";
         <div class="item @(advertisement == Model.Item1.First() ? "active" : "")">
             <div class="image-container">
                 <a href="@Url.Action("Restaurant", "store", new { id = advertisement.StoreId })">
-                    @foreach (var adImage in Model.Item2.Where(ai => ai.StoreId == advertisement.StoreId))
-                    {
-                        string imgName = advertisement.RestaurantName + ".jpg";
+                    
+                       
                         <img src="~/images/test/@imgName" class="carousel-image" />
-                    }
+                    
                 </a>
             </div>
             <div class="carousel-caption">
@@ -188,7 +212,6 @@
     }
 </div>
 
-
                 <!-- 左右箭頭 -->
                 <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
                     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -198,11 +221,7 @@
                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>            
-
 </div>
-
-
-
                 <div class="indexTitle">
                     <div class="iconStyle">
                         <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <!-- 使用 Font Awesome 图标类 -->
@@ -211,7 +230,6 @@
                     <div class="fs-s fc-secondary">HOT</div>
                 </div>
 
-
                 <div class="row">
                     @foreach (var advertisement in Model.Item1.Skip(4).Take(4))
                     {
@@ -219,10 +237,8 @@
                         <div class="col-sm-3">
                             <div class="card rounded" style="width: 32rem;">
                                 <a href="@Url.Action("Restaurant", "store", new { id = advertisement.StoreId })">
-                                    <div class="image-wrapper">
-                                    
-                                        <img src="~/images/test/@imgName" class="img-fluid carousel-image" alt="...">
-                                    
+                                    <div class="image-wrapper">                 
+                                        <img src="~/images/test/@imgName" class="img-fluid carousel-image" alt="...">                    
                                     </div>
                                     <div class="card-body-123" >
                                         
@@ -239,14 +255,8 @@
                                             </div>
                                            <div>
                                                 @Evaluate.Comments
-                                           </div>
-                                           
-                                           
-                                            
-                                            
-                                            
-                                        }
-                                        
+                                           </div>                       
+                                        }                
                                     </div>
                                 </a>
                             </div>
@@ -308,44 +318,44 @@
                     keyboard: true // 啟用左右鍵控制
                 });
                 
-                var leftImgElement = document.getElementById("left-img-element");
-                leftImgElement.addEventListener("click", changeleftImage);
+                //var leftImgElement = document.getElementById("left-img-element");
+                //leftImgElement.addEventListener("click", changeleftImage);
 
-                function changeleftImage() {
-                    var input = document.createElement("input");
-                    input.type = "file";
-                    input.accept = "image/*";
+                //function changeleftImage() {
+                //    var input = document.createElement("input");
+                //    input.type = "file";
+                //    input.accept = "image/*";
 
-                    input.addEventListener("change", function () {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            leftImgElement.src = e.target.result;
-                        };
+                //    input.addEventListener("change", function () {
+                //        var reader = new FileReader();
+                //        reader.onload = function (e) {
+                //            leftImgElement.src = e.target.result;
+                //        };
 
-                        reader.readAsDataURL(input.files[0]);
-                    });
+                //        reader.readAsDataURL(input.files[0]);
+                //    });
 
-                    input.click();
-                }
-                var rightImgElement = document.getElementById("right-img-element");
-                rightImgElement.addEventListener("click", changerightImage);
+                //    input.click();
+                //}
+                //var rightImgElement = document.getElementById("right-img-element");
+                //rightImgElement.addEventListener("click", changerightImage);
 
-                function changerightImage() {
-                    var input = document.createElement("input");
-                    input.type = "file";
-                    input.accept = "image/*";
+                //function changerightImage() {
+                //    var input = document.createElement("input");
+                //    input.type = "file";
+                //    input.accept = "image/*";
 
-                    input.addEventListener("change", function () {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            rightImgElement.src = e.target.result;
-                        };
+                //    input.addEventListener("change", function () {
+                //        var reader = new FileReader();
+                //        reader.onload = function (e) {
+                //            rightImgElement.src = e.target.result;
+                //        };
 
-                        reader.readAsDataURL(input.files[0]);
-                    });
+                //        reader.readAsDataURL(input.files[0]);
+                //    });
 
-                    input.click();
-                }
+                //    input.click();
+                //}
             </script>
                 
 
