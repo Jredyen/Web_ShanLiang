@@ -47,7 +47,7 @@
             <div class="col-12 col-md-12 col-lg-6 ">
                 <div class=" shadow p-3 mb-5 bg-light rounded-5 mealcard">
                     <div>
-                        <h1 class="text-center rounded-pill" style="margin:10px; font-size:40px; background-color:antiquewhite">餐點內容</h1>
+                        <h1 class="text-center " style="margin:10px; font-size:40px;">餐點內容</h1>
                         <table class="table table-hover">
                             <tr>
                                 <th>
@@ -93,16 +93,13 @@
                             總計: $@pay 元
                             <p id="finalAmount">應付:$ @fin 元</p>
                         </div>
-
-
                     </div>
-
                 </div>
             </div>
 
             <div class="col-12 col-md-12 col-lg-6 ">
                 <div class=" shadow p-3 mb-5 rounded-5 bg-light mealcard">
-                    <h1 class="text-center rounded-pill" style="margin:10px; font-size:40px;background-color:antiquewhite">訂單資料</h1>
+                    <h1 class="text-center" style="margin:10px; font-size:40px;">訂單資料</h1>
                     <div class="card-body">
                         <div style="display:flex;">
                             <div class="marg">
@@ -202,8 +199,7 @@
             const myBtn = document.getElementById('myBtn')  @*前往付款按鈕*@
             const radioButtons = document.querySelectorAll('input[name="paymentMethod"]');@*付款方式的選取按鈕*@
             let selectedPaymentMethod;  @*抓取選到的是(信用卡)1或(現金)2*@
-            let remark = saveRemark(); @*備註*@
-            let pay = savepay();     @*總金額*@
+            
             
             
         myBtn.addEventListener('click', () => {
@@ -217,8 +213,10 @@
          if( selectedPaymentMethod != null)
          {     
             if (confirm('確定要使用' + selectedPayment() + '付款嗎?')) 
-            {                 
-            let finalAmount = pay * discount; @*折價後應付款*@                       
+            {   
+             let remark = saveRemark(); @*備註*@
+             let pay = savepay();     @*總金額*@
+             let finalAmount = pay * discount; @*折價後應付款*@                       
             window.location.replace('@Url.Content("~/Shopping/CreateOrder")?pay=' + finalAmount + '&remark=' + remark + '&paymethod=' + selectedPaymentMethod) 
             }
          }
