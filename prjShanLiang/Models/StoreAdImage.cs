@@ -12,7 +12,10 @@ public partial class StoreAdImage
     public string? Adimage { get; set; }
 
     public string? Eximage { get; set; }
+
     public decimal? ADPrice { get; set; }
+
     public string? ADColumn { get; set; }
+
     public virtual Store? Store { get; set; }
 }
