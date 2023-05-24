@@ -5,25 +5,35 @@
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-<h1>Index</h1>
+<div class="row">
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar"></i>
+                店家收藏次數
+            </div>
+            <div class="card-body"><canvas id="resPocketBarChart"></canvas></div>
+        </div>
+    </div>
 <div class="col-xl-6">
     <div class="card mb-4">
         <div class="card-header">
-            <i class="fas fa-chart-bar me-1"></i>
-            註冊餐廳總類
+            <i class="fas fa-chart-pie"></i>
+            註冊店家總類
         </div>
-        <div class="card-body"><canvas id="resSignupBarChart"></canvas></div>
+        <div class="card-body"><canvas id="resSignupPieChart"></canvas></div>
     </div>
+</div>
 </div>
 
 @section Scripts {
     <script>
-        const resBar = document.getElementById("resSignupBarChart").getContext("2d");
+        //註冊店家總類圖表
+        const resPie = document.getElementById("resSignupPieChart").getContext("2d");
         //const chart = document.getElementById("chartAdmin");
   
         //chart.addEventListener('click', async()=>{
-                async function  showChart(){
+                async function  showPieChart(){
            
             const response = await fetch('@Url.Content("~/ChartAdmin/GetStoreTypeCount")');
             const datas = await response.json();
@@ -31,7 +41,7 @@
             const labels = datas.map(item => item.storeType);
             const counts = datas.map(item => item.count);
 
-        const stoTypeCount = new Chart(resBar, {
+            const stoTypeCount = new Chart(resPie, {
             // 參數設定
             type: "pie", // 圖表類型
             data: {
@@ -74,7 +84,90 @@
                 }
         })
         }
-        showChart();
- //});
+
+        //店家收藏次數圖表
+        const resPocketBar = document.getElementById("resPocketBarChart").getContext("2d");
+       
+        async function showPocketBarChart() {
+
+            const response = await fetch('@Url.Content("~/ChartAdmin/GetStorePocketCount")');
+            const datas = await response.json();
+            console.log(datas);
+            const labels = datas.map(item => item.memberAction);
+            const counts = datas.map(item => item.count);
+
+            const stoTypeCount = new Chart(resPocketBar, {
+                // 參數設定
+                type: "horizontalBar", // 圖表類型
+                data: {
+                    labels: labels, // 標題
+                    datasets: [{
+                        label:"",
+                        data: counts, // 資料
+                        backgroundColor: [ // 背景色
+                            "#FF9797",
+                            "#A6FFA6",
+                            "#97CBFF",
+                            "#DCB5FF",
+                            "#CAFFFF",
+                            "#FFFFB9",
+                            "#FFCBB3",
+                            "#D9B3B3",
+                            "#CDCD9A",
+                            "#A3D1D1",
+                            "#D2A2CC",
+                            "#E0E0E0",
+                        ],
+                        label: "",
+                        borderWidth: 1 // 外框寬度
+                    }]
+                },
+                options: {
+                    scales: {
+                        // x 軸設置
+                        xAxes: [{
+                            // x 軸標題
+                            scaleLabel: {
+                                display: true,
+                                labelString: "收藏次數",
+                                fontSize: 16
+                            },
+                            // x 軸格線
+                            gridLines: {
+                                display: true
+                            },
+                            // x 軸間距
+                            ticks: {
+                                min: 0,
+                                max: 15,
+                                stepSize: 5
+                            }
+                        }],
+                        // y 軸設置
+                        yAxes: [{
+                            // y 軸標題
+                            scaleLabel: {
+                                display: true,
+                                labelString: "店家名稱",
+                                fontSize: 16
+                            },
+                            // y 軸格線
+                            gridLines: {
+                                display: false
+                            },
+                            // y 軸間距
+                            ticks: {
+                                min: 0,
+                                max: 120,
+                                stepSize: 30
+                            }
+                        }]
+                    }
+                }
+            });
+         }
+
+        showPocketBarChart();
+        showPieChart();
     </script>
 }

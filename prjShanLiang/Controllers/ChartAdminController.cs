@@ -31,6 +31,19 @@ namespace prjShanLiang.Controllers
             return Json(resTypeCount);
         }
 
+        public IActionResult GetStorePocketCount() 
+        {
+            var memberIds = _context.Members.Select(m => m.MemberId).ToList();
+            var storeIds = _context.Stores.Select(s => s.StoreId).ToList();
 
+            var resPocketCount = _context.MemberActions
+                .Where(a => memberIds.Contains((int)a.MemberId))
+                .Where(a => storeIds.Contains((int)a.StoreId))
+                .GroupBy(a => a.Store.RestaurantName)
+                .Select(g => new { MemberAction = g.Key, Count = g.Count()})
+                .ToList();
+
+            return Json(resPocketCount);
+        }
     }
 }
