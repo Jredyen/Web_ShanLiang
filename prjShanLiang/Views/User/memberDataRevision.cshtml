@@ -1,4 +1,6 @@
-﻿
+﻿memberDataRevision…
+…
+
 
 @model prjShanLiang.Models.Member
 
@@ -44,18 +46,18 @@
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <div class="form-group form-outline flex-fill mb-0 ">
 
-                                        <label asp-for="MemberName" class="control-label" placeholder="">會員名稱</label>
+                                            <label asp-for="MemberName" class="control-label" placeholder="">會員名稱</label>
                                             <input asp-for="MemberName" class="form-control inputFont" />
-                                        <span asp-validation-for="MemberName" class="text-danger"></span>
+                                            <span asp-validation-for="MemberName" class="text-danger"></span>
 
                                         </div>
                                     </div>
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <div class="form-group form-outline flex-fill mb-0 ">
-                                        <label asp-for="Memberphone" class="control-label" placeholder="">電話</label>
+                                            <label asp-for="Memberphone" class="control-label" placeholder="">電話</label>
                                             <input asp-for="Memberphone" class="form-control inputFont" />
-                                        <span asp-validation-for="Memberphone" class="text-danger"></span>
-                                    </div>
+                                            <span asp-validation-for="Memberphone" class="text-danger"></span>
+                                        </div>
                                     </div>
                                     <div class="form-group">
                                         <label asp-for="Address" class="control-label" placeholder="">地址</label>
@@ -83,7 +85,7 @@
                                         <label>
                                             <input type="checkbox" name="showPassword" id="chkShowPassword" />顯示密碼
                                         </label>
-                                        <input asp-for="Password" class="form-control" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" type="password" id="memberPassword" value="" maxlength="16" />
+                                        <input asp-for="Password" class="form-control inputFont" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" type="password" id="memberPassword" value="" maxlength="16" />
                                         <span asp-validation-for="Password" class="text-danger"></span>
                                     </div>
 
@@ -96,7 +98,7 @@
                                     <div class="form-group">
                                         <input id="btnDataRevision" type="submit" value="送出" class="btn btn-primary" />
                                     </div>
-                                    
+
 
                                 </form>
                                 <div id="errorMessage1" style="color:red"></div>
@@ -204,4 +206,5 @@
         }
     </div>
 </section>
+
 
