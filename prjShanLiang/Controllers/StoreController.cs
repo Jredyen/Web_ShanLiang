@@ -21,18 +21,7 @@ namespace prjShanLiang.Controllers
 
         public IActionResult List()
         {
-            IQueryable<Store> datas = from s in _db.Stores orderby s.StoreId select s;
-            return View(datas);
-        }
-        public IActionResult Reconnend()
-        {
-            IQueryable<Store> datas = from s in _db.Stores orderby s.Rating descending select s;
-            return View(datas);
-        }
-        public IActionResult Latest()
-        {
-            IQueryable<Store> datas = from s in _db.Stores orderby s.StoreId descending select s;
-            return View(datas);
+            return View();
         }
         public IActionResult Restaurant(int? id)
         {
@@ -167,7 +156,6 @@ namespace prjShanLiang.Controllers
             ViewBag.mid = mem.MemberId;
             return View();
         }
-
         [HttpPost]
         public async Task<IActionResult> Reserve([FromBody] StoreReserved sr)
         {
@@ -235,12 +223,20 @@ namespace prjShanLiang.Controllers
 
         public IActionResult GetName(string keyword)
         {
-            IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword)).Select(s => s.RestaurantName);
+            IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword) && s.AccountStatus == 1).Select(s => s.RestaurantName);
             return Json(storeList);
         }
         public IActionResult GetType()
         {
-            IQueryable datas = _db.RestaurantTypes.Select(r => new { r.TypeName, r.RestaurantTypeNum });
+            IQueryable datas = _db.RestaurantTypes.Select(rt => new 
+            { 
+                rt.TypeName, 
+                rt.RestaurantTypeNum, 
+                Qty = _db.StoreTypes
+                .Join(_db.Stores, st => st.StoreId, s => s.StoreId, (st, s) => new { st, s })
+                .Where(x => x.st.RestaurantTypeNum == rt.RestaurantTypeNum && x.s.AccountStatus == 1)
+                .Count()
+            });
             return Json(datas);
         }
         /// <summary>
@@ -262,25 +258,27 @@ namespace prjShanLiang.Controllers
                 //評價搜尋 : 完成
 
                 IQueryable<Store> list = null;
-                //如果關鍵字不是null的話就用關鍵字搜尋
+                //如果關鍵字不是null的話就用關鍵字搜尋，且要是審核通過的店家
                 if (keyword != null)
                 {
-                    list = _db.Stores.Where(s => s.RestaurantName.Contains(keyword));
+                    list = _db.Stores.Where(s => s.RestaurantName.Contains(keyword) && s.AccountStatus == 1);
                 }
                 else
                 {
-                    list = _db.Stores.Select(s => s);
+                    list = _db.Stores.Where(s => s.AccountStatus == 1).Select(s => s);
                 }
 
                 //有選取類型的話，把傳回來的類型字串變回陣列並防例外狀況，再篩選類型
                 int[]? type = null;
                 try
                 {
-                    if (types != "undefined")
+                    if (types != "undefined" && types != null)
                         type = JsonSerializer.Deserialize<int[]>(types.Replace("\"", ""));
                 }
                 catch
-                { }
+                {
+                    return RedirectToAction("Error", "Home");
+                }
                 if (type != null && type.Length > 0)
                 {
                     list = list.Join(_db.StoreTypes, s => s.StoreId, st => st.StoreId, (s, st) => new { s, st })
@@ -293,11 +291,13 @@ namespace prjShanLiang.Controllers
                 int[]? district = null;
                 try
                 {
-                    if (districts != "undefined")
+                    if (districts != "undefined" && districts != null)
                         district = JsonSerializer.Deserialize<int[]>(districts.Replace("\"", ""));
                 }
                 catch
-                { }
+                {
+                    return RedirectToAction("Error", "Home");
+                }
                 if (district != null && district.Length > 0)
                 {
                     list = list.Where(s => district.Contains(s.DistrictId));
@@ -319,6 +319,8 @@ namespace prjShanLiang.Controllers
                     s.ClosingTime,
                     s.RestaurantPhone,
                     s.RestaurantAddress,
+                    s.Latitude,
+                    s.Longitude,
                     imagePath = _db.StoreDecorationImages
                         .Where(x => x.StoreId == s.StoreId)
                         .Select(x => x.ImagePath).ToList(),
@@ -329,12 +331,9 @@ namespace prjShanLiang.Controllers
                 rt => rt.RestaurantTypeNum,
                 (st, rt) => rt.TypeName).ToList(),
                     datasum,
-                    //TODO:地址
-                    //address = _db.Districts 
-                    //.Join( _db.Cities,
-                    //d => d.CityId,
-                    //c => c.CityId,
-                    //(c, d) => s.DistrictId == c.DistrictId)
+                    like = _db.MemberActions
+                    .Where(ma => ma.StoreId == s.StoreId && ma.ActionId == 2)
+                    .Count()
                 }).Skip(step * 10).Take(take);
 
                 //if (step > 0)
@@ -354,9 +353,9 @@ namespace prjShanLiang.Controllers
 
                 return Json(storeList);
             }
-            catch (Exception ex)
+            catch
             {
-                return Json("資料傳輸時發生錯誤 : " + ex);
+                return RedirectToAction("Error", "Home");
             }
         }
 
@@ -381,6 +380,5 @@ namespace prjShanLiang.Controllers
                 .ToList();
             return Json(regions);
         }
-
     }
 }
