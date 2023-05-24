@@ -158,7 +158,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="NumOfPeople" class="control-label">人數</label>
-                    <input asp-for="NumOfPeople" class="form-control" placeholder="請選擇人數" max="9" min="1" />
+                    <input asp-for="NumOfPeople" class="form-control" placeholder="請選擇人數" value="1" max="9" min="1" />
                     <span asp-validation-for="NumOfPeople" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -167,7 +167,7 @@
                     <span asp-validation-for="CouponId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input id="submit" type="submit" value="送出" class="btn btn-primary" />
+                    <input id="submit" type="button" value="送出" class="btn btn-primary" />
                     <a asp-action="Restaurant" asp-route-id="@ViewBag.Id">取消</a>
                 </div>
             </form>
@@ -187,7 +187,7 @@
         const radio = document.querySelectorAll('.min-click');
         const time = document.getElementById('Time');
         const nofp = document.getElementById('NumOfPeople');
-        const submitPost = document.querySelector('#submit');
+        const post = document.querySelector('#submit');
 
         //日期
         const dateControl = document.querySelector('input[type="date"]');
@@ -200,40 +200,78 @@
         dateControl.min = today;
 
         for (var i = 0; i < radio.length; i++) {
-            //讓所有時段點擊時取得Time
             radio[i].addEventListener('click', function () {
                 time.value = this.getAttribute("data-hour") + this.getAttribute("data-min");
-            });
-            //判斷該時段人數
-            //ifNumOver(i);
-        }
+            });//讓所有時段點擊時取得Time    
+        }                
 
-        submitPost.addEventListener('click', function(){
-            getAlert();
-        }, false);
-
-        async function getAlert() {
+        post.addEventListener('click', function () {
+            getResult();
+        }, false);//送出時getResult判斷是否有座位
+        async function getResult() {
             const response = await fetch('@Url.Content("~/Store/Reserve/")', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     "Content-Type": "application/json; charset=utf-8"
                 },
-                body: JSON.stringify({                   
-                        StoreId: @ViewBag.Id,
-                        Date: dateControl.value,
-                        Time: time.value,
-                        MemberId: @ViewBag.mid,
-                        NumOfPeople: nofp.value                    
+                body: JSON.stringify({
+                    StoreId: @ViewBag.Id,
+                    Date: dateControl.value,
+                    Time: time.value,
+                    MemberId: @ViewBag.mid,
+                    NumOfPeople: nofp.value
                 })
-            });
+            });//fetch結束
             const datas = await response.json();
-            const order = JSON.parse(datas);
-            return (alert(`不好意思：</br>您所選擇的人數(${order.NumOfPeople}人)已超過該時段的上限，請重新選擇或更換時段，謝謝。`))            
-            //.then(response => response.json())
-             //   .then(json => JSON.parse(json))
-              //  .then(order => alert(`不好意思：</br>您所選擇的人數(${order.NumOfPeople}人)已超過該時段的上限，請重新選擇或更換時段，謝謝。`))//fetch.then結束
-        }; //getAlert結束
+            if (datas.success === "false" && datas.errorType === 1) {
+                alert(`不好意思：該時段已客滿，請重新選擇或更換時段，謝謝。`);
+            }
+            else if (datas.success === "false" && datas.errorType === 2) {
+                alert(`不好意思：您所選擇的人數已超過該時段的上限(剩餘座位:${datas.numRemain})，請重新選擇人數或更換時段，謝謝。`);
+            }
+            else if (datas.success === "true") {
+                alert("訂位成功！");
+                window.location.replace('@Url.Content("~/Store/Restaurant/")' + @ViewBag.Id);
+            }
+            else {
+                alert("失敗");
+            }
+        }; //getResult結束
 
+        for (var i = 0; i < radio.length; i++) {
+            time.value = radio[i].getAttribute("data-hour") + radio[i].getAttribute("data-min");            
+            getState(i);
+        }
+        async function getState(i) {
+            const response = await fetch('@Url.Content("~/Store/IfSeatsOver/")', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                body: JSON.stringify({
+                    StoreId: @ViewBag.Id,
+                    Date: dateControl.value,
+                    Time: time.value,
+                    MemberId: @ViewBag.mid,
+                    NumOfPeople: nofp.value
+                })
+            });//fetch結束
+            const datas = await response.json();
+            if (datas.success === "false" && datas.errorType === 1) {
+                radio[i].disabled = true;
+            }
+            else{
+                radio[i].removeAttribute("disabled");
+            }
+        };//判斷各時段訂位人數
+
+        dateControl.addEventListener('input', function(){
+            for (var i = 0; i < radio.length; i++) {
+                time.value = radio[i].getAttribute("data-hour") + radio[i].getAttribute("data-min");
+                getState(i);
+            }
+        });//日期變更時，重新判斷判斷各時段訂位人數
     </script>
 }

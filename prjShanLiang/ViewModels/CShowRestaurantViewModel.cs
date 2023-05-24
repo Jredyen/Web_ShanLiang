@@ -7,12 +7,12 @@ namespace prjShanLiang.ViewModels
     {
         private IEnumerable<Store> _store { get; set; }
         private IEnumerable<Member> _member { get; set; }
-        public CShowRestaurantViewModel()
-        {
-            ShanLiang21Context db = new ShanLiang21Context(); 
-            //_store = db.Stores.ToList();
-            _member = db.Members.ToList();
-        }
+        //public CShowRestaurantViewModel()
+        //{
+        //    ShanLiang21Context db = new ShanLiang21Context(); 
+        //    _store = db.Stores.ToList();
+        //    _member = db.Members.ToList();
+        //}
 
         public IEnumerable<Store> store
         {
