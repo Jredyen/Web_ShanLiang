@@ -51,11 +51,11 @@ namespace TestPrjShanLiang
             Assert.IsNotNull(result);
         }
 
-        [Test]
-        public void TestShowFavorate()
-        {
+        //[Test]
+        //public void TestShowFavorate()
+        //{
 
-        }
+        //}
         //[Test]
         //public void TestShowFavorate()
         //{
@@ -140,12 +140,6 @@ namespace TestPrjShanLiang
             IActionResult result5 = _sc.SearchStore(keywoed, types, districts, rating, order);
             Assert.IsNotNull(result5);
         }
-        //[Test]
-        //public void TestSearchStoreNoKeyword()
-        //{
-        //    IActionResult result = _sc.SearchStore(null, null, null, null);
-        //    Assert.IsNotNull(result);
-        //}
 
         [Test]
         public void TestGetRACAD()
@@ -460,17 +454,69 @@ namespace TestPrjShanLiang
             Assert.IsNotNull(result2);
         }
         [Test]
-        public void Test2() { }
+        public void TestBloggerCard()
+        {
+            CKeywordViewModel vm = new()
+            {
+                txtKeyword = ""
+            };
+            IActionResult result1 = _bc.BloggerCard(vm);
+            Assert.IsNotNull(result1);
+
+            vm.txtKeyword = "日式";
+            IActionResult result2 = _bc.BloggerList(vm);
+            Assert.IsNotNull(result2);
+        }
         [Test]
-        public void Test3() { }
+        public void TestBloggerCED()
+        {
+            //新增
+            ShanLiang21Context db = new();
+            IActionResult result1 = _bc.BloggerCreate();
+            Assert.IsNotNull(result1);
+            int BlogID;
+            Blog blog = new(){
+                BlogHeader = "TestHeader",
+                BlogContent = "這是一個單元測試，你不應該看到這篇文章。",
+                CityName = "測試市",
+                DistrictName = "單元區",
+                RestaurantName = "TestCoffee"
+            };
+            IActionResult result2 = _bc.BloggerCreate(blog);
+            Assert.IsNotNull(result2);
+            //修改
+
+            BlogID = db.Blogs.Where(b => b.BlogHeader == "TestHeader").Select(b => b.BlogId).First();
+            IActionResult result3 = _bc.BloggerEdit(BlogID);
+            Assert.IsNotNull(result3);
+            IActionResult result4 = _bc.BloggerEdit(999999999);
+            Assert.IsNotNull(result4);
+
+            CBlogwrap edit = new()
+            {
+                blog = blog,
+                BlogId = BlogID,
+                BlogHeader = "TestHeaderEdit",
+                BlogContent = "這是一個單元測試後的編輯，你還是不該看到這篇文章。",
+                //photo = @"eeee/eee",
+            };
+            IActionResult result5 = _bc.BloggerEdit(edit);
+            Assert.IsNotNull(result5);
+
+            //刪除
+            IActionResult result6 = _bc.BloggerDelete(BlogID);
+            Assert.IsNotNull(result6);
+            IActionResult result7 = _bc.BloggerDelete(999999999);
+            Assert.IsNotNull(result7);
+        }
         [Test]
-        public void Test4() { }
-        [Test]
-        public void Test5() { }
-        [Test]
-        public void Test6() { }
-        [Test]
-        public void Test7() { }
+        public void TestBloggerDetail()
+        {
+            IActionResult result1 = _bc.BloggerDetail(999999999);
+            Assert.IsNotNull(result1);
+            IActionResult result2 = _bc.BloggerDetail(1);
+            Assert.IsNotNull(result2);
+        }
     }
     [TestFixture]
     public class TestsAdvertisementController
