@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient.DataClassification;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -81,6 +83,27 @@ namespace prjShanLiang.Controllers
                 return Json(ex);
             }
         }
+      
+        //public IActionResult LoginAuto(string AccountName, string AccountPassword)
+        //{
+        //    ShanLiang21Context db = new ShanLiang21Context();
+
+        //    //todo 根據AccontName與AccountPassword判斷是否登入成功
+        //    Member mem = db.Members.FirstOrDefault(a => a.Email == AccountName && a.Password == AccountPassword);
+        //    if (mem != null)
+        //    {
+        //        string json = JsonSerializer.Serialize(mem);
+        //        HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "1");
+        //        //登入成功就轉到修改密碼Action
+        //        return RedirectToAction("Mypage");
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login");
+        //    }
+           
+        //}
+        
         public IActionResult logOut()
         {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) != null)
@@ -326,12 +349,30 @@ namespace prjShanLiang.Controllers
             ShanLiang21Context sl = new ShanLiang21Context();
             //CAccountPasswordViewModel vm = new CAccountPasswordViewModel();
             Store sto = sl.Stores.Include(s => s.StoreDecorationImages).FirstOrDefault(s => s.AccountName == AccountName);
+           
+            //TODO 解session
+           
+
             if (sto == null)
                 return RedirectToAction("storeManagement");
             return View(sto);
 
 
         }
+        public IActionResult Delete(string? sip)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            StoreDecorationImage sdi = sl.StoreDecorationImages.FirstOrDefault(s => s.ImagePath == sip);
+            if (sdi != null) {
+                sl.StoreDecorationImages.Remove(sdi);
+                sl.SaveChanges();
+            }
+
+            return RedirectToAction("storeDataRevision2");
+
+
+        }
+
         public IActionResult memberDataRevision2(CMemberWrap m)
         {
             ShanLiang21Context sl = new ShanLiang21Context();
@@ -357,7 +398,7 @@ namespace prjShanLiang.Controllers
             return RedirectToAction("memberManagement");
         }
 
-        public IActionResult storeDataRevision2(Store s)
+        public IActionResult storeDataRevision2(Store s,  List<IFormFile> files)
         {
             ShanLiang21Context sl = new ShanLiang21Context();
             Store sto = sl.Stores.FirstOrDefault(p => p.StoreId == s.StoreId);
@@ -365,7 +406,7 @@ namespace prjShanLiang.Controllers
             {
                 if (s.Password != null)
                 {
-                    sto.RestaurantName = s.Password;
+                    sto.RestaurantName = s.RestaurantName;
                     sto.RestaurantAddress = s.RestaurantAddress;
                     sto.RestaurantPhone = s.RestaurantPhone;
                     sto.Seats = s.Seats;
@@ -379,7 +420,7 @@ namespace prjShanLiang.Controllers
 
                 if (s.Password == null)
                 {
-                    sto.RestaurantName = s.Password;
+                    sto.RestaurantName = s.RestaurantName;
                     sto.RestaurantAddress = s.RestaurantAddress;
                     sto.RestaurantPhone = s.RestaurantPhone;
                     sto.Seats = s.Seats;
@@ -390,9 +431,48 @@ namespace prjShanLiang.Controllers
                     sto.StoreMail = s.StoreMail;
                     sto.Password = sto.Password;
                 }
+                 sl.SaveChanges();
             }
-            sl.SaveChanges();
-            return RedirectToAction("storeManagement");
+
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    string substring = Guid.NewGuid().ToString();
+                    string photoName = substring.Substring(0, 10) + ".jpg";
+                    string filePath = _enviro.WebRootPath + "/images/" + "/store/" + photoName;
+                    //p.photo.CopyTo(new FileStream(path, FileMode.Create));
+                    //prod.FImagePath = photoName;
+                    //string filePath = "儲存的路徑" + "檔名";
+                    using (var stream = System.IO.File.Create(filePath))
+                    {
+                        //程式寫入的本地資料夾裡面
+                        file.CopyToAsync(stream);
+                    }
+                    int sdiStoreID = sl.Stores.FirstOrDefault(ss => ss.AccountName == s.AccountName).StoreId;
+
+                    StoreDecorationImage sdi = new StoreDecorationImage { StoreId = sdiStoreID, ImagePath = photoName };
+
+                    sl.Add(sdi);
+                    sl.SaveChanges();
+
+
+                }
+            }
+
+
+
+            string logginedUser = "";
+                logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+                Store datas = JsonSerializer.Deserialize<Store>(logginedUser);
+                var data = sl.Stores.Include(s => s.StoreDecorationImages).FirstOrDefault(s => s.AccountName == datas.AccountName);
+
+            
+                return View(data);
+
+
+           //catch
+                return RedirectToAction("storeDataRevision");
         }
         public IActionResult GetCities()
         {
@@ -444,34 +524,37 @@ namespace prjShanLiang.Controllers
 
         public IActionResult sendEmail(string AccountName)
         {
+            string substring = 'N'+Guid.NewGuid().ToString();
+            string pwd = substring.Substring(0, 15);
+            
+            
+
             ShanLiang21Context sl = new ShanLiang21Context();
-            string pwd = "Acfdefeoeko123";
-            sl.SaveChanges();
-
-
             Member forgettingMember =  sl.Members.FirstOrDefault(m => m.Email == AccountName);
             if (forgettingMember != null) {
                 forgettingMember.Password = pwd;
             }    
-                
+            sl.SaveChanges();  
                 
 
 
             // 使用 Google Mail Server 發信
             string GoogleID = "kingsley110011@gmail.com"; //Google 發信帳號
-            string TempPwd = ""; //應用程式密碼
-            string ReceiveMail = "cleverpooh101@tahoo.com"; //接收信箱
+            string TempPwd = "Wvknxcojalblelvg"; //應用程式密碼
+            string ReceiveMail = "cleverpooh101@yahoo.com.tw"; //接收信箱
 
             string SmtpServer = "smtp.gmail.com";
             int SmtpPort = 587;
             MailMessage mms = new MailMessage();
             mms.From = new MailAddress(GoogleID);
-            mms.Subject = "信件主題";
-            
+            mms.Subject = "膳良平台重設密碼通知信";/*信件主題*/
 
-            string link = string.Format("https://localhost:7131/User/Login/?AccountName.value={0}&AccountPassword.value={1}", AccountName,pwd);
 
-            mms.Body = link;
+            //string link = string.Format("https://localhost:7131/User/Login/?AccountName={0}&AccountPassword={1}", AccountName,pwd);
+            string mailContent = AccountName + " 您好：<br><label>&emsp;&emsp;請於收到信件後，盡快登入平台，重新設定密碼。</label><br>" + "<label>&emsp;&emsp;帳號名稱：" + AccountName +"</label>"+ "<br>&emsp;&emsp;新密碼：" + "<Label style='color:red'>"+ pwd+ "<br><label>&emsp;&emsp;https://localhost:7131/User/Login</label>";
+
+
+            mms.Body = mailContent;
             mms.IsBodyHtml = true;
             mms.SubjectEncoding = Encoding.UTF8;
             mms.To.Add(new MailAddress(ReceiveMail));
@@ -482,7 +565,7 @@ namespace prjShanLiang.Controllers
                 client.Send(mms); //寄出信件
             }
 
-            return View();
+            return RedirectToAction("Login");
         }
 
         //[HttpPost]

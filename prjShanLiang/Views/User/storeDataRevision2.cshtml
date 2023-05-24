@@ -77,7 +77,7 @@
                                             <div class="form-group">
                                                 <label asp-for="AccountName" class="control-label">帳號</label>
                                                 <label asp-for="AccountName" name="AccountName" class="form-control form-control-lg inputFont">@Model.AccountName </label>
-                                                <span asp-validation-for="AccountName" class="text-danger"></span>
+                                               @* <span asp-validation-for="AccountName" class="text-danger"></span>*@
                                             </div>
 
                                             <div class="form-group">
@@ -145,19 +145,8 @@
 
                                                 }
                                             }
-                                            <div class="upload-pic">
-                                                <label class="up-lab" for="add-pic-btn">上傳圖片</label>
-                                                <input class="up-file" name="files" type="file" accept="image/*" multiple id="add-pic-btn" style="margin:5px">
-                                            </div>
-                                            <div class="group-coms-pic" id="groupTu">
-                                                <div class="item">
-                                                    <div class="pic-box">
-                                                        @*<img src="" style="width:30px; height:30px " />*@
-                                                    </div>
-                                                    @*<div class="tk">111.jpg</div>*@
-                                                    <span class="del"></span>
-                                                </div>
-                                            </div>
+
+
 
                                             <span asp-validation-for="StoreImage" class="text-danger"></span>
                                         </div>
@@ -191,7 +180,7 @@
                                                 <input type="checkbox" name="showPassword" id="chkShowPassword" />顯示密碼
                                             </label>
                                             <input asp-for="Password" class="form-control inputFont" placeholder="請輸入8-16個字元，包含英文大寫、小寫及數字" type="password" id="storePassword" value="" maxlength="16" />
-                                            <span asp-validation-for="Password" class="text-danger"></span>
+                                          @*  <span asp-validation-for="Password" class="text-danger"></span>*@
                                         </div>
                                         <div class="form-group">
                                             <label for="storePasswordChecking" class="control-label ">密碼確認</label>
@@ -232,92 +221,6 @@
             btnDataRevision.disabled = false
             let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
             let result = false
-
-
-            @*//上傳多個文件方法*@
-            @* //input file已增加multiple屬性，按住ctrl可選擇多圖*@
-                document.getElementById("add-pic-btn").addEventListener("change", function () {
-                    var obj = this,
-                        length = obj.files.length,
-                        arrTitle = []; /*存標題名*/
-                    _html = '';
-
-                    for (var i = 0; i < length; i++) {
-                        var reader = new FileReader();
-                        if (!reader) {
-                            console.log('對不起，您的瀏覽器不支持！請更換瀏覽器試一下');
-                            return
-                        }
-            @* //存儲上傳的多張圖片名字*@
-                            arrTitle.push(obj.files[i].name)
-                        reader.error = function (e) {
-                            console.log("讀取異常")
-                        }
-            @*//iffi語法*@
-                                                                               ; (function (i) {
-            @* //讀取成功*@
-                                reader.onload=function(e) {
-            @* //console.log(e)*@
-                                                                               var _src = e.target.result;
-            @*//節點*@
-                                                                               var divItem = document.createElement('div');
-                                    divItem.setAttribute('class', 'item');
-                                    var divPic = document.createElement('div');
-                                    divPic.setAttribute('class', 'pic-box');
-                                    var img = document.createElement('img');
-                                    img.setAttribute('class', 'img');
-                                    img.setAttribute('src', _src);
-                                    img.setAttribute('width', '100px')
-                                    img.setAttribute('height', '100px')
-                                    var divTk = document.createElement('div');
-                                    divTk.setAttribute('class', 'tk')
-                                    var spanDel = document.createElement('span');
-                                    spanDel.setAttribute('class', 'del');
-                                    spanDel.setAttribute('style', 'color:red');
-                                    spanDel.setAttribute('title', arrTitle[i]);
-                                    spanDel.innerText = '刪除圖片';
-                                    divTk.innerHTML = "圖片檔名：" + arrTitle[i];
-                                    divItem.appendChild(divPic);
-                                    divPic.appendChild(img);
-                                    divItem.appendChild(divTk);
-                                    divItem.appendChild(spanDel);
-            @*                               //增加節點結構*@
-                                            var groupTu = document.getElementById('groupTu');
-                                    groupTu.insertBefore(divItem, groupTu.firstChild);
-            @*                               //刪除節點方法*@
-                                        spanDel.onclick=function() {
-                                            removeItem(this);
-                                            return false;
-                                        };
-                                };
-                        })(i)
-                        reader.onloadstart = function () {
-                        }
-                        reader.onprogress = function (e) {
-                            if (e.lengthComputable) {
-                                console.log("正在讀取文件")
-                            }
-                        };
-                        reader.readAsDataURL(obj.files[i]);
-                    }
-                })
-            @*                               //刪除圖片                *@
-                function removeItem(delNode) {
-                    var itemNode = delNode.parentNode,
-                        title = delNode.getAttribute('title');
-                    var flag = confirm("確認要刪除：" + title + "？");
-                    if (flag) {
-                        itemNode.parentNode.removeChild(itemNode);
-                        console.log('刪除成功~')
-                    }
-                    return false;
-                }
-
-
-
-
-
-
 
             Password1.addEventListener('input',
                 function (event) {
