@@ -4,9 +4,14 @@
     ViewBag.Title = "完成訂單";
 }
 <style>
+    body {
+        font-size: 15px;
+        background-color: #E0E0E0;
+    }
+
     .marg {
-        margin: 20px 50px 0px 50px;
-        width: 120px;
+        margin: 20px 30px 0px 30px;
+        width: 200px;
         height: 100px;
     }
 
@@ -14,23 +19,11 @@
         width: 100px;
     }
 
-    li {
-        font-size: 20px;
-    }
-    .divcard {
-        margin: 30px 50px 30px 100px;
+    .mealcard {
+        margin: 20px;
+        height: 600px;
         font-size: 16px;
         text-align: center;
-    }
-
-    .card {
-        width: 500px;
-        height: 600px;
-        margin: 10px 0px 20px 20px;
-        padding: 15px;
-    }
-    label{
-    font-size:20px;
     }
 </style>
 <main id="main">
@@ -40,97 +33,96 @@
             <div class="container">
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2>@ViewData["Title"]</h2>  
-                    
+                    <h2>@ViewData["Title"]</h2>
+
                 </div>
             </div>
         </div><!-- End Breadcrumbs -->
 
-        <div class="col-15 col-md-10 col-lg-4 divcard">
-            <div class="card shadow p-3 mb-5 bg-white rounded">
-                <h2 class=text-center style="margin:20px; font-size:40px;">餐點內容</h2>
-
-                <table class="table table-striped">
-                    <tr>
-                        <th>
-                            餐點
-                        </th>
-                        <th>
-                            數量
-                        </th>
-                        <th>
-                            售價
-                        </th>
-                        <th>
-                            小計
-                        </th>
-                    </tr>
-                    @{
-                        int pay = 0;
-                        
-
-                        foreach (var item in Model)
-                        {
-                            pay += item.小計;
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.mealmenu.MealName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.count)
-                                </td>
-                                <td>
-                                    NT$ @Html.DisplayFor(modelItem => item.price)
-                                </td>
-                                <td>
-                                    NT$ @Html.DisplayFor(modelItem => item.小計)
-                                </td>
-                            </tr>
-                        }                        
-                    }
-                </table>
-                <br />
-                <div style="margin:20px;color:red;font-size:30px;">
-                    總計: $@pay 元
+        <div class="col-12 col-md-12 col-lg-6 ">
+            <div class=" shadow p-3 mb-5 bg-light rounded-5 mealcard">
+                <div>
+                    <h1 class="text-center " style="margin:10px; font-size:40px;">餐點內容</h1>
+                    <table class="table table-hover">
+                        <tr>
+                            <th>
+                                餐點
+                            </th>
+                            <th>
+                                數量
+                            </th>
+                            <th>
+                                售價
+                            </th>
+                            <th>
+                                小計
+                            </th>
+                        </tr>
+                        @{
+                            int pay = 0;
+                            decimal fin = 0;
+                            foreach (var item in Model)
+                            {
+                                pay += item.小計;
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.mealmenu.MealName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.count)
+                                    </td>
+                                    <td>
+                                        NT$ @Html.DisplayFor(modelItem => item.price)
+                                    </td>
+                                    <td>
+                                        NT$ @Html.DisplayFor(modelItem => item.小計)
+                                    </td>
+                                </tr>
+                            }
+                            fin = pay;
+                        }
+                    </table>
+                    <br />
+                    <div style=" color:red;font-size:30px;">
+                        <input type="hidden" name="txtpay" id="txtpay" value="@fin" />
+                        總計: $@pay 元
+                        <p id="finalAmount">應付:$ @fin 元</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-15 col-md-10 col-lg-4 divcard">
-            <div class="card shadow p-3 mb-5 bg-white rounded">
-                <h2 class=text-center style="margin:20px; font-size:40px;">訂單資料</h2>
+        <div class="col-12 col-md-12 col-lg-6 ">
+            <div class=" shadow p-3 mb-5 rounded-5 bg-light mealcard">
+                <h1 class="text-center" style="margin:10px; font-size:40px;">訂單資料</h1>
                 <div class="card-body">
-                    <hr>
                     <div style="display:flex;">
                         <div class="marg">
-                            <label>訂購人姓名</label>
+                            <p>訂購人姓名</p>
                             <p>@ViewBag.MemberName</p>
                         </div>
                         <div class="marg">
-                            <label>訂購人電話</label>
+                            <p>訂購人電話</p>
                             <p>@ViewBag.MemberPhone</p>
                         </div>
+
                     </div>
-                    <hr />
-                    
-                    <div style="display:flex; ">
+                    <div style="display:flex;">
                         <div class="marg">
-                            <label>訂單狀態</label>
-                            <p>付款完成</p>
+                            <p>訂單狀態</p>
+                            <p style="color:red;">付款完成</p>
                         </div>
-                        <div class="marg" style="margin-left:50px;">
-                            <label>付款方式</label>
-                            <p>現金付款</p>
+                        <div class="marg">
+                            <p>付款方式</p>
+                            <p>@ViewBag.paymethod</p>
                         </div>
-                    </div>   
-                    <hr />                    
-                    <div style="margin-bottom:10px; color:red;font-size:30px;">
-                        優惠後金額: $@ViewBag.fin 元
                     </div>
-                    <p>備註:@ViewBag.Remark</p>                    
-                </div>  
+                    <br />
+                    <br />
+                    <p>備註:@ViewBag.Remark</p>
+                </div>
                 @Html.ActionLink("檢視我的訂單", "MyMealOrder", "Shopping", new{ id = ViewBag.MemberId}, new { @class = "btn btn-primary",style="margin:20px;"} )
-            </div>           
-        </div>       
+            </div>
+        </div>
     </div>
 </main><!-- End #main -->
