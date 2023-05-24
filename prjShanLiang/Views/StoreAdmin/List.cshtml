@@ -1,14 +1,13 @@
 ﻿@model IEnumerable<prjShanLiang.Models.Store>
 
 @{
-    ViewData["Title"] = "List";
+    ViewData["Title"] = "膳糧";
 }
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>店家資料一覽表</h1>
 <div class="card mb-4">
     <div class="card-header">
         <i class="fa-solid fa-store"></i>
@@ -69,7 +68,8 @@
                             </td>
                             <td>@Html.DisplayFor(modelItem => item.AccountStatusNavigation.StatusName)</td>
                             <td>
-                                @Html.ActionLink("修改", "Edit", new { id = item.StoreId }, new {Class="btn btn-outline-primary"})
+                                @Html.ActionLink("修改", "Edit", new { id = item.StoreId }, new {Class="btn btn-outline-primary"}) |
+                                @Html.ActionLink("驗證", "Verify", new {  id=item.StoreId },new {onclick="return confirm('確定發送驗證信嗎?')", Class="btn btn-outline-danger"})
                             </td>
                         </tr>
                     }
