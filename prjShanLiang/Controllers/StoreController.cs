@@ -26,7 +26,7 @@ namespace prjShanLiang.Controllers
         public IActionResult Restaurant(int? id)
         {
             if (id == null)
-                return RedirectToAction("Reconnend");
+                return RedirectToAction("List");
             CShowRestaurantViewModel datas = new();
             var sts = from s in _db.Stores.
                       Include(s => s.StoreEvaluates)
