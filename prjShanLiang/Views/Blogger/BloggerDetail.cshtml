@@ -14,16 +14,16 @@
             </div>
         </div><!-- End Breadcrumbs -->
         <div>
-            <a asp-action="BloggerList" style="font-size:18px" >回到文章列表</a>
+            <a asp-action="BloggerCard" style="font-size:18px" >回到文章總覽</a>
         </div>
-      <div>
+        <div >
             <form asp-action="BloggerDetail" style="font-family:NSimSun;">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="BlogId" readonly="value" />
                 <div class="form-group ">
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
                     <textarea asp-for="BlogContent"
-                              class="form-control"
+                              class="form-control  p-3 mb-2 bg-light text-dark"
                               readonly="value" 
                     id="story"
                     style="background-color:white; border:hidden;font-size: 20px;">
@@ -48,7 +48,7 @@
         <hr />
       <br />
         <div>
-            <a asp-action="BloggerList" style="font-size:18px">回到文章列表</a>
+            <a asp-action="BloggerCard" style="font-size:18px">回到文章總覽</a>
         </div>
     </div>
         </main>

@@ -15,10 +15,13 @@
                 </div>
             </div>
         </div><!-- End Breadcrumbs -->
+        <div>
+            <a asp-action="BloggerCard" style="font-size:18px">文章總覽</a>
+        </div>
         <p >
             @using (Html.BeginForm())
             {
-                @:關鍵字 @Html.TextBox("txtKeyword") <input type="submit" value="查詢">
+                @:關鍵字 @Html.TextBox("txtKeyword") <input type="submit" value="查詢" class=" btn btn-primary">
             }
         </p>
         <table class="table table-striped table-hover">
