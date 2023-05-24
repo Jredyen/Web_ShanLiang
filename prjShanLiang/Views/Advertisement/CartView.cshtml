@@ -67,14 +67,14 @@
                     @Html.DisplayFor(modelItem => item.price)
                 </td>
                 <td>
-                    @Html.ActionLink("確認訂單", "CheckoutCart", "Advertisement", null, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("確認訂單", "ConfirmADOrder", "Advertisement", null, new { @class = "btn btn-primary" })
                     @Html.ActionLink("取消", "BuyAdv","Advertisement", new {  id=item.StoreID ,Class = "btn btn-danger"})
                     @Html.ActionLink("刪除", "Delete","Advertisement", new {  id=item.storeAdImage.StoreId  }, new { onclick = "return confirm('確定要刪除嗎?')", Class = "btn btn-danger" })
                                
                 </td>
-                            </tr>
-                            pay = item.price;
-                        }
+             </tr>
+                    pay = item.price;
+        }
       
         tax = pay * 0.05M;
         sum = pay + tax;

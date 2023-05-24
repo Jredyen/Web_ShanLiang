@@ -2,6 +2,8 @@
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
 using System.Text.Json;
+using System.Linq;
+
 
 namespace prjShanLiang.Controllers
 {
@@ -31,7 +33,6 @@ namespace prjShanLiang.Controllers
 
         public IActionResult AddAdvToCart(int? id)
         {
-           
             if (id == null)
                 return RedirectToAction("BuyAdv");
             ViewBag.StordID = id;
@@ -50,8 +51,6 @@ namespace prjShanLiang.Controllers
 
 
                 StoreAdImage adv = _db.StoreAdImages.FirstOrDefault(t => t.StoreId == vm.txtStoreID);
-
-
 
             if (adv != null)
             {
@@ -125,6 +124,40 @@ namespace prjShanLiang.Controllers
                 return RedirectToAction("BuyAdv");
             return View(cart);
         }
+        public IActionResult ConfirmADOrder()
+        {
+            string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER); //Session裡會員資料轉字串
+
+            Store datas = JsonSerializer.Deserialize<Store>(jsonUser);  //字串轉會員資料物件
+
+            //var adImages = _db.StoreAdImages.Where(x => x.StoreId == datas.StoreId).ToList();
+            var adImage = _db.StoreAdImages.FirstOrDefault(x => x.StoreId == datas.StoreId);
+            if (adImage != null)
+            {
+                // 将ADColumn列的值从false更改为true
+                adImage.ADColumn = "true";
+
+                //int previousTrueIndex = -1;
+                //for (int i = 0; i < adImages.Count; i++)
+                //{
+                //    if (adImages[i].ADColumn == "true")
+                //    {
+                //        previousTrueIndex = i;
+                //        break;
+                //    }
+                //}
+                //// 找到上一个为true的位置
+                //adImages[previousTrueIndex].ADColumn = "false";
+
+                // 保存更改到数据库
+                _db.SaveChanges();
+            }
+
+            return RedirectToAction("index", "Home");
+
+        }
+
+
 
 
     }

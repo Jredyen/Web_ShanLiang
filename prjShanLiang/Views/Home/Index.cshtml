@@ -140,31 +140,38 @@
                 int index = 0;
             }
 
-            @foreach (var ADIm in Model.Item2)
+            @foreach (var advertisement in Model.Item1.Take(2))
             {
-                if (index == 5) // 注意索引从0开始计数，所以第5个元素的索引是4
-                {
-                    foreach (var advertisement in Model.Item1.Take(1))
-                    {
-                        <span class="left-img">
-                            <img src="~/Images/store/@ADIm.ADColumn" alt="Placeholder Image" height="600px" width="210px" id="left-img-element" />
-                            <span class="carousel-caption">
-                                @advertisement.RestaurantName
-                            </span>
-                        </span>
-                        <span class="right-img">
-                            <img src="~/Images/store/@ADIm.ADColumn" alt="Placeholder Image" height="600px" width="210px" id="right-img-element" />
-                            <span class="carousel-caption">
-                                @advertisement.RestaurantName
-                            </span>
-                        </span>
+                var adImage = Model.Item2.ElementAtOrDefault(index);
 
-                        
-                    }
+                if (index == 0) // 左图
+                {
+                    <span class="left-img">
+                        <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
+                        <img src="~/Images/store/@(adImage?.Adimage)" alt="Placeholder Image" height="600px" width="210px" id="left-img-element" />
+                        </a>
+                        <span class="carousel-caption">
+                            @(adImage?.Adimage?.Replace(".jpg", ""))
+                         
+                        </span>
+                    </span>
+                }
+                else if (index == 1) // 右图
+                {
+                    <span class="right-img">
+                        <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
+                        <img src="~/Images/store/@(adImage?.Adimage)" alt="Placeholder Image" height="600px" width="210px" id="right-img-element" />
+                        </a>
+                        <span class="carousel-caption">
+                            @(adImage?.Adimage?.Replace(".jpg", ""))
+                        </span>
+                    </span>
                 }
 
                 index++;
             }
+
+
 
 
          <div class="container" data-aos="fade-up">
@@ -184,15 +191,15 @@
 <!-- 輪播內容 -->
 <div class="carousel-inner" role="listbox">
     @foreach (var advertisement in Model.Item1.Take(4))
-    {
+                        {
+                            string imgName = advertisement.RestaurantName + ".jpg";
         <div class="item @(advertisement == Model.Item1.First() ? "active" : "")">
             <div class="image-container">
                 <a href="@Url.Action("Restaurant", "store", new { id = advertisement.StoreId })">
-                    @foreach (var adImage in Model.Item2.Where(ai => ai.StoreId == advertisement.StoreId))
-                    {
-                        string imgName = advertisement.RestaurantName + ".jpg";
+                    
+                       
                         <img src="~/images/test/@imgName" class="carousel-image" />
-                    }
+                    
                 </a>
             </div>
             <div class="carousel-caption">
@@ -309,44 +316,44 @@
                     keyboard: true // 啟用左右鍵控制
                 });
                 
-                var leftImgElement = document.getElementById("left-img-element");
-                leftImgElement.addEventListener("click", changeleftImage);
+                //var leftImgElement = document.getElementById("left-img-element");
+                //leftImgElement.addEventListener("click", changeleftImage);
 
-                function changeleftImage() {
-                    var input = document.createElement("input");
-                    input.type = "file";
-                    input.accept = "image/*";
+                //function changeleftImage() {
+                //    var input = document.createElement("input");
+                //    input.type = "file";
+                //    input.accept = "image/*";
 
-                    input.addEventListener("change", function () {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            leftImgElement.src = e.target.result;
-                        };
+                //    input.addEventListener("change", function () {
+                //        var reader = new FileReader();
+                //        reader.onload = function (e) {
+                //            leftImgElement.src = e.target.result;
+                //        };
 
-                        reader.readAsDataURL(input.files[0]);
-                    });
+                //        reader.readAsDataURL(input.files[0]);
+                //    });
 
-                    input.click();
-                }
-                var rightImgElement = document.getElementById("right-img-element");
-                rightImgElement.addEventListener("click", changerightImage);
+                //    input.click();
+                //}
+                //var rightImgElement = document.getElementById("right-img-element");
+                //rightImgElement.addEventListener("click", changerightImage);
 
-                function changerightImage() {
-                    var input = document.createElement("input");
-                    input.type = "file";
-                    input.accept = "image/*";
+                //function changerightImage() {
+                //    var input = document.createElement("input");
+                //    input.type = "file";
+                //    input.accept = "image/*";
 
-                    input.addEventListener("change", function () {
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            rightImgElement.src = e.target.result;
-                        };
+                //    input.addEventListener("change", function () {
+                //        var reader = new FileReader();
+                //        reader.onload = function (e) {
+                //            rightImgElement.src = e.target.result;
+                //        };
 
-                        reader.readAsDataURL(input.files[0]);
-                    });
+                //        reader.readAsDataURL(input.files[0]);
+                //    });
 
-                    input.click();
-                }
+                //    input.click();
+                //}
             </script>
                 
 
