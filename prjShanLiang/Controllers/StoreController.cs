@@ -20,18 +20,7 @@ namespace prjShanLiang.Controllers
 
         public IActionResult List()
         {
-            IQueryable<Store> datas = from s in _db.Stores orderby s.StoreId select s;
-            return View(datas);
-        }
-        public IActionResult Reconnend()
-        {
-            IQueryable<Store> datas = from s in _db.Stores orderby s.Rating descending select s;
-            return View(datas);
-        }
-        public IActionResult Latest()
-        {
-            IQueryable<Store> datas = from s in _db.Stores orderby s.StoreId descending select s;
-            return View(datas);
+            return View();
         }
         public IActionResult Restaurant(int? id)
         {
@@ -328,9 +317,9 @@ namespace prjShanLiang.Controllers
 
                 return Json(storeList);
             }
-            catch (Exception ex)
+            catch
             {
-                return Json("系統錯誤 : " + ex.Message);
+                return RedirectToAction("Error", "Home");
             }
         }
 
@@ -354,16 +343,6 @@ namespace prjShanLiang.Controllers
                 })
                 .ToList();
             return Json(regions);
-        }
-
-        public IActionResult getpoint()
-        {
-            IQueryable datas = _db.Stores.Select(s => new
-            {
-                s.Latitude,
-                s.Longitude
-            });
-            return Json(datas);
         }
     }
 }
