@@ -359,8 +359,20 @@ namespace TestPrjShanLiang
     [TestFixture]
     public class TestsStoreAdminController
     {
+        StoreAdminController _sc;
+        public TestsStoreAdminController()
+        {
+            var mockEnvironment = new Mock<IWebHostEnvironment>();
+            var mockEmailSender = new Mock<IEmailSender>();
+            StoreAdminController sc = new(mockEnvironment.Object,mockEmailSender.Object);
+            _sc = sc;
+        }
         [Test]
-        public void Test() { }
+        public void TestList()
+        {
+            IActionResult result = _sc.List();
+            Assert.IsNotNull(result);
+        }
         [Test]
         public void Test2() { }
         [Test]
