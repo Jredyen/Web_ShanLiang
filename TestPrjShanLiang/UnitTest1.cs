@@ -33,7 +33,7 @@ namespace TestPrjShanLiang
         [Test]
         public void TestGetType()
         {
-            IActionResult result = _sc.ShowType();
+            IActionResult result = _sc.GetType();
             Assert.IsNotNull(result);
         }
         [Test]

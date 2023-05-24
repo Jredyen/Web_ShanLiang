@@ -7,9 +7,9 @@
 {
     ViewData["Title"] = item.RestaurantName;
     <!-- ======= Hero Section ======= -->
-    <section id="hero" class="hero d-flex align-items-center section-bg">
-        <div class="container">
-            <div class="row justify-content-between gy-5">
+    <section id="hero" class="hero d-flex align-items-center section-bg" data-aos="fade-up">
+        <div id="hero-container" class="container">
+            <div id="hero-loading" class="row justify-content-between gy-5">
                 <div class="col-lg-5 order-2 order-lg-1 d-flex flex-column justify-content-center align-items-center align-items-lg-start text-center text-lg-start">
                     <h2 data-aos="fade-up">@item.RestaurantName</h2>
                     <div id="storeType" data-aos="fade-up">
@@ -147,7 +147,7 @@
                             <div class="btn-group d-flex" role="group" aria-label="Button group with nested dropdown">
                                 <!--Dropdowns-->
                                 <button id="btnGroupDrop1" type="button" class="btn btn-secondary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <a href="#btnGroupDrop1"><i class="bi bi-share ic-t"></i>分享</a>
+                                    <a class="btn-white" href="#btnGroupDrop1"><i class="bi bi-share ic-t"></i>分享</a>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
                                     <a class="dropdown-item fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1&amp;src=sdkpreparse">
@@ -160,10 +160,10 @@
                                 </div><!--End Dropdowns-->
                                 <button type="button" class="btn btn-secondary">
                                     <!--<a id="comment" asp-controller="Store" asp-action="AddComment" asp-route-id="@item.StoreId"><i class="bi bi-chat-left ic-t"></i>評論</a>-->
-                                    <a id="comment" href="../AddComment/@item.StoreId"><i class="bi bi-chat-left ic-t"></i>評論</a>
+                                    <a class="btn-white" id="comment" href="../AddComment/@item.StoreId"><i class="bi bi-chat-left ic-t"></i>評論</a>
                                 </button>
                                 <button type="button" class="btn btn-secondary">
-                                    <a href="##" id="favorate"><i class="bi bi-suit-heart ic-t"></i>收藏</a>
+                                    <a class="btn-white" href="###" id="favorate"><i class="bi bi-suit-heart ic-t"></i>收藏</a>
                                 </button>
                             </div>
 
@@ -173,10 +173,10 @@
 
                             <div class="why-box d-flex shopBook">
                                 <div class="more-btn">
-                                    <a class="" asp-area="" asp-controller="Store" asp-action="Reserve" asp-route-id="@item.StoreId"><i class="bi bi-calendar-event ic-t"></i>線上訂位</a>
+                                    <a class="btn-white" asp-area="" asp-controller="Store" asp-action="Reserve" asp-route-id="@item.StoreId"><i class="bi bi-calendar-event ic-t"></i>線上訂位</a>
                                 </div>
                                 <div class="more-btn">
-                                    <a class="" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-id="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
+                                    <a class="btn-white" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-id="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
                                 </div>
                             </div>
 

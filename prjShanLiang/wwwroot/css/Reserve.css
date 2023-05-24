@@ -1,0 +1,41 @@
+﻿body {
+}
+
+.col-md-5-alter {
+    width: 41%;
+    margin: 0 auto;
+}
+
+.form-control{
+    width: 60%;
+}
+
+.min-active {
+    color: white;
+    background-color: #0000FA;
+    box-shadow: none;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+label:has(input:checked) {
+    color: black;
+    background-color: azure;
+    font-weight: bold;
+    box-shadow: 0 0 0 0.25rem rgba(0,255,255,1);
+}
+
+label:has(input:focus) {
+    background-color: azure;
+    font-weight: bold;
+    box-shadow: 0 0 0 0.25rem rgba(0,255,255,1);
+}
+
+label:has(input:hover) {
+    box-shadow: 0 0 0 0.25rem rgba(0,255,255,1);
+}
+
+label:has(input:disabled) {
+    background-color: lightgray;
+    box-shadow: 0 0 0 0.25rem rgba(255,255,255,1);
+}

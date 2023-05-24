@@ -7,6 +7,7 @@ using prjShanLiang.ViewModels;
 using System;
 using System.Linq;
 using System.Text.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace prjShanLiang.Controllers
 {
@@ -37,7 +38,7 @@ namespace prjShanLiang.Controllers
         {
             if (id == null)
                 return RedirectToAction("Reconnend");
-            CShowRestaurantViewModel datas = new CShowRestaurantViewModel();
+            CShowRestaurantViewModel datas = new();
             var sts = from s in _db.Stores.
                       Include(s => s.StoreEvaluates)
                       where s.StoreId == id
@@ -166,36 +167,72 @@ namespace prjShanLiang.Controllers
             ViewBag.mid = mem.MemberId;
             return View();
         }
+
         [HttpPost]
-        public IActionResult Reserve(StoreReserved sr)
+        public async Task<IActionResult> Reserve([FromBody] StoreReserved sr)
         {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
             {
                 return RedirectToAction("Login", "User");
             }
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
-            Member mem = JsonSerializer.Deserialize<Member>(json);
-            var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).FirstOrDefault();
-            var sr1 = _db.StoreReserveds.Where(s => s.StoreId == sr.StoreId).Select(s => s);
-            var gsr1 = sr1.GroupBy(sr => sr.Time, sr => sr.NumOfPeople, (time, num) => new
+            Member mem = JsonSerializer.Deserialize<Member>(json);// 取得[登入會員]
+
+            var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).Select(st => st).FirstOrDefault();// 取得[該店家]
+            var sr1 = _db.StoreReserveds.Where(s => s.StoreId == sr.StoreId && s.Date == sr.Date).Select(s => s);// 取得[該店家][當天]訂單 
+            var gsr1 = sr1.GroupBy(x => x.Time, y => y.NumOfPeople, (time, num) => new // 以[時間]分組，每組輸出{時間，訂位人數總和}
             {
                 Time = time,
                 Sum = num.Sum()
             });
-            if (gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum >= s.Seats)
+            var sumResult = gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum;
+            if (sumResult >= s.Seats)
             {
-                // 跳出視窗：該時段已滿
-                sr.NumOfPeople = 0;
-                return Json(sr);
-            }
+                return Json(new { success = "false", errorType = 1 });
+            }// 如果[訂位人數總和] >= [容客量]，跳出視窗：該時段已客滿
+            else if ((sumResult + sr.NumOfPeople) >= s.Seats) 
+            {
+                return Json(new { success = "false", errorType = 2 , numRemain= (s.Seats- sumResult) });
+            }// 如果[訂位人數總和+欲訂位人數] >= [容客量]，跳出視窗：選擇人數已超過容客量
             else
             {
                 _db.StoreReserveds.Add(sr);
-                _db.SaveChanges();
-                return RedirectToAction("Restaurant", "Store", new { id = sr.StoreId });
-            }
-
+                _db.SaveChanges();                
+                return Json(new { success = "true" });
+            }// 如果該時段有空位，存入資料庫並傳回success=true
         }
+        [HttpPost]
+        public async Task<IActionResult> IfSeatsOver([FromBody] StoreReserved sr)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);// 取得[登入會員]
+
+            var s = _db.Stores.Where(s => s.StoreId == sr.StoreId).Select(st => st).FirstOrDefault();// 取得[該店家]
+            var sr1 = _db.StoreReserveds.Where(s => s.StoreId == sr.StoreId && s.Date == sr.Date).Select(s => s);// 取得[該店家][當天]訂單 
+            var gsr1 = sr1.GroupBy(x => x.Time, y => y.NumOfPeople, (time, num) => new // 以[時間]分組，每組輸出{時間，訂位人數總和}
+            {
+                Time = time,
+                Sum = num.Sum()
+            });
+            var sumResult = gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum;
+            if (sumResult >= s.Seats)
+            {
+                return Json(new { success = "false", errorType = 1 });
+            }// 如果[訂位人數總和] >= [容客量]，跳出視窗：該時段已客滿
+            else if ((sumResult + sr.NumOfPeople) >= s.Seats)
+            {
+                return Json(new { success = "false", errorType = 2, numRemain = (s.Seats - sumResult) });
+            }// 如果[訂位人數總和+欲訂位人數] >= [容客量]，跳出視窗：選擇人數已超過容客量
+            else
+            {
+                return Json(new { success = "true" });
+            }// 如果該時段有空位，傳回success=true
+        }
+
         public IActionResult GetName(string keyword)
         {
             IQueryable storeList = _db.Stores.Where(s => s.RestaurantName.Contains(keyword)).Select(s => s.RestaurantName);
@@ -292,7 +329,7 @@ namespace prjShanLiang.Controllers
                 rt => rt.RestaurantTypeNum,
                 (st, rt) => rt.TypeName).ToList(),
                     datasum,
-                //TODO:地址
+                    //TODO:地址
                     //address = _db.Districts 
                     //.Join( _db.Cities,
                     //d => d.CityId,
