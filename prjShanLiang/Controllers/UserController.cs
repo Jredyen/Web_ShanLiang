@@ -209,6 +209,7 @@ namespace prjShanLiang.Controllers
         {
             ShanLiang21Context db = new ShanLiang21Context();
 
+
             Store sto = new Store()
             {
                 AccountName = vm.AccountName,
@@ -219,7 +220,7 @@ namespace prjShanLiang.Controllers
                 Website = vm.Website,
                 OpeningTime = stoView.OpeningTime,
                 ClosingTime = stoView.ClosingTime,
-                DistrictId = 1,
+                //DistrictId = 1,
                 Seats = vm.Seats,
                 StoreMail = vm.StoreMail,
                 Password = vm.AccountPassword
@@ -542,17 +543,17 @@ namespace prjShanLiang.Controllers
             // 使用 Google Mail Server 發信
             string GoogleID = "kingsley110011@gmail.com"; //Google 發信帳號
             string TempPwd = "Wvknxcojalblelvg"; //應用程式密碼
-            string ReceiveMail = "cleverpooh101@yahoo.com.tw"; //接收信箱
+            string ReceiveMail = AccountName; //接收信箱
 
             string SmtpServer = "smtp.gmail.com";
             int SmtpPort = 587;
             MailMessage mms = new MailMessage();
             mms.From = new MailAddress(GoogleID);
-            mms.Subject = "膳良平台重設密碼通知信";/*信件主題*/
+            mms.Subject = "膳糧平台重設密碼通知信";/*信件主題*/
 
 
             //string link = string.Format("https://localhost:7131/User/Login/?AccountName={0}&AccountPassword={1}", AccountName,pwd);
-            string mailContent = AccountName + " 您好：<br><label>&emsp;&emsp;請於收到信件後，盡快登入平台，重新設定密碼。</label><br>" + "<label>&emsp;&emsp;帳號名稱：" + AccountName +"</label>"+ "<br>&emsp;&emsp;新密碼：" + "<Label style='color:red'>"+ pwd+ "<br><label>&emsp;&emsp;https://localhost:7131/User/Login</label>";
+            string mailContent = AccountName + " 您好：<br><label>&emsp;&emsp;您已發出重設密碼請求，請於收到信件後，盡快登入平台，重新設定密碼。</label><br>" + "<label>&emsp;&emsp;帳號名稱：" + AccountName +"</label>"+ "<br>&emsp;&emsp;新密碼：" + "<Label style='color:red'>"+ pwd+ "<br><label>&emsp;&emsp;https://localhost:7131/User/Login</label>";
 
 
             mms.Body = mailContent;
