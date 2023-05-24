@@ -47,13 +47,13 @@ namespace prjShanLiang.Controllers
                 Member mem = db.Members.FirstOrDefault(a => a.Email == vm.AccountName && a.Password == vm.AccountPassword);
                 //Account acc = db.Accounts.FirstOrDefault(a => a.AccountName == vm.AccountName && a.AccountPassword == vm.AccountPassword);
                 Admin admin = db.Admins.FirstOrDefault(a => a.AdminName == vm.AccountName && a.Passwoed == vm.AccountPassword);
-                if (sto != null || mem != null || admin != null)
+                if (sto != null&&sto.AccountStatus != 0  || mem != null || admin != null)
                 {
                     string json;
                     if (sto != null)
                     {
                         json = JsonSerializer.Serialize(sto);
-                        HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "2");
+                        HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "2");                     
                     }
 
                     else if (mem != null)
@@ -508,11 +508,26 @@ namespace prjShanLiang.Controllers
             var isStoreAccountExists = sl.Stores.Any(s => s.AccountName == name);
             var isMemberAccountExists = sl.Members.Any(m => m.Email == name);
             var isAdminAccountExists = sl.Admins.Any(a => a.AdminName == name);
+            var isStoreAccountStatusExists = sl.Stores.Where(s => s.AccountName == name).Select(s => s.AccountStatus).FirstOrDefault();
+            
             var exists = isStoreAccountExists || isMemberAccountExists || isAdminAccountExists;
-            return Content(exists.ToString());
+
+            var data = new
+            {
+                Exists = exists,
+                AccountStatus = isStoreAccountStatusExists
+            };
+
+            return Json(data);
         }
 
-        
+        public IActionResult CheckLoginAccountStatus(string name)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            var isStoreAccountStatusExists = sl.Stores.Where(s => s.AccountName == name).Any(s=>s.AccountStatus ==0);
+            var exists =isStoreAccountStatusExists;
+            return Content(exists.ToString());
+        }
 
 
         public IActionResult forgetPwd()

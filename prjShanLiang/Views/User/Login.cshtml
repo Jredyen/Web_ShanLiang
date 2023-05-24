@@ -115,7 +115,7 @@
                                             <span asp-validation-for="AccountPassword" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
-                                            <input type="submit" value="登入" class="btn btn-primary  mb-2 inputFont" />
+                                            <input type="submit" value="登入" class="btn btn-primary  mb-2 inputFont" id="login" />
                                             <a asp-action="Signup">註冊會員</a>
                                             <a asp-action="SignupStore">註冊店家</a>
                                         </div>
@@ -150,6 +150,7 @@
                 const InputAccountPassword = document.getElementById('InputAccountPassword');
 
                 const divAccount = document.getElementById('accountHelp');
+                const login = document.getElementById('login');
 
                 const btnMemberLoginDemo = document.getElementById('btnMemberLoginDemo1');
                 const btnStoreLoginDemo = document.getElementById('btnStoreLoginDemo1');
@@ -177,10 +178,20 @@
                     //  divAccount.innerHTML =inpAccount.value;
                     //檢查帳號是否存在
                     const response = await fetch('@Url.Content("~/User/CheckLoginAccount")?name=' + inpAccount.value);
-                    const isExists = await response.text();  //True or False
+                    const data = await response.json();
+                    console.log(data);
+                    const exists = data.exists;
+                    const accountStatus = data.accountStatus;
+                    console.log(exists);
+                    console.log(accountStatus);
+
                     let message = "找不到您的帳戶";
-                    if (isExists === "True") {
-                        message = "";
+                    if (exists) {
+                        if (accountStatus === 0) {
+                            message = "店家帳號尚未驗證通過";
+                        } else {
+                            message = "";
+                        }
                     }
                     divAccount.innerHTML = message;
                 })
