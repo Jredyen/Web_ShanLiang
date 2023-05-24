@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div><!-- End Breadcrumbs -->
-        <form action="CreateOrder">
+        
             <div class="col-12 col-md-12 col-lg-6 ">
                 <div class=" shadow p-3 mb-5 bg-light rounded-5 mealcard">
                     <div>
@@ -151,19 +151,15 @@
                                 <input type="button" value="備註Demo" id="remarkdemo" />
                                 <br />
                                 <br />
-                                <input type="button" id="myBtn" value="前往付款" class="btn btn-primary" />
+                                <input type="button" id="myBtn" value="前往付款" class="btn btn-primary"/>
                                 @Html.ActionLink("取消", "Menu", "Shopping", new{StoreId=1}, new { @class = "btn btn-danger " } )
-
-
                             </div>
                         </div>
-
-
-
                     </div>
                 </div>
             </div>
-            <script>
+@section Scripts{
+<script>
                 @*此方法可以取得輸入的優惠碼 判斷折價多少*@
                 @*先取得輸入的優惠碼*@
                                                 const coupon = document.getElementById('coupon')@*確認按鈕*@
@@ -192,7 +188,7 @@
                         }
                     })
                 @*Demo優惠碼*@
-                                                        const coupondemo = document.getElementById('coupondemo')
+                const coupondemo = document.getElementById('coupondemo')
                 coupondemo.addEventListener('click', () => {
                     textarea.value = 'ISpan666'
                 })
@@ -200,30 +196,41 @@
                 remarkdemo.addEventListener('click', () => {
                     txtremark.value = '不要餐具 小辣'
                 })
-            </script>
-        </form>
-    </div>
-</main><!-- End #main -->
-@section Scripts{
-    <script>
-        @*此方法可以取得總金額，備註，付款方式並傳回後端 myBtn是前往付款按鈕*@
-            const myBtn = document.getElementById('myBtn')
+</script>
+       <script>      
+        @*此方法可以取得總金額，備註，付款方式並傳回後端*@
+            const myBtn = document.getElementById('myBtn')  @*前往付款按鈕*@
+            const radioButtons = document.querySelectorAll('input[name="paymentMethod"]');@*付款方式的選取按鈕*@
+            let selectedPaymentMethod;  @*抓取選到的是(信用卡)1或(現金)2*@
+            let remark = saveRemark(); @*備註*@
+            let pay = savepay();     @*總金額*@
+            
+            
         myBtn.addEventListener('click', () => {
-            let remark = saveRemark();
-            let pay = savepay();
-            //let paymethod = savepaymethod();
-            let finalAmount = pay * discount;
-
-            const radioButtons = document.querySelectorAll('input[name="paymentMethod"]');
-            let selectedPaymentMethod;
+            
             for (const radioButton of radioButtons) {
                 if (radioButton.checked) {
                     selectedPaymentMethod = radioButton.value;
                     break;
                 }
             }
-            window.location.replace('@Url.Content("~/Shopping/CreateOrder")?pay=' + finalAmount + '&remark=' + remark + '&paymethod=' + selectedPaymentMethod)
+         if( selectedPaymentMethod != null)
+         {     
+            if (confirm('確定要使用' + selectedPayment() + '付款嗎?')) 
+            {                 
+            let finalAmount = pay * discount; @*折價後應付款*@                       
+            window.location.replace('@Url.Content("~/Shopping/CreateOrder")?pay=' + finalAmount + '&remark=' + remark + '&paymethod=' + selectedPaymentMethod) 
+            }
+         }
+        else{ confirm('請選擇付款方式')  }
         })
+
+        function selectedPayment(){
+            if(selectedPaymentMethod == 1)
+            {return '信用卡'}
+            else if(selectedPaymentMethod == 2)
+            {return '現金'}
+        }
         function saveRemark() {
             const textarea = document.getElementById("txtremark");
             const remark = textarea.value;
@@ -234,6 +241,10 @@
             const pay = textarea.value;
             return pay
         }
-    </script>
+    </script> }
+    </div>
+</main><!-- End #main -->
+
+    
    
-}
+
