@@ -11,6 +11,8 @@ using prjShanLiang.ViewModels;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Moq;
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.Security.Cryptography.X509Certificates;
 
 namespace TestPrjShanLiang
 {
@@ -18,6 +20,7 @@ namespace TestPrjShanLiang
     public class TestsStoreController
     {
         StoreController _sc;
+
         public TestsStoreController()
         {
             ShanLiang21Context db = new();
@@ -151,30 +154,33 @@ namespace TestPrjShanLiang
     [TestFixture]
     public class TestsUserController
     {
-        private UserController _controller;
-        private Mock<IWebHostEnvironment> _mockEnvironment;
-        private Mock<HttpContext> _mockHttpContext;
-        private Mock<ISession> _mockSession;
+        Mock<HttpContext>? _mockHttpContext;
+        Mock<ISession>? _mockSession;
+        Mock<IWebHostEnvironment>? _mockEnvironment;
         UserController _uc;
+
         public TestsUserController()
         {
-            _mockEnvironment = new Mock<IWebHostEnvironment>();
-            _mockHttpContext = new Mock<HttpContext>();
-            _mockSession = new Mock<ISession>();
-            _controller = new UserController(_mockEnvironment.Object);
-            _controller.ControllerContext.HttpContext = _mockHttpContext.Object;
-            _mockHttpContext.SetupGet(c => c.Session).Returns(_mockSession.Object);
+            _mockHttpContext = new();
+            _mockSession = new();
+            _mockEnvironment = new();
 
-            var mockEnvironment = new Mock<IWebHostEnvironment>();
-            UserController uc = new(mockEnvironment.Object);
+            UserController uc = new(_mockEnvironment.Object);
             _uc = uc;
+
+            _mockHttpContext.SetupGet(x => x.Session).Returns(_mockSession.Object);
+
+            _uc.ControllerContext = new()
+            {
+                HttpContext = _mockHttpContext.Object
+            };
         }
 
         [Test]
         public void TestLogin()
         {
-            //IActionResult result0 = _uc.Login();
-            //Assert.IsNotNull(result0);
+            IActionResult result0 = _uc.Login();
+            Assert.IsNotNull(result0);
 
             CAccountPasswordViewModel vm = new()
             {
@@ -197,12 +203,23 @@ namespace TestPrjShanLiang
         [Test]
         public void TestlogOut()
         {
-            
+            IActionResult result1 = _uc.logOut();
+            Assert.IsNotNull(result1);
         }
         [Test]
         public void TestMemberManager()
         {
+            string account = null;
+            IActionResult result1 = _uc.MemberManager(account);
+            Assert.IsNotNull(result1);
 
+            account = "NotFindMember@mail.com";
+            IActionResult result2 = _uc.MemberManager(account);
+            Assert.IsNotNull(result2);
+
+            account = "Adam";
+            IActionResult result3 = _uc.MemberManager(account);
+            Assert.IsNotNull(result3);
         }
         [Test]
         public void TestStoreManager()
@@ -534,17 +551,83 @@ namespace TestPrjShanLiang
     public class TestsAdvertisementController
     {
         AdvertisementController _ac;
+        Mock<HttpContext>? _mockHttpContext;
+        Mock<ISession>? _mockSession;
+
         public TestsAdvertisementController()
         {
+            Mock<HttpContext> mockHttpContext = new();
+            _mockHttpContext = mockHttpContext;
+
+            Mock<ISession> mockSession = new();
+            _mockSession = mockSession;
+
             ShanLiang21Context db = new();
             AdvertisementController ac = new(db);
             _ac = ac;
+
+            _mockHttpContext.SetupGet(x => x.Session).Returns(_mockSession.Object);
+
+            _ac.ControllerContext = new()
+            {
+                HttpContext = _mockHttpContext.Object
+            };
         }
         [Test]
         public void TestBuyAdv()
         {
             IActionResult result = _ac.BuyAdv();
             Assert.IsNotNull(result);
+        }
+        [Test]
+        public void TestAddAdvToCart()
+        {
+            int? id = null;
+            IActionResult result1 = _ac.AddAdvToCart(id);
+            Assert.IsNotNull(result1);
+
+            id = 1;
+            IActionResult result2 = _ac.AddAdvToCart(id);
+            Assert.IsNotNull(result2);
+
+            ViewResult result3 = _ac.AddAdvToCart(id) as ViewResult;
+            string message = "";
+            foreach (var c in result3.ViewData.Values)
+            {
+                message += c.ToString();
+            }
+            Assert.AreEqual("1", message);
+
+            CAddAdvToCartViewModel vm = new()
+            {
+                txtCount = 1,
+                txtStoreID = 1
+            };
+            IActionResult result4 = _ac.AddAdvToCart(vm);
+            Assert.IsNotNull(result4);
+        }
+        [Test]
+        public void TestDelete()
+        {
+            int? id = null;
+            IActionResult result1 = _ac.Delete(id);
+            Assert.IsNotNull(result1);
+
+            //id = 1;
+            //IActionResult result2 = _ac.Delete(id);
+            //Assert.IsNotNull(result2);
+        }
+        [Test]
+        public void TestCartView()
+        {
+            IActionResult result = _ac.CartView();
+            Assert.IsNotNull(result);
+        }
+        [Test]
+        public void ConfirmADOrder()
+        {
+            //IActionResult result = _ac.ConfirmADOrder();
+            //Assert.IsNotNull(result);
         }
     }
     [TestFixture]
@@ -580,10 +663,17 @@ namespace TestPrjShanLiang
             };
             IActionResult result2 = _ac.Create(a);
             Assert.IsNotNull(result2);
+            ViewResult result3 = _ac.Create(a) as ViewResult;
+            string message = "";
+            foreach(var c in result3.ViewData.Values)
+            {
+                message += c.ToString();
+            }
+            Assert.AreEqual("無法修改權限", message);
 
             a.IdentificationId = 3;
-            IActionResult result3 = _ac.Create(a);
-            Assert.IsNotNull(result3);
+            IActionResult result4 = _ac.Create(a);
+            Assert.IsNotNull(result4);
         }
         [Test]
         public void TestDelete()
