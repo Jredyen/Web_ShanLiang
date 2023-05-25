@@ -436,7 +436,7 @@
                         <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <!-- 使用 Font Awesome 图标类 -->
                     </div>
                     <div class="titleIA fs-xl">最新評論</div>
-                    @* <div class="fs-s fc-secondary">HOT</div>*@
+                    
                 </div>
                 <div class="row">
                     @foreach (var evaluate in Model.Item3.OrderByDescending(s=>s.EvaluateDate).Take(4))
@@ -446,7 +446,7 @@
                             <div class="card zoom-card" style="width: 32rem;" id="evaluate-bottom">
                                 <a href="@Url.Action("Restaurant", "store", new { id = evaluate.StoreId })">
                                     <div class="image-wrapper">
-                                       @* @evaluate.Store.RestaurantName*@
+                                      
                                         <img src="~/images/test/@imgName" class="img-fluid carousel-image" />
                                     </div>
                                     <div class="card-body-123">
