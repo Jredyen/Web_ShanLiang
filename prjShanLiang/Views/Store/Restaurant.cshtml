@@ -150,17 +150,17 @@
                                     <a class="btn-white" href="#btnGroupDrop1"><i class="bi bi-share ic-t"></i>分享</a>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1&amp;src=sdkpreparse">
+                                    <a class="dropdown-item fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fkaramucho.asuscomm.com%2fstore%2fRestaurant%2f1&amp;src=sdkpreparse">
                                         <i class="bi bi-facebook"></i> Facebook
                                     </a>
-                                    <a class="dropdown-item" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1"
+                                    <a class="dropdown-item" href="https://social-plugins.line.me/lineit/share?url=https%3a%2f%2fkaramucho.asuscomm.com%2fstore%2fRestaurant%2f1"
                                    target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
                                     <a class="dropdown-item" href="mailto: ?subject=與您分享一間美味的餐廳，@item.RestaurantName！&body=@item.StoreMail"><i class="bi bi-envelope"></i> E-mail</a>
                                     <a class="dropdown-item" href="javascript:copyUrl();"><i class="bi bi-link"></i> 複製連結</a>
                                 </div><!--End Dropdowns-->
                                 <button type="button" class="btn btn-secondary">
                                     <!--<a id="comment" asp-controller="Store" asp-action="AddComment" asp-route-id="@item.StoreId"><i class="bi bi-chat-left ic-t"></i>評論</a>-->
-                                    <a class="btn-white" id="comment" href="../AddComment?id=@item.StoreId"><i class="bi bi-chat-left ic-t"></i>評論</a>
+                                    <a class="btn-white" id="comment" href="~/Store/AddComment?id=@item.StoreId"><i class="bi bi-chat-left ic-t"></i>評論</a>
                                 </button>
                                 <button type="button" class="btn btn-secondary">
                                     <a class="btn-white" href="###" id="favorate"><i class="bi bi-suit-heart ic-t"></i>收藏</a>
@@ -176,7 +176,7 @@
                                     <a class="btn-white" asp-area="" asp-controller="Store" asp-action="Reserve" asp-route-id="@item.StoreId"><i class="bi bi-calendar-event ic-t"></i>線上訂位</a>
                                 </div>
                                 <div class="more-btn">
-                                    <a class="btn-white" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-id="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
+                                    <a class="btn-white" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-StoreId="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
                                 </div>
                             </div>
 

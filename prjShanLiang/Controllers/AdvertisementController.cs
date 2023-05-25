@@ -154,7 +154,7 @@ namespace prjShanLiang.Controllers
                 adImage.ADColumn = "true";
                 _db.SaveChanges();
             }
-
+            HttpContext.Session.Remove(CDictionary.SK_LOGINED_Adv);
             return RedirectToAction("index", "Home");
         }
 
