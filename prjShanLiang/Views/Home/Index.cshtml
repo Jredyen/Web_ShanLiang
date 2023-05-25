@@ -102,6 +102,9 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            color: #5B5B5B;
+            font-size: 12px;
+            font-family: "標楷體", "Microsoft JhengHei", "PMingLiU", serif;
         }
 
 
@@ -149,10 +152,31 @@
             transition: transform 0.3s;
         }
 
-            .zoom-card:hover {
+        .zoom-card:hover {
                 transform: scale(1.1);
                 border-color: #FFE4CA;
             }
+
+        .Name-title {
+            text-align: center;
+            color: #5B5B5B;
+            font-size:18px;
+            font-family: "標楷體", "Microsoft JhengHei", "PMingLiU", serif;
+        }
+        .Name-body{
+            text-align: center;
+            color: #5B5B5B;
+            font-size: 14px;
+            font-family: "標楷體", "Microsoft JhengHei", "PMingLiU", serif;
+        }
+
+        .Evaluate-Comments{
+            color: #5B5B5B;
+            font-size: 12px;
+            font-family: "標楷體", "Microsoft JhengHei", "PMingLiU", serif;
+        }
+       
+         
     </style>
 
 
@@ -249,7 +273,7 @@
                                 <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
                                     <img src="~/Images/store/@(adImage?.Adimage)" alt="Placeholder Image" height="400px" width="560px" id="left-img-element" />
                                 </a>
-                                <span class="carousel-caption">
+                                <span class="carousel-caption"  >
                                     @(adImage?.Adimage?.Replace(".jpg", ""))
                                 </span>
                             </span>
@@ -281,7 +305,7 @@
               
 
                 <div class="row">
-                    @foreach (var advertisement in Model.Item1.Skip(4).Take(4))
+                    @foreach (var advertisement in Model.Item1.Skip(5).Take(4))
                     {
                         string imgName = advertisement.RestaurantName + ".jpg";
                         <div class="col-sm-3">
@@ -294,16 +318,20 @@
 
                                         @foreach (var Evaluate in Model.Item3.Where(s => s.StoreId == advertisement.StoreId).Take(1))
                                         {
-                                            <div>
+                                            <div class="Name-title">
                                                 @advertisement.RestaurantName
                                             </div>
-                                            <div>
+                                            <div class="Name-body">
                                                 @foreach (var member in Model.Item4.Where(s => s.MemberId == Evaluate.MemberId))
                                                 {
-                                                    @member.MemberName
+                                                     @member.MemberName  
                                                 }
                                             </div>
-                                            <div>
+                                            <div class="Evaluate-Comments">
+                                                <div class="rating" style="font-size:2rem">
+                                                    <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@Model.Item3.Where(x => x.StoreId == Evaluate.StoreId).Count()</label></div>
+                                                    <div id="star" class="vertical" style="color:#ffc107;margin-right:10px; pointer-events: none;" onclick="getStar(event,@advertisement.Rating)"></div>
+                                                </div>
                                                 @Evaluate.Comments
                                             </div>
                                         }
@@ -333,10 +361,10 @@
 
                                     </div>
                                     <div class="card-body-123">
-                                        <div class="card-body-blog-123">
+                                        <div class="card-body-blog-123 Name-title">
                                             @ShanLiangBlog.BlogHeader
                                         </div>
-                                        <div>
+                                        <div class="Name-body">
                                             @ShanLiangBlog.RestaurantName
                                         </div>
                                         <div class="card-body-blog-123">
@@ -389,11 +417,6 @@
 
                     }
                 </div>
-
-
-
-
-
             </div>
 
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -406,45 +429,21 @@
                     pause: "false", // 鼠標懸停在輪播上時不暫停
                     keyboard: true // 啟用左右鍵控制
                 });
-
-                                //var leftImgElement = document.getElementById("left-img-element");
-                                //leftImgElement.addEventListener("click", changeleftImage);
-
-                                //function changeleftImage() {
-                                //    var input = document.createElement("input");
-                                //    input.type = "file";
-                                //    input.accept = "image/*";
-
-                                //    input.addEventListener("change", function () {
-                                //        var reader = new FileReader();
-                                //        reader.onload = function (e) {
-                                //            leftImgElement.src = e.target.result;
-                                //        };
-
-                                //        reader.readAsDataURL(input.files[0]);
-                                //    });
-
-                                //    input.click();
-                                //}
-                                //var rightImgElement = document.getElementById("right-img-element");
-                                //rightImgElement.addEventListener("click", changerightImage);
-
-                                //function changerightImage() {
-                                //    var input = document.createElement("input");
-                                //    input.type = "file";
-                                //    input.accept = "image/*";
-
-                                //    input.addEventListener("change", function () {
-                                //        var reader = new FileReader();
-                                //        reader.onload = function (e) {
-                                //            rightImgElement.src = e.target.result;
-                                //        };
-
-                                //        reader.readAsDataURL(input.files[0]);
-                                //    });
-
-                                //    input.click();
-                                //}
+                //const sRate = document.getElementById('star');
+                //const cRate = document.querySelectorAll('.stars');
+                //async function getStar(event, n) {
+                //    for (let i = 1; i <= n; i++) {
+                //        event.target.innerHTML += '<i class="bi bi-star-fill"></i>';
+                //    }
+                //    for (let i = 1; i <= (5 - n); i++) {
+                //        event.target.innerHTML += '<i class="bi bi-star"></i>';
+                //    }
+                //}
+                //sRate.click();
+                //for (i = 0; i < cRate.length; i++) {
+                //    cRate[i].click();
+                //}
+                              
             </script>
 
 
