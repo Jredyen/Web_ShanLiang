@@ -35,7 +35,7 @@
                             <div class="st1">
                                 <div class="rating" style="font-size:2rem">
                                     <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label id="labFavorate">@Model.memberFavorateCount</label></div>
-                                    <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@item.StoreEvaluates.Where(x => x.StoreId == item.StoreId).Count()</label></div>
+                                    <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@Model.storeEvaluates?.Count()</label></div>
                                     <div id="star" class="vertical" style="color:#ffc107;margin-right:10px; pointer-events: none;" onclick="getStar(event,@item.Rating)"></div>
                                 </div>
                             </div>
@@ -77,9 +77,9 @@
                             <section id="testimonials" class="testimonials section-bg">
                                 <div class="container" data-aos="fade-up">
 
-                                    <div class="slides-1 swiper" data-aos="fade-up" data-aos-delay="100">
+                                    <div class="swiper" data-aos="fade-up" data-aos-delay="100">
                                         <div class="swiper-wrapper">
-                                            @foreach (var se in item.StoreEvaluates.Where(x => x.StoreId == item.StoreId))
+                                            @foreach (var se in Model.storeEvaluates)
                                             {
                                                 <div class="swiper-slide">
                                                     <div class="testimonial-item">
@@ -91,10 +91,7 @@
                                                                         @se.Comments
                                                                         <i class="bi bi-quote quote-icon-right"></i>
                                                                     </p>
-                                                                    @foreach (var m in Model.member.Where(y => y.MemberId == se.MemberId))
-                                                                    {
-                                                                        <h4>@m.MemberName</h4>
-                                                                    }
+                                                                        <h4>@se.Member.MemberName</h4>                                                                    
                                                                     <h5>@se.EvaluateDate</h5>
                                                                     <div id="@se.EvaluateNo" class="stars" style="pointer-events: none;" onclick="getStar(event,@se.Rating)"></div>
                                                                 </div>

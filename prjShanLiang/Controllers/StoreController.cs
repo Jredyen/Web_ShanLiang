@@ -28,18 +28,22 @@ namespace prjShanLiang.Controllers
             if (id == null)
                 return RedirectToAction("List");
             CShowRestaurantViewModel datas = new();
-            var sts = from s in _db.Stores.
-                      Include(s => s.StoreEvaluates)
+            var sts = from s in _db.Stores
                       where s.StoreId == id
                       select s;
-            IEnumerable<Member> mbs = from m in _db.Members
-                                      orderby m.MemberId
-                                      select new Member { MemberId = m.MemberId, MemberName = m.MemberName };
-            var sdp = from sd in _db.StoreDecorationImages where sd.StoreId == id select sd.ImagePath;
-            var mfc = from ma in _db.MemberActions where ma.ActionId == 2 && ma.StoreId == id select ma;
+            //IEnumerable<Member> mbs = from m in _db.Members
+            //                          orderby m.MemberId
+            //                          select new Member { MemberId = m.MemberId, MemberName = m.MemberName };
+            var se = from e in _db.StoreEvaluates?.Include(m=>m.Member)                     
+                     where e.StoreId == id
+                     select e;
+            var sdp = from sd in _db.StoreDecorationImages where sd.StoreId == id select sd.ImagePath;//餐廳封面照
+            var mfc = from ma in _db.MemberActions where ma.ActionId == 2 && ma.StoreId == id select ma;//收藏總數
             var smi = from mm in _db.MealMenus where mm.StoreId == id select mm.MealImagePath;//改抓MealMenu.MealImagePath
             datas.store = sts;
-            datas.member = mbs;
+            //datas.member = mbs;
+            if (se != null) { datas.storeEvaluates = se; }
+            else { datas.storeEvaluates = null; }
             datas.storeDecorationImagePath = sdp.FirstOrDefault();
             datas.memberFavorateCount = mfc.Count();
             datas.storeMealImages = smi;//改抓MealMenu.MealImagePath
@@ -181,14 +185,14 @@ namespace prjShanLiang.Controllers
             {
                 return Json(new { success = "false", errorType = 1 });
             }// 如果[訂位人數總和] >= [容客量]，跳出視窗：該時段已客滿
-            else if ((sumResult + sr.NumOfPeople) > s.Seats) 
+            else if ((sumResult + sr.NumOfPeople) > s.Seats)
             {
-                return Json(new { success = "false", errorType = 2 , numRemain= (s.Seats- sumResult) });
+                return Json(new { success = "false", errorType = 2, numRemain = (s.Seats - sumResult) });
             }// 如果[訂位人數總和+欲訂位人數] >= [容客量]，跳出視窗：選擇人數已超過容客量
             else
             {
                 _db.StoreReserveds.Add(sr);
-                _db.SaveChanges();                
+                _db.SaveChanges();
                 return Json(new { success = "true" });
             }// 如果該時段有空位，存入資料庫並傳回success=true
         }
@@ -231,10 +235,10 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult GetType()
         {
-            IQueryable datas = _db.RestaurantTypes.Select(rt => new 
-            { 
-                rt.TypeName, 
-                rt.RestaurantTypeNum, 
+            IQueryable datas = _db.RestaurantTypes.Select(rt => new
+            {
+                rt.TypeName,
+                rt.RestaurantTypeNum,
                 Qty = _db.StoreTypes
                 .Join(_db.Stores, st => st.StoreId, s => s.StoreId, (st, s) => new { st, s })
                 .Where(x => x.st.RestaurantTypeNum == rt.RestaurantTypeNum && x.s.AccountStatus == 1)
