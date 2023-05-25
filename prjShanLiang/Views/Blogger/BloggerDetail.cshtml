@@ -21,15 +21,13 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="BlogId" readonly="value" />
                 <div class="form-group ">
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
                     <textarea asp-for="BlogContent"
                               class="form-control  p-3 mb-2 bg-light text-dark"
                               readonly="value" 
-                    id="story"
-                    style="background-color:white; border:hidden;font-size: 20px;">
+                                id="story"
+                                style="background-color:white; border:hidden;font-size: 20px;">
                 </textarea>
                         <span asp-validation-for="BlogContent" class="text-danger"></span>
-                    <script src="~/js/Blog.js"></script>
                     </div>
                 <div class="text-center">
                     <img src="~/Images/Blog/@Model.BlogPic" width="1000" />
@@ -53,5 +51,8 @@
     </div>
         </main>
 @section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+    <script src="~/js/Blog.js"></script>
+    @*文字區塊會依內容自動調整大小*@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

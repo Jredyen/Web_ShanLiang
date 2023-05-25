@@ -23,11 +23,11 @@
                         <span asp-validation-for="BlogHeader" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                    <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+                    
                         <label asp-for="BlogContent" class="control-label">內容</label>
                     <textarea asp-for="BlogContent" class="form-control" id="story"></textarea>
                         <span asp-validation-for="BlogContent" class="text-danger"></span>
-                    <script src="~/js/Blog.js"></script>
+                    
                     </div>
                 <div class="form-group">
                     <label asp-for="RestaurantName" class="control-label">餐廳名稱</label>
@@ -47,7 +47,7 @@
                     <div class="form-group">
                     <label class="control-label">文章圖片</label>
                     <input type="file" name="photo" id="photo" class="form-control-file" />
-                    <img src="~/Images/Blog/@Model.BlogPic" width="300" />
+                    <img id="preview" style="max-height:200px;" />
                     </div>
                 <br />
                 <hr />
@@ -61,6 +61,15 @@
         </div>
 
         @section Scripts {
+            <script>
+                $('#photo').on('change', function (e) {
+                    const file = this.files[0];
+                    const objectURL = URL.createObjectURL(file);    // 使用 createObjectURL 產生圖片url
+                    $('#preview').attr('src', objectURL);
+                });
+            </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
+            <script src="~/js/Blog.js"></script>
             @{
                 await Html.RenderPartialAsync("_ValidationScriptsPartial");
             }

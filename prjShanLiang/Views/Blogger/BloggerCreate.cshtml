@@ -19,29 +19,28 @@
             <form asp-action="BloggerCreate" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div> 
             <div class="form-group">
-                <label asp-for="BlogHeader" class="control-label">主題</label>
-                <input asp-for="BlogHeader" class="form-control" />
+                <label asp-for="BlogHeader" class="control-label" >主題</label>
+                    <textarea asp-for="BlogHeader" class="form-control" id="InputHeader" rows="1" ></textarea>
                 <span asp-validation-for="BlogHeader" class="text-danger"></span>
             </div>
             <div class="form-group">
-                    
-                <label asp-for="BlogContent" class="control-label">內容</label>
-                    <textarea asp-for="BlogContent" class="form-control" rows="20" ></textarea>
+                <label asp-for="BlogContent" class="control-label" >內容</label>
+                    <textarea asp-for="BlogContent" class="form-control" rows="10" id="InputContent"></textarea>
                 <span asp-validation-for="BlogContent" class="text-danger"></span>
             </div>
                 <div class="form-group">
-                    <label asp-for="RestaurantName" class="control-label">餐廳名稱</label>
-                    <input asp-for="RestaurantName" class="form-control" />
+                    <label asp-for="RestaurantName" class="control-label" >餐廳名稱</label>
+                    <textarea asp-for="RestaurantName" class="form-control" id="InputRestname" rows="1"></textarea>
                     <span asp-validation-for="RestaurantName" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="CityName" class="control-label">所在城市</label>
-                    <input asp-for="CityName" class="form-control" />
+                    <label asp-for="CityName" class="control-label" >所在城市</label>
+                    <textarea asp-for="CityName" class="form-control" id="InputCity" rows="1"></textarea>
                     <span asp-validation-for="CityName" class="text-danger"></span>
                 </div>
                 <div>
-                    <label asp-for="DistrictName" class="control-label">行政區</label>
-                    <input asp-for="DistrictName" class="form-control" />
+                    <label asp-for="DistrictName" class="control-label" >行政區</label>
+                    <textarea asp-for="DistrictName" class="form-control" id="InputDistrict" rows="1"></textarea>
                     <span asp-validation-for="DistrictName" class="text-danger"></span>
                 </div>
             <div>
@@ -52,14 +51,33 @@
             <hr />
                 <div class="form-group" >
                     <input type="submit" value="上傳" class="btn btn-primary" style="font-size:16px" />
+                    <input id="btnBlogDemo" type="button" value="文章Demo" class="btn btn-primary mb-2 Demo" />
             </div>
         </form>
 </div>
         <div style="font-size:16px">
             <a asp-action="BloggerList">回到文章管理</a>
 </div>
+        @section Scripts 
+        {
+            <script>
+                const inputHeader = document.getElementById('InputHeader');
+                const inputContent = document.getElementById("InputContent");
+                const inputRestname = document.getElementById("InputRestname");
+                const inputCity = document.getElementById("InputCity");
+                const inputDistrict = document.getElementById("InputDistrict");
 
-        @section Scripts {
+                const btnBloggerDemo = document.getElementById("btnBlogDemo");
+                
+                btnBloggerDemo.addEventListener('click', function(){
+                    inputHeader.innerText = "大安區美食推薦：美味與舒適的滋味之旅";
+                    inputContent.innerText = "最近，我有幸造訪了大安區的膳糧食堂，一家以提供美味可口的傳統台灣料理聞名的餐廳。我被他們獨特的菜單和舒適的用餐環境所吸引，決定一嚐他們的招牌菜。在這次的用餐體驗中，我品嚐了元盅雞湯、排骨蛋炒飯、豆沙小籠包、地瓜葉和銀耳四寶甜湯。現在，讓我們一起來細細品味這令人回味無窮的美食之旅。首先，我選擇了他們的招牌菜之一，元盅雞湯。當服務員將熱騰騰的湯盅端上桌時，一陣撲鼻的香氣立刻迎面而來。這碗湯以濃郁的雞肉清湯為底，內含著滑嫩的雞肉片、花菇和海帶絲，加上微微的花椒香料，讓整碗湯的口感更加豐富。喝下第一口湯汁，溫暖的感覺瞬間籠罩全身，讓我感到舒適和滿足。這道元盅雞湯的味道簡直是充滿家的溫暖，絕對是必點之選。接下來，我品嚐了他們的排骨蛋炒飯。這道菜以香噴噴的炒飯為基底，搭配著酥脆多汁的排骨和酥炸的蛋，營造出絕佳的口感和風味。炒飯的米粒飽滿而不油膩，每一口都能品味到豐富的香氣和微妙的調味。排骨則是口感鮮嫩，肉質鮮美，配合著酥脆的外皮，給這道炒飯增添了一層獨特的口感。 ";
+                    inputRestname.innerText = "膳糧食堂 大安店";
+                    inputCity.innerText = "台北市";
+                    inputDistrict.innerText = "大安區";
+                })
+            </script>
+            
             @{
                 await Html.RenderPartialAsync("_ValidationScriptsPartial");
             }
