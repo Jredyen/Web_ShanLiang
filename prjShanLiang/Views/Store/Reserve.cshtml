@@ -232,7 +232,7 @@
             }
             else if (datas.success === "true") {
                 alert("訂位成功！");
-                window.location.replace('@Url.Content("~/Store/Restaurant?id=")' + @ViewBag.Id);
+                window.location.replace('@Url.Content("~/Store/Restaurant/")' + @ViewBag.Id);
             }
             else {
                 alert("失敗");
