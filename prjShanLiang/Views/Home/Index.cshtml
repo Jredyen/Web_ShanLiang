@@ -175,6 +175,7 @@
             font-size: 12px;
             font-family: "標楷體", "Microsoft JhengHei", "PMingLiU", serif;
         }
+
        
          
     </style>
@@ -315,23 +316,22 @@
                                         <img src="~/images/test/@imgName" class="img-fluid carousel-image" alt="...">
                                     </div>
                                     <div class="card-body-123">
-
                                         @foreach (var Evaluate in Model.Item3.Where(s => s.StoreId == advertisement.StoreId).Take(1))
                                         {
                                             <div class="Name-title">
-                                                @advertisement.RestaurantName
+                                               
+                                               <span class="vertical star" style="color:#ffc107;margin-right:10px;"></span>
+                                               <input type="hidden" class="rating-value" value="@advertisement.Rating" />
+                                               @advertisement.RestaurantName
                                             </div>
                                             <div class="Name-body">
                                                 @foreach (var member in Model.Item4.Where(s => s.MemberId == Evaluate.MemberId))
                                                 {
-                                                     @member.MemberName  
+                                                    @member.MemberName
                                                 }
                                             </div>
                                             <div class="Evaluate-Comments">
-                                                <div class="rating" style="font-size:2rem">
-                                                    <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@Model.Item3.Where(x => x.StoreId == Evaluate.StoreId).Count()</label></div>
-                                                    <div id="star" class="vertical" style="color:#ffc107;margin-right:10px; pointer-events: none;" onclick="getStar(event,@advertisement.Rating)"></div>
-                                                </div>
+                                                
                                                 @Evaluate.Comments
                                             </div>
                                         }
@@ -423,27 +423,27 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
             <script>
-                $('.carousel').carousel({
-                    interval: 3000, // 設置自動切換時間為1秒
-                    wrap: true, // 循環輪播
-                    pause: "false", // 鼠標懸停在輪播上時不暫停
-                    keyboard: true // 啟用左右鍵控制
-                });
-                //const sRate = document.getElementById('star');
-                //const cRate = document.querySelectorAll('.stars');
-                //async function getStar(event, n) {
-                //    for (let i = 1; i <= n; i++) {
-                //        event.target.innerHTML += '<i class="bi bi-star-fill"></i>';
-                //    }
-                //    for (let i = 1; i <= (5 - n); i++) {
-                //        event.target.innerHTML += '<i class="bi bi-star"></i>';
-                //    }
-                //}
-                //sRate.click();
-                //for (i = 0; i < cRate.length; i++) {
-                //    cRate[i].click();
-                //}
-                              
+                window.onload = function () {
+                    $('.carousel').carousel({
+                        interval: 3000,
+                        wrap: true,
+                        pause: "false",
+                        keyboard: true
+                    });
+
+                    const stars = document.getElementsByClassName('star');
+
+                    for (let i = 0; i < stars.length; i++) {
+                        const rating = parseInt(stars[i].nextElementSibling.value);
+
+                        for (let j = 1; j <= rating; j++) {
+                            stars[i].innerHTML += '<i class="bi bi-star-fill"></i>';
+                        }
+                        for (let j = 1; j <= (5 - rating); j++) {
+                            stars[i].innerHTML += '<i class="bi bi-star"></i>';
+                        }
+                    }
+                };
             </script>
 
 
