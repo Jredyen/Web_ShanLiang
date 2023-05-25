@@ -178,7 +178,7 @@ namespace prjShanLiang.Controllers
             {
                 return Json(new { success = "false", errorType = 1 });
             }// 如果[訂位人數總和] >= [容客量]，跳出視窗：該時段已客滿
-            else if ((sumResult + sr.NumOfPeople) >= s.Seats) 
+            else if ((sumResult + sr.NumOfPeople) > s.Seats) 
             {
                 return Json(new { success = "false", errorType = 2 , numRemain= (s.Seats- sumResult) });
             }// 如果[訂位人數總和+欲訂位人數] >= [容客量]，跳出視窗：選擇人數已超過容客量
@@ -211,7 +211,7 @@ namespace prjShanLiang.Controllers
             {
                 return Json(new { success = "false", errorType = 1 });
             }// 如果[訂位人數總和] >= [容客量]，跳出視窗：該時段已客滿
-            else if ((sumResult + sr.NumOfPeople) >= s.Seats)
+            else if ((sumResult + sr.NumOfPeople) > s.Seats)
             {
                 return Json(new { success = "false", errorType = 2, numRemain = (s.Seats - sumResult) });
             }// 如果[訂位人數總和+欲訂位人數] >= [容客量]，跳出視窗：選擇人數已超過容客量
