@@ -6,9 +6,10 @@
     ViewData["Title"] = "註冊會員";
 }
 .....
-<script>
 
-    .inputFont{
+<style>
+
+    .inputFont {
         font - size: 20px;
         font - family:Microsoft JhengHei;
         height: 50px;
@@ -16,7 +17,25 @@
         margin - bottom: 20px
     }
 
+    .Demo {
+        font-size: 10px;
+        color: darkblue;
+        font-family: Microsoft JhengHei;
+        display: flex;
+        height: 30px;
+        width: 150px;
+        margin: 10px;
+        float: left;
+        background-color: lightblue;
+        border: none;
+    }
 
+
+</style>
+
+<script>
+
+   
 </script>
 
 ........
@@ -61,12 +80,12 @@
 
                                                     <div class="form-group">
                                                         <label asp-for="Memberphone" class="control-label"></label>
-                                                        <input asp-for="Memberphone" placeholder="請輸入數字，範例：0912323656" maxlength="10" required class="form-control" />
+                                                        <input asp-for="Memberphone" id="Memberphone" placeholder="請輸入數字，範例：0912323656" maxlength="10" required class="form-control" />
                                                         <span asp-validation-for="Memberphone" class="text-danger"></span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label asp-for="MemberName" class="control-label"></label>
-                                                        <input asp-for="MemberName" required class="form-control" />
+                                                        <input asp-for="MemberName" id="MemberName" required class="form-control" />
                                                         <span asp-validation-for="MemberName" class="text-danger"></span>
                                                     </div>
                                                     <div class="form-group">
@@ -76,7 +95,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label asp-for="Address" class="control-label"></label>
-                                                        <input asp-for="Address" required class="form-control" onchange="readURL(this)" targetID="preview_progressbarTW_img" accept="image/gif, image/jpeg, image/png" />
+                                                        <input asp-for="Address" id="Address" required class="form-control" onchange="readURL(this)" targetID="preview_progressbarTW_img" accept="image/gif, image/jpeg, image/png" />
 
                                                         <span asp-validation-for="Address" class="text-danger"></span>
                                                     </div>
@@ -97,7 +116,9 @@
                                                         <input id="btnDataRevision" type="submit" value="送出" class="btn btn-primary" />
                                                     </div>
                                                 </form>
-
+                                                <input type="button" id="btnMemberRegistrationDemo" value="會員註冊Demo" class="btn btn-primary Demo" />
+                                                <input type="button" id="btnMemberRegistrationPasswordDemo" value="會員註冊密碼Demo" class="btn btn-primary Demo" />
+                                                <input type="button" id="btnMemberRegistrationPasswordRepetitionDemo" value="已註冊會員帳號Demo" class="btn btn-primary Demo" />
                                             </div>
                                         </div>
                                     </div>
@@ -114,13 +135,22 @@
                 @section Scripts {
                     <script>
 
+
+
+                        const Memberphone = document.getElementById('Memberphone');
+                        const Address = document.getElementById('Address');
                         const Password1 = document.getElementById('memberPassword');
                         const Password2 = document.getElementById('memberPasswordChecking');
                         const errorMessage = document.getElementById('errorMessage1');
                         const btnDataRevision = document.getElementById('btnDataRevision');
                         const chkShowPassword = document.getElementById('chkShowPassword');
                         const memberDataRevision = document.getElementById('memberDataRevision');
+                        const btnMemberRegistrationDemo = document.getElementById('btnMemberRegistrationDemo');
+                        const btnMemberRegistrationPasswordDemo = document.getElementById('btnMemberRegistrationPasswordDemo');
+                        const btnMemberRegistrationPasswordRepetitionDemo = document.getElementById('btnMemberRegistrationPasswordRepetitionDemo');
 
+                        
+                        const MemberName = document.getElementById('MemberName');
 
                         let errorString = '';
                         btnDataRevision.disabled = false
@@ -129,6 +159,24 @@
 
                         const inpAccount = document.getElementById('InputAccount');
                         const divAccount = document.getElementById('accountHelp');
+                        
+                        btnMemberRegistrationDemo.addEventListener('click',function(){
+                            inpAccount.value = "nispanc@myyahoo.com"
+                            Memberphone.value = "0900123456"
+                            MemberName.value = "Nick"
+                            Address.value = "新北市林口區文化路三段"
+                            //Password1.value = "aaaBBB1234567A"
+                        
+                        })
+                        btnMemberRegistrationPasswordDemo.addEventListener('click', function () {
+                           Password1.value = "aaabbb1234567A"
+                           Password2.value = "aaabbb1234567A"
+                        })
+                        btnMemberRegistrationPasswordRepetitionDemo.addEventListener('click', function () {
+                            inpAccount.value = "chris@gmail.com"                          
+                        })
+                        
+                        
                         inpAccount.addEventListener('blur', async () => {
                             //  divAccount.innerHTML =inpAccount.value;
                             //檢查帳號是否存在

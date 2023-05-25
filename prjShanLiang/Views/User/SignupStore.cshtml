@@ -90,12 +90,12 @@
 
                                                     <div class="form-group">
                                                         <label asp-for="RestaurantName" class="control-label"></label>
-                                                        <input asp-for="RestaurantName" required class="form-control inputFont" />
+                                                        <input asp-for="RestaurantName" id="RestaurantName" required class="form-control inputFont" />
                                                         <span asp-validation-for="RestaurantName" class="text-danger"></span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label asp-for="RestaurantPhone" class="control-label"></label>
-                                                        <input asp-for="RestaurantPhone" maxlength="10" required class="form-control inputFont" />
+                                                        <input asp-for="RestaurantPhone" id="RestaurantPhone" maxlength="10" required class="form-control inputFont" />
                                                         <span asp-validation-for="RestaurantPhone" class="text-danger"></span>
                                                     </div>
 
@@ -141,7 +141,7 @@
 
                                                 <div class="form-group">
                                                     <label asp-for="Website" class="control-label">餐廳網站</label>
-                                                    <input type="url" asp-for="Website" required class="form-control inputFont" />
+                                                    <input type="url" asp-for="Website" id="Website" required class="form-control inputFont" />
                                                     <span asp-validation-for="Website" class="text-danger"></span>
                                                 </div>
                                                 @*  <div class="form-group">
@@ -155,12 +155,12 @@
 
                                                 <div class="form-group">
                                                     <label asp-for="Seats" class="control-label"></label>
-                                                    <input asp-for="Seats" min="0" max="500" required class="form-control inputFont" />
+                                                    <input asp-for="Seats" min="0" max="500" id="Seats" required class="form-control inputFont" />
                                                     <span asp-validation-for="Seats" class="text-danger"></span>
                                                 </div>
                                                 <div class="form-group">
                                                     <label asp-for="StoreMail" class="control-label"></label>
-                                                    <input asp-for="StoreMail" type="email" required class="form-control inputFont" />
+                                                    <input asp-for="StoreMail" type="email" id="email" required class="form-control inputFont" />
                                                     <span asp-validation-for="StoreMail" class="text-danger"></span>
                                                 </div>
 
@@ -214,6 +214,7 @@
                                                 <div class="form-group">
                                                     <input type="submit" value="註冊" id="btnDataRevision" class="btn btn-primary" />
                                                 </div>
+                                                <input type="button" id="btnStoreRegistrationDemo" value="店家註冊Demo" class="btn btn-primary Demo" />
 
 
 
@@ -221,6 +222,7 @@
                                         </div>
 
                                     </form>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -248,13 +250,30 @@
                 const storeCity1 = document.getElementById('storeCity1');
                 const storeDistrict1 = document.getElementById('storeDistrict1');
                 const storeAddress = document.getElementById('storeAddress');
-
+                const btnStoreRegistrationDemo = document.getElementById('btnStoreRegistrationDemo');
+                const RestaurantName = document.getElementById('RestaurantName');
+                const RestaurantPhone = document.getElementById('RestaurantPhone');
+                const Website = document.getElementById('Website');
+                const Seats = document.getElementById('Seats');
+                const email = document.getElementById('email');
+                
                 let errorString = '';
                 btnDataRevision.disabled = false
                 let pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
                 let result = false
                 const inpAccount = document.getElementById('InputAccount');
                 const divAccount = document.getElementById('accountHelp');
+
+                btnStoreRegistrationDemo.addEventListener('click', function () {
+                    inpAccount.value = "shinshushi"
+                    RestaurantName.value = "新蔬食"
+                    RestaurantPhone.value = "0900123456"
+                    Website.value = "https://shinshushi.com"
+                    email.value = "shinshushi@gmail.com"
+                })
+
+
+
 
 
                 @*//上傳多個文件方法*@
