@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
-                    <img src="~/Images/store/decoration/@Model.storeDecorationImagePath" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300" />
+                    <img src="~/Images/store/@Model.storeDecorationImagePath" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300" />
                 </div>
             </div>
         </div>
@@ -77,32 +77,46 @@
                             <section id="testimonials" class="testimonials section-bg">
                                 <div class="container" data-aos="fade-up">
 
-                                    <div class="swiper" data-aos="fade-up" data-aos-delay="100">
+                                    <div class="slides-1 swiper" data-aos="fade-up" data-aos-delay="100">
                                         <div class="swiper-wrapper">
-                                            @foreach (var se in Model.storeEvaluates)
-                                            {
-                                                <div class="swiper-slide">
-                                                    <div class="testimonial-item">
-                                                        <div class="row gy-4 justify-content-center">
-                                                            <div class="col-lg-8">
-                                                                <div class="testimonial-content">
-                                                                    <p>
-                                                                        <i class="bi bi-quote quote-icon-left"></i>
-                                                                        @se.Comments
-                                                                        <i class="bi bi-quote quote-icon-right"></i>
-                                                                    </p>
-                                                                        <h4>@se.Member.MemberName</h4>                                                                    
-                                                                    <h5>@se.EvaluateDate</h5>
-                                                                    <div id="@se.EvaluateNo" class="stars" style="pointer-events: none;" onclick="getStar(event,@se.Rating)"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-2 text-center" style="width:120px;">
-                                                                <img src="~/Images/Restaurant/man_person_icon.png" class="img-fluid testimonial-img" alt="">
-                                                            </div>
+                                            
+                                            <div class="swiper-slide" hidden>
+                                                <div class="testimonial-item">
+                                                    <div class="row gy-4 justify-content-center">
+                                                        <div class="col-lg-8">
+                                                        </div>
+                                                        <div class="col-lg-2 text-center" style="width:120px;">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- End testimonial item -->
+                                            </div>
+                                            @if (Model.storeEvaluates != null)
+                                            {
+                                                foreach (var se in Model.storeEvaluates)
+                                                {
+                                                    <div class="swiper-slide">
+                                                        <div class="testimonial-item">
+                                                            <div class="row gy-4 justify-content-center">
+                                                                <div class="col-lg-8">
+                                                                    <div class="testimonial-content">
+                                                                        <p>
+                                                                            <i class="bi bi-quote quote-icon-left"></i>
+                                                                            @se.Comments
+                                                                            <i class="bi bi-quote quote-icon-right"></i>
+                                                                        </p>
+                                                                        <h4>@se.Member.MemberName</h4>
+                                                                        <h5>@se.EvaluateDate</h5>
+                                                                        <div id="@se.EvaluateNo" class="stars" style="pointer-events: none;" onclick="getStar(event,@se.Rating)"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2 text-center" style="width:120px;">
+                                                                    <img src="~/Images/Restaurant/man_person_icon.png" class="img-fluid testimonial-img" alt="">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End testimonial item -->
+                                                }
                                             }
                                         </div>
                                         <div class="swiper-pagination"></div>
@@ -151,7 +165,7 @@
                                         <i class="bi bi-facebook"></i> Facebook
                                     </a>
                                     <a class="dropdown-item" href="https://social-plugins.line.me/lineit/share?url=https%3a%2f%2fkaramucho.asuscomm.com%2fstore%2fRestaurant%2f1"
-                                   target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
+                                       target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
                                     <a class="dropdown-item" href="mailto: ?subject=與您分享一間美味的餐廳，@item.RestaurantName！&body=@item.StoreMail"><i class="bi bi-envelope"></i> E-mail</a>
                                     <a class="dropdown-item" href="javascript:copyUrl();"><i class="bi bi-link"></i> 複製連結</a>
                                 </div><!--End Dropdowns-->

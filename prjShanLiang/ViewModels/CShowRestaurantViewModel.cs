@@ -5,7 +5,7 @@ namespace prjShanLiang.ViewModels
 {
     public class CShowRestaurantViewModel
     {
-        private IEnumerable<Store> _store { get; set; }
+        private IEnumerable<Store>? _store { get; set; }
         //private IEnumerable<Member> _member { get; set; }
         private IEnumerable<StoreEvaluate>? _storeEvaluates { get; set; }
         //public CShowRestaurantViewModel()
@@ -15,7 +15,7 @@ namespace prjShanLiang.ViewModels
         //    _member = db.Members.ToList();
         //}
 
-        public IEnumerable<Store> store
+        public IEnumerable<Store>? store
         {
             get { return _store; }
             set { _store = value; }

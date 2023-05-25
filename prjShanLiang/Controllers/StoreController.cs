@@ -42,8 +42,7 @@ namespace prjShanLiang.Controllers
             var smi = from mm in _db.MealMenus where mm.StoreId == id select mm.MealImagePath;//改抓MealMenu.MealImagePath
             datas.store = sts;
             //datas.member = mbs;
-            if (se != null) { datas.storeEvaluates = se; }
-            else { datas.storeEvaluates = null; }
+            datas.storeEvaluates = se; 
             datas.storeDecorationImagePath = sdp.FirstOrDefault();
             datas.memberFavorateCount = mfc.Count();
             datas.storeMealImages = smi;//改抓MealMenu.MealImagePath
