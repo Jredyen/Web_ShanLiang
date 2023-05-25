@@ -37,12 +37,12 @@ namespace prjShanLiang.Controllers
                                       select new Member { MemberId = m.MemberId, MemberName = m.MemberName };
             var sdp = from sd in _db.StoreDecorationImages where sd.StoreId == id select sd.ImagePath;
             var mfc = from ma in _db.MemberActions where ma.ActionId == 2 && ma.StoreId == id select ma;
-            var smi = from sm in _db.StoreMealImages where sm.StoreId == id select sm.ImagePath;
+            var smi = from mm in _db.MealMenus where mm.StoreId == id select mm.MealImagePath;//改抓MealMenu.MealImagePath
             datas.store = sts;
             datas.member = mbs;
             datas.storeDecorationImagePath = sdp.FirstOrDefault();
             datas.memberFavorateCount = mfc.Count();
-            datas.storeMealImages = smi;
+            datas.storeMealImages = smi;//改抓MealMenu.MealImagePath
             return View(datas);
         }
         public IActionResult GetRestaurantType(int id)
@@ -86,12 +86,14 @@ namespace prjShanLiang.Controllers
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Member mem = JsonSerializer.Deserialize<Member>(json);
             var ma = _db.MemberActions.Where(ma => ma.ActionId == 2 && ma.MemberId == mem.MemberId && ma.StoreId == id).FirstOrDefault();
+            IQueryable<MemberAction> mfc = null; //計數用
             if (ma != null)
             {
                 _db.MemberActions.Remove(ma);
                 _db.SaveChanges();
                 ma.MemberNotes = "";
-                return Json(ma);
+                mfc = from m in _db.MemberActions where m.ActionId == 2 && m.StoreId == id select m;
+                return Json(new { memberNotes = ma.MemberNotes, count = mfc.Count() });
             }
             else if (ma == null)
             {
@@ -102,7 +104,8 @@ namespace prjShanLiang.Controllers
                 ma.MemberNotes = "新增收藏";
                 _db.MemberActions.Add(ma);
                 _db.SaveChanges();
-                return Json(ma);
+                mfc = from m in _db.MemberActions where m.ActionId == 2 && m.StoreId == id select m;
+                return Json(new { memberNotes = ma.MemberNotes, count = mfc.Count() });
             }
             else
                 return RedirectToAction("Login", "User");
