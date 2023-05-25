@@ -7,6 +7,6 @@
         public static readonly string SK_LOGINED_USER_ROLE = "SK_LOGINED_USER_ROLE ";
 
         public static readonly string SK_LOGINED_Adv = "SK_LOGINED_Adv";
-
+        public static readonly string SK_STOREMEAL_STOREID = "SK_STOREMEAL_STOREID";
     }
 }
