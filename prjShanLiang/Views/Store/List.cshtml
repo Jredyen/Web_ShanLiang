@@ -560,12 +560,12 @@
                 }
                 datasum = data.datasum;
                 return `<tr>
-                        <td class="number text-center">${index + 1}</td>
-                        <td class="image"><a href="Restaurant?id=${data.storeId}"><img src="../../images/store/${data.imagePath}" alt="${data.restaurantName}"></a></td>
-                        <td class="product"><a href="Restaurant?id=${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}<br>${data.restaurantAddress}</a></td>
-                        <td class="rate text-right"><span>${stars}</span></td>
-                        <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
-                        </tr>`
+                             <td class="number text-center">${index + 1}</td>
+                             <td class="image"><a href="Restaurant/${data.storeId}"><img src="../../images/store/decoration/${data.imagePath}" alt="${data.restaurantName}"></a></td>
+                             <td class="product"><a href="Restaurant?id=${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}<br>${data.restaurantAddress}</a></td>
+                             <td class="rate text-right"><span>${stars}</span></td>
+                             <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
+                             </tr>`
             });
             //延遲2秒
             setTimeout(function () {

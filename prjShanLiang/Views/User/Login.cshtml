@@ -75,7 +75,7 @@
             </div>
         </div><!-- End Breadcrumbs -->
         <!-- Section: Design Block -->
-        <section class="background-radial-gradient overflow-hidden" style="margin-bottom:100px">
+        <section class="background-radial-gradient overflow-hidden">
 
 
             <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
@@ -177,26 +177,16 @@
 
 
 
-
+                
 
                 inpAccount.addEventListener('blur', async () => {
                     //  divAccount.innerHTML =inpAccount.value;
                     //檢查帳號是否存在
                     const response = await fetch('@Url.Content("~/User/CheckLoginAccount")?name=' + inpAccount.value);
-                    const data = await response.json();
-                    console.log(data);
-                    const exists = data.exists;
-                    const accountStatus = data.accountStatus;
-                    console.log(exists);
-                    console.log(accountStatus);
-
+                    const isExists = await response.text();  //True or False
                     let message = "找不到您的帳戶";
-                    if (exists) {
-                        if (accountStatus === 0) {
-                            message = "店家帳號尚未驗證通過";
-                        } else {
-                            message = "";
-                        }
+                    if (isExists === "True") {
+                        message = "";
                     }
                     divAccount.innerHTML = message;
                 })

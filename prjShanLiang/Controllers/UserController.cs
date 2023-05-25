@@ -220,10 +220,10 @@ namespace prjShanLiang.Controllers
                 Website = vm.Website,
                 OpeningTime = stoView.OpeningTime,
                 ClosingTime = stoView.ClosingTime,
+                //DistrictId = 1,
                 Seats = vm.Seats,
                 StoreMail = vm.StoreMail,
-                Password = vm.AccountPassword,
-                AccountStatus = 0 //Jredyen:剛建立店家時給予待審核的帳號狀態
+                Password = vm.AccountPassword
 
             };
             string storeDistrict = vm.storeDistrict;
@@ -239,7 +239,7 @@ namespace prjShanLiang.Controllers
                 {
                     string substring = Guid.NewGuid().ToString();
                     string photoName = substring.Substring(0, 10) + ".jpg";
-                    string filePath = _enviro.WebRootPath + "/images" + "/store/" + photoName;
+                    string filePath = _enviro.WebRootPath + "/images/" + "/store/" + photoName;
                     //p.photo.CopyTo(new FileStream(path, FileMode.Create));
                     //prod.FImagePath = photoName;
                     //string filePath = "儲存的路徑" + "檔名";
@@ -509,21 +509,11 @@ namespace prjShanLiang.Controllers
             var isStoreAccountExists = sl.Stores.Any(s => s.AccountName == name);
             var isMemberAccountExists = sl.Members.Any(m => m.Email == name);
             var isAdminAccountExists = sl.Admins.Any(a => a.AdminName == name);
-            var isStoreAccountStatusExists = sl.Stores.Where(s => s.AccountName == name).Select(s => s.AccountStatus).FirstOrDefault();
-
             var exists = isStoreAccountExists || isMemberAccountExists || isAdminAccountExists;
-
-            var data = new
-            {
-                Exists = exists,
-                AccountStatus = isStoreAccountStatusExists
-            };
-
-            return Json(data);
+            return Content(exists.ToString());
         }
 
-
-
+        
 
 
         public IActionResult forgetPwd()
