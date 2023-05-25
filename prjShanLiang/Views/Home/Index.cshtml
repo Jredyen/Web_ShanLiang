@@ -389,25 +389,26 @@
                     @* <div class="fs-s fc-secondary">HOT</div>*@
                 </div>
                 <div class="row">
-                    @foreach (var ShanLiangBlog in Model.Item5.Take(4))
+                    @foreach (var evaluate in Model.Item3.Take(4))
                     {
+                        string imgName = evaluate.Store.RestaurantName + ".jpg";
                         <div class="col-sm-3">
                             <div class="card rounded" style="width: 32rem;">
-                                <a href="@Url.Action("BloggerCard", "Blogger")">
+                                <a href="@Url.Action("Restaurant", "store", new { id = evaluate.StoreId })">
                                     <div class="image-wrapper">
-
-                                        <img src="~/Images/Blog/@ShanLiangBlog.BlogPic" class="img-fluid carousel-image" alt="...">
-
+                                       @* @evaluate.Store.RestaurantName*@
+                                        <img src="~/images/test/@imgName" class="img-fluid carousel-image" />
                                     </div>
                                     <div class="card-body-123">
-                                        <div class="card-body-blog-123">
-                                            @ShanLiangBlog.BlogHeader
+                                        <div class="card-body-blog-123 Name-title">
+                                            @evaluate.Member.MemberName
                                         </div>
                                         <div>
-                                            @ShanLiangBlog.RestaurantName
+                                            <span class="vertical star" style="color:#ffc107;margin-right:10px;"></span>
+                                            <input type="hidden" class="rating-value" value="@evaluate.Rating" />
                                         </div>
                                         <div class="card-body-blog-123">
-                                            @ShanLiangBlog.BlogContent
+                                            @evaluate.Comments
                                         </div>
 
                                     </div>
