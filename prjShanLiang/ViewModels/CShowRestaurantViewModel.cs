@@ -6,7 +6,8 @@ namespace prjShanLiang.ViewModels
     public class CShowRestaurantViewModel
     {
         private IEnumerable<Store> _store { get; set; }
-        private IEnumerable<Member> _member { get; set; }
+        //private IEnumerable<Member> _member { get; set; }
+        private IEnumerable<StoreEvaluate>? _storeEvaluates { get; set; }
         //public CShowRestaurantViewModel()
         //{
         //    ShanLiang21Context db = new ShanLiang21Context(); 
@@ -19,14 +20,19 @@ namespace prjShanLiang.ViewModels
             get { return _store; }
             set { _store = value; }
         }
-        public IEnumerable<Member> member
+        //public IEnumerable<Member> member
+        //{
+        //    get { return _member; }
+        //    set { _member = value; }
+        //}
+        public IEnumerable<StoreEvaluate>? storeEvaluates
         {
-            get { return _member; }
-            set { _member = value; }
+            get { return _storeEvaluates; }
+            set { _storeEvaluates = value; }
         }
         public string? storeDecorationImagePath { get; set; }
         public int? memberFavorateCount { get; set; }
-        public IEnumerable<string>? storeMealImages { get; set; } 
+        public IEnumerable<string>? storeMealImages { get; set; }
 
 
     }

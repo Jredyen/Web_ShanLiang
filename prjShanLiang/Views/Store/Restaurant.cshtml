@@ -34,8 +34,8 @@
                         <div class=" main-block">
                             <div class="st1">
                                 <div class="rating" style="font-size:2rem">
-                                    <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label>@Model.memberFavorateCount</label></div>
-                                    <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@item.StoreEvaluates.Where(x => x.StoreId == item.StoreId).Count()</label></div>
+                                    <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label id="labFavorate">@Model.memberFavorateCount</label></div>
+                                    <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@Model.storeEvaluates?.Count()</label></div>
                                     <div id="star" class="vertical" style="color:#ffc107;margin-right:10px; pointer-events: none;" onclick="getStar(event,@item.Rating)"></div>
                                 </div>
                             </div>
@@ -77,9 +77,9 @@
                             <section id="testimonials" class="testimonials section-bg">
                                 <div class="container" data-aos="fade-up">
 
-                                    <div class="slides-1 swiper" data-aos="fade-up" data-aos-delay="100">
+                                    <div class="swiper" data-aos="fade-up" data-aos-delay="100">
                                         <div class="swiper-wrapper">
-                                            @foreach (var se in item.StoreEvaluates.Where(x => x.StoreId == item.StoreId))
+                                            @foreach (var se in Model.storeEvaluates)
                                             {
                                                 <div class="swiper-slide">
                                                     <div class="testimonial-item">
@@ -91,10 +91,7 @@
                                                                         @se.Comments
                                                                         <i class="bi bi-quote quote-icon-right"></i>
                                                                     </p>
-                                                                    @foreach (var m in Model.member.Where(y => y.MemberId == se.MemberId))
-                                                                    {
-                                                                        <h4>@m.MemberName</h4>
-                                                                    }
+                                                                        <h4>@se.Member.MemberName</h4>                                                                    
                                                                     <h5>@se.EvaluateDate</h5>
                                                                     <div id="@se.EvaluateNo" class="stars" style="pointer-events: none;" onclick="getStar(event,@se.Rating)"></div>
                                                                 </div>
@@ -125,11 +122,11 @@
 
                                     <div class="gallery-slider swiper">
                                         <div class="swiper-wrapper align-items-center">
-                                            @foreach (var smi in Model.storeMealImages)
+                                            @foreach (var mip in Model.storeMealImages)
                                             {
                                                 <div class="swiper-slide">
-                                                    <a class="glightbox" data-gallery="images-gallery" href="~/Images/Restaurant/@smi">
-                                                        <img src="~/Images/Restaurant/@smi" class="img-fluid" alt="">
+                                                    <a class="glightbox" data-gallery="images-gallery" href="~/Images/Menu/@mip">
+                                                        <img src="~/Images/Menu/@mip" class="img-fluid" alt="">
                                                     </a>
                                                 </div>
                                             }
@@ -201,7 +198,7 @@
 
         </div>
     </section>
-    <button onclick="topFunction()" id="myBtn" title="回頁首"><i class="bi bi-chevron-double-up"></i></button>
+    <button type="button" onclick="topFunction()" id="myBtn" class="toTop-arrow" title="回頁首" style="display: inline-block;"></button>
 
     <script src="~/js/Restaurant.js"></script>
     <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
@@ -248,6 +245,7 @@
 
         // 載入時判斷Favorate紅或白
         const favorate = document.getElementById('favorate');
+        const labFavorate = document.getElementById('labFavorate');
         async function showFavorate() {
             const response = await fetch('@Url.Content("~/Store/ShowFavorate/")' + @item.StoreId);
             const datas = await response.json();
@@ -265,11 +263,11 @@
             const datas = await response.json();
             // 未收藏：變紅、新增
             if (datas.memberNotes == "新增收藏") {
-                return (favorate.innerHTML = `<i class="bi bi-suit-heart-fill ic-t" style="color:red;"></i>收藏`);
+                return (favorate.innerHTML = `<i class="bi bi-suit-heart-fill ic-t" style="color:red;"></i>收藏`) + (labFavorate.innerHTML = datas.count);
             }
             // 已收藏：變白、刪除
             else {
-                return (favorate.innerHTML = `<i class="bi bi-suit-heart ic-t"></i>收藏`);
+                return (favorate.innerHTML = `<i class="bi bi-suit-heart ic-t"></i>收藏`) + (labFavorate.innerHTML = datas.count);
             }
         });
 
