@@ -150,6 +150,7 @@
         .zoom-card {
             border:outset;
             transition: transform 0.3s;
+           
         }
 
         .zoom-card:hover {
@@ -175,7 +176,9 @@
             font-size: 12px;
             font-family: "標楷體", "Microsoft JhengHei", "PMingLiU", serif;
         }
-
+        #evaluate-bottom{
+            margin-bottom:15px;
+        }
        
          
     </style>
@@ -300,13 +303,13 @@
                     <div class="iconStyle">
                         <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <!-- 使用 Font Awesome 图标类 -->
                     </div>
-                    <div class="titleIA fs-xl">熱門預訂</div>
+                    <div class="titleIA fs-xl">熱門收藏</div>
                  
                 </div>
               
 
                 <div class="row">
-                    @foreach (var advertisement in Model.Item1.Skip(5).Take(4))
+                    @foreach (var advertisement in Model.Item1.Skip(5).Take(4)) 
                     {
                         string imgName = advertisement.RestaurantName + ".jpg";
                         <div class="col-sm-3">
@@ -389,11 +392,11 @@
                     @* <div class="fs-s fc-secondary">HOT</div>*@
                 </div>
                 <div class="row">
-                    @foreach (var evaluate in Model.Item3.Take(4))
+                    @foreach (var evaluate in Model.Item3.OrderByDescending(s=>s.EvaluateDate).Take(4))
                     {
                         string imgName = evaluate.Store.RestaurantName + ".jpg";
                         <div class="col-sm-3">
-                            <div class="card rounded zoom-card" style="width: 32rem;">
+                            <div class="card rounded zoom-card" style="width: 32rem;" id="evaluate-bottom">
                                 <a href="@Url.Action("Restaurant", "store", new { id = evaluate.StoreId })">
                                     <div class="image-wrapper">
                                        @* @evaluate.Store.RestaurantName*@
@@ -408,6 +411,7 @@
                                             <input type="hidden" class="rating-value" value="@evaluate.Rating" />
                                         </div>
                                         <div class="card-body-blog-123">
+                                            @(evaluate.EvaluateDate?.ToString("yyyy-MM-dd"))
                                             @evaluate.Comments
                                         </div>
 
