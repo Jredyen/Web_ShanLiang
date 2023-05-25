@@ -149,7 +149,7 @@
                                 <br />
                                 <br />
                                 <input type="button" id="myBtn" value="前往付款" class="btn btn-primary"/>
-                                @Html.ActionLink("取消", "Menu", "Shopping", null, new { @class = "btn btn-danger " } )
+                                @Html.ActionLink("取消", "Menu", "Shopping", new{ StoreId = ViewBag.storeid }, new { @class = "btn btn-danger " } )
                             </div>
                         </div>
                     </div>

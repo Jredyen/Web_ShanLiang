@@ -103,6 +103,7 @@ namespace prjShanLiang.Controllers
                 return RedirectToAction("List","Store");
             
                 int storeId =(int) HttpContext.Session.GetInt32(CDictionary.SK_STOREMEAL_STOREID); //從Session找店家ID
+                ViewBag.storeid = storeId;
 
                 if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
                     return RedirectToAction("Menu", new { StoreId = storeId });//如果Session購物車沒東西
@@ -151,7 +152,7 @@ namespace prjShanLiang.Controllers
         public IActionResult CheckoutCart()
         {   //確認訂單
             int storeId = (int)HttpContext.Session.GetInt32(CDictionary.SK_STOREMEAL_STOREID); //從Session找店家ID
-
+            ViewBag.storeid = storeId;
             if (!HttpContext.Session.Keys.Contains(CDictionary.SK_PURCHASED_MENU_LIST))
                 return RedirectToAction("Menu", new { StoreId = storeId });//如果Session購物車沒東西去點餐頁
                                                                      

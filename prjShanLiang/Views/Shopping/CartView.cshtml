@@ -78,7 +78,7 @@
             <br />
             <div style="text-align:center">                
                 @Html.ActionLink("確認訂單", "CheckoutCart", "Shopping", null, new { @class = "btn btn-primary" })
-                @Html.ActionLink("繼續點餐", "Menu", "Shopping", null, new { @class = "btn btn-primary" })
+                @Html.ActionLink("繼續點餐", "Menu", "Shopping", new{StoreId=ViewBag.storeid}, new { @class = "btn btn-primary" })
             </div>
         </div>        
     </div>
