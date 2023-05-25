@@ -17,7 +17,16 @@ namespace prjShanLiang.Controllers
             logginedAdmin = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Admin datas = JsonSerializer.Deserialize<Admin>(logginedAdmin);
             ViewBag.AdminName = datas.AdminName;
- 
+            
+            return View();
+        }
+
+        public IActionResult AdminName()
+        {
+            string logginedAdmin = null;
+            logginedAdmin = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Admin datas = JsonSerializer.Deserialize<Admin>(logginedAdmin);
+
             return View();
         }
 
@@ -27,6 +36,10 @@ namespace prjShanLiang.Controllers
             var datas = from a in db.Admins.Include(i => i.Identification)
                         select a;
 
+            string logginedAdmin = null;
+            logginedAdmin = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Admin data = JsonSerializer.Deserialize<Admin>(logginedAdmin);
+            ViewBag.AdminName = data.AdminName;
             return View(datas);
         }
 

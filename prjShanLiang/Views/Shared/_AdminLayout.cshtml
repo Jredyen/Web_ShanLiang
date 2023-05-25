@@ -47,6 +47,15 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+
+        .nav-admin-name{
+            padding-top: var(--bs-navbar-brand-padding-y);
+            padding-bottom: var(--bs-navbar-brand-padding-y);
+            font-size: var(--bs-navbar-brand-font-size);
+            color: var(--bs-navbar-brand-color);
+            text-decoration: none;
+            white-space: nowrap;
+        }
     </style>
     @await RenderSectionAsync("Styles", required: false)
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
@@ -59,15 +68,14 @@
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-        <h1></h1>
+            <h1 class="nav-admin-name">Hi, @ViewBag.AdminName</h1>
         </form>
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-        <li class="nav-item dropdown">
+            <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-        <li><a class="dropdown-item" href="#!">Settings</a></li>
-        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                    <li><a class="dropdown-item" asp-area="" asp-controller="UserAdmin" asp-action="List">Settings</a></li>
         <li><hr class="dropdown-divider" /></li>
         <li><a class="dropdown-item" href="#!">Logout</a></li>
         </ul>
@@ -160,7 +168,6 @@
         </div>
         <div id="layoutSidenav_content">
             <main>
-                @ViewBag.AdminName
                 @*<div class="container-fluid px-4">
                 <h1 class="mt-4">Dashboard</h1>
                 <ol class="breadcrumb mb-4">
@@ -343,6 +350,23 @@
     <!--DataTable js連結-->
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
     <script src="~/admin_js/datatables.js"></script>
+    <script>
+        $(document).ready(function () {
+            // 在頁面載入時發起 AJAX 請求獲取購物車數量並更新顯示
+            $.ajax({
+                url: "/api/shoppingcart/showcartcount",
+                type: "POST",
+                success: function (data) {
+                    if (data.success) {
+                        $('.cartQuantity').text(data.cartCount); // 更新顯示購物車數量的元素
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert("無法獲取購物車數量");
+                }
+            });
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
