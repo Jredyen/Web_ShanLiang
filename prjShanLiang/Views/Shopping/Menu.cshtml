@@ -318,22 +318,7 @@
                 error: function (xhr, ajaxOptions, thrownError) {
                     alert("加入購物車失敗");
                 }
-            });
-     
+            });    
     };
-</script>   
- <script>
-        const stars = document.querySelectorAll('.stars');
-        function getStar(event, n) {
-            for (let i = 1; i <= n; i++) {
-                event.target.innerHTML += '<i class="bi bi-star-fill"></i>';
-            }
-            for (let i = 1; i <= (5 - n); i++) {
-                event.target.innerHTML += '<i class="bi bi-star"></i>';
-            }
-        }
-        for (i = 0; i < stars.length; i++) {
-            stars[i].click();
-        }
-    </script>
+</script>
 }
