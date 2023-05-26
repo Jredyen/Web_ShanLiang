@@ -1,4 +1,6 @@
 ﻿@model Tuple<List<prjShanLiang.Models.Store>, List<prjShanLiang.Models.StoreAdImage>,List<prjShanLiang.Models.StoreEvaluate>,List<prjShanLiang.Models.Member>,List<prjShanLiang.Models.Blog>>
+
+
 @{
     ViewData["Title"] = "膳糧";
 }
@@ -302,9 +304,9 @@
                 </div>
                 <div class="indexTitle">
                     <div class="iconStyle">
-                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <!-- 使用 Font Awesome 图标类 -->
+                        <span class="fa fa-hotjar fc-secondary fs-xxl"> </span>   <div class="titleIA fs-xl">行銷專欄</div> 
                     </div>
-                    <div class="titleIA fs-xl">行銷專欄</div>
+                   
                   
                 </div>
 
@@ -348,9 +350,9 @@
 
                 <div class="indexTitle">
                     <div class="iconStyle">
-                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <!-- 使用 Font Awesome 图标类 -->
+                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span>  <div class="titleIA fs-xl">熱門收藏</div>
                     </div>
-                    <div class="titleIA fs-xl">熱門收藏</div>
+                   
                  
                 </div>
               
@@ -369,7 +371,8 @@
                                         @foreach (var Evaluate in Model.Item3.Where(s => s.StoreId == advertisement.StoreId).Take(1))
                                         {
                                             <div class="Name-title">
-                                               
+                                               <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label id="labFavorate"></label></div>
+                                                
                                                <span class="vertical star" style="color:#ffc107;margin-right:10px;"></span>
                                                <input type="hidden" class="rating-value" value="@advertisement.Rating" />
                                                @advertisement.RestaurantName
@@ -394,10 +397,10 @@
 
                 <div class="indexTitle">
                     <div class="iconStyle">
-                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <!-- 使用 Font Awesome 图标类 -->
+                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <div class="titleIA fs-xl">膳糧專欄</div>
                     </div>
-                    <div class="titleIA fs-xl">膳糧專欄</div>
-                    @* <div class="fs-s fc-secondary">HOT</div>*@
+                    
+                   
                 </div>
                 <div class="row">
                     @foreach (var ShanLiangBlog in Model.Item5.Take(4))
@@ -433,9 +436,9 @@
                 </div>
                 <div class="indexTitle">
                     <div class="iconStyle">
-                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <!-- 使用 Font Awesome 图标类 -->
+                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span>  <div class="titleIA fs-xl">最新評論</div>
                     </div>
-                    <div class="titleIA fs-xl">最新評論</div>
+                   
                     
                 </div>
                 <div class="row">
@@ -475,7 +478,7 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
             <script>
-                window.onload = function () {
+                window.onload = function () { //輪播圖片每秒三張
                     $('.carousel').carousel({
                         interval: 3000,
                         wrap: true,
@@ -483,7 +486,7 @@
                         keyboard: true
                     });
 
-                    const stars = document.getElementsByClassName('star');
+                    const stars = document.getElementsByClassName('star'); //顯示星星
 
                     for (let i = 0; i < stars.length; i++) {
                         const rating = parseInt(stars[i].nextElementSibling.value);
@@ -497,7 +500,7 @@
                     }
                 };
 
-                $(function () {
+                $(function () {  //回到頂端
                     $('#BackTop').click(function () {
                         $('html,body').animate({ scrollTop: 0 }, 333);
                     });
@@ -510,6 +513,10 @@
                     }).scroll();
                 });
 
+              
+                    
+               
+               
 
             </script>
 
