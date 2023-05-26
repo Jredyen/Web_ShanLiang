@@ -337,7 +337,7 @@ namespace prjShanLiang.Controllers
             };
             if (vm.MealImage != null)
             {
-                string ImageName = vm.MealName + ".jpg";
+                string ImageName = Guid.NewGuid().ToString() + ".jpg";
                 string path = _enviro.WebRootPath + "/images/Menu/" + ImageName;
 
                 vm.MealImage.CopyTo(new FileStream(path, FileMode.Create));
@@ -376,7 +376,7 @@ namespace prjShanLiang.Controllers
             mealMenu.Recommendation = vm.Recommendation;
             if (vm.MealImage != null)
             {
-                string ImageName = vm.MealName + ".jpg";
+                string ImageName = Guid.NewGuid().ToString() + ".jpg";
                 string path = _enviro.WebRootPath + "/images/Menu/" + ImageName;
 
                 vm.MealImage.CopyTo(new FileStream(path, FileMode.Create));
