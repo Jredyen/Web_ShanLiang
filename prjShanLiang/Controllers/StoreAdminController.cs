@@ -69,14 +69,14 @@ namespace prjShanLiang.Controllers
         {
             ShanLiang21Context db = new ShanLiang21Context();
             Store sto = db.Stores.FirstOrDefault(sto => sto.StoreId == id);
-            if (sto != null && sto.AccountStatus != 1) // 检查账户状态是否已验证
+            if (sto != null && sto.AccountStatus != 1) // 檢查帳戶狀態是否已驗證
             {
-                // 执行验证逻辑
+                // 執行驗證邏輯
 
-                // 发送验证邮件给店家
-                string recipientEmail = sto.StoreMail; // 收件者的邮箱地址
-                string subject = "验证邮件主题"; // 邮件主题
-                string message = "验证邮件内容"; // 邮件内容
+                // 發送驗證郵箱給店家
+                string recipientEmail = sto.StoreMail; // 收件者的郵箱地址
+                string subject = "驗證郵件主題"; // 郵件主題
+                string message = "驗證郵件內容"; // 郵件內容
 
                 _emailSender.SendEmailAsync(recipientEmail, subject, message, id);
 
