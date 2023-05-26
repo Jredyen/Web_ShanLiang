@@ -9,53 +9,46 @@
         <div class="breadcrumbs">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h1>文章內容</h1>
+                    <h1 style="font-size:30px">@Model.BlogHeader</h1>
                 </div>
             </div>
         </div><!-- End Breadcrumbs -->
-        <hr />
-        <div class="row">
-                <form asp-action="BloggerDetail">
+        <div>
+            <a asp-action="BloggerCard" style="font-size:18px" >回到文章總覽</a>
+        </div>
+        <div >
+            <form asp-action="BloggerDetail" style="font-family:NSimSun;">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="BlogId" readonly="value" />
-                <div class="form-group">
-                    <label asp-for="CityName" class="control-label">所在城市</label>
-                    <input asp-for="CityName" class="form-control" readonly="value" />
-                    <span asp-validation-for="CityName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="DistrictName" class="control-label">行政區</label>
-                    <input asp-for="DistrictName" class="form-control" readonly="value" />
-                    <span asp-validation-for="DistrictName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="RestaurantName" class="control-label">餐廳名稱</label>
-                    <input asp-for="RestaurantName" class="form-control" readonly="value" />
-                    <span asp-validation-for="RestaurantName" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                        <label asp-for="BlogHeader" class="control-label">主題</label>
-                    <input asp-for="BlogHeader" class="form-control" readonly="value" />
-                        <span asp-validation-for="BlogHeader" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
+                <div class="form-group ">
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/autosize.js/4.0.2/autosize.min.js"></script>
-                        <label asp-for="BlogContent" class="control-label">推薦內容</label>
-                    <textarea asp-for="BlogContent" class="form-control" readonly="value" id="story"></textarea>
+                    <textarea asp-for="BlogContent"
+                              class="form-control  p-3 mb-2 bg-light text-dark"
+                              readonly="value" 
+                    id="story"
+                    style="background-color:white; border:hidden;font-size: 20px;">
+                </textarea>
                         <span asp-validation-for="BlogContent" class="text-danger"></span>
                     <script src="~/js/Blog.js"></script>
                     </div>
-                <div style="border:1px #cccccc dashed;">
-                    <label asp-for="BlogPic" class="control-label" >店家照片</label>
+                <div class="text-center">
                     <img src="~/Images/Blog/@Model.BlogPic" width="1000" />
                     <span asp-validation-for="BlogPic" class="text-danger"></span>
                     </div>
+                <div class="form-group">
+                        <p style="font-size:18px">
+                            <img src="~/Images/Blog/city_icon.png" />
+                            @Model.CityName @Model.DistrictName
+                        <img src="~/Images/Blog/restaurant_icon.png" />
+                        @Model.RestaurantName
+                            </p>
+                </div>
                 </form>
         </div>
-        <br />
         <hr />
+      <br />
         <div>
-            <a asp-action="BloggerList">回到文章列表</a>
+            <a asp-action="BloggerCard" style="font-size:18px">回到文章總覽</a>
         </div>
     </div>
         </main>

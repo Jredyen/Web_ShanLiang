@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using prjShanLiang.Models;
+using prjShanLiang.ViewModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,11 @@ builder.Services.AddDbContext<ShanLiang21Context>(
  options => options.UseSqlServer(
  builder.Configuration.GetConnectionString("ShanLiangConnection")
 ));
+
+// Add EmailSender service
+builder.Services.AddTransient<IEmailSender, YourEmailSenderService>();
+// Configure IHttpContextAccessor
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -31,7 +37,8 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+  //name: "default",
+  //pattern: "{controller=Shopping}/{action=Menu}/{StoreId=1}");
+  name: "default",
+  pattern: "{controller=Home}/{action=Index}/{id?}");
 app.Run();

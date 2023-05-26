@@ -1,7 +1,7 @@
 ﻿@model prjShanLiang.Models.Admin
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "膳糧";
 }
 
 @{
@@ -29,7 +29,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="IdentificationId" class="control-label" placeholder="">權限設定</label>
-                <select name="Identification" asp-for="IdentificationId" class="form-control">
+                <select name="IdentificationID" asp-for="IdentificationId" class="form-control">
                     @{
                         ShanLiang21Context db = new ShanLiang21Context();
                         var data = db.Identifications.ToList();

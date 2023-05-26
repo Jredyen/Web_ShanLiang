@@ -75,7 +75,7 @@ public partial class ShanLiang21Context : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=tcp:karamucho.asuscomm.com,1433;Initial Catalog=ShanLiang2.1;User ID=ispan_304_a;Password=aaaa1111bbbb2222;TrustServerCertificate=true;MultipleActiveResultSets=true");
+        => optionsBuilder.UseSqlServer("Data Source=tcp:karamucho.asuscomm.com,1433;Initial Catalog=ShanLiang2.1;User ID=ispan_304_a;Password=aaaa1111bbbb2222;TrustServerCertificate=true;MultipleActiveResultSets=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -118,7 +118,7 @@ public partial class ShanLiang21Context : DbContext
 
             entity.Property(e => e.AdminId).HasColumnName("AdminID");
             entity.Property(e => e.AdminName).HasMaxLength(50);
-            entity.Property(e => e.IdentificationId).HasColumnName("IdentificationId");
+            entity.Property(e => e.IdentificationId).HasColumnName("IdentificationID");
             entity.Property(e => e.Passwoed).HasMaxLength(50);
 
             entity.HasOne(d => d.Identification).WithMany(p => p.Admins)
@@ -193,7 +193,7 @@ public partial class ShanLiang21Context : DbContext
         {
             entity.ToTable("Identification", "dbo");
 
-            entity.Property(e => e.IdentificationId).HasColumnName("IdentificationId");
+            entity.Property(e => e.IdentificationId).HasColumnName("IdentificationID");
             entity.Property(e => e.IdentificationName).HasMaxLength(10);
         });
 
@@ -268,7 +268,7 @@ public partial class ShanLiang21Context : DbContext
             entity.Property(e => e.AccountName).HasMaxLength(20);
             entity.Property(e => e.Address).HasMaxLength(50);
             entity.Property(e => e.BrithDate).HasColumnType("datetime");
-            entity.Property(e => e.Email).HasMaxLength(20);
+            entity.Property(e => e.Email).HasMaxLength(50);
             entity.Property(e => e.MemberName).HasMaxLength(10);
             entity.Property(e => e.Memberphone).HasMaxLength(20);
             entity.Property(e => e.Password).HasMaxLength(50);
@@ -422,6 +422,7 @@ public partial class ShanLiang21Context : DbContext
 
             entity.Property(e => e.StoreId).HasColumnName("StoreID");
             entity.Property(e => e.AccountName).HasMaxLength(20);
+            entity.Property(e => e.AccountStatus).HasDefaultValueSql("((0))");
             entity.Property(e => e.DistrictId).HasColumnName("DistrictID");
             entity.Property(e => e.Latitude).HasColumnType("decimal(10, 6)");
             entity.Property(e => e.Longitude).HasColumnType("decimal(10, 6)");
@@ -449,9 +450,15 @@ public partial class ShanLiang21Context : DbContext
 
             entity.ToTable("Store_AD_Image", "dbo");
 
+            entity.Property(e => e.ADColumn)
+                .HasMaxLength(50)
+                .HasColumnName("ADColumn");
             entity.Property(e => e.Adimage)
                 .HasMaxLength(50)
                 .HasColumnName("ADImage");
+            entity.Property(e => e.ADPrice)
+                .HasColumnType("money")
+                .HasColumnName("ADPrice");
             entity.Property(e => e.Eximage)
                 .HasMaxLength(50)
                 .HasColumnName("EXImage");

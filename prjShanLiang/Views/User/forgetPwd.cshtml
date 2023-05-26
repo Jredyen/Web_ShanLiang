@@ -1,0 +1,191 @@
+﻿Login 2
+……….
+@model prjShanLiang.Models.Account
+
+@{
+    ViewData["Title"] = "登入";
+}
+
+
+<style>
+    .inputFont {
+        font-size: 20px;
+        font-family: Microsoft JhengHei;
+        display: block;
+        height: 50px;
+        width: 500px;
+        margin-bottom: 15px
+    }
+
+    .Demo {
+        font-size: 10px;
+        color: darkblue;
+        font-family: Microsoft JhengHei;
+        display: flex;
+        height: 30px;
+        width: 120px;
+        margin: 10px;
+        float: left;
+        background-color: lightblue;
+        border: none;
+    }
+
+    .background-radial-gradient {
+        background-color: hsl(218, 41%, 15%);
+        background-image: radial-gradient(650px circle at 0% 0%, hsl(218, 41%, 35%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(218, 41%, 19%) 80%, transparent 100%), radial-gradient(1250px circle at 100% 100%, hsl(218, 41%, 45%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(218, 41%, 19%) 80%, transparent 100%);
+    }
+
+    #radius-shape-1 {
+        height: 220px;
+        width: 220px;
+        top: -60px;
+        left: -130px;
+        background: radial-gradient(#44006b, #ad1fff);
+        overflow: hidden;
+    }
+
+    #radius-shape-2 {
+        border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
+        bottom: -60px;
+        right: -110px;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(#44006b, #ad1fff);
+        overflow: hidden;
+    }
+
+    .bg-glass {
+        background-color: hsla(0, 0%, 100%, 0.9) !important;
+        backdrop-filter: saturate(200%) blur(25px);
+    }
+</style>
+<main id="main">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs">
+            <div class="container">
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>@ViewData["Title"]</h2>
+                    <ol>
+                        <li><a asp-controller="User" asp-action="Login">User</a></li>
+                        <li>Login</li>
+                    </ol>
+                </div>
+
+            </div>
+        </div><!-- End Breadcrumbs -->
+        <!-- Section: Design Block -->
+        <section class="background-radial-gradient overflow-hidden">
+
+
+            <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+                <div class="row gx-lg-5 align-items-center mb-5">
+                    <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+                        <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+                            The best offer <br />
+                            <span style="color: hsl(218, 81%, 75%)">膳糧</span>
+                        </h1>
+                        <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+                           
+                        </p>
+                    </div>
+
+                    <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+                        <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+                        <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+
+                        <div class="card bg-glass">
+                            <div class="card-body px-4 py-5 px-md-5">
+                                <form asp-action="sendEmail">
+                                    <!-- 2 column grid layout with text inputs for the first and last names -->
+                                    <div class="row">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <label asp-for="AccountName" class="control-label">帳號</label>
+                                            <input asp-for="AccountName" id="InputAccount" class="form-control inputFont" />
+                                            <div id="accountHelp" style="color:red" class="form-text"></div>
+                                            <span asp-validation-for="AccountName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="visibility: hidden" class="control-label"></label>
+                                            <input style="visibility: hidden" class="form-control inputFont" />
+                                            <span asp-validation-for="AccountPassword" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" value="送出" class="btn btn-primary  mb-2 inputFont" />
+                                            <p ></p>
+                                            <p ></p>
+                                        </div>
+                                        @Html.ActionLink("登入", "Login", "User")
+                                        <input id="btnMemberLoginDemo1" type="button" value="會員登入Demo" class="btn btn-primary  mb-2 Demo" />
+
+                                        <input id="btnStoreLoginDemo1" type="button" value="店家登入Demo" class="btn btn-primary  mb-2 Demo" />
+
+                                        <input id="btnAdminLoginDemo1" type="button" value="管理員登入Demo" class="btn btn-primary  mb-2 Demo" />
+
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </section>
+        <!-- Section: Design Block -->
+        @section Scripts {
+            <script>
+
+
+
+                const inpAccount = document.getElementById('InputAccount');
+                const InputAccountPassword = document.getElementById('InputAccountPassword');
+
+                const divAccount = document.getElementById('accountHelp');
+
+                const btnMemberLoginDemo = document.getElementById('btnMemberLoginDemo1');
+                const btnStoreLoginDemo = document.getElementById('btnStoreLoginDemo1');
+                const btnAdminLoginDemo = document.getElementById('btnAdminLoginDemo1');
+
+
+
+                btnMemberLoginDemo.addEventListener('click', function () {
+                    inpAccount.value = "chris@gmail.com"
+                    InputAccountPassword.value = "aaaBBB1234567A"
+
+                })
+                btnStoreLoginDemo.addEventListener('click', function () {
+                    inpAccount.value = "Chao"
+                    InputAccountPassword.value = "1234"
+
+                })
+                btnAdminLoginDemo.addEventListener('click', function () {
+                    inpAccount.value = "Mark"
+                    InputAccountPassword.value = "1234"
+
+                })
+
+                inpAccount.addEventListener('blur', async () => {
+                    //  divAccount.innerHTML =inpAccount.value;
+                    //檢查帳號是否存在
+                    const response = await fetch('@Url.Content("~/User/CheckLoginAccount")?name=' + inpAccount.value);
+                    const isExists = await response.text();  //True or False
+                    let message = "找不到您的帳戶";
+                    if (isExists === "True") {
+                        message = "";
+                    }
+                    divAccount.innerHTML = message;
+                })
+            </script>
+
+
+            @*await Html.RenderPartialAsync("_ValidationScriptsPartial");*@
+
+        }
+    </div>
+</main>
+

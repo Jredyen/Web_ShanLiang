@@ -1,20 +1,34 @@
-﻿@model prjShanLiang.Models.Account
+﻿Login 2
+……….
+@model prjShanLiang.Models.Account
 
 @{
     ViewData["Title"] = "登入";
 }
 
-
 <style>
     .inputFont {
         font-size: 20px;
-        font-family: Microsoft JhengHei ;
-        display:block;
+        font-family: Microsoft JhengHei;
+        display: block;
         height: 50px;
         width: 500px;
-        margin-bottom:15px
+        margin-bottom: 15px
     }
-    
+
+    .Demo {
+        font-size: 10px;
+        color: darkblue;
+        font-family: Microsoft JhengHei;
+        display: flex;
+        height: 30px;
+        width: 120px;
+        margin: 10px;
+        float: left;
+        background-color: lightblue;
+        border: none;
+    }
+
     .background-radial-gradient {
         background-color: hsl(218, 41%, 15%);
         background-image: radial-gradient(650px circle at 0% 0%, hsl(218, 41%, 35%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(218, 41%, 19%) 80%, transparent 100%), radial-gradient(1250px circle at 100% 100%, hsl(218, 41%, 45%) 15%, hsl(218, 41%, 30%) 35%, hsl(218, 41%, 20%) 75%, hsl(218, 41%, 19%) 80%, transparent 100%);
@@ -60,45 +74,41 @@
 
             </div>
         </div><!-- End Breadcrumbs -->
+        <!-- Section: Design Block -->
+        <section class="background-radial-gradient overflow-hidden" style="margin-bottom:100px">
 
-<!-- Section: Design Block -->
-<section class="background-radial-gradient overflow-hidden">
-    
 
-    <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
-        <div class="row gx-lg-5 align-items-center mb-5">
-            <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
-                <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
-                    The best offer <br />
-                    <span style="color: hsl(218, 81%, 75%)">for your business</span>
-                </h1>
-                <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                    Temporibus, expedita iusto veniam atque, magni tempora mollitia
-                    dolorum consequatur nulla, neque debitis eos reprehenderit quasi
-                    ab ipsum nisi dolorem modi. Quos?
-                </p>
-            </div>
+            <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+                <div class="row gx-lg-5 align-items-center mb-5">
+                    <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+                        <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+                            The best offer <br />
+                            <span style="color: hsl(218, 81%, 75%)">膳糧</span>
+                        </h1>
+                        <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+                            
+                        </p>
+                    </div>
 
-            <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
-                <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
-                <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+                    <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+                        <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+                        <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
 
-                <div class="card bg-glass">
-                    <div class="card-body px-4 py-5 px-md-5">
+                        <div class="card bg-glass">
+                            <div class="card-body px-4 py-5 px-md-5">
                                 <form asp-action="Login">
-                            <!-- 2 column grid layout with text inputs for the first and last names -->
-                            <div class="row">
+                                    <!-- 2 column grid layout with text inputs for the first and last names -->
+                                    <div class="row">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <div class="form-group">
                                             <label asp-for="AccountName" class="control-label">帳號</label>
-                                            <input asp-for="AccountName" id="InputAccount" value="chris@gmail.com" class="form-control inputFont" />
+                                            <input asp-for="AccountName" id="InputAccount" class="form-control inputFont" />
                                             <div id="accountHelp" style="color:red" class="form-text"></div>
                                             <span asp-validation-for="AccountName" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
-                                            <label asp-for="AccountPassword"  class="control-label">密碼</label>
-                                            <input asp-for="AccountPassword" value="aaaBBB1234567A" class="form-control inputFont" />
+                                            <label asp-for="AccountPassword" class="control-label">密碼</label>
+                                            <input asp-for="AccountPassword" type="password" id="InputAccountPassword" class="form-control inputFont" />
                                             <span asp-validation-for="AccountPassword" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
@@ -106,85 +116,96 @@
                                             <a asp-action="Signup">註冊會員</a>
                                             <a asp-action="SignupStore">註冊店家</a>
                                         </div>
-                                
-                             
+                                        @Html.ActionLink("忘記密碼", "forgetPwd", "User")
+                                        <input id="btnMemberLoginDemo1" type="button" value="會員登入Demo" class="btn btn-primary  mb-2 Demo" />
+
+
+                                        <input id="btnStoreLoginDemo1" type="button" value="店家登入Demo" class="btn btn-primary  mb-2 Demo" />
+
+
+                                        <input id="btnAdminLoginDemo1" type="button" value="管理員登入Demo" class="btn btn-primary  mb-2 Demo" />
+                                        
+                                        <input id="btnMemberRegistrationDemo1" type="button" value="會員註冊Demo" class="btn btn-primary  mb-2 Demo" />
+
+                                    </div>
+
+                                </form>
                             </div>
-
-                            <!-- Email input -->
-                            @*<div class="form-outline mb-4">
-                                <input type="email" id="form3Example3" class="form-control" />
-                                <label class="form-label" for="form3Example3">Email address</label>
-                            </div>*@
-
-                            <!-- Password input -->
-                            @*<div class="form-outline mb-4">
-                                <input type="password" id="form3Example4" class="form-control" />
-                                <label class="form-label" for="form3Example4">Password</label>
-                            </div>*@
-
-                            <!-- Checkbox -->
-                            @*<div class="form-check d-flex justify-content-center mb-4">
-                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
-                                <label class="form-check-label" for="form2Example33">
-                                    Subscribe to our newsletter
-                                </label>
-                            </div>*@
-
-                            <!-- Submit button -->
-                            @*<button type="submit" class="btn btn-primary btn-block mb-4">
-                                Sign up
-                            </button>*@
-
-                            <!-- Register buttons -->
-                           @* <div class="text-center">
-                                <p>or sign up with:</p>
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-facebook-f"></i>
-                                </button>
-
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-google"></i>
-                                </button>
-
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-twitter"></i>
-                                </button>
-
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-github"></i>
-                                </button>
-                            </div>*@
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-<!-- Section: Design Block -->
+
+           
+
+        </section>
+        <!-- Section: Design Block -->
         @section Scripts {
-            
-                <script>
+            <script>
+
+
+
                 const inpAccount = document.getElementById('InputAccount');
+                const InputAccountPassword = document.getElementById('InputAccountPassword');
+
                 const divAccount = document.getElementById('accountHelp');
-                inpAccount.addEventListener('blur', async () =>
-                {
+
+                const btnMemberLoginDemo = document.getElementById('btnMemberLoginDemo1');
+                const btnStoreLoginDemo = document.getElementById('btnStoreLoginDemo1');
+                const btnAdminLoginDemo = document.getElementById('btnAdminLoginDemo1');
+
+
+
+                btnMemberLoginDemo.addEventListener('click', function () {
+                    inpAccount.value = "chris@gmail.com"
+                    InputAccountPassword.value = "aaaBBB1234567A"
+
+                })
+                btnStoreLoginDemo.addEventListener('click', function () {
+                    inpAccount.value = "ShanLiangBentou"
+                    InputAccountPassword.value = "1234"
+
+                })
+                btnAdminLoginDemo.addEventListener('click', function () {
+                    inpAccount.value = "Mark"
+                    InputAccountPassword.value = "1234"
+
+                })
+                btnMemberRegistrationDemo1.addEventListener('click', function () {
+                    inpAccount.value = "nispanc@myyahoo.com"
+                })
+
+
+
+
+
+                inpAccount.addEventListener('blur', async () => {
                     //  divAccount.innerHTML =inpAccount.value;
                     //檢查帳號是否存在
                     const response = await fetch('@Url.Content("~/User/CheckLoginAccount")?name=' + inpAccount.value);
-                    const isExists = await response.text();  //True or False
-                    let message = "帳號不存在";
-                    if (isExists === "True")
-                    {
-                        message = "";
+                    const data = await response.json();
+                    console.log(data);
+                    const exists = data.exists;
+                    const accountStatus = data.accountStatus;
+                    console.log(exists);
+                    console.log(accountStatus);
+
+                    let message = "找不到您的帳戶";
+                    if (exists) {
+                        if (accountStatus === 0) {
+                            message = "店家帳號尚未驗證通過";
+                        } else {
+                            message = "";
+                        }
                     }
                     divAccount.innerHTML = message;
                 })
-                </script>
+            </script>
 
 
-                @*await Html.RenderPartialAsync("_ValidationScriptsPartial");*@
-            
+            @*await Html.RenderPartialAsync("_ValidationScriptsPartial");*@
+
         }
     </div>
 </main>
+

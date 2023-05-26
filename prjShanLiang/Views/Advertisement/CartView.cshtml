@@ -1,0 +1,99 @@
+﻿@model List<prjShanLiang.Models.CShoppingCartItem>
+@{
+    ViewData["Title"] = "CartView";
+}
+
+<h2>檢視購物車</h2>
+<head>
+
+</head>
+<body>
+    <main id="main">
+
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>購買廣告結帳頁面</h2>
+                    
+                </div>
+            </div>
+        </div><!-- End Breadcrumbs -->
+
+        <section class="sample-page">
+            <div class="container" data-aos="fade-up">
+
+<table class="table">
+    <tr>
+        <th>
+            序
+
+        </th>
+        <th>
+            品項
+        </th>
+      
+        <th>
+            售價
+        </th>
+        <th>
+            小計
+        </th>
+        <th></th>
+    </tr>
+
+    @{
+        int count = 0;
+        decimal pay = 0;
+        decimal tax = 0;
+        decimal sum = 0;
+        foreach (var item in Model)
+        {
+            count++;
+            pay += item.小計;
+            <tr>
+                <td>
+                    @count
+                </td>
+                <td>
+                  
+                    @Html.DisplayFor(modelItem => item.storeAdImage.Eximage)
+                </td>
+              
+                <td>
+                    @Html.DisplayFor(modelItem => item.price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.price)
+                </td>
+                <td>
+                    @Html.ActionLink("確認訂單", "ConfirmADOrder", "Advertisement", null, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("取消", "BuyAdv","Advertisement", new {  id=item.StoreID ,Class = "btn btn-danger"})
+                    @Html.ActionLink("刪除", "Delete","Advertisement", new {  id=item.storeAdImage.StoreId  }, new { onclick = "return confirm('確定要刪除嗎?')", Class = "btn btn-danger" })
+                               
+                </td>
+             </tr>
+                    pay = item.price;
+        }
+      
+        tax = pay * 0.05M;
+        sum = pay + tax;
+    }
+</table>
+<ol>
+<li>交易金額：@pay.ToString("###,###,##0")</li>
+<li>稅　　額：@tax.ToString("###,###,##0")</li>
+<li>應付金額：@sum.ToString("###,###,##0")</li>
+                </ol>
+            </div>
+        </section>
+
+    </main><!-- End #main -->
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <button type="button" id="BackTop" class="toTop-arrow"></button>
+    <script>
+
+    </script>
+</body>
