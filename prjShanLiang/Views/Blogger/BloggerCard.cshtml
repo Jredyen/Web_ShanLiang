@@ -3,23 +3,68 @@
 @{
     ViewData["Title"] = "BloggerCard";
 }
+@section Styles{
+    <style>
+    .toTop-arrow {
+        width: 4.3rem;
+        height: 4.3rem;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        border-radius: 33%;
+        opacity: 0.6;
+        background: #000;
+        cursor: pointer;
+        position: fixed;
+        right: 1rem;
+        bottom: 8rem;
+        display: none;
+    }
+
+        .toTop-arrow::before, .toTop-arrow::after {
+            width: 25px;
+            height: 6px;
+            border-radius: 3px;
+            background: #f90;
+            position: absolute;
+            content: "";
+        }
+
+        .toTop-arrow::before {
+            transform: rotate(-45deg) translate(0, -50%);
+            left: 0.42rem;
+        }
+
+        .toTop-arrow::after {
+            transform: rotate(45deg) translate(0, -50%);
+            right: 0.42rem;
+        }
+
+        .toTop-arrow:focus {
+            outline: none;
+        }
+</style>
+}
+<button type="button" id="BackTop" class="toTop-arrow"></button>   @*回到最上層按鈕*@
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <!-- ======= Breadcrumbs ======= -->
         <div class="breadcrumbs">
             <div class="container">
                 <div class="d-flex justify-content-between align-items-center">
-                    <h1 style="font-size:30px">文章專欄</h1>
+                    <h1 style="font-size:30px">膳糧專欄</h1>
                     <p style="font-size:20px; ">
+                        <img src="~/Images/Blog/blogwrite_icon.png" height="32px"/>
                         <a asp-action="BloggerCreate">我要投稿</a>
                     </p>
                 </div>
             </div>
         </div><!-- End Breadcrumbs -->
         <div>
+            <img src="~/Images/Blog/checkmark.png" height="32px" />
             <a asp-action="BloggerList" style="font-size:18px">文章管理</a>
         </div>
-        <p>
+        <p >
             @using (Html.BeginForm())
             {
                 @:關鍵字 @Html.TextBox("txtKeyword") 
@@ -27,7 +72,11 @@
                 
             }
         </p>
-            @foreach (var item in Model)
+        @{
+            var reversedModel = Model.ToList();
+            reversedModel.Reverse();
+        }
+        @foreach (var item in reversedModel)
             {
             <div class="card mb-3 bg-light text-dark" style="max-width: 1500px; ">
                 <div class="row g-0">
@@ -36,7 +85,10 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h1 class="card-title">@Html.ActionLink( item.BlogHeader, "BloggerDetail", new { id=item.BlogId })</h1>
+                            <h1 class="card-title">
+                                <img src="~/Images/Blog/store_sale_icon.png" />
+                                @Html.ActionLink( item.BlogHeader, "BloggerDetail", new { id=item.BlogId })
+                            </h1>
                             <br>
                             <p class="card-text"
                                style="font-size:18px; font-family:NSimSun;
@@ -46,10 +98,11 @@
                              </p>
                             <br>
                             <br>
-                            <p class="card-text"><small class="text-body-secondary">
-                                    <img src="~/Images/Blog/city_icon.png" />
+                            <p class="card-text">
+                                <small class="text-body-secondary" >
+                                    <img src="~/Images/Blog/city_icon.png" height="32px" />
                                     @item.CityName @item.DistrictName
-                                    <img src="~/Images/Blog/restaurant_icon.png" />
+                                    <img src="~/Images/Blog/restaurant_icon.png" height="32px" />
                                     @item.RestaurantName
                                 </small>
                             </p>
@@ -60,5 +113,20 @@
             }
     </div>
         </main>
-
-   
+        @section Scripts{
+    <script>
+        //回到最頂端功能
+        $(function () {
+            $('#BackTop').click(function () {
+                $('html,body').animate({ scrollTop: 0 }, 333);
+            });
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 300) {
+                    $('#BackTop').fadeIn(222);
+                } else {
+                    $('#BackTop').stop().fadeOut(222);
+                }
+            }).scroll();
+        });
+    </script>
+        }
