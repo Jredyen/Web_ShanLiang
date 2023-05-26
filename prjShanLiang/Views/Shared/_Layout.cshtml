@@ -110,12 +110,12 @@
                     <li>
                         <a class="nav-link text-dark" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-StoreId="1">訂餐</a>
                     </li>
-                    <li class="showUserName" text-white bg-warning"></li>
+                    <li style="display:flex;font-size:15px;margin-left:80px;" class="showUserName" text-white bg-warning" id="isLogin"></li>
                     
-                    @Html.ActionLink("登出", "logOut" ,"User")
                 </ul>
             </nav>
             <div>
+                
                 <div class="container pt-5">
                     <a class="position-relative" href="@Url.Action("CartView", "Shopping")">
                         @*轉跳購物車畫面*@
@@ -249,23 +249,29 @@
             
         });
 
+        const loginText = document.getElementById('isLogin');
         $(document).ready(function () {
-            // 在頁面載入時發起 AJAX 請求獲取購物車數量並更新顯示
+            // 在頁面載入時發起 AJAX 請求獲取使用者名稱並更新顯示
             $.ajax({
                 url: "/api/userName/User",
                 type: "POST",
                 success: function (data) {
                     if (data.success) {
-                        $('.showUserName').text("您好，"+data.userName); 
+                        var userName = data.userName;
+                        var greeting = "您好，";
+                        if (userName !== '請先登入') {
+                            var logoutLink = '<a href="/User/logOut" >登出</a>';
+                            $('.showUserName').html(greeting + userName + logoutLink  );
+                        }
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    
+                    // 處理錯誤
                 }
             });
-
         });
 
+        
     </script>
     @await RenderSectionAsync("Scripts", required: false)    
 
