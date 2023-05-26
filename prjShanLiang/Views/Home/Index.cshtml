@@ -1,4 +1,4 @@
-﻿@model Tuple<List<prjShanLiang.Models.Store>, List<prjShanLiang.Models.StoreAdImage>,List<prjShanLiang.Models.StoreEvaluate>,List<prjShanLiang.Models.Member>,List<prjShanLiang.Models.Blog>>
+﻿@model Tuple<List<prjShanLiang.Models.Store>, List<prjShanLiang.Models.StoreAdImage>,List<prjShanLiang.Models.StoreEvaluate>,List<prjShanLiang.Models.Member>,List<prjShanLiang.Models.Blog>,List<prjShanLiang.Models.MemberAction>>
 
 
 @{
@@ -357,8 +357,8 @@
                 </div>
               
 
-                <div class="row">
-                    @foreach (var advertisement in Model.Item1.Skip(5).Take(4)) 
+                <div class="row"> 
+                    @foreach (var advertisement in Model.Item1.OrderByDescending(s => s.MemberActions.Count).Take(4))
                     {
                         string imgName = advertisement.RestaurantName + ".jpg";
                         <div class="col-sm-3">
@@ -371,11 +371,15 @@
                                         @foreach (var Evaluate in Model.Item3.Where(s => s.StoreId == advertisement.StoreId).Take(1))
                                         {
                                             <div class="Name-title">
-                                               <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label id="labFavorate"></label></div>
-                                                
-                                               <span class="vertical star" style="color:#ffc107;margin-right:10px;"></span>
-                                               <input type="hidden" class="rating-value" value="@advertisement.Rating" />
+                                                <div class="vertical">
+                                                    <span class="card-body">
+                                                        <span class="vertical star" style="color:#ffc107;margin-right:10px;"></span>
+                                                        <input type="hidden" class="rating-value" value="@advertisement.Rating" />
+                                                    </span>
+                                                </div>
+        
                                                @advertisement.RestaurantName
+                                               
                                             </div>
                                             <div class="Name-body">
                                                 @foreach (var member in Model.Item4.Where(s => s.MemberId == Evaluate.MemberId))
@@ -512,6 +516,7 @@
                         }
                     }).scroll();
                 });
+
 
               
                     
