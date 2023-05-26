@@ -48,8 +48,8 @@
             // 構建郵件正文，包括驗證鏈接
             string verificationLink = $"https://{host}:{port}/StoreAdmin/CompleteVerification/?id={id}"; // 根據傳入的id構建驗證鏈接
             string emailBody = $"<p>{message}</p>";
-            emailBody += $"<p>請點擊以下鏈接進行驗證：</p>";
-            emailBody += $"<p><a href=\"{verificationLink}\">驗證鏈結</a></p>";
+            emailBody += $"<p>&emsp;&emsp;請點擊以下鏈接進行驗證登入：</p>";
+            emailBody += $"<p>&emsp;&emsp;<a href=\"{verificationLink}\">驗證鏈結</a></p>";
 
             mailMessage.Body = emailBody;
 

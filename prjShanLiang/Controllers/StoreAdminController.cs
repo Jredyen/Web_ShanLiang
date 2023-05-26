@@ -75,8 +75,9 @@ namespace prjShanLiang.Controllers
 
                 // 發送驗證郵件給店家
                 string recipientEmail = sto.StoreMail; // 收件者的郵箱地址
-                string subject = "驗證郵件的主題"; // 郵件主題
-                string message = "驗證郵件內容"; // 郵件內容
+                string subject = "膳糧平台註冊店家驗證通知信"; // 郵件主題
+                // 郵件內容
+                string message = " 您好：<br><label>&emsp;&emsp;請於收到信件後，盡快進行驗證。</label><br>";
 
                 _emailSender.SendEmailAsync(recipientEmail, subject, message, id);
 
