@@ -84,7 +84,7 @@ namespace prjShanLiang.Controllers
         {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
             {
-                return RedirectToAction("Login", "User");
+                return Json(new { memberNotes = "未登入"});                
             }
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Member mem = JsonSerializer.Deserialize<Member>(json);
