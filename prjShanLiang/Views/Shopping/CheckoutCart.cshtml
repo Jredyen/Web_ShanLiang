@@ -149,7 +149,7 @@
                                 <br />
                                 <br />
                                 <input type="button" id="myBtn" value="前往付款" class="btn btn-primary"/>
-                                @Html.ActionLink("取消", "Menu", "Shopping", new{StoreId=1}, new { @class = "btn btn-danger " } )
+                                @Html.ActionLink("取消", "Menu", "Shopping", new{ StoreId = ViewBag.storeid }, new { @class = "btn btn-danger " } )
                             </div>
                         </div>
                     </div>
@@ -162,11 +162,12 @@
                                                 const coupon = document.getElementById('coupon')@*確認按鈕*@
                                                 const textarea = document.getElementById("txtcoupon"); @*輸入的優惠碼*@
                                                 var discount = 1.0; @*初始折扣值*@
-                                                var payValue = @pay; @*折扣前金額*@
-                                                var finValue = @fin; @*折扣後金額*@
 
                 @*確認按鈕監聽點擊事件*@
                     coupon.addEventListener('click', () => {
+                        
+                        var payValue = @pay; @*折扣前金額*@
+                        var finValue = @fin; @*折扣後金額*@
                         const txtcoupon = textarea.value;
                         const coupon1 = 'ISpan666'
                         if (txtcoupon === coupon1) {
@@ -193,8 +194,8 @@
                 remarkdemo.addEventListener('click', () => {
                     txtremark.value = '不要餐具 小辣'
                 })
-</script>
-       <script>      
+
+           
         @*此方法可以取得總金額，備註，付款方式並傳回後端*@
             const myBtn = document.getElementById('myBtn')  @*前往付款按鈕*@
             const radioButtons = document.querySelectorAll('input[name="paymentMethod"]');@*付款方式的選取按鈕*@
