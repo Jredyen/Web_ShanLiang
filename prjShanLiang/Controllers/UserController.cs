@@ -506,12 +506,12 @@ namespace prjShanLiang.Controllers
         public IActionResult CheckLoginAccount(string name)
         {
             ShanLiang21Context sl = new ShanLiang21Context();
-            var isStoreAccountExists = sl.Stores.Any(s => s.AccountName == name);
+            var isStoreRestaurantNameExists = sl.Stores.Any(s => s.RestaurantName == name);
             var isMemberAccountExists = sl.Members.Any(m => m.Email == name);
             var isAdminAccountExists = sl.Admins.Any(a => a.AdminName == name);
-            var isStoreAccountStatusExists = sl.Stores.Where(s => s.AccountName == name).Select(s => s.AccountStatus).FirstOrDefault();
+            var isStoreAccountStatusExists = sl.Stores.Where(s => s.RestaurantName == name).Select(s => s.AccountStatus).FirstOrDefault();
 
-            var exists = isStoreAccountExists || isMemberAccountExists || isAdminAccountExists;
+            var exists = isStoreRestaurantNameExists || isMemberAccountExists || isAdminAccountExists;
 
             var data = new
             {
