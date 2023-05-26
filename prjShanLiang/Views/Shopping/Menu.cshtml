@@ -192,14 +192,18 @@
                     top++;
                     <div class="col-10 col-md-10 col-lg-4 " >                    
                     <div class="card shadow p-3 mb-5 bg-white rounded-5 custom-border" >
-                    <div style="display:flex;"> 
-                        
-                        <div class="vertical stars" style="color:#ffc107;margin-right:10px;">@*星星*@
+                    <div style="display:flex;">                         
+                        <div class="vertical stars" style="color:#ffc107;">@*星星*@
                           @for (int i = 1; i <= 5; i++){
                           if (i <= 5){<i class="bi bi-star-fill"></i>}
                           else{<i class="bi bi-star"></i>}}                          
                         </div>
-                        <div style="font-size:20px;margin-left:50px;">人氣第 @top 名  </div>
+                        <div style="font-size:20px;margin:0px 65px;">人氣第 @top 名  </div>
+                         <div class="vertical stars" style="color:#ffc107;">@*星星*@
+                          @for (int i = 1; i <= 5; i++){
+                          if (i <= 5){<i class="bi bi-star-fill"></i>}
+                          else{<i class="bi bi-star"></i>}}                          
+                        </div>
                     </div>
                         
                         
