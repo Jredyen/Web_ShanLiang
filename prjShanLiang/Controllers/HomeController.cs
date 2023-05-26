@@ -24,7 +24,8 @@ namespace prjShanLiang.Controllers
             var member = _db.Members.ToList();
             var blog = _db.Blogs.ToList();
             var MemAction = _db.MemberActions.Where(Ma=>Ma.ActionId==2).ToList();
-            var model = new Tuple<List<Store>, List<StoreAdImage>,List<StoreEvaluate>,List<Member>,List<Blog>,List<MemberAction>>(Image, AdImages, Evaluate, member,blog, MemAction);
+            var StoreDecorationImage = _db.StoreDecorationImages.Where(sa=>sa.ImageJudge=="true").ToList();
+            var model = new Tuple<List<Store>, List<StoreAdImage>,List<StoreEvaluate>,List<Member>,List<Blog>,List<MemberAction>,List<StoreDecorationImage>>(Image, AdImages, Evaluate, member,blog, MemAction, StoreDecorationImage);
             return View(model);
 
 

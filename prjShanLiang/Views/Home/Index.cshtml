@@ -1,4 +1,4 @@
-﻿@model Tuple<List<prjShanLiang.Models.Store>, List<prjShanLiang.Models.StoreAdImage>,List<prjShanLiang.Models.StoreEvaluate>,List<prjShanLiang.Models.Member>,List<prjShanLiang.Models.Blog>,List<prjShanLiang.Models.MemberAction>>
+﻿@model Tuple<List<prjShanLiang.Models.Store>, List<prjShanLiang.Models.StoreAdImage>,List<prjShanLiang.Models.StoreEvaluate>,List<prjShanLiang.Models.Member>,List<prjShanLiang.Models.Blog>,List<prjShanLiang.Models.MemberAction>,List<prjShanLiang.Models.StoreDecorationImage>>
 
 
 @{
@@ -318,16 +318,16 @@
 
                     @foreach (var advertisement in Model.Item1.Take(2))
                     {
-                        var adImage = Model.Item2.ElementAtOrDefault(index);
+                        var adImage = Model.Item7.ElementAtOrDefault(index);
 
                         if (index == 0) // 左图
                         {
                             <span class="left-img">
                                 <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
-                                    <img src="~/Images/store/@(adImage?.Adimage)" alt="Placeholder Image" height="400px" width="560px" id="left-img-element" />
+                                    <img src="~/Images/store/@(adImage?.ImagePath)" alt="Placeholder Image" height="400px" width="560px" id="left-img-element" />
                                 </a>
                                 <span class="carousel-caption"  >
-                                    @(adImage?.Adimage?.Replace(".jpg", ""))
+                                    @(adImage?.ImagePath?.Replace(".jpg", ""))
                                 </span>
                             </span>
                         }
@@ -335,10 +335,10 @@
                         {
                             <span class="right-img">
                                 <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
-                                    <img src="~/Images/store/@(adImage?.Adimage)" alt="Placeholder Image" height="400px" width="560px" id="right-img-element" />
+                                    <img src="~/Images/store/@(adImage?.ImagePath)" alt="Placeholder Image" height="400px" width="560px" id="right-img-element" />
                                 </a>
                                 <span class="carousel-caption">
-                                    @(adImage?.Adimage?.Replace(".jpg", ""))
+                                    @(adImage?.ImagePath?.Replace(".jpg", ""))
                                 </span>
                             </span>
                         }
@@ -375,9 +375,12 @@
                                                     <span class="card-body">
                                                         <span class="vertical star" style="color:#ffc107;margin-right:10px;"></span>
                                                         <input type="hidden" class="rating-value" value="@advertisement.Rating" />
+                                                        <i class="bi bi-suit-heart-fill" style="color:red"></i><label id="labFavorate">@advertisement.MemberActions.Count</label>
                                                     </span>
+                                                 
                                                 </div>
-        
+                                               
+                                               
                                                @advertisement.RestaurantName
                                                
                                             </div>
