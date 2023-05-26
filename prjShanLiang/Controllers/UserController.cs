@@ -96,7 +96,7 @@ namespace prjShanLiang.Controllers
                 
                 logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
                 Member datas = JsonSerializer.Deserialize<Member>(logginedUser);
-                ViewBag.isLoggedIn = "true";
+                
                 return Json(new { success = true, userName = datas.MemberName });
                 
                     
@@ -105,7 +105,7 @@ namespace prjShanLiang.Controllers
                 {
                 logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
                 Store datas = JsonSerializer.Deserialize<Store>(logginedUser);
-                ViewBag.isLoggedIn = "true";
+                
                 return Json(new { success = true, userName = datas.RestaurantName });
 
             }
