@@ -72,7 +72,7 @@
                 <h2>會員中心</h2>
                 <ul>
                     <p>你好,@ViewBag.MemberName</p>
-                    @Html.ActionLink("登出", "logOut","User")
+                    @Html.ActionLink("登出", "logOut" ,"User")
 
                 </ul>
             </div>
@@ -91,22 +91,36 @@
             <div class="d-flex justify-content-center">
                 <div class="col-6">
                     <div class="row row-cols-1 row-cols-md-2 g-4">
+
+                       
                         <div class="col mt-5" style="width:300px" justify-content-center>
+                            <a href="@Url.Action("memberDataRevision", "User", new {  Model.FirstOrDefault().Email  })" style="text-decoration:none">
                             <div class="card border-warning card-wr-bg">
-                                <img src="~/images/store/Chao炒炒蔬食熱炒.jpg" class="card-img-top" alt="...">
+                               
+                                    <img src="~/images/store/Chao炒炒蔬食熱炒.jpg" class="card-img-top" alt="...">
                                 <div class="card-body d-grid gap-3">
                                     @*  <h5 class="card-title text-center text-capitalize">Silver</h5>
                                     <p class="card-text text-center p-0 pb-3"></p>*@
                                     <img src="~/images/icons/man3.png" style="margin:auto;" alt="...">
                                 </div>
                                 <div class="card-footer text-light bg-warning">
-                                    @Html.ActionLink("修改資料", "memberDataRevision" ,new {  Model.FirstOrDefault().Email  })
+                                    @*@Html.ActionLink("修改資料", "memberDataRevision" ,new {  Model.FirstOrDefault().Email  })*@
+                                   
+                                    <label>修改資料</label>
+                                
                                 </div>
+                                
                             </div>
+
+                            </a>
                         </div>
+                        
                         @*以下為第二張card*@
-                        <div class="col mt-5 border-success" style="width:300px" justify-content-center>
-                            <div class="card border-success card-s-bg">
+
+                       
+                            <div class="col mt-5 border-success" style="width:300px" justify-content-center>
+                            <a href="@Url.Action("memberDataRevision", "User", new {  Model.FirstOrDefault().Email  })" style="text-decoration:none" >
+                                <div class="card border-success card-s-bg">
                                 <img src="~/images/store/Chao炒炒蔬食熱炒.jpg" class="card-img-top" alt="...">
                                 <div class="card-body d-grid gap-3">
                                     @* <h5 class="card-title text-center text-capitalize">Silver</h5>
@@ -114,12 +128,17 @@
                                     <img src="~/images/icons/myAction.png" style="margin:auto;" alt="...">
                                 </div>
                                 <div class="card-footer text-light bg-success">
-                                    @Html.ActionLink("修改資料", "memberDataRevision" ,new {  Model.FirstOrDefault().Email  })
+                                        <label>修改資料</label>
+                                    @*@Html.ActionLink("修改資料", "memberDataRevision" ,new {  Model.FirstOrDefault().Email  })*@
                                 </div>
                             </div>
+                            </a>
                         </div>
+                        
                         @*以下為第三張card*@
+                       
                         <div class="col mt-5 border-info" style="width:300px" justify-content-center>
+                            <a href="@Url.Action("MyMealOrder", "Shopping", new {  id=Model.FirstOrDefault().MemberId  })" style="text-decoration:none">
                             <div class="card border-info card-b-bg">
                                 <img src="~/images/store/Chao炒炒蔬食熱炒.jpg" class="card-img-top" alt="...">
                                 <div class="card-body d-grid gap-3">
@@ -128,12 +147,17 @@
                                     <img src="~/images/icons/meal1.png" style="margin:auto;" alt="...">
                                 </div>
                                 <div class="card-footer text-light bg-info">
-                                    @Html.ActionLink("我的訂單", "MyMealOrder","Shopping" ,new {  id=Model.FirstOrDefault().MemberId  })
+                            @*        @Html.ActionLink("我的訂單", "MyMealOrder","Shopping" ,new {  id=Model.FirstOrDefault().MemberId  })*@
+                                        <label>我的訂單</label>
                                 </div>
                             </div>
+                            </a>
                         </div>
+                        
                         @*以下為第四張card*@
+                        
                         <div class="col mt-5" style="width:300px" justify-content-center>
+                            <a href="@Url.Action("memberDataRevision", "User", new {  Model.FirstOrDefault().Email  })" style="text-decoration:none">
                             <div class="card border-danger card-d-bg">
                                 <img src="~/images/store/Chao炒炒蔬食熱炒.jpg" class="card-img-top" alt="...">
                                 <div class="card-body d-grid gap-3">
@@ -142,14 +166,17 @@
                                     <img src="~/images/icons/restaurant.png" style="margin:auto;" alt="...">
                                 </div>
                                 <div class="card-footer bg-danger text-light">
-                                    @Html.ActionLink("修改資料", "memberDataRevision" ,new {  Model.FirstOrDefault().Email  })
+                                    @*@Html.ActionLink("修改資料", "memberDataRevision" ,new {  Model.FirstOrDefault().Email  })*@
                                     @* <div><i class="bi bi-facebook"></i></div>
                                     <div><i class="bi bi-twitter"></i></div>
                                     <div><i class="bi bi-youtube"></i></div>
                                     <div><i class="bi bi-linkedin"></i></div>*@
+                                        <label>修改資料</label>
                                 </div>
                             </div>
+                            </a>
                         </div>
+                         
                     </div>
                 </div>
             </div>
