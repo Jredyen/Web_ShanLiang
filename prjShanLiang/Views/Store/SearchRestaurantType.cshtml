@@ -566,7 +566,7 @@
 
             //延遲2秒
             setTimeout(function () {
-            }, 1000);
+            }, 200);
 
             Loading.innerHTML = null;
             StoreList.innerHTML = shop.join("");
@@ -582,7 +582,7 @@
                 }
             }
             SerachButton.click();
-        }, 2000);
+        }, 500);
         //====================================================GOOGLE=API======================================================================
         function initMap(datas) {
             const map = new google.maps.Map(document.getElementById("map"), {

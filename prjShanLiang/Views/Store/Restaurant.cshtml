@@ -165,7 +165,7 @@
                                     </a>
                                     <a class="dropdown-item" href="https://social-plugins.line.me/lineit/share?url=https%3a%2f%2fkaramucho.asuscomm.com%2fstore%2fRestaurant%2f1"
                                        target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
-                                    <a class="dropdown-item" href="mailto: ?subject=與您分享一間美味的餐廳，@item.RestaurantName！&body=@item.StoreMail"><i class="bi bi-envelope"></i> E-mail</a>
+                                    <a id="gmail" class="dropdown-item" href="javascript:void(0)"><i class="bi bi-envelope"></i> Gmail</a>
                                     <a class="dropdown-item" href="javascript:copyUrl();"><i class="bi bi-link"></i> 複製連結</a>
                                 </div><!--End Dropdowns-->
                                 <button type="button" class="btn btn-secondary">
@@ -254,7 +254,7 @@
             const datas = await response.json();
             const shop = datas.map(data => {
                 return (
-                    StoreType.innerHTML += `<a style="margin-right:10px;" href="../Store/searchRestaurantType/${data.restaurantTypeNum}"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
+                    StoreType.innerHTML += `<a style="margin-right:10px;" href="../../Store/searchRestaurantType/${data.restaurantTypeNum}"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
                 )
             })
         }
@@ -309,6 +309,15 @@
         }
         window.initMap = initMap;
 
+        // Gmail分享
+        const gmail = document.getElementById('gmail');
+        let msgsubj = "與您分享一間美味的餐廳：@Html.Raw(@item.RestaurantName)";
+        let msgbody = "https://karamucho.asuscomm.com/Store/Restaurant/" + @Html.Raw(@item.StoreId);
+        let url = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=' + msgsubj + '&body=' + msgbody + '&ui=2&tf=1&pli=1';
+        gmail.addEventListener('click',function(){
+            window.open(url, '_blank');
+        })
+        
     </script>
     }
 
