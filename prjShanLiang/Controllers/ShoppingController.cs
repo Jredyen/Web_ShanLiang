@@ -20,7 +20,7 @@ namespace prjShanLiang.Controllers
         }
         public IActionResult Menu(int? StoreId)
         {    //店家餐點頁面  傳入店家Id            
-            IEnumerable<MealMenu> datas = _db.MealMenus.Where(t => t.StoreId == StoreId);
+            
 
             var storeinfo = _db.Stores.Where(t => t.StoreId == StoreId).Select(t => new { t.RestaurantAddress, t.RestaurantName, t.RestaurantPhone });
 
@@ -34,6 +34,9 @@ namespace prjShanLiang.Controllers
                 ViewBag.RestaurantName = item.RestaurantName;
                 ViewBag.RestaurantPhone = item.RestaurantPhone;
             }
+
+           IEnumerable<MealMenu> datas = _db.MealMenus.Include(t =>t.MealOrderDetails).Where(t => t.StoreId == StoreId);
+
             return View(datas);
         }
 
@@ -322,6 +325,7 @@ namespace prjShanLiang.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CreateMenu(CMealViewModel vm)
         {   //新增餐點 傳入新增的ViewModel進來
             MealMenu mealMenu = new MealMenu()
@@ -362,6 +366,7 @@ namespace prjShanLiang.Controllers
             return View(vm);
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult EditMenu(CMealViewModel vm)
         {  //傳入修改後的ViewModel
             //資料放回MealMenu
