@@ -95,36 +95,34 @@
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="List">餐廳一覽</a>
+                    <li>                        
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="List">
+                            <img src="~/images/icons/restaurant.png" style="margin:auto;width:40px;"> 餐廳一覽</a>
+                    </li>                    
+                    <li>                        
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Blogger" asp-action="BloggerCard">
+                            <img src="~/images/icons/blogicon.png" style="margin:auto;width:40px;"> 膳糧專欄</a>
+                    </li>                    
+                    <li>                        
+                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Mypage">
+                            <img src="~/images/icons/mypageicon.png" style="margin:auto;width:40px;"> 我的首頁
+                        </a>
                     </li>
-                    @*<li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Reconnend">人氣餐廳</a>
+                    <li>                        
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Advertisement" asp-action="BuyAdv">
+                            <img src="~/images/icons/adicon.png" style="margin:auto;width:40px;"> 廣告行銷方案
+                        </a>
                     </li>
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Latest">新進餐廳</a>
-                    </li>*@
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Blogger" asp-action="BloggerCard">膳糧專欄</a>
-                    </li>
-                    @*<li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">登入</a>
-                    </li>*@
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Mypage">我的首頁</a>
-                    </li>
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Advertisement" asp-action="BuyAdv">廣告行銷方案</a>
-                    </li>
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-StoreId="1">訂餐</a>
+                    <li>                       
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-StoreId="1">
+                            <img src="~/images/icons/menuicon.png" style="margin:auto;width:40px;"> 訂餐
+                        </a>
                     </li>
                     <li style="display:flex;font-size:15px;margin-left:80px;" class="showUserName" text-white bg-warning" id="isLogin"></li>
                     
                 </ul>
             </nav>
-            <div>
-                
+            <div>                
                 <div class="container pt-5">
                     <a class="position-relative" href="@Url.Action("CartView", "Shopping")">
                         @*轉跳購物車畫面*@
@@ -132,24 +130,10 @@
                         <span class="cartQuantity text-white bg-warning"></span>   @*顯示購物車目前數量*@
                     </a>
                 </div>
-            </div>
-                    
-                       
-                   
-            
-                
-            </div>
-        
-        
-           
-          
-
-
-
-                <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
-
+            </div>            
         </div>
+                <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>        
     </header><!-- End Header -->
     @RenderBody()
 
