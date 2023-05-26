@@ -97,13 +97,13 @@
 
                         <div class="card bg-glass">
                             <div class="card-body px-4 py-5 px-md-5">
-                                <form asp-action="sendEmail">
+                                <form asp-action="sendEmail" >
                                     <!-- 2 column grid layout with text inputs for the first and last names -->
                                     <div class="row">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                         <div class="form-group">
                                             <label asp-for="AccountName" class="control-label">帳號</label>
-                                            <input asp-for="AccountName" id="InputAccount" class="form-control inputFont" />
+                                            <input asp-for="AccountName" id="InputAccount" class="form-control inputFont"  required/>
                                             <div id="accountHelp" style="color:red" class="form-text"></div>
                                             <span asp-validation-for="AccountName" class="text-danger"></span>
                                         </div>
@@ -113,11 +113,11 @@
                                             <span asp-validation-for="AccountPassword" class="text-danger"></span>
                                         </div>
                                         <div class="form-group">
-                                            <input type="submit" value="送出" class="btn btn-primary  mb-2 inputFont" />
+                                            <input type="submit" value="送出" class="btn btn-primary  mb-2 inputFont" onclick="return alert('重設密碼信件已送出，請查看您的信箱。')" />
                                             <p ></p>
                                             <p ></p>
                                         </div>
-                                        @Html.ActionLink("登入", "Login", "User")
+                                        @Html.ActionLink("回到登入", "Login", "User")
                                         <input id="btnMemberLoginDemo1" type="button" value="會員登入Demo" class="btn btn-primary  mb-2 Demo" />
 
                                         <input id="btnStoreLoginDemo1" type="button" value="店家登入Demo" class="btn btn-primary  mb-2 Demo" />
@@ -173,9 +173,10 @@
                     //  divAccount.innerHTML =inpAccount.value;
                     //檢查帳號是否存在
                     const response = await fetch('@Url.Content("~/User/CheckLoginAccount")?name=' + inpAccount.value);
-                    const isExists = await response.text();  //True or False
+                    var data = await response.json();  //True or False
+                    var isExists = data.exists;
                     let message = "找不到您的帳戶";
-                    if (isExists === "True") {
+                    if (isExists) {
                         message = "";
                     }
                     divAccount.innerHTML = message;

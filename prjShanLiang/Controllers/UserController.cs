@@ -426,6 +426,7 @@ namespace prjShanLiang.Controllers
                 }
             }
             sl.SaveChanges();
+            return View(mem);
             return RedirectToAction("memberManagement");
         }
 
@@ -551,7 +552,23 @@ namespace prjShanLiang.Controllers
             return Json(data);
         }
 
+        public IActionResult memberFavoriteRestaurant(string Email)//從membermanagement傳入參數
+        {
 
+            ShanLiang21Context sl = new ShanLiang21Context();
+            //CAccountPasswordViewModel vm = new CAccountPasswordViewModel();
+
+            var mem = sl.MemberActions.Where(ma => ma.Member.Email == Email);
+            
+            //if (mem == null)
+            //    return RedirectToAction("memberManagement");
+           
+
+
+            return View(mem);
+
+            
+        }
 
 
 
