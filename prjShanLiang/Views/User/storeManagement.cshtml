@@ -71,8 +71,8 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h2>餐廳管理中心</h2>
                 <ul>
-                    <p>你好,@ViewBag.storeName</p>
-                    @Html.ActionLink("登出", "logOut","User")
+                    @*<p>你好,@ViewBag.storeName</p>
+                    @Html.ActionLink("登出", "logOut","User")*@
 
                 </ul>
             </div>
@@ -88,10 +88,12 @@
 
     <body>
         <div class="container py-5">
+           
             <div class="d-flex justify-content-center">
                 <div class="col-6">
                     <div class="row row-cols-1 row-cols-md-2 g-4">
                         <div class="col mt-5" style="width:300px" justify-content-center>
+                            <a href="@Url.Action("storeDataRevision", "User",new {  Model.FirstOrDefault().AccountName  })" style="text-decoration:none">
                             <div class="card border-warning card-wr-bg">
                                 <img src="~/images/store/Chao炒炒蔬食熱炒.jpg" class="card-img-top" alt="...">
                                 <div class="card-body d-grid gap-3">
@@ -100,12 +102,15 @@
                                     <img src="~/images/icons/man3.png" style="margin:auto;" alt="...">
                                 </div>
                                 <div class="card-footer text-light bg-warning">
-                                    @Html.ActionLink("修改資料", "storeDataRevision" ,new {  Model.FirstOrDefault().AccountName  })
+                                        <label>修改資料</label>
+                                   @* @Html.ActionLink("修改資料", "" ,new {  Model.FirstOrDefault().AccountName  })*@
                                 </div>
                             </div>
+                            </a>
                         </div>
                         @*以下為第二張card*@
                         <div class="col mt-5 border-success" style="width:300px" justify-content-center>
+                            <a href="@Url.Action("MealOrderList", "Shopping")" style="text-decoration:none">
                             <div class="card border-success card-s-bg">
                                 <img src="~/images/store/Chao炒炒蔬食熱炒.jpg" class="card-img-top" alt="...">
                                 <div class="card-body d-grid gap-3">
@@ -114,12 +119,15 @@
                                     <img src="~/images/icons/myAction.png" style="margin:auto;" alt="...">
                                 </div>
                                 <div class="card-footer text-light bg-success">
-                                    @Html.ActionLink("訂單", "MealOrderList" ,"Shopping")
+                                        <label>訂單</label>
+                                   @* @Html.ActionLink("訂單", "MealOrderList" ,"Shopping")*@
                                 </div>
                             </div>
+                            </a>
                         </div>
                         @*以下為第三張card*@
                         <div class="col mt-5 border-info" style="width:300px" justify-content-center>
+                            <a href="@Url.Action("StoreMenuList", "Shopping")" style="text-decoration:none">
                             <div class="card border-info card-b-bg">
                                 <img src="~/images/store/Chao炒炒蔬食熱炒.jpg" class="card-img-top" alt="...">
                                 <div class="card-body d-grid gap-3">
@@ -128,12 +136,15 @@
                                     <img src="~/images/icons/meal1.png" style="margin:auto;" alt="...">
                                 </div>
                                 <div class="card-footer text-light bg-info">
-                                    @Html.ActionLink("餐點清單", "StoreMenuList" ,"Shopping")
+                                    @*@Html.ActionLink("餐點清單", "StoreMenuList" ,"Shopping")*@
+                                        <label>餐點清單</label>
                                 </div>
                             </div>
+                            </a>
                         </div>
                         @*以下為第四張card*@
                         <div class="col mt-5" style="width:300px" justify-content-center>
+                            <a href="@Url.Action("storeDataRevision", "User",new {  Model.FirstOrDefault().AccountName  })" style="text-decoration:none">
                             <div class="card border-danger card-d-bg">
                                 <img src="~/images/store/Chao炒炒蔬食熱炒.jpg" class="card-img-top" alt="...">
                                 <div class="card-body d-grid gap-3">
@@ -142,13 +153,15 @@
                                     <img src="~/images/icons/restaurant.png" style="margin:auto;" alt="...">
                                 </div>
                                 <div class="card-footer bg-danger text-light">
-                                    @Html.ActionLink("修改資料", "storeDataRevision" ,new {  Model.FirstOrDefault().AccountName  })
+                                        <label>訂單</label>
+                                    @*@Html.ActionLink("修改資料", "storeDataRevision" ,new {  Model.FirstOrDefault().AccountName  })*@
                                     @* <div><i class="bi bi-facebook"></i></div>
                                     <div><i class="bi bi-twitter"></i></div>
                                     <div><i class="bi bi-youtube"></i></div>
                                     <div><i class="bi bi-linkedin"></i></div>*@
                                 </div>
                             </div>
+                            </a>
                         </div>
                     </div>
                 </div>

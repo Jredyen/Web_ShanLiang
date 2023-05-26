@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
 using System;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -54,21 +55,24 @@ namespace prjShanLiang.Controllers
                     {
                         json = JsonSerializer.Serialize(sto);
                         HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "2");
+                        ViewBag.user = "2";
                     }
 
                     else if (mem != null)
                     {
                         json = JsonSerializer.Serialize(mem);
                         HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "1");
+                        ViewBag.user = "1";
                     }
                     else
                     {
-
                         json = JsonSerializer.Serialize(admin);
                         HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "0");
+                        ViewBag.user = "0";
                     }
 
                     HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER, json);
+       
                     if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "0")
                     {
                         return RedirectToAction("Index", "Admin");
@@ -83,7 +87,32 @@ namespace prjShanLiang.Controllers
                 return Json(ex);
             }
         }
-      
+        [Route("api/userName/User")]
+        public IActionResult userName()
+        {
+            string logginedUser = null;
+            if(HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "1")
+            {
+                
+                logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+                Member datas = JsonSerializer.Deserialize<Member>(logginedUser);
+                
+                return Json(new { success = true, userName = datas.MemberName });
+                
+                    
+            }
+            else if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "2")
+                {
+                logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+                Store datas = JsonSerializer.Deserialize<Store>(logginedUser);
+                
+                return Json(new { success = true, userName = datas.RestaurantName });
+
+            }
+            else
+                return Json(new { success = true, userName = "請先登入" });
+        }
+
         //public IActionResult LoginAuto(string AccountName, string AccountPassword)
         //{
         //    ShanLiang21Context db = new ShanLiang21Context();
@@ -101,9 +130,9 @@ namespace prjShanLiang.Controllers
         //    {
         //        return RedirectToAction("Login");
         //    }
-           
+
         //}
-        
+
         public IActionResult logOut()
         {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) != null)
@@ -309,7 +338,7 @@ namespace prjShanLiang.Controllers
             logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Store datas = JsonSerializer.Deserialize<Store>(logginedUser);
             var data = sl.Stores.Where(t => t.AccountName.Contains(datas.AccountName));
-            ViewBag.storeName = datas.AccountName;
+            ViewBag.storeName = datas.RestaurantName;
             ViewBag.storeId = datas.StoreId;
             return View(data);
         }
@@ -397,6 +426,7 @@ namespace prjShanLiang.Controllers
                 }
             }
             sl.SaveChanges();
+            return View(mem);
             return RedirectToAction("memberManagement");
         }
 
@@ -523,6 +553,22 @@ namespace prjShanLiang.Controllers
         }
 
 
+        public IActionResult memberFavoriteRestaurant(string Email)//從membermanagement傳入參數
+        {
+
+            ShanLiang21Context sl = new ShanLiang21Context();
+           
+            var mem = sl.MemberActions.Include(m=>m.Member).Include(s=>s.Store).Include(a=>a.Action).Where(ma => ma.Member.Email == Email);
+
+            //if (mem == null)
+            //    return RedirectToAction("memberManagement");
+
+
+
+            return View(mem);
+
+
+        }
 
 
 

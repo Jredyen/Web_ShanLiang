@@ -10,20 +10,20 @@
 <style>
 
     .inputFont {
-        font - size: 20px;
-        font - family:Microsoft JhengHei;
-        height: 50px;
-        width: 500px;
-        margin - bottom: 20px
+        font-size: 15px;
+        font-family:Microsoft JhengHei;
+        height: 30px;
+        width: 400px;
+        margin-bottom: 8px
     }
 
     .Demo {
-        font-size: 10px;
+        font-size: 8px;
         color: darkblue;
         font-family: Microsoft JhengHei;
         display: flex;
         height: 30px;
-        width: 150px;
+        width: 120px;
         margin: 10px;
         float: left;
         background-color: lightblue;
@@ -69,7 +69,7 @@
                                         <hr />
                                         <div class="row">
                                             <div @*class="col-md-4"*@>
-                                                <form asp-action="Signup" class="mx-1 mx-md-4">
+                                                <form asp-action="Signup" class="mx-1 mx-md-4" style="overflow:visible ">
                                                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                                     <div class="form-group">
                                                         <label asp-for="Email" class="control-label">Email(帳號)</label>
@@ -80,22 +80,22 @@
 
                                                     <div class="form-group">
                                                         <label asp-for="Memberphone" class="control-label"></label>
-                                                        <input asp-for="Memberphone" id="Memberphone" placeholder="請輸入數字，範例：0912323656" maxlength="10" required class="form-control" />
+                                                        <input asp-for="Memberphone" id="Memberphone" placeholder="請輸入數字，範例：0912323656" maxlength="10" required class="form-control  inputFont" />
                                                         <span asp-validation-for="Memberphone" class="text-danger"></span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label asp-for="MemberName" class="control-label"></label>
-                                                        <input asp-for="MemberName" id="MemberName" required class="form-control" />
+                                                        <input asp-for="MemberName" id="MemberName" required class="form-control  inputFont" />
                                                         <span asp-validation-for="MemberName" class="text-danger"></span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label asp-for="BrithDate" class="control-label"></label>
-                                                        <input asp-for="BrithDate" required class="form-control" type="date" value="1990-01-01" />
+                                                        <input asp-for="BrithDate" required class="form-control  inputFont" type="date" value="1990-01-01" />
                                                         <span asp-validation-for="BrithDate" class="text-danger"></span>
                                                     </div>
                                                     <div class="form-group">
                                                         <label asp-for="Address" class="control-label"></label>
-                                                        <input asp-for="Address" id="Address" required class="form-control" onchange="readURL(this)" targetID="preview_progressbarTW_img" accept="image/gif, image/jpeg, image/png" />
+                                                        <input asp-for="Address" id="Address" required class="form-control  inputFont" onchange="readURL(this)" targetID="preview_progressbarTW_img" accept="image/gif, image/jpeg, image/png" />
 
                                                         <span asp-validation-for="Address" class="text-danger"></span>
                                                     </div>
@@ -116,9 +116,9 @@
                                                         <input id="btnDataRevision" type="submit" value="送出" class="btn btn-primary" />
                                                     </div>
                                                 </form>
-                                                <input type="button" id="btnMemberRegistrationDemo" value="會員註冊Demo" class="btn btn-primary Demo" />
+                                                <input type="button" id="btnMemberRegistrationDemo" value="會員註冊Demo" class="btn btn-primary Demo" style=" width: 100px;" />
                                                 <input type="button" id="btnMemberRegistrationPasswordDemo" value="會員註冊密碼Demo" class="btn btn-primary Demo" />
-                                                <input type="button" id="btnMemberRegistrationPasswordRepetitionDemo" value="已註冊會員帳號Demo" class="btn btn-primary Demo" />
+                                                <input type="button" id="btnMemberRegistrationPasswordRepetitionDemo" value="已註冊會員帳號Demo" class="btn btn-primary Demo" style=" width: 140px;" />
                                             </div>
                                         </div>
                                     </div>

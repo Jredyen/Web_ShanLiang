@@ -141,7 +141,7 @@
                                                 foreach (var item in imp)
                                                 {
                                                     <img src="~/images/store/@item.ImagePath" alt="店內環境 " style="flex:auto;" width="60" height="60" />
-                                                    @Html.ActionLink("刪除", "Delete","User", new {  sip = item.ImagePath },new {onclick="return confirm('確定刪除嗎?')"})
+                                                    @Html.ActionLink("刪除", "Delete","User", new {  sip = item.ImagePath },new {onclick="return confirm('確定要刪除圖片嗎?')"})
 
                                                 }
                                             }
@@ -199,7 +199,7 @@
                                         </div>
                                         <div id="errorMessage1" style="color:red"></div>
                                         <div class="form-group">
-                                            <input type="submit" value="送出" class="btn btn-primary inputFont" id="btnDataRevision" />
+                                            <input type="submit" value="送出" class="btn btn-primary inputFont" id="btnDataRevision" onclick="return alert('修改資料已完成。')" />
                                         </div>
                                     </div>
                                 </div>
