@@ -59,7 +59,7 @@
                     <span asp-validation-for="EvaluateDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="送出" class="btn btn-primary" style="font-size: 2rem;" />
+                    <input id="submit" type="button" value="送出" class="btn btn-primary" style="font-size: 2rem;" />
                     <a asp-action="Restaurant" asp-route-id="@ViewBag.Id">取消</a>
                 </div>
             </form>
@@ -83,6 +83,46 @@
             dateControl.readOnly = true;
         }, 2000);
 
+        const si = document.getElementById('StoreId');
+        const mi = document.getElementById('MemberId');
+        const cm = document.getElementById('Comments');
+        const rt = document.getElementById('Rating');
+        const ed = document.getElementById('EvaluateDate');
+        const post = document.querySelector('#submit');
+        post.addEventListener('click', function () {
+            getResult();
+        }, false);//送出時getResult判斷是否有座位
+        async function getResult() {
+            const response = await fetch('@Url.Content("~/Store/AddComment/")', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                body: JSON.stringify({
+                    StoreId: si.value,
+                    MemberId: mi.value,
+                    Comments: cm.value,
+                    Rating: rt.value,
+                    EvaluateDate: ed.value
+                })
+            });//fetch結束
+            const datas = await response.json();
+            if (datas.type === 1) {
+                alert("新增評論成功！");
+                window.location.replace('@Url.Content("~/Store/Restaurant?id=")' + @ViewBag.Id);
+            }//狀況1:新增
+            else if (datas.type === 2) {
+                alert("修改評論成功！");
+                window.location.replace('@Url.Content("~/Store/Restaurant?id=")' + @ViewBag.Id);
+            }//狀況2:修改
+            else if(datas.type === 0){
+                window.location.replace('@Url.Content("~/User/Login")');
+            }//沒登入:回去登入
+            else {
+                alert("失敗QQ");
+            }//例外狀況:失敗QQ
+        }; //getResult結束
     </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

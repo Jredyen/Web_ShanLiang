@@ -126,30 +126,33 @@ namespace prjShanLiang.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult AddComment(StoreEvaluate se)
+        public async Task<IActionResult> AddComment([FromBody] StoreEvaluate se)
         {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
             {
-                return RedirectToAction("Login", "User");
+                Json(new { type = 0 });
+                //return RedirectToAction("Login", "User");
             }
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Member mem = JsonSerializer.Deserialize<Member>(json);
-            //抓[登入會員]在[這間店]是否有過評論
-            var se1 = _db.StoreEvaluates.Where(se1 => se1.MemberId == mem.MemberId && se1.StoreId == se.StoreId).FirstOrDefault();
+            
+            var se1 = _db.StoreEvaluates.Where(se1 => se1.MemberId == mem.MemberId && se1.StoreId == se.StoreId).FirstOrDefault();// 抓[登入會員]在[這間店]是否有過評論
             if (se1 == null)
             {
                 _db.StoreEvaluates.Add(se);
                 _db.SaveChanges();
-                return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
-            }
+                return Json(new { type = 1});
+                //return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
+            }// 沒有評論的場合:新增
             else
             {
                 se1.Comments = se.Comments;
                 se1.Rating = se.Rating;
                 se1.EvaluateDate = se.EvaluateDate;
                 _db.SaveChanges();
-                return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
-            }
+                return Json(new { type = 2 });
+                //return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
+            }// 有評論的場合:修改
         }
         public IActionResult Reserve(int? id)
         {
