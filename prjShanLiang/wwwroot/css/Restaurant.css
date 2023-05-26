@@ -151,6 +151,11 @@ a {
     padding: 5px;
     margin-bottom: 20px;
     width: 100%;
+    border-radius:5px;
+}
+
+.why-box {
+    border-radius:5px;
 }
 
 .hero {

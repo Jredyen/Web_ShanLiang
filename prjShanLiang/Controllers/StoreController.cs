@@ -134,7 +134,8 @@ namespace prjShanLiang.Controllers
             }
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Member mem = JsonSerializer.Deserialize<Member>(json);
-            var se1 = _db.StoreEvaluates.Where(se => se.MemberId == mem.MemberId).FirstOrDefault();
+            //抓[登入會員]在[這間店]是否有過評論
+            var se1 = _db.StoreEvaluates.Where(se1 => se1.MemberId == mem.MemberId && se1.StoreId == se.StoreId).FirstOrDefault();
             if (se1 == null)
             {
                 _db.StoreEvaluates.Add(se);
