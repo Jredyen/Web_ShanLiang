@@ -558,7 +558,7 @@ namespace prjShanLiang.Controllers
 
             ShanLiang21Context sl = new ShanLiang21Context();
            
-            var mem = sl.MemberActions.Where(ma => ma.Member.Email == Email);
+            var mem = sl.MemberActions.Include(m=>m.Member).Include(s=>s.Store).Include(a=>a.Action).Where(ma => ma.Member.Email == Email);
 
             //if (mem == null)
             //    return RedirectToAction("memberManagement");
