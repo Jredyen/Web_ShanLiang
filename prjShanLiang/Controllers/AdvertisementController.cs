@@ -76,7 +76,7 @@ namespace prjShanLiang.Controllers
                 HttpContext.Session.SetString(CDictionary.SK_LOGINED_Adv, json);
 
             }
-            return RedirectToAction("BuyAdv");
+                return RedirectToAction("BuyAdv");
             }
             return RedirectToAction("Login", "User");
         }
