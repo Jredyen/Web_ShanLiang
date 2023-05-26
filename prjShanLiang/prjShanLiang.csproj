@@ -9,7 +9,6 @@
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
-    <Content Remove="Views\User\memberFavoriteRestaurant.cshtml" />
     <Content Remove="wwwroot\Images\store\abed2cbb-2.jpg" />
     <Content Remove="wwwroot\Images\store\ccccc.jpg" />
   </ItemGroup>

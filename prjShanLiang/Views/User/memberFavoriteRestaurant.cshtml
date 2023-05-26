@@ -1,0 +1,50 @@
+﻿@model IEnumerable<prjShanLiang.Models.MemberAction>
+
+@{
+    ViewData["Title"] = "memberFavoriteRestaurant";
+}
+
+<h1>memberFavoriteRestaurant</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                會員
+            </th>
+            <th>
+                餐廳名稱
+            </th>
+            <th>
+                我的行動
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            
+            <td>
+                @item.MemberId
+                
+                
+            </td>
+            <td>
+                @item.StoreId
+            </td>
+            <td>
+               @item.ActionId
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.No">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.No">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.No">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
