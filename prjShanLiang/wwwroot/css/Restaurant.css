@@ -96,6 +96,11 @@ a {
     background-color: #555; /* Add a dark-grey background on hover */
 }
 
+#map {
+    height: 400px;
+    width: 100%;
+}
+
 .st1 {
     width: 40vw;
     margin: 20px;
@@ -146,6 +151,11 @@ a {
     padding: 5px;
     margin-bottom: 20px;
     width: 100%;
+    border-radius:5px;
+}
+
+.why-box {
+    border-radius:5px;
 }
 
 .hero {
