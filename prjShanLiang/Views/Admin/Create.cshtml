@@ -1,4 +1,4 @@
-﻿@model prjShanLiang.Models.Admin
+﻿@model prjShanLiang.ViewModels.CCreateAdminAccountViewModel
 
 @{
     ViewData["Title"] = "膳糧";
@@ -16,42 +16,86 @@
     </div>
 }
 
-<h1>新增管理員</h1>
-
-<h4>輸入管理員資料</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="AdminName" class="control-label" placeholder="">管理員帳號</label>
-                <input asp-for="AdminName" class="form-control" required/>
-                <span asp-validation-for="AdminName" class="text-danger"></span>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header">
+                    <h3 class="text-center font-weight-light my-4">
+                        <i class="fa-solid fa-user-shield"></i>
+                        建立管理員帳戶
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" onsubmit="return submitForm(event)">
+                        <div class="form-floating mb-3">
+                            <input asp-for="AdminName" class="form-control" placeholder="請輸入管理員帳號:" required />
+                            <label asp-for="AdminName" class="control-label">請輸入管理員帳號:</label>
+                            <span asp-validation-for="AdminName" class="text-danger"></span>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input asp-for="Password" class="form-control" type="password" placeholder="請輸入管理員密碼:" required />
+                                    <label asp-for="Password" class="control-label">請輸入管理員密碼:</label>
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <input asp-for="Password2" class="form-control" type="password" placeholder="請輸入確認密碼:" required />
+                                    <label asp-for="Password2" class="control-label">請輸入確認密碼:</label>
+                                    <span asp-validation-for="Password2" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-floating mb-3" style="display:none">
+                            <input asp-for="IdentificationId" class="form-control" value="3" placeholder="請選擇管理員權限:" required />
+                            <label asp-for="IdentificationId" class="control-label">請選擇管理員權限:</label>
+                            <span asp-validation-for="IdentificationId" class="text-danger"></span>
+                        </div>
+                        <div class="mt-4 mb-0">
+                            <div class="d-grid"><input type="submit" value="送出" class="btn btn-primary btn-block" /></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small"><a asp-action="List" class="link-danger">取消</a></div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Passwoed" class="control-label" placeholder="">管理員密碼</label>
-                <input asp-for="Passwoed" class="form-control"  type="password" required/>
-                <span asp-validation-for="Passwoed" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="display:none">
-                <label asp-for="IdentificationId" class="control-label" placeholder="">管理員權限</label>
-                <input asp-for="IdentificationId" class="form-control" value="3"/>
-                <span asp-validation-for="IdentificationId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="送出" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
 </div>
 
-<hr />
-<div>
-    <a asp-action="List" class="btn btn-outline-danger">取消</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        async function submitForm(event) {
+            event.preventDefault(); // 防止表單直接提交
+
+            try {
+                // 發送表單請求
+                const response = await fetch('@Url.Action("Create")', {
+                    method: 'POST',
+                    body: new FormData(event.target)
+                });
+
+                if (response.ok) {
+                    // 提交成功時顯示彈出訊息框
+                    alert("建立成功");
+                    window.location.href = '@Url.Action("List")'; // 導向List頁面
+                } else {
+                    // 提交失敗時的處理
+                    alert("建立失敗");
+                }
+            } catch (error) {
+                console.error('發生錯誤:', error);
+                alert("建立失敗");
+            }
+
+            return false; // 防止表單再次提交
+        }
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

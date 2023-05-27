@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using prjShanLiang.Models;
+using prjShanLiang.ViewModels;
 using System.Text.Json;
 
 namespace prjShanLiang.Controllers
@@ -45,17 +46,25 @@ namespace prjShanLiang.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Admin a)
+        public IActionResult Create(CCreateAdminAccountViewModel vm)
         {
-            ShanLiang21Context db = new ShanLiang21Context();
-            if (a.IdentificationId != 3)
+            if (vm.IdentificationId != 3)
             {
                 ViewBag.Message = "無法修改權限";
                 return View();
             }
 
-            db.Admins.Add(a);
+            ShanLiang21Context db = new ShanLiang21Context();
+
+            Admin admin = new Admin()
+            {
+                AdminName = vm.AdminName,
+                Passwoed = vm.Password,
+                IdentificationId = vm.IdentificationId
+            };
+            db.Add(admin);
             db.SaveChanges();
+
             return RedirectToAction("List");
         }
 
