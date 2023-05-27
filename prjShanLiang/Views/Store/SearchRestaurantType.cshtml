@@ -1,9 +1,7 @@
 ﻿@model IEnumerable<prjShanLiang.Models.Store>
-
 @{
     ViewData["Title"] = ViewBag.TypeName;
 }
-
 
 <head>
     <meta charset="utf-8">
@@ -179,9 +177,13 @@
         li {
             margin-top: 1em;
         }
+
+        #map {
+            height: 500px;
+            width: 100%;
+        }
     </style>
 </head>
-
 <body>
     <main id="main">
         <!-- ======= Breadcrumbs ======= -->
@@ -354,6 +356,14 @@
                                         </div>
                                     </div>
 
+                                    <nav>
+                                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                            <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">列表顯示</button>
+                                            <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">地圖顯示</button>
+                                        </div>
+                                    </nav>
+                                    <div class="tab-content" id="nav-tabContent">
+                                        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
 
                                     <div class="table-responsive">
                                         <div id="loading">
@@ -364,9 +374,15 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                            <!--這裡載入地圖API -->
+                                            <div id="map"></div>
 
+                                        </div>
+                                    </div>
 
-                                    <ul class="pagination">
+                                    @*<ul class="pagination">
                                         <li class="disabled"><a href="#">«</a></li>
                                         <li class="active"><a href="#">1</a></li>
                                         <li><a href="#">2</a></li>
@@ -374,7 +390,7 @@
                                         <li><a href="#">4</a></li>
                                         <li><a href="#">5</a></li>
                                         <li><a href="#">»</a></li>
-                                    </ul>
+                                    </ul>*@
 
                                 </div>
 
@@ -395,23 +411,31 @@
     </main>
 </body>
 @section Scripts{
+    <script src="~/assets/js/checkbox.js"></script>
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXNdG0SasvzekItgtkTqukL_xV4WDS2j8&callback=initMap"></script>
     <script>
+        //====================================================================================================================================
+        //TODO:類型裡面有幾間餐廳
+        //TODO:使用Google API載入地區圖釘、或是在地圖上顯示登記在我們網站的店家
+        //====================================================================================================================================
+
         const Keyword = document.querySelector('#txtSearch');
         const KeywordResult = document.querySelector('#searchTxtResult');
         const SearchResule = document.querySelector('#searchResule');
         const SerachButton = document.querySelector('#serachButton');
         const StoreType = document.querySelector('#storeType');
         const CAD = document.querySelector('#cityAndDistrict');
+        const RACAD = document.querySelector('#regionAndCityAndDistrict')
         const StoreList = document.querySelector('#storeList');
         const Loading = document.getElementById('loading');
         const OrderSelect = document.querySelector('.selectOrder');
         const SelectCount = document.getElementById('selectCount');
+        //====================================================================================================================================
         //在載入資料前顯示載入的CSS(10行)
         for (let i = 0; i < 11; i++) {
             Loading.innerHTML += `<div class="wrapperLoading"><div class="grid gridLoading"><div class="imageLoading"><div class="textLoading"><div class="shortlineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div><div class="lineLoading"></div></div></div></div></div>`
         }
-        //第一次載入網頁時獲取所有店家列表
-        //search();
+        search();//第一次載入網頁時獲取所有店家列表
 
         //輸入關鍵字跳出提示
         Keyword.addEventListener('input', async () => {
@@ -424,6 +448,7 @@
             })
             SearchResule.innerHTML = shop.join("");
         })
+
 
         //搜尋鍵
         SerachButton.addEventListener('click', async () => {
@@ -466,6 +491,7 @@
             }
         });
 
+
         //獲得所有類型
         getType();
         async function getType() {
@@ -505,18 +531,22 @@
             return district.join("");
         }
 
+
         async function search(checkedType, checkedDistrict, Rating, orderBy) {
             //把關鍵字、類型、地區及評價串接後進行查詢
             const response = await fetch(`@Url.Content("~/Store/SearchStore")?keyword=${Keyword.value}&types=${JSON.stringify(checkedType)}&districts=${JSON.stringify(checkedDistrict)}&rating=${Rating}&order=${OrderSelect.value}`);
             const datas = await response.json();
             //將結果回傳HTML
 
-            //<i class="fa fa-star"></i> 1
-            //<i class="fa fa-star-half-o"></i> 0.5
-            //<i class="fa fa-star-o"></i> 0
+
+
+            initMap(datas);
             let datasum = 0;//查詢到的資料數
             const shop = datas.map((data, index) => {
                 let stars = '';
+                //<i class="fa fa-star"></i> 1
+                //<i class="fa fa-star-half-o"></i> 0.5
+                //<i class="fa fa-star-o"></i> 0
                 for (let i = 1; i <= 5; i++) { // 產生 5 顆星星
                     if (i <= data.rating) {
                         stars += '<i class="fa fa-star"></i>'; // 如果該顆星星應該被填滿，則加上實心星星
@@ -527,8 +557,8 @@
                 datasum = data.datasum;
                 return `<tr>
                                      <td class="number text-center">${index + 1}</td>
-                                     <td class="image"><a href="Restaurant/${data.storeId}"><img src="../../images/store/decoration/${data.imagePath}" alt="${data.restaurantName}"></a></td>
-                                     <td class="product"><a href="Restaurant/${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}</a></td>
+                                     <td class="image"><a href="../Restaurant/${data.storeId}"><img src="../../images/store/${data.imagePath}" alt="${data.restaurantName}"></a></td>
+                                     <td class="product"><a href="../Restaurant/${data.storeId}"><strong>${data.restaurantName}</strong><br>營業時間 ${data.openingTime} ~ ${data.closingTime}<br>${data.restaurantPhone}</a></td>
                                      <td class="rate text-right"><span>${stars}</span></td>
                                      <td class="rate text-right"><a href="">分享</a><br /><a href="">收藏</a></td>
                                      </tr>`
@@ -536,7 +566,7 @@
 
             //延遲2秒
             setTimeout(function () {
-            }, 1000);
+            }, 200);
 
             Loading.innerHTML = null;
             StoreList.innerHTML = shop.join("");
@@ -552,8 +582,24 @@
                 }
             }
             SerachButton.click();
-        }, 2000);
-
-
+        }, 500);
+        //====================================================GOOGLE=API======================================================================
+        function initMap(datas) {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 7,
+                center: new google.maps.LatLng(25.034526, 121.564026)
+            });
+            for (let i = 0; i < datas.length; i++) {
+                const lat = datas[i].latitude;
+                const lng = datas[i].longitude;
+                const position = new google.maps.LatLng(lat, lng);
+                new google.maps.Marker({
+                    position: position,
+                    map: map,
+                });
+            }
+            window.initMap = initMap;
+        }
+        //====================================================GOOGLE=API======================================================================
     </script>
 }

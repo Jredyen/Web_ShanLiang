@@ -108,10 +108,10 @@
                                 @item.OrderId
                             </td>
                             <td>
-                                膳糧食堂 大安店
+                                @item.Store.RestaurantName
                             </td>
                             <td>
-                                $:@Convert.ToInt16(item.Total)
+                                $@Convert.ToInt16(item.Total)
                             </td>
                             <td>
                                 @item.OrderStatusNavigation.StatusName

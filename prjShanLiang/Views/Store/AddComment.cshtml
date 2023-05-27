@@ -1,26 +1,35 @@
 ﻿@model prjShanLiang.Models.StoreEvaluate
 
 @{
-    ViewData["Title"] = "新增留言";
+    ViewData["Title"] = "新增評論";
 }
+<link rel="stylesheet" href="~/css/Reserve.css" />
+<style>
+    body{
+        font-size: 2rem;
+    }
+    .form-control {
+        width: 100%; 
+    }
+</style>
 <main id="main">
     <!-- ======= Breadcrumbs ======= -->
     <div class="breadcrumbs">
         <div class="container">
 
             <div class="d-flex justify-content-between align-items-center">
-                <h2>新增留言</h2>
+                <h2>新增評論</h2>
                 <ol>
                     <li><a a asp-controller="Store" asp-action="List">Store</a></li>
                     <li>AddComment</li>
                 </ol>
             </div>
         </div>
-    </div><!-- End Breadcrumbs -->    
-    
+    </div><!-- End Breadcrumbs -->
+
     <div class="container">
         <hr />
-        <div class="col-md-4">
+        <div class="col-md-5-alter">
             <form asp-action="AddComment">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -35,31 +44,86 @@
                     <span asp-validation-for="MemberId" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Comments" class="control-label"></label>
-                    <textarea asp-for="Comments" class="form-control" style="height:49px;text-align:"></textarea>
+                    <label asp-for="Comments" class="control-label">評論內容</label>
+                    <textarea asp-for="Comments" class="form-control" style="height:150px;text-align:left;"></textarea>
                     <span asp-validation-for="Comments" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Rating" class="control-label"></label>
+                    <label asp-for="Rating" class="control-label">評分</label>
                     <input asp-for="Rating" class="form-control" min="0" max="5" />
                     <span asp-validation-for="Rating" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="EvaluateDate" class="control-label"></label>
-                    <input asp-for="EvaluateDate" class="form-control" />
+                    <label asp-for="EvaluateDate" class="control-label">日期</label>
+                    <input asp-for="EvaluateDate" class="form-control" type="date" />
                     <span asp-validation-for="EvaluateDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="送出" class="btn btn-primary" />
+                    <input id="submit" type="button" value="送出" class="btn btn-primary" style="font-size: 2rem;" />
                     <a asp-action="Restaurant" asp-route-id="@ViewBag.Id">取消</a>
-                </div>                    
+                </div>
             </form>
         </div>
     </div>
 
-    
+
 </main>
 @section Scripts {
+    <script>
+        //日期控制
+        const dateControl = document.querySelector('input[type="date"]');
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = today.getFullYear();
+        today = yyyy + '-' + mm + '-' + dd;
+        dateControl.value = today;
+        dateControl.min = today;
+        setTimeout(function () {
+            dateControl.readOnly = true;
+        }, 2000);
+
+        const si = document.getElementById('StoreId');
+        const mi = document.getElementById('MemberId');
+        const cm = document.getElementById('Comments');
+        const rt = document.getElementById('Rating');
+        const ed = document.getElementById('EvaluateDate');
+        const post = document.querySelector('#submit');
+        post.addEventListener('click', function () {
+            getResult();
+        }, false);//送出時getResult判斷是否有座位
+        async function getResult() {
+            const response = await fetch('@Url.Content("~/Store/AddComment/")', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    "Content-Type": "application/json; charset=utf-8"
+                },
+                body: JSON.stringify({
+                    StoreId: si.value,
+                    MemberId: mi.value,
+                    Comments: cm.value,
+                    Rating: rt.value,
+                    EvaluateDate: ed.value
+                })
+            });//fetch結束
+            const datas = await response.json();
+            if (datas.type === 1) {
+                alert("新增評論成功！");
+                window.location.replace('@Url.Content("~/Store/Restaurant?id=")' + @ViewBag.Id);
+            }//狀況1:新增
+            else if (datas.type === 2) {
+                alert("修改評論成功！");
+                window.location.replace('@Url.Content("~/Store/Restaurant?id=")' + @ViewBag.Id);
+            }//狀況2:修改
+            else if(datas.type === 0){
+                window.location.replace('@Url.Content("~/User/Login")');
+            }//沒登入:回去登入
+            else {
+                alert("失敗QQ");
+            }//例外狀況:失敗QQ
+        }; //getResult結束
+    </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

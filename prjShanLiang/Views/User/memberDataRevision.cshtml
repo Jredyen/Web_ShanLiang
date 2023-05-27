@@ -1,43 +1,35 @@
-﻿memberDataRevision…
-…
-
-
-@model prjShanLiang.Models.Member
+﻿@model prjShanLiang.Models.Member
 
 @{
-    ViewData["Title"] = "edit";
+    ViewData["Title"] = "memberDataRevision";
 }
 
 <style>
     .inputFont {
-        font-size: 16px;
-        font-family: Microsoft JhengHei
+        font-size: 15px;
+        font-family: Microsoft JhengHei;
+        height: 30px;
+        width: 350px;
+        margin: 5px
     }
 </style>
 <div class="breadcrumbs">
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-            <h2>首頁</h2>
-            <ol>
-                <li><a a asp-controller="Home" asp-action="Index">Home</a></li>
-                <li>Index</li>
-            </ol>
+
+            <h2>修改會員資料</h2>
         </div>
 
     </div>
 </div><!-- End Breadcrumbs -->
-
-<section class="vh-100" style="background-color: #eee;">
+<section style="background-color: #E0E0E0;">
     <div class="container h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-lg-12 col-xl-11">
+        <div class="row d-flex justify-content-center align-items-center h-100 col-lg-10">            
                 <div class="card text-black" style="border-radius: 25px;">
                     <div class="card-body p-md-5">
                         <div class="row justify-content-center">
-                            <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-                                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">修改會員資料</p>
-
+                            <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">                              
                                 <form asp-action="memberDataRevision2" id="memberDataRevision" class="mx-1 mx-md-4">
 
 
@@ -45,11 +37,9 @@
                                     <input type="hidden" value="@Model.Email" name="Email" />
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <div class="form-group form-outline flex-fill mb-0 ">
-
                                             <label asp-for="MemberName" class="control-label" placeholder="">會員名稱</label>
                                             <input asp-for="MemberName" class="form-control inputFont" />
                                             <span asp-validation-for="MemberName" class="text-danger"></span>
-
                                         </div>
                                     </div>
                                     <div class="d-flex flex-row align-items-center mb-4">
@@ -96,27 +86,20 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <input id="btnDataRevision" type="submit" value="送出" class="btn btn-primary" />
+                                        <input id="btnDataRevision" type="submit" value="送出" class="btn btn-primary" onclick="return alert('修改資料已完成。')" />
                                     </div>
-
-
                                 </form>
                                 <div id="errorMessage1" style="color:red"></div>
                             </div>
                             <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-
                                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
                                      class="img-fluid" alt="Sample image">
-
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
         </div>
-        <div>
-            <a asp-action="memberManagement">回到會員中心</a>
-        </div>
+        
         @section Scripts {
             <script>
 

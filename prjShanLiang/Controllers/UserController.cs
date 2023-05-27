@@ -1,20 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient.DataClassification;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
 using System;
-using System.IO;
-using System.Linq;
+using System.Data;
 using System.Net;
 using System.Net.Mail;
-using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Text.Json;
-using static System.Net.WebRequestMethods;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace prjShanLiang.Controllers
 {
@@ -53,22 +46,25 @@ namespace prjShanLiang.Controllers
                     if (sto != null)
                     {
                         json = JsonSerializer.Serialize(sto);
-                        HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "2");                     
+                        HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "2");
+                        ViewBag.user = "2";
                     }
 
                     else if (mem != null)
                     {
                         json = JsonSerializer.Serialize(mem);
                         HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "1");
+                        ViewBag.user = "1";
                     }
                     else
                     {
-
                         json = JsonSerializer.Serialize(admin);
                         HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "0");
+                        ViewBag.user = "0";
                     }
 
                     HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER, json);
+       
                     if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "0")
                     {
                         return RedirectToAction("Index", "Admin");
@@ -83,7 +79,32 @@ namespace prjShanLiang.Controllers
                 return Json(ex);
             }
         }
-      
+        [Route("api/userName/User")]
+        public IActionResult userName()
+        {
+            string logginedUser = null;
+            if(HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "1")
+            {
+                
+                logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+                Member datas = JsonSerializer.Deserialize<Member>(logginedUser);
+                
+                return Json(new { success = true, userName = datas.MemberName });
+                
+                    
+            }
+            else if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "2")
+                {
+                logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+                Store datas = JsonSerializer.Deserialize<Store>(logginedUser);
+                
+                return Json(new { success = true, userName = datas.RestaurantName });
+
+            }
+            else
+                return Json(new { success = true, userName = "請先登入" });
+        }
+
         //public IActionResult LoginAuto(string AccountName, string AccountPassword)
         //{
         //    ShanLiang21Context db = new ShanLiang21Context();
@@ -101,9 +122,9 @@ namespace prjShanLiang.Controllers
         //    {
         //        return RedirectToAction("Login");
         //    }
-           
+
         //}
-        
+
         public IActionResult logOut()
         {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) != null)
@@ -209,6 +230,7 @@ namespace prjShanLiang.Controllers
         {
             ShanLiang21Context db = new ShanLiang21Context();
 
+
             Store sto = new Store()
             {
                 AccountName = vm.AccountName,
@@ -219,10 +241,10 @@ namespace prjShanLiang.Controllers
                 Website = vm.Website,
                 OpeningTime = stoView.OpeningTime,
                 ClosingTime = stoView.ClosingTime,
-                DistrictId = 1,
                 Seats = vm.Seats,
                 StoreMail = vm.StoreMail,
-                Password = vm.AccountPassword
+                Password = vm.AccountPassword,
+                AccountStatus = 0 //Jredyen:剛建立店家時給予待審核的帳號狀態
 
             };
             string storeDistrict = vm.storeDistrict;
@@ -238,7 +260,7 @@ namespace prjShanLiang.Controllers
                 {
                     string substring = Guid.NewGuid().ToString();
                     string photoName = substring.Substring(0, 10) + ".jpg";
-                    string filePath = _enviro.WebRootPath + "/images/" + "/store/" + photoName;
+                    string filePath = _enviro.WebRootPath + "/images" + "/store/" + photoName;
                     //p.photo.CopyTo(new FileStream(path, FileMode.Create));
                     //prod.FImagePath = photoName;
                     //string filePath = "儲存的路徑" + "檔名";
@@ -308,7 +330,7 @@ namespace prjShanLiang.Controllers
             logginedUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Store datas = JsonSerializer.Deserialize<Store>(logginedUser);
             var data = sl.Stores.Where(t => t.AccountName.Contains(datas.AccountName));
-            ViewBag.storeName = datas.AccountName;
+            ViewBag.storeName = datas.RestaurantName;
             ViewBag.storeId = datas.StoreId;
             return View(data);
         }
@@ -396,7 +418,8 @@ namespace prjShanLiang.Controllers
                 }
             }
             sl.SaveChanges();
-            return RedirectToAction("memberManagement");
+            return View(mem);
+            //return RedirectToAction("memberManagement");
         }
 
         public IActionResult storeDataRevision2(Store s,  List<IFormFile> files)
@@ -473,7 +496,7 @@ namespace prjShanLiang.Controllers
 
 
            //catch
-                return RedirectToAction("storeDataRevision");
+                //return RedirectToAction("storeDataRevision");
         }
         public IActionResult GetCities()
         {
@@ -508,8 +531,8 @@ namespace prjShanLiang.Controllers
             var isStoreAccountExists = sl.Stores.Any(s => s.AccountName == name);
             var isMemberAccountExists = sl.Members.Any(m => m.Email == name);
             var isAdminAccountExists = sl.Admins.Any(a => a.AdminName == name);
-            var isStoreAccountStatusExists = sl.Stores.Where(s => s.AccountName == name).Select(s => s.AccountStatus).FirstOrDefault();
-            
+            var isStoreAccountStatusExists = sl.Stores.Where(s => s.RestaurantName == name).Select(s => s.AccountStatus).FirstOrDefault();
+
             var exists = isStoreAccountExists || isMemberAccountExists || isAdminAccountExists;
 
             var data = new
@@ -521,13 +544,24 @@ namespace prjShanLiang.Controllers
             return Json(data);
         }
 
-        public IActionResult CheckLoginAccountStatus(string name)
+
+        public IActionResult memberFavoriteRestaurant(string Email)//從membermanagement傳入參數
         {
+
             ShanLiang21Context sl = new ShanLiang21Context();
-            var isStoreAccountStatusExists = sl.Stores.Where(s => s.AccountName == name).Any(s=>s.AccountStatus ==0);
-            var exists =isStoreAccountStatusExists;
-            return Content(exists.ToString());
+           
+            var mem = sl.MemberActions.Include(m=>m.Member).Include(s=>s.Store).Include(a=>a.Action).Where(ma => ma.Member.Email == Email);
+
+            //if (mem == null)
+            //    return RedirectToAction("memberManagement");
+
+
+
+            return View(mem);
+
+
         }
+
 
 
         public IActionResult forgetPwd()
@@ -557,17 +591,17 @@ namespace prjShanLiang.Controllers
             // 使用 Google Mail Server 發信
             string GoogleID = "kingsley110011@gmail.com"; //Google 發信帳號
             string TempPwd = "Wvknxcojalblelvg"; //應用程式密碼
-            string ReceiveMail = "cleverpooh101@yahoo.com.tw"; //接收信箱
+            string ReceiveMail = AccountName; //接收信箱
 
             string SmtpServer = "smtp.gmail.com";
             int SmtpPort = 587;
             MailMessage mms = new MailMessage();
             mms.From = new MailAddress(GoogleID);
-            mms.Subject = "膳良平台重設密碼通知信";/*信件主題*/
+            mms.Subject = "膳糧平台重設密碼通知信";/*信件主題*/
 
 
             //string link = string.Format("https://localhost:7131/User/Login/?AccountName={0}&AccountPassword={1}", AccountName,pwd);
-            string mailContent = AccountName + " 您好：<br><label>&emsp;&emsp;請於收到信件後，盡快登入平台，重新設定密碼。</label><br>" + "<label>&emsp;&emsp;帳號名稱：" + AccountName +"</label>"+ "<br>&emsp;&emsp;新密碼：" + "<Label style='color:red'>"+ pwd+ "<br><label>&emsp;&emsp;https://localhost:7131/User/Login</label>";
+            string mailContent = AccountName + " 您好：<br><label>&emsp;&emsp;您已發出重設密碼請求，請於收到信件後，盡快登入平台，重新設定密碼。</label><br>" + "<label>&emsp;&emsp;帳號名稱：" + AccountName +"</label>"+ "<br>&emsp;&emsp;新密碼：" + "<Label style='color:red'>"+ pwd+ "<br><label>&emsp;&emsp;https://localhost:7131/User/Login</label>";
 
 
             mms.Body = mailContent;

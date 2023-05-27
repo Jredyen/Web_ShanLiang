@@ -1,0 +1,51 @@
+﻿@model IEnumerable<prjShanLiang.Models.MemberAction>
+
+@{
+    ViewData["Title"] = "我的收藏";
+}
+
+<main id="main">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>@ViewData["Title"]</h2>
+                </div>
+            </div>
+        </div><!-- End Breadcrumbs -->
+
+<table class="table">
+    <thead>
+        <tr>           
+            <th>
+                餐廳名稱
+            </th>
+            <th>
+                我的收藏
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.Store.RestaurantName
+            </td>
+            <td>
+               @item.Action.ActionName
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.No">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.No">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.No">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+    </div>
+</main><!-- End #main -->

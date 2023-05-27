@@ -63,6 +63,15 @@
             right: -10px;
             top: -15px;            
         }
+
+        .pt-5 {
+            padding-top: 0 !important;
+            margin-bottom: 20px;
+        }
+
+        .logo{
+            margin-bottom: 20px;
+        }
     </style>
     @await RenderSectionAsync("Styles",required:false)
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -86,51 +95,45 @@
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="List">餐廳一覽</a>
+                    <li>                        
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="List">
+                            <img src="~/images/icons/restaurant.png" style="margin:auto;width:40px;"> 餐廳一覽</a>
+                    </li>                    
+                    <li>                        
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Blogger" asp-action="BloggerCard">
+                            <img src="~/images/icons/blogicon.png" style="margin:auto;width:40px;"> 膳糧專欄</a>
+                    </li>                    
+                    <li>                        
+                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Mypage">
+                            <img src="~/images/icons/mypageicon.png" style="margin:auto;width:40px;"> 我的首頁
+                        </a>
                     </li>
-                    @*<li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Reconnend">人氣餐廳</a>
+                    <li>                        
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Advertisement" asp-action="BuyAdv">
+                            <img src="~/images/icons/adicon.png" style="margin:auto;width:40px;"> 廣告行銷方案
+                        </a>
                     </li>
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Latest">新進餐廳</a>
-                    </li>*@
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Blogger" asp-action="BloggerCard">膳糧專欄</a>
+                    <li>                       
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-StoreId="1">
+                            <img src="~/images/icons/menuicon.png" style="margin:auto;width:40px;"> 訂餐
+                        </a>
                     </li>
-                    @*<li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Login">登入</a>
-                    </li>*@
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Mypage">我的首頁</a>
-                    </li>
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Advertisement" asp-action="BuyAdv">廣告行銷方案</a>
-                    </li>
-                    <li>
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-StoreId="1">訂餐</a>
-                    </li>
+                    <li style="display:flex;font-size:15px;margin-left:80px;" class="showUserName" text-white bg-warning" id="isLogin"></li>
+                    
                 </ul>
             </nav>
-           
-            <div>
-                <!--<input type="text" class="textbox-book-a-table" id="txtKeyword" placeholder="搜尋餐廳">-->
-                <!--<a class="button-book-a-table" href="#book-a-table">搜尋</a>-->
+            <div>                
                 <div class="container pt-5">
-                    <a class="position-relative" href="@Url.Action("CartView", "Shopping")">  @*轉跳購物車畫面*@
+                    <a class="position-relative" href="@Url.Action("CartView", "Shopping")">
+                        @*轉跳購物車畫面*@
                         <img class="shopping-cart" src="~/images/Menu/購物車.png" style="width:40px;" />
                         <span class="cartQuantity text-white bg-warning"></span>   @*顯示購物車目前數量*@
                     </a>
                 </div>
-            </div>
-
-
-
-            
-            <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
-            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
-
+            </div>            
         </div>
+                <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+            <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>        
     </header><!-- End Header -->
     @RenderBody()
 
@@ -236,7 +239,32 @@
                     alert("無法獲取購物車數量");
                 }
             });
+            
         });
+
+        const loginText = document.getElementById('isLogin');
+        $(document).ready(function () {
+            // 在頁面載入時發起 AJAX 請求獲取使用者名稱並更新顯示
+            $.ajax({
+                url: "/api/userName/User",
+                type: "POST",
+                success: function (data) {
+                    if (data.success) {
+                        var userName = data.userName;
+                        var greeting = "您好，";
+                        if (userName !== '請先登入') {
+                            var logoutLink = '<a href="/User/logOut" >登出</a>';
+                            $('.showUserName').html(greeting + userName + logoutLink  );
+                        }
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    // 處理錯誤
+                }
+            });
+        });
+
+        
     </script>
     @await RenderSectionAsync("Scripts", required: false)    
 

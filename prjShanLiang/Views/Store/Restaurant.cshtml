@@ -1,5 +1,4 @@
 ﻿@model prjShanLiang.ViewModels.CShowRestaurantViewModel
-
 <link rel="stylesheet" href="~/css/Restaurant.css" />
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v16.0" nonce="aqWRwhk5"></script>
@@ -16,7 +15,7 @@
                     </div>
                 </div>
                 <div class="col-lg-5 order-1 order-lg-2 text-center text-lg-start">
-                    <img src="~/Images/store/decoration/@Model.storeDecorationImagePath" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300" />
+                    <img src="~/Images/store/@Model.storeDecorationImagePath" class="img-fluid" alt="" data-aos="zoom-out" data-aos-delay="300" />
                 </div>
             </div>
         </div>
@@ -34,8 +33,8 @@
                         <div class=" main-block">
                             <div class="st1">
                                 <div class="rating" style="font-size:2rem">
-                                    <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label>@Model.memberFavorateCount</label></div>
-                                    <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@item.StoreEvaluates.Where(x => x.StoreId == item.StoreId).Count()</label></div>
+                                    <div class="vertical"><i class="bi bi-suit-heart ic-t"></i><label id="labFavorate">@Model.memberFavorateCount</label></div>
+                                    <div class="vertical"><i class="bi bi-chat-left ic-t"></i><label>@Model.storeEvaluates?.Count()</label></div>
                                     <div id="star" class="vertical" style="color:#ffc107;margin-right:10px; pointer-events: none;" onclick="getStar(event,@item.Rating)"></div>
                                 </div>
                             </div>
@@ -79,33 +78,44 @@
 
                                     <div class="slides-1 swiper" data-aos="fade-up" data-aos-delay="100">
                                         <div class="swiper-wrapper">
-                                            @foreach (var se in item.StoreEvaluates.Where(x => x.StoreId == item.StoreId))
-                                            {
-                                                <div class="swiper-slide">
-                                                    <div class="testimonial-item">
-                                                        <div class="row gy-4 justify-content-center">
-                                                            <div class="col-lg-8">
-                                                                <div class="testimonial-content">
-                                                                    <p>
-                                                                        <i class="bi bi-quote quote-icon-left"></i>
-                                                                        @se.Comments
-                                                                        <i class="bi bi-quote quote-icon-right"></i>
-                                                                    </p>
-                                                                    @foreach (var m in Model.member.Where(y => y.MemberId == se.MemberId))
-                                                                    {
-                                                                        <h4>@m.MemberName</h4>
-                                                                    }
-                                                                    <h5>@se.EvaluateDate</h5>
-                                                                    <div id="@se.EvaluateNo" class="stars" style="pointer-events: none;" onclick="getStar(event,@se.Rating)"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-2 text-center" style="width:120px;">
-                                                                <img src="~/Images/Restaurant/man_person_icon.png" class="img-fluid testimonial-img" alt="">
-                                                            </div>
+                                            
+                                            <div class="swiper-slide" hidden>
+                                                <div class="testimonial-item">
+                                                    <div class="row gy-4 justify-content-center">
+                                                        <div class="col-lg-8">
+                                                        </div>
+                                                        <div class="col-lg-2 text-center" style="width:120px;">
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- End testimonial item -->
+                                            </div>
+                                            @if (Model.storeEvaluates != null)
+                                            {
+                                                foreach (var se in Model.storeEvaluates)
+                                                {
+                                                    <div class="swiper-slide">
+                                                        <div class="testimonial-item">
+                                                            <div class="row gy-4 justify-content-center">
+                                                                <div class="col-lg-8">
+                                                                    <div class="testimonial-content">
+                                                                        <p>
+                                                                            <i class="bi bi-quote quote-icon-left"></i>
+                                                                            @se.Comments
+                                                                            <i class="bi bi-quote quote-icon-right"></i>
+                                                                        </p>
+                                                                        <h4>@se.Member.MemberName</h4>
+                                                                        <h5>@se.EvaluateDate</h5>
+                                                                        <div id="@se.EvaluateNo" class="stars" style="pointer-events: none;" onclick="getStar(event,@se.Rating)"></div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-2 text-center" style="width:120px;">
+                                                                    <img src="~/Images/Restaurant/man_person_icon.png" class="img-fluid testimonial-img" alt="">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- End testimonial item -->
+                                                }
                                             }
                                         </div>
                                         <div class="swiper-pagination"></div>
@@ -125,11 +135,11 @@
 
                                     <div class="gallery-slider swiper">
                                         <div class="swiper-wrapper align-items-center">
-                                            @foreach (var smi in Model.storeMealImages)
+                                            @foreach (var mip in Model.storeMealImages)
                                             {
                                                 <div class="swiper-slide">
-                                                    <a class="glightbox" data-gallery="images-gallery" href="~/Images/Restaurant/@smi">
-                                                        <img src="~/Images/Restaurant/@smi" class="img-fluid" alt="">
+                                                    <a class="glightbox" data-gallery="images-gallery" href="~/Images/Menu/@mip">
+                                                        <img src="~/Images/Menu/@mip" class="img-fluid" alt="">
                                                     </a>
                                                 </div>
                                             }
@@ -150,20 +160,20 @@
                                     <a class="btn-white" href="#btnGroupDrop1"><i class="bi bi-share ic-t"></i>分享</a>
                                 </button>
                                 <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                    <a class="dropdown-item fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1&amp;src=sdkpreparse">
+                                    <a class="dropdown-item fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fkaramucho.asuscomm.com%2fstore%2fRestaurant%2f1&amp;src=sdkpreparse">
                                         <i class="bi bi-facebook"></i> Facebook
                                     </a>
-                                    <a class="dropdown-item" href="https://social-plugins.line.me/lineit/share?url=https%3A%2F%2Flocalhost%3A44351%2FStore%2FRestaurant%2F1"
-                                   target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
-                                    <a class="dropdown-item" href="mailto: ?subject=與您分享一間美味的餐廳，@item.RestaurantName！&body=@item.StoreMail"><i class="bi bi-envelope"></i> E-mail</a>
+                                    <a class="dropdown-item" href="https://social-plugins.line.me/lineit/share?url=https%3a%2f%2fkaramucho.asuscomm.com%2fstore%2fRestaurant%2f1"
+                                       target="_blank" onclick="LineIt.loadButton()"><i class="bi bi-line"></i> LINE</a>
+                                    <a id="gmail" class="dropdown-item" href="javascript:void(0)"><i class="bi bi-envelope"></i> Gmail</a>
                                     <a class="dropdown-item" href="javascript:copyUrl();"><i class="bi bi-link"></i> 複製連結</a>
                                 </div><!--End Dropdowns-->
                                 <button type="button" class="btn btn-secondary">
                                     <!--<a id="comment" asp-controller="Store" asp-action="AddComment" asp-route-id="@item.StoreId"><i class="bi bi-chat-left ic-t"></i>評論</a>-->
-                                    <a class="btn-white" id="comment" href="../AddComment/@item.StoreId"><i class="bi bi-chat-left ic-t"></i>評論</a>
+                                    <a class="btn-white" id="comment" href="~/Store/AddComment?id=@item.StoreId"><i class="bi bi-chat-left ic-t"></i>評論</a>
                                 </button>
                                 <button type="button" class="btn btn-secondary">
-                                    <a class="btn-white" href="###" id="favorate"><i class="bi bi-suit-heart ic-t"></i>收藏</a>
+                                    <a class="btn-white" href="Javascript:void(0);" id="favorate"><i class="bi bi-suit-heart ic-t"></i>收藏</a>
                                 </button>
                             </div>
 
@@ -176,7 +186,7 @@
                                     <a class="btn-white" asp-area="" asp-controller="Store" asp-action="Reserve" asp-route-id="@item.StoreId"><i class="bi bi-calendar-event ic-t"></i>線上訂位</a>
                                 </div>
                                 <div class="more-btn">
-                                    <a class="btn-white" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-id="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
+                                    <a class="btn-white" asp-area="" asp-controller="Shopping" asp-action="Menu" asp-route-StoreId="@item.StoreId"><i class="bi bi-cart ic-t"></i>線上訂餐</a>
                                 </div>
                             </div>
 
@@ -195,13 +205,17 @@
             <div class="section-header">
                 <p>餐廳位置</p>
             </div>
-            <div class="mb-3">
+            @*<div class="mb-3">
                 <iframe style="border:0; width: 100%; height: 350px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1278.101707603652!2d121.54386081424009!3d25.033478882048225!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abd379a5ec97%3A0xedc006d25a9e35df!2z6LOH5bGV5ZyL6Zqb6IKh5Lu95pyJ6ZmQ5YWs5Y-4!5e0!3m2!1szh-TW!2stw!4v1682580771029!5m2!1szh-TW!2stw" frameborder="0" allowfullscreen></iframe>
-            </div><!-- End Google Maps -->
+            </div>*@
+            <div id="map"></div>
+            <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXNdG0SasvzekItgtkTqukL_xV4WDS2j8&callback=initMap&v=weekly"
+                    defer></script>
+
 
         </div>
     </section>
-    <button onclick="topFunction()" id="myBtn" title="回頁首"><i class="bi bi-chevron-double-up"></i></button>
+    <button type="button" onclick="topFunction()" id="myBtn" class="toTop-arrow" title="回頁首" style="display: inline-block;"></button>
 
     <script src="~/js/Restaurant.js"></script>
     <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
@@ -240,14 +254,15 @@
             const datas = await response.json();
             const shop = datas.map(data => {
                 return (
-                    StoreType.innerHTML += `<a style="margin-right:10px;" href="../searchRestaurantType/${data.restaurantTypeNum}"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
+                    StoreType.innerHTML += `<a style="margin-right:10px;" href="../../Store/searchRestaurantType/${data.restaurantTypeNum}"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
                 )
             })
         }
         getRtype();
 
         // 載入時判斷Favorate紅或白
-        const favorate = document.getElementById('favorate');
+        const favorate = document.getElementById('favorate');//a標籤
+        const labFavorate = document.getElementById('labFavorate');//label計數標籤
         async function showFavorate() {
             const response = await fetch('@Url.Content("~/Store/ShowFavorate/")' + @item.StoreId);
             const datas = await response.json();
@@ -263,16 +278,46 @@
         favorate.addEventListener('click', async function () {
             const response = await fetch('@Url.Content("~/Store/AddToFavorate/")' + @item.StoreId);
             const datas = await response.json();
+            // 未登入：跳轉登入頁
+            if(datas.memberNotes == "未登入") {
+                window.location.replace('@Url.Content("~/User/Login")');
+            }
             // 未收藏：變紅、新增
-            if (datas.memberNotes == "新增收藏") {
-                return (favorate.innerHTML = `<i class="bi bi-suit-heart-fill ic-t" style="color:red;"></i>收藏`);
+            else if (datas.memberNotes == "新增收藏") {
+                return (favorate.innerHTML = `<i class="bi bi-suit-heart-fill ic-t" style="color:red;"></i>收藏`) + (labFavorate.innerHTML = datas.count);
             }
             // 已收藏：變白、刪除
             else {
-                return (favorate.innerHTML = `<i class="bi bi-suit-heart ic-t"></i>收藏`);
+                return (favorate.innerHTML = `<i class="bi bi-suit-heart ic-t"></i>收藏`) + (labFavorate.innerHTML = datas.count);
             }
         });
 
+        // Initialize and add the map
+        function initMap() {
+            // The location of Uluru
+            const uluru = { lat: @item.Latitude, lng: @item.Longitude };
+            // The map, centered at Uluru
+            const map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 16,
+                center: uluru,
+            });
+            // The marker, positioned at Uluru
+            const marker = new google.maps.Marker({
+                position: uluru,
+                map: map,
+            });
+        }
+        window.initMap = initMap;
+
+        // Gmail分享
+        const gmail = document.getElementById('gmail');
+        let msgsubj = "與您分享一間美味的餐廳：@Html.Raw(@item.RestaurantName)";
+        let msgbody = "https://karamucho.asuscomm.com/Store/Restaurant/" + @Html.Raw(@item.StoreId);
+        let url = 'https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=' + msgsubj + '&body=' + msgbody + '&ui=2&tf=1&pli=1';
+        gmail.addEventListener('click',function(){
+            window.open(url, '_blank');
+        })
+        
     </script>
     }
 
