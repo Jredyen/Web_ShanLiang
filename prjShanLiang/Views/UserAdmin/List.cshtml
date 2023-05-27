@@ -41,7 +41,9 @@
                             <td>@Html.DisplayFor(modelItem => item.Memberphone)</td>
                             <td>@(item.BrithDate?.ToString("yyyy-MM-dd"))</td>
                             <td>@Html.DisplayFor(modelItem => item.Address)</td>
-                            <td>@Html.DisplayFor(modelItem => item.AccountStatusNavigation.StatusName)</td>
+                            <td class="@(item.AccountStatusNavigation.StatusName == "停權" ? "alert alert-danger" : (item.AccountStatusNavigation.StatusName == "正常" ? "alert alert-info" : ""))">
+                            @Html.DisplayFor(modelItem => item.AccountStatusNavigation.StatusName)
+                            </td>
 
                             <td>
                                 @Html.ActionLink("修改", "Edit", new { id = item.MemberId }, new {Class="btn btn-outline-primary"})                                

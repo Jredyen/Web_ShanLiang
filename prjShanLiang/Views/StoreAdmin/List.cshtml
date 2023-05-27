@@ -66,9 +66,11 @@
                                      }
                                 <img src="~/images/test/@imageName" alt="店家照片" width="80" height="60" />
                             </td>
-                            <td>@Html.DisplayFor(modelItem => item.AccountStatusNavigation.StatusName)</td>
+                            <td class="@(item.AccountStatusNavigation.StatusName == "審核中" ? "alert alert-danger" : (item.AccountStatusNavigation.StatusName == "正常" ? "alert alert-info" : ""))">
+                                @Html.DisplayFor(modelItem => item.AccountStatusNavigation.StatusName)
+                            </td>
                             <td>
-                                @Html.ActionLink("修改", "Edit", new { id = item.StoreId }, new {Class="btn btn-outline-primary"}) |
+                                @Html.ActionLink("修改", "Edit", new { id = item.StoreId }, new {Class="btn btn-outline-primary"}) —
                                 @Html.ActionLink("驗證", "Verify", new {  id=item.StoreId },new {onclick="return confirm('確定發送驗證信嗎?')", Class="btn btn-outline-danger"})
                             </td>
                         </tr>

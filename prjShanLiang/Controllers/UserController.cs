@@ -40,7 +40,7 @@ namespace prjShanLiang.Controllers
                 Member mem = db.Members.FirstOrDefault(a => a.Email == vm.AccountName && a.Password == vm.AccountPassword);
                 //Account acc = db.Accounts.FirstOrDefault(a => a.AccountName == vm.AccountName && a.AccountPassword == vm.AccountPassword);
                 Admin admin = db.Admins.FirstOrDefault(a => a.AdminName == vm.AccountName && a.Passwoed == vm.AccountPassword);
-                if (sto != null || mem != null || admin != null)
+                if (sto != null&&sto.AccountStatus != 0  || mem != null || admin != null)
                 {
                     string json;
                     if (sto != null)

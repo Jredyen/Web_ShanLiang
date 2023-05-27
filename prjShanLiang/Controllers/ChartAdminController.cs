@@ -39,6 +39,7 @@ namespace prjShanLiang.Controllers
             var resPocketCount = _context.MemberActions
                 .Where(a => memberIds.Contains((int)a.MemberId))
                 .Where(a => storeIds.Contains((int)a.StoreId))
+                .Where(a =>a.ActionId == 2)
                 .GroupBy(a => a.Store.RestaurantName)
                 .Select(g => new { MemberAction = g.Key, Count = g.Count()})
                 .ToList();

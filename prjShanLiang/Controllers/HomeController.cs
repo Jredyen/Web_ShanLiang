@@ -17,9 +17,6 @@ namespace prjShanLiang.Controllers
        
             public IActionResult Index()
             {
-
-            
-
             var Image = _db.Stores.ToList();
             var AdImages = _db.StoreAdImages.Where(sa => sa.ADColumn == "true").ToList();
             var Evaluate = _db.StoreEvaluates.ToList();

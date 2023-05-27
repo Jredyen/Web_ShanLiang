@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using prjShanLiang.Models;
+using System.Text.Json;
 
 namespace prjShanLiang.Controllers
 {
@@ -12,7 +13,18 @@ namespace prjShanLiang.Controllers
             //{
             //    return RedirectToAction( "Login", "User");
             //}
+         
             return View();
+        }
+
+        [Route("api/Admin/AdminName")]
+        public IActionResult AdminName()
+        {
+            string logginedAdmin = null;
+            logginedAdmin = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Admin data = JsonSerializer.Deserialize<Admin>(logginedAdmin);          
+
+            return Json(new { success =true, adminName= data.AdminName});
         }
 
         public IActionResult List()
@@ -21,6 +33,10 @@ namespace prjShanLiang.Controllers
             var datas = from a in db.Admins.Include(i => i.Identification)
                         select a;
 
+            string logginedAdmin = null;
+            logginedAdmin = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Admin data = JsonSerializer.Deserialize<Admin>(logginedAdmin);
+            ViewBag.AdminName = data.AdminName;
             return View(datas);
         }
 
