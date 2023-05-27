@@ -1,21 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient.DataClassification;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
 using System;
 using System.Data;
-using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Text.Json;
-using static System.Net.WebRequestMethods;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace prjShanLiang.Controllers
 {
@@ -427,7 +419,7 @@ namespace prjShanLiang.Controllers
             }
             sl.SaveChanges();
             return View(mem);
-            return RedirectToAction("memberManagement");
+            //return RedirectToAction("memberManagement");
         }
 
         public IActionResult storeDataRevision2(Store s,  List<IFormFile> files)
@@ -504,7 +496,7 @@ namespace prjShanLiang.Controllers
 
 
            //catch
-                return RedirectToAction("storeDataRevision");
+                //return RedirectToAction("storeDataRevision");
         }
         public IActionResult GetCities()
         {

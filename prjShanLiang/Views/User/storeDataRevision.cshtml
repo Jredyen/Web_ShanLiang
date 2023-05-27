@@ -1,13 +1,10 @@
-﻿Storedata revivsion
-..
-@model prjShanLiang.Models.Store
+﻿@model prjShanLiang.Models.Store
 
 @{
     ViewData["Title"] = "storeDataRevision";
 }
 
 <style>
-
     .card-registration .select-input.form-control[readonly]:not([disabled]) {
         font-size: 1rem;
         line-height: 2.15;
@@ -48,12 +45,8 @@
     <div class="container">
 
         <div class="d-flex justify-content-between align-items-center">
-            <h2>首頁</h2>
-            <h2>修改餐廳資訊</h2>
-            <ol>
-                <li><a a asp-controller="Home" asp-action="Index">Home</a></li>
-                <li>Index</li>
-            </ol>
+            
+            <h2>修改餐廳資訊</h2>         
         </div>
 
     </div>
@@ -208,14 +201,8 @@
                     </div>
                 </div>
             </div>
-    </form>
-    <div>
-        <a asp-action="storeManagement">回到餐廳管理中心</a>
-    </div>
-    </div>
-
-
-
+        </div>
+    </form>   
     @section Scripts {
         <script>
             const Password1 = document.getElementById('storePassword');
@@ -281,10 +268,10 @@
                                     divPic.appendChild(img);
                                     divItem.appendChild(divTk);
                                     divItem.appendChild(spanDel);
-            @*                               //增加節點結構*@
+                                    @*增加節點結構*@
                                             var groupTu = document.getElementById('groupTu');
                                     groupTu.insertBefore(divItem, groupTu.firstChild);
-            @*                               //刪除節點方法*@
+                                        @*刪除節點方法*@
                                         spanDel.onclick=function() {
                                             removeItem(this);
                                             return false;
@@ -301,7 +288,7 @@
                         reader.readAsDataURL(obj.files[i]);
                     }
                 })
-            @*                               //刪除圖片                *@
+            @*刪除圖片*@
                 function removeItem(delNode) {
                     var itemNode = delNode.parentNode,
                         title = delNode.getAttribute('title');
@@ -441,5 +428,3 @@
         </script>
     }
 </section>
-@*<section class="sample-page">*@
-<div class="container" data-aos="fade-up">
