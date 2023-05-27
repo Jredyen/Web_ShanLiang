@@ -191,7 +191,7 @@ namespace prjShanLiang.Controllers
             else if ((sumResult + sr.NumOfPeople) > s.Seats)
             {
                 return Json(new { success = "false", errorType = 2, numRemain = (s.Seats - sumResult) });
-            }// 如果[訂位人數總和+欲訂位人數] >= [容客量]，跳出視窗：選擇人數已超過容客量
+            }// 如果[訂位人數總和+欲訂位人數] > [容客量]，跳出視窗：選擇人數已超過容客量
             else
             {
                 _db.StoreReserveds.Add(sr);
@@ -216,18 +216,14 @@ namespace prjShanLiang.Controllers
                 Time = time,
                 Sum = num.Sum()
             });
-            var sumResult = gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum;
+            var sumResult = gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum ?? 0;            
             if (sumResult >= s.Seats)
             {
-                return Json(new { success = "false", errorType = 1, numRemain = (s.Seats - sumResult) });
+                return Json(new { success = "false", errorType = 1, numRemain = (s.Seats - (int)sumResult) });
             }// 如果[訂位人數總和] >= [容客量]，跳出視窗：該時段已客滿
-            else if ((sumResult + sr.NumOfPeople) > s.Seats)
-            {
-                return Json(new { success = "false", errorType = 2, numRemain = (s.Seats - sumResult) });
-            }// 如果[訂位人數總和+欲訂位人數] >= [容客量]，跳出視窗：選擇人數已超過容客量
             else
             {
-                return Json(new { success = "true", errorType = 0, numRemain = (s.Seats - sumResult) });
+                return Json(new { success = "true", errorType = 0, numRemain = (s.Seats - (int)sumResult) });
             }// 如果該時段有空位，傳回success=true
         }
 
