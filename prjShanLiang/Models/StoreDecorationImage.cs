@@ -11,5 +11,6 @@ public partial class StoreDecorationImage
 
     public string? ImagePath { get; set; }
 
+    public string? ImageJudge { get; set; }
     public virtual Store? Store { get; set; }
 }

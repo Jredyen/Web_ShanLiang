@@ -1,4 +1,6 @@
-﻿@model Tuple<List<prjShanLiang.Models.Store>, List<prjShanLiang.Models.StoreAdImage>,List<prjShanLiang.Models.StoreEvaluate>,List<prjShanLiang.Models.Member>,List<prjShanLiang.Models.Blog>>
+﻿@model Tuple<List<prjShanLiang.Models.Store>, List<prjShanLiang.Models.StoreAdImage>,List<prjShanLiang.Models.StoreEvaluate>,List<prjShanLiang.Models.Member>,List<prjShanLiang.Models.Blog>,List<prjShanLiang.Models.MemberAction>,List<prjShanLiang.Models.StoreDecorationImage>>
+
+
 @{
     ViewData["Title"] = "膳糧";
 }
@@ -69,7 +71,7 @@
             border-radius: 15px;
         }
             .left-img:hover {
-                transform: scale(1.1); /* 图片放大 10% */
+                transform: scale(1.1); /* 圖片放大 10% */
                 border-color: #FFE4CA;
             }
         .right-img {
@@ -89,8 +91,8 @@
                 border-color: #FFE4CA;
             }
         .image-wrapper {
-            width: 100%; /* 将宽度设置为百分比或具体的像素值，以与父级容器保持一致 */
-            height: 300px; /* 设置固定高度，可以根据需要进行调整 */
+            width: 100%;
+            height: 300px;
             overflow: hidden;
         }
 
@@ -123,7 +125,7 @@
         }
 
             .indexTitle .iconStyle {
-                background: #f0f0f0; /* 设置背景颜色 */
+                background: #f0f0f0; /* 設置背景颜色 */
                 height: 50px;
                 position: relative;
 
@@ -134,7 +136,7 @@
                     position: absolute;
                     left: 50%;
                     top: 50%;
-                    transform: translate(-50%, -50%); /* 让图标水平垂直居中 */
+                    transform: translate(-50%, -50%); 
                     z-index: 1;
                 }
 
@@ -259,7 +261,7 @@
                 <!--==============================================-->
 
 
-                <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+                <div id="carousel-example-generic" class="carousel slide carousel-fade" data-ride="carousel">
                     <!-- 輪播指示器 -->
                     <ol class="carousel-indicators">
                         @for (int i = 0; i < 4; i++)
@@ -276,10 +278,7 @@
                             <div class="item @(advertisement == Model.Item1.First() ? "active" : "")">
                                 <div class="image-container">
                                     <a href="@Url.Action("Restaurant", "store", new { id = advertisement.StoreId })">
-
-
                                         <img src="~/images/test/@imgName" class="carousel-image" />
-
                                     </a>
                                 </div>
                                 <div class="carousel-caption">
@@ -302,9 +301,9 @@
                 </div>
                 <div class="indexTitle">
                     <div class="iconStyle">
-                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <!-- 使用 Font Awesome 图标类 -->
+                        <span class="fa fa-hotjar fc-secondary fs-xxl"> </span>   <div class="titleIA fs-xl">行銷專欄</div> 
                     </div>
-                    <div class="titleIA fs-xl">行銷專欄</div>
+                   
                   
                 </div>
 
@@ -316,27 +315,27 @@
 
                     @foreach (var advertisement in Model.Item1.Take(2))
                     {
-                        var adImage = Model.Item2.ElementAtOrDefault(index);
+                        var adImage = Model.Item7.ElementAtOrDefault(index);
 
-                        if (index == 0) // 左图
+                        if (index == 0) // 左圖
                         {
                             <span class="left-img">
                                 <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
-                                    <img src="~/Images/store/@(adImage?.Adimage)" alt="Placeholder Image" height="400px" width="560px" id="left-img-element" />
+                                    <img src="~/Images/store/@(adImage?.ImagePath)" alt="Placeholder Image" height="400px" width="560px" id="left-img-element" />
                                 </a>
                                 <span class="carousel-caption"  >
-                                    @(adImage?.Adimage?.Replace(".jpg", ""))
+                                    @(adImage?.ImagePath?.Replace(".jpg", ""))
                                 </span>
                             </span>
                         }
-                        else if (index == 1) // 右图
+                        else if (index == 1) // 右圖
                         {
                             <span class="right-img">
                                 <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
-                                    <img src="~/Images/store/@(adImage?.Adimage)" alt="Placeholder Image" height="400px" width="560px" id="right-img-element" />
+                                    <img src="~/Images/store/@(adImage?.ImagePath)" alt="Placeholder Image" height="400px" width="560px" id="right-img-element" />
                                 </a>
                                 <span class="carousel-caption">
-                                    @(adImage?.Adimage?.Replace(".jpg", ""))
+                                    @(adImage?.ImagePath?.Replace(".jpg", ""))
                                 </span>
                             </span>
                         }
@@ -348,15 +347,15 @@
 
                 <div class="indexTitle">
                     <div class="iconStyle">
-                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <!-- 使用 Font Awesome 图标类 -->
+                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span>  <div class="titleIA fs-xl">熱門收藏</div>
                     </div>
-                    <div class="titleIA fs-xl">熱門收藏</div>
+                   
                  
                 </div>
               
 
-                <div class="row">
-                    @foreach (var advertisement in Model.Item1.Skip(5).Take(4)) 
+                <div class="row"> 
+                    @foreach (var advertisement in Model.Item1.OrderByDescending(s => s.MemberActions.Count).Take(4))
                     {
                         string imgName = advertisement.RestaurantName + ".jpg";
                         <div class="col-sm-3">
@@ -369,10 +368,18 @@
                                         @foreach (var Evaluate in Model.Item3.Where(s => s.StoreId == advertisement.StoreId).Take(1))
                                         {
                                             <div class="Name-title">
+                                                <div class="vertical">
+                                                    <span class="card-body">
+                                                        <span class="vertical star" style="color:#ffc107;margin-right:10px;"></span>
+                                                        <input type="hidden" class="rating-value" value="@advertisement.Rating" />
+                                                        <i class="bi bi-suit-heart-fill" style="color:red"></i><label id="labFavorate">@advertisement.MemberActions.Count</label>
+                                                    </span>
+                                                 
+                                                </div>
                                                
-                                               <span class="vertical star" style="color:#ffc107;margin-right:10px;"></span>
-                                               <input type="hidden" class="rating-value" value="@advertisement.Rating" />
+                                               
                                                @advertisement.RestaurantName
+                                               
                                             </div>
                                             <div class="Name-body">
                                                 @foreach (var member in Model.Item4.Where(s => s.MemberId == Evaluate.MemberId))
@@ -394,10 +401,10 @@
 
                 <div class="indexTitle">
                     <div class="iconStyle">
-                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <!-- 使用 Font Awesome 图标类 -->
+                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <div class="titleIA fs-xl">膳糧專欄</div>
                     </div>
-                    <div class="titleIA fs-xl">膳糧專欄</div>
-                    @* <div class="fs-s fc-secondary">HOT</div>*@
+                    
+                   
                 </div>
                 <div class="row">
                     @foreach (var ShanLiangBlog in Model.Item5.Take(4))
@@ -433,9 +440,9 @@
                 </div>
                 <div class="indexTitle">
                     <div class="iconStyle">
-                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span> <!-- 使用 Font Awesome 图标类 -->
+                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span>  <div class="titleIA fs-xl">最新評論</div>
                     </div>
-                    <div class="titleIA fs-xl">最新評論</div>
+                   
                     
                 </div>
                 <div class="row">
@@ -471,19 +478,19 @@
                 </div>
             </div>
 
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
             <script>
-                window.onload = function () {
+                window.onload = function () { //輪播圖片
                     $('.carousel').carousel({
-                        interval: 3000,
+                        interval: 1500,
                         wrap: true,
                         pause: "false",
                         keyboard: true
                     });
 
-                    const stars = document.getElementsByClassName('star');
+                    const stars = document.getElementsByClassName('star'); //顯示星星
 
                     for (let i = 0; i < stars.length; i++) {
                         const rating = parseInt(stars[i].nextElementSibling.value);
@@ -497,7 +504,7 @@
                     }
                 };
 
-                $(function () {
+                $(function () {  //回到頂端
                     $('#BackTop').click(function () {
                         $('html,body').animate({ scrollTop: 0 }, 333);
                     });
@@ -510,6 +517,11 @@
                     }).scroll();
                 });
 
+
+              
+                    
+               
+               
 
             </script>
 

@@ -17,16 +17,21 @@ namespace prjShanLiang.Controllers
        
             public IActionResult Index()
             {
+
             var Image = _db.Stores.ToList();
             var AdImages = _db.StoreAdImages.Where(sa => sa.ADColumn == "true").ToList();
             var Evaluate = _db.StoreEvaluates.ToList();
             var member = _db.Members.ToList();
             var blog = _db.Blogs.ToList();
-            var model = new Tuple<List<Store>, List<StoreAdImage>,List<StoreEvaluate>,List<Member>,List<Blog>>(Image, AdImages, Evaluate, member,blog);
+            var MemAction = _db.MemberActions.Where(Ma=>Ma.ActionId==2).ToList();
+            var StoreDecorationImage = _db.StoreDecorationImages.Where(sa=>sa.ImageJudge=="true").ToList();
+            var model = new Tuple<List<Store>, List<StoreAdImage>,List<StoreEvaluate>,List<Member>,List<Blog>,List<MemberAction>,List<StoreDecorationImage>>(Image, AdImages, Evaluate, member,blog, MemAction, StoreDecorationImage);
             return View(model);
-            }
-        
 
+
+            }
+
+     
         public IActionResult Privacy()
         {
             return View();
