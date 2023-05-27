@@ -34,7 +34,7 @@ namespace prjShanLiang.Controllers
             //IEnumerable<Member> mbs = from m in _db.Members
             //                          orderby m.MemberId
             //                          select new Member { MemberId = m.MemberId, MemberName = m.MemberName };
-            var se = from e in _db.StoreEvaluates?.Include(m=>m.Member)                     
+            var se = from e in _db.StoreEvaluates?.Include(m => m.Member)
                      where e.StoreId == id
                      select e;
             var sdp = from sd in _db.StoreDecorationImages where sd.StoreId == id select sd.ImagePath;//餐廳封面照
@@ -42,7 +42,7 @@ namespace prjShanLiang.Controllers
             var smi = from mm in _db.MealMenus where mm.StoreId == id select mm.MealImagePath;//改抓MealMenu.MealImagePath
             datas.store = sts;
             //datas.member = mbs;
-            datas.storeEvaluates = se; 
+            datas.storeEvaluates = se;
             datas.storeDecorationImagePath = sdp.FirstOrDefault();
             datas.memberFavorateCount = mfc.Count();
             datas.storeMealImages = smi;//改抓MealMenu.MealImagePath
@@ -84,7 +84,7 @@ namespace prjShanLiang.Controllers
         {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
             {
-                return Json(new { memberNotes = "未登入"});                
+                return Json(new { memberNotes = "未登入" });
             }
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Member mem = JsonSerializer.Deserialize<Member>(json);
@@ -135,13 +135,13 @@ namespace prjShanLiang.Controllers
             }
             string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Member mem = JsonSerializer.Deserialize<Member>(json);
-            
+
             var se1 = _db.StoreEvaluates.Where(se1 => se1.MemberId == mem.MemberId && se1.StoreId == se.StoreId).FirstOrDefault();// 抓[登入會員]在[這間店]是否有過評論
             if (se1 == null)
             {
                 _db.StoreEvaluates.Add(se);
                 _db.SaveChanges();
-                return Json(new { type = 1});
+                return Json(new { type = 1 });
                 //return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
             }// 沒有評論的場合:新增
             else
@@ -191,7 +191,7 @@ namespace prjShanLiang.Controllers
             else if ((sumResult + sr.NumOfPeople) > s.Seats)
             {
                 return Json(new { success = "false", errorType = 2, numRemain = (s.Seats - sumResult) });
-            }// 如果[訂位人數總和+欲訂位人數] >= [容客量]，跳出視窗：選擇人數已超過容客量
+            }// 如果[訂位人數總和+欲訂位人數] > [容客量]，跳出視窗：選擇人數已超過容客量
             else
             {
                 _db.StoreReserveds.Add(sr);
@@ -216,18 +216,14 @@ namespace prjShanLiang.Controllers
                 Time = time,
                 Sum = num.Sum()
             });
-            var sumResult = gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum;
+            var sumResult = gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum ?? 0;            
             if (sumResult >= s.Seats)
             {
-                return Json(new { success = "false", errorType = 1 });
+                return Json(new { success = "false", errorType = 1, numRemain = (s.Seats - (int)sumResult) });
             }// 如果[訂位人數總和] >= [容客量]，跳出視窗：該時段已客滿
-            else if ((sumResult + sr.NumOfPeople) > s.Seats)
-            {
-                return Json(new { success = "false", errorType = 2, numRemain = (s.Seats - sumResult) });
-            }// 如果[訂位人數總和+欲訂位人數] >= [容客量]，跳出視窗：選擇人數已超過容客量
             else
             {
-                return Json(new { success = "true" });
+                return Json(new { success = "true", errorType = 0, numRemain = (s.Seats - (int)sumResult) });
             }// 如果該時段有空位，傳回success=true
         }
 
