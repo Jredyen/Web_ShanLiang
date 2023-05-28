@@ -11,10 +11,10 @@ namespace prjShanLiang.Controllers
     {
         public IActionResult Index()
         {
-            //if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE)  == null)
-            //{
-            //    return RedirectToAction( "Login", "User");
-            //}
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
 
             return View();
         }
@@ -51,18 +51,29 @@ namespace prjShanLiang.Controllers
         {
             if (vm.IdentificationId == 3)
             {
-                ShanLiang21Context db = new ShanLiang21Context();
-
-                Admin admin = new Admin()
+                if (vm.AdminName != null && vm.Password != null && vm.Password2 != null)
                 {
-                    AdminName = vm.AdminName,
-                    Passwoed = vm.Password,
-                    IdentificationId = vm.IdentificationId
-                };
-                db.Add(admin);
-                db.SaveChanges();
+                    ShanLiang21Context db = new ShanLiang21Context();
+                    if (!(db.Admins.Any(a => a.AdminName == vm.AdminName) || db.Stores.Any(s => s.AccountName == vm.AdminName)))
+                    {
+                        Admin admin = new Admin()
+                        {
+                            AdminName = vm.AdminName,
+                            Passwoed = vm.Password,
+                            IdentificationId = vm.IdentificationId
+                        };
+                        db.Add(admin);
+                        db.SaveChanges();
 
-                return RedirectToAction("List");
+                        return RedirectToAction("List");
+                    }
+                    else{
+                        return View();
+                    }
+                }
+                else {
+                    return View();
+                }
             }
             else
             {
@@ -123,11 +134,12 @@ namespace prjShanLiang.Controllers
         public IActionResult CheckAdminPassword(string password)
         {
             bool exists = false;
-            if (password != null) {            
-             const string passwordPattern = @"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$";
-            exists = !Regex.IsMatch(password, passwordPattern);
+            if (password != null)
+            {
+                const string passwordPattern = @"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$";
+                exists = !Regex.IsMatch(password, passwordPattern);
             }
-           
+
             return Content(exists.ToString());
         }
     }

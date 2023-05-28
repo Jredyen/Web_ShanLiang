@@ -77,7 +77,7 @@
         inpAdminName.addEventListener('input', async () => {
             const response = await fetch(`@Url.Content("~/Admin/CheckAdminName")?name=${inpAdminName.value}`);
             const isExists = await response.text();
-
+            console.log(isExists);
             inpAdminName.classList.toggle("is-invalid", isExists === "True");
             inpAdminName.classList.toggle("is-valid", inpAdminName.value !== "");
 
