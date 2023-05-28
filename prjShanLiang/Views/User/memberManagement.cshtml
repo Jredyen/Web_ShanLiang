@@ -137,7 +137,7 @@
             @*以下為第四張card*@
 
             <div class="col mt-5 Allcard">
-                <a href="@Url.Action("memberDataRevision", "User", new {  Model.FirstOrDefault().Email  })" style="text-decoration:none">
+                <a href="@Url.Action("MyStoreReserved", "Store", new {  id=Model.FirstOrDefault().MemberId  })" style="text-decoration:none">
                     <div class="card border-danger card-d-bg">
                         <img src="~/images/Menu/top/3.jpg">
                         <div class="card-body d-grid gap-3">

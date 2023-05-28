@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
 using System;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -56,7 +57,7 @@ namespace prjShanLiang.Controllers
                                where s.StoreId == id
                                select new { s.No, s.RestaurantTypeNum, s.StoreId, r.TypeName };
             return Json(datas);
-        }
+        }//顯示餐廳類別超連結
         public IActionResult SearchRestaurantType(int? id)
         {
             IQueryable<Store> datas = from s in _db.StoreTypes.Include(s => s.Store)
@@ -69,7 +70,7 @@ namespace prjShanLiang.Controllers
             ViewBag.TypeName = data.FirstOrDefault();
             ViewBag.Id = id;
             return View(datas);
-        }
+        }//餐廳類別頁面
         public IActionResult ShowFavorate(int id)
         {
             MemberAction ma = null;
@@ -216,7 +217,7 @@ namespace prjShanLiang.Controllers
                 Time = time,
                 Sum = num.Sum()
             });
-            var sumResult = gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum ?? 0;            
+            var sumResult = gsr1.Where(g => g.Time == sr.Time).FirstOrDefault()?.Sum ?? 0;
             if (sumResult >= s.Seats)
             {
                 return Json(new { success = "false", errorType = 1, numRemain = (s.Seats - (int)sumResult) });
@@ -225,6 +226,32 @@ namespace prjShanLiang.Controllers
             {
                 return Json(new { success = "true", errorType = 0, numRemain = (s.Seats - (int)sumResult) });
             }// 如果該時段有空位，傳回success=true
+        }
+        public IActionResult MyStoreReserved(int? id)
+        {
+            if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER) == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            string json = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
+            Member mem = JsonSerializer.Deserialize<Member>(json);// 取得[登入會員]
+
+            if (mem.MemberId == id)
+            {
+                var datas = from s in _db.StoreReserveds.Include(st => st.Store)
+                            where s.MemberId == id
+                            select s;
+                //var mo = from m in _db.MealOrders.Include(st => st.Store)
+                //         where m.MemberId == id 
+                //         select m;
+                return View(datas);
+            }
+            return RedirectToAction("memberManagement", "User");//如果傳進來的Id不是登入者的Id轉跳回會員頁面
+        }
+        public IActionResult LinkMealOrder(int? id)
+        {
+            var datas = _db.MealOrders.Include(mo => mo.Store).Where(mo => mo.StoreId == id).OrderBy(x=> Guid.NewGuid()).Select(t => new { t.OrderId, RestaurantName=t.Store.RestaurantName, t.Total, t.OrderDate, t.Remark }).First();
+            return Json(datas);
         }
 
         public IActionResult GetName(string keyword)

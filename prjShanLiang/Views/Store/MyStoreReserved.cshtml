@@ -1,0 +1,146 @@
+﻿@model IEnumerable<prjShanLiang.Models.StoreReserved>
+
+@{
+    ViewData["Title"] = "我的訂位紀錄";
+}
+@section Styles{
+    <style>
+        body {
+            font-size: 15px;
+            background-color: #E0E0E0;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            width: 100%;
+        }
+    </style>
+}
+
+<!-- Modal互動視窗 -->
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="font-size:30px; margin-left:150px;">點餐紀錄</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr style="text-align:center;">
+                            <th>
+                                訂單編號
+                            </th>
+                            <th>
+                                店家
+                            </th>
+                            <th>
+                                金額
+                            </th>
+                            <th>
+                                訂單時間
+                            </th>
+                            <th>
+                                備註
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="table1">
+                        @*點餐紀錄出現在這*@
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main id="main">
+    <div class="container aos-init aos-animate" data-aos="fade-up">
+        <!-- ======= Breadcrumbs ======= -->
+        <div class="breadcrumbs" style="background-color:orange;">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2>@ViewData["Title"]</h2>
+                </div>
+            </div>
+        </div><!-- End Breadcrumbs -->
+        <div class="rounded-5" style="margin:20px;padding:20px; background-color:white; border:2px solid orange;">
+            <table class="table table-striped">
+                <thead style="text-align:center;font-size:20px;background-color:deepskyblue;">
+                    <tr>
+                        <th>
+                            序號
+                        </th>
+                        <th>
+                            店家
+                        </th>
+                        <th>
+                            日期
+                        </th>
+                        <th>
+                            時間段
+                        </th>
+                        <th>
+                            人數
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int count = 0;
+                        foreach (var item in Model)
+                        {
+                            count++;
+                            <tr style="text-align:center;">
+                                <td>
+                                    @count
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Store.RestaurantName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Date)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Time)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.NumOfPeople)
+                                </td>
+                                <td>
+                                    <!-- 按下觸發Model互動視窗 並觸發con(OrderId)方法 -->
+                                    <div type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#myModal" onclick="con(@item.StoreId)">
+                                        點餐紀錄
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <div align="center">
+                <a class="btn btn-danger" asp-action="memberManagement" asp-controller="User">退出</a>
+            </div>
+        </div>
+    </div>
+</main><!-- End #main -->
+@section Scripts{
+    <script>
+        async function con(id) {
+            const dataTbody = document.getElementById('table1')
+            const res = await fetch('@Url.Content("~/Store/LinkMealOrder/")' + id);
+            console.log(res);
+            const v = await res.json();
+            console.log(v);
+
+            return `<tr style="text-align:center;"><td>${v.orderId}</td><td>${v.restaurantName}</td><td>${v.total}</td><td>${v.orderDate}</td><td>${v.remark}</td></tr>`
+
+            dataTbody.innerHTML = htmlData.join("");
+        };
+    </script>
+    }
