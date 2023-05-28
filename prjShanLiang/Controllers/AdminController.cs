@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using prjShanLiang.Models;
 using prjShanLiang.ViewModels;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace prjShanLiang.Controllers
 {
@@ -14,7 +15,7 @@ namespace prjShanLiang.Controllers
             //{
             //    return RedirectToAction( "Login", "User");
             //}
-         
+
             return View();
         }
 
@@ -23,9 +24,9 @@ namespace prjShanLiang.Controllers
         {
             string logginedAdmin = null;
             logginedAdmin = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
-            Admin data = JsonSerializer.Deserialize<Admin>(logginedAdmin);          
+            Admin data = JsonSerializer.Deserialize<Admin>(logginedAdmin);
 
-            return Json(new { success =true, adminName= data.AdminName});
+            return Json(new { success = true, adminName = data.AdminName });
         }
 
         public IActionResult List()
@@ -65,10 +66,10 @@ namespace prjShanLiang.Controllers
             }
             else
             {
-                ModelState.AddModelError("IdentificationId", "無法修改權限");
+                ViewBag.Message = "無法修改管理員權限";
             }
 
-            return View(vm);
+            return View();
         }
 
         public IActionResult Delete(int? id)
@@ -102,10 +103,32 @@ namespace prjShanLiang.Controllers
             {
                 ad.AdminName = a.AdminName;
                 ad.Passwoed = a.Passwoed;
-                ad.IdentificationId =a.IdentificationId;
+                ad.IdentificationId = a.IdentificationId;
                 db.SaveChanges();
             }
             return RedirectToAction("List");
+        }
+
+        public IActionResult CheckAdminName(string name)
+        {
+            ShanLiang21Context db = new ShanLiang21Context();
+            var storeExists = db.Stores.Any(s => s.AccountName == name);
+            var adminExists = db.Admins.Any(a => a.AdminName == name);
+
+            var exists = storeExists || adminExists;
+
+            return Content(exists.ToString());
+        }
+
+        public IActionResult CheckAdminPassword(string password)
+        {
+            bool exists = false;
+            if (password != null) {            
+             const string passwordPattern = @"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$";
+            exists = !Regex.IsMatch(password, passwordPattern);
+            }
+           
+            return Content(exists.ToString());
         }
     }
 }

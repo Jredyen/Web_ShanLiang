@@ -8,8 +8,13 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-
-<div asp-validation-summary="All" class="alert alert-danger"></div>
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-danger">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        @ViewBag.Message
+    </div>
+}
 
 <div class="container">
     <div class="row justify-content-center">
@@ -24,28 +29,28 @@
                 <div class="card-body">
                     <form asp-action="Create" onsubmit="handleSubmit()">
                         <div class="form-floating mb-3">
-                            <input asp-for="AdminName" class="form-control" placeholder="請輸入管理員帳號:" required />
+                            <input asp-for="AdminName" class="form-control" id="inpAdminName" placeholder="請輸入管理員帳號:" required />
                             <label asp-for="AdminName" class="control-label">請輸入管理員帳號:</label>
-                            <span asp-validation-for="AdminName" class="text-danger"></span>
+                            <span asp-validation-for="AdminName" id="spanAdminName" class="text-danger"></span>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="form-floating mb-3 mb-md-0">
-                                    <input asp-for="Password" class="form-control" type="password" placeholder="請輸入管理員密碼:" required />
+                                    <input asp-for="Password" class="form-control" id="inpPassword" type="password" placeholder="請輸入管理員密碼:" required />
                                     <label asp-for="Password" class="control-label">請輸入管理員密碼:</label>
-                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                    <span asp-validation-for="Password" id="spanPassword" class="text-danger"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-floating mb-3 mb-md-0">
-                                    <input asp-for="Password2" class="form-control" type="password" placeholder="請輸入確認密碼:" required />
+                                    <input asp-for="Password2" class="form-control" id="inpPassword2" type="password" placeholder="請輸入確認密碼:" required />
                                     <label asp-for="Password2" class="control-label">請輸入確認密碼:</label>
-                                    <span asp-validation-for="Password2" class="text-danger"></span>
+                                    <span asp-validation-for="Password2" id="spanPassword2" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
                         <div class="form-floating mb-3" style="display:none">
-                            <input asp-for="IdentificationId" class="form-control" value="3" placeholder="請選擇管理員權限:" required />
+                            <input asp-for="IdentificationId" class="form-control" id="inpIdentificationId" value="3" placeholder="請選擇管理員權限:" required />
                             <label asp-for="IdentificationId" class="control-label">請選擇管理員權限:</label>
                             <span asp-validation-for="IdentificationId" class="text-danger"></span>
                         </div>
@@ -63,19 +68,80 @@
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-
     <script>
-        function handleSubmit() {
-            var identificationId = $("#IdentificationId").val();
+        var inpAdminName = document.querySelector("#inpAdminName");
+        var inpPassword = document.querySelector("#inpPassword");
+        var inpPassword2 = document.querySelector("#inpPassword2");
 
-            if (identificationId === "3") {
-                alert("成功");
+        //管理員帳號
+        inpAdminName.addEventListener('input', async () => {
+            const response = await fetch(`@Url.Content("~/Admin/CheckAdminName")?name=${inpAdminName.value}`);
+            const isExists = await response.text();
+
+            inpAdminName.classList.toggle("is-invalid", isExists === "True");
+            inpAdminName.classList.toggle("is-valid", inpAdminName.value !== "");
+
+            spanAdminName.textContent = isExists === "True" ? "帳號已存在" : "";
+        });
+
+        //管理員密碼
+        inpPassword.addEventListener('input', async () => {
+            const response = await fetch(`@Url.Content("~/Admin/CheckAdminPassword")?password=${inpPassword.value}`);
+            const isExists = await response.text();
+
+            inpPassword.classList.toggle("is-invalid", isExists === "True");
+            inpPassword.classList.toggle("is-valid", inpPassword.value !== "");
+
+            spanPassword.textContent = isExists === "True" ? "密碼必須包含至少一個數字、一個小寫字母、一個大寫字母，並且長度在8到16個字符之間" : "";
+
+            //管理員密碼驗證寫前端範本
+            //const passwordFormat = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,16}$/;
+
+            //if (!passwordFormat.test(inpPassword.value)) {
+            //    inpPassword.classList.add("is-invalid");
+            //    spanPassword.textContent = "密碼必須包含至少一個數字、一個小寫字母、一個大寫字母，並且長度在8到16個字符之間";
+            //    if (inpPassword.value === "") {
+            //        inpPassword.classList.remove("is-invalid");
+            //        inpPassword.classList.remove("is-valid");
+            //        spanPassword.textContent = "";
+            //    }
+            //} else {
+            //    inpPassword.classList.remove("is-invalid");
+            //    inpPassword.classList.add("is-valid");
+            //    spanPassword.textContent = "";
+            //}
+        });
+
+        //管理員確認密碼
+        inpPassword2.addEventListener('input', () => {
+            if (inpPassword.value !== inpPassword2.value) {
+                inpPassword2.classList.add("is-invalid");
+                spanPassword2.textContent = "密碼必須一致";
             } else {
-                alert("失敗");
+                inpPassword2.classList.remove("is-invalid");
+                inpPassword2.classList.add("is-valid");
+                spanPassword2.textContent = "";
+            }
+
+            if (inpPassword2.value === "") {
+                inpPassword2.classList.remove("is-valid");
+                inpPassword2.classList.remove("is-invalid");
+                spanPassword2.textContent = "";
+            }
+        });
+
+        function handleSubmit() {
+            var inpIdentificationId = document.querySelector("#inpIdentificationId").value;
+
+            if (inpIdentificationId === "3") {
+                alert("管理員帳戶建立成功");
+            } else {
+                alert("管理員帳戶建立失敗");
             }
         }
     </script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
