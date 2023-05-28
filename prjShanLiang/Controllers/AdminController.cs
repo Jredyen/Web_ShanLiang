@@ -48,24 +48,27 @@ namespace prjShanLiang.Controllers
         [HttpPost]
         public IActionResult Create(CCreateAdminAccountViewModel vm)
         {
-            if (vm.IdentificationId != 3)
+            if (vm.IdentificationId == 3)
             {
-                ViewBag.Message = "無法修改權限";
-                return View();
+                ShanLiang21Context db = new ShanLiang21Context();
+
+                Admin admin = new Admin()
+                {
+                    AdminName = vm.AdminName,
+                    Passwoed = vm.Password,
+                    IdentificationId = vm.IdentificationId
+                };
+                db.Add(admin);
+                db.SaveChanges();
+
+                return RedirectToAction("List");
+            }
+            else
+            {
+                ModelState.AddModelError("IdentificationId", "無法修改權限");
             }
 
-            ShanLiang21Context db = new ShanLiang21Context();
-
-            Admin admin = new Admin()
-            {
-                AdminName = vm.AdminName,
-                Passwoed = vm.Password,
-                IdentificationId = vm.IdentificationId
-            };
-            db.Add(admin);
-            db.SaveChanges();
-
-            return RedirectToAction("List");
+            return View(vm);
         }
 
         public IActionResult Delete(int? id)

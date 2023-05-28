@@ -8,13 +8,8 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-@if (ViewBag.Message != null)
-{
-    <div class="alert alert-danger">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        @ViewBag.Message
-    </div>
-}
+
+<div asp-validation-summary="All" class="alert alert-danger"></div>
 
 <div class="container">
     <div class="row justify-content-center">
@@ -27,7 +22,7 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <form asp-action="Create" onsubmit="return submitForm(event)">
+                    <form asp-action="Create" onsubmit="handleSubmit()">
                         <div class="form-floating mb-3">
                             <input asp-for="AdminName" class="form-control" placeholder="請輸入管理員帳號:" required />
                             <label asp-for="AdminName" class="control-label">請輸入管理員帳號:</label>
@@ -68,34 +63,19 @@
 </div>
 
 @section Scripts {
-    <script>
-        async function submitForm(event) {
-            event.preventDefault(); // 防止表單直接提交
-
-            try {
-                // 發送表單請求
-                const response = await fetch('@Url.Action("Create")', {
-                    method: 'POST',
-                    body: new FormData(event.target)
-                });
-
-                if (response.ok) {
-                    // 提交成功時顯示彈出訊息框
-                    alert("建立成功");
-                    window.location.href = '@Url.Action("List")'; // 導向List頁面
-                } else {
-                    // 提交失敗時的處理
-                    alert("建立失敗");
-                }
-            } catch (error) {
-                console.error('發生錯誤:', error);
-                alert("建立失敗");
-            }
-
-            return false; // 防止表單再次提交
-        }
-    </script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
+    <script>
+        function handleSubmit() {
+            var identificationId = $("#IdentificationId").val();
+
+            if (identificationId === "3") {
+                alert("成功");
+            } else {
+                alert("失敗");
+            }
+        }
+    </script>
 }
