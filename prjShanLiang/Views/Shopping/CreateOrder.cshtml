@@ -29,7 +29,7 @@
 <main id="main">
     <div class="container aos-init aos-animate" data-aos="fade-up">
         <!-- ======= Breadcrumbs ======= -->
-        <div class="breadcrumbs">
+        <div class="breadcrumbs" style="background-color:orange;">
             <div class="container">
 
                 <div class="d-flex justify-content-between align-items-center">
@@ -40,10 +40,10 @@
         </div><!-- End Breadcrumbs -->
 
         <div class="col-12 col-md-12 col-lg-6 ">
-            <div class=" shadow p-3 mb-5 bg-light rounded-5 mealcard">
+            <div class=" shadow p-3 mb-5 bg-light  mealcard">
                 <div>
                     <h1 class="text-center " style="margin:10px; font-size:40px;">餐點內容</h1>
-                    <table class="table table-hover">
+                    <table class="table table-striped">
                         <tr>
                             <th>
                                 餐點
@@ -72,10 +72,10 @@
                                         @Html.DisplayFor(modelItem => item.count)
                                     </td>
                                     <td>
-                                        NT$ @Html.DisplayFor(modelItem => item.price)
+                                        $@Html.DisplayFor(modelItem => item.price)
                                     </td>
                                     <td>
-                                        NT$ @Html.DisplayFor(modelItem => item.小計)
+                                        $@Html.DisplayFor(modelItem => item.小計)
                                     </td>
                                 </tr>
                             }
@@ -86,14 +86,14 @@
                     <div style=" color:red;font-size:30px;">
                         
                         總計: $@pay 元
-                        <p id="finalAmount">應付:$ @ViewBag.fin 元</p>
+                        <p id="finalAmount">應付: $@ViewBag.fin 元</p>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="col-12 col-md-12 col-lg-6 ">
-            <div class=" shadow p-3 mb-5 rounded-5 bg-light mealcard">
+            <div class=" shadow p-3 mb-5  bg-light mealcard">
                 <h1 class="text-center" style="margin:10px; font-size:40px;">訂單資料</h1>
                 <div class="card-body">
                     <div style="display:flex;">

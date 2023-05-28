@@ -9,23 +9,29 @@
             font-size: 15px;
             background-color: #E0E0E0;
         }
+        a{
+        width:100px;
+        }
 </style>
 }
 <main id="main">
-    <div class="container aos-init aos-animate" data-aos="fade-up">
+    <div class="container aos-init aos-animate" data-aos="fade-up" >
         <!-- ======= Breadcrumbs ======= -->
-        <div class="breadcrumbs">
-            <div class="container">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h2>@ViewData["Title"]</h2>                 
+        <div class="breadcrumbs" style="background-color:orange;">
+            <div class="container" >
+                <div class="d-flex justify-content-between align-items-center" >
+                    <h2 >@ViewData["Title"]</h2>                 
                 </div>
             </div>
         </div><!-- End Breadcrumbs -->       
-        <div style="margin:20px; font-size:16px;">
+        <div class="rounded-5" style="margin:20px;padding:20px; background-color:white; border:2px solid orange;">
             <table class="table table-striped">
-                <tr>
+                <tr style="background-color:deepskyblue;">
                     <th>
                         序號
+                    </th>
+                    <th>
+                        圖片
                     </th>
                     <th>
                         餐點
@@ -53,6 +59,9 @@
                         pay += item.小計;
                         <tr>
                             <td>@count</td>
+                            <td>
+                                <img src="~/Images/Menu/@item.mealmenu.MealImagePath" class="rounded-4"style="width:80px;">
+                            </td>
                             <td>
 
                                 @Html.DisplayFor(modelItem => item.mealmenu.MealName)
