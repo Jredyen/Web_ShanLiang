@@ -327,6 +327,7 @@
 
                     @for (int i = 0; i < 2 && index >= 0; i++)
                     {
+                        var rest = Model.Item1;
                         var adImage = Model.Item7.ElementAtOrDefault(index);
 
                         if (i == 1) // 左圖
@@ -336,7 +337,11 @@
                                     <img src="~/Images/store/@(adImage?.ImagePath)" alt="Placeholder Image" height="400px" width="560px" id="right-img-element" />
                                 </a>
                                 <span class="carousel-caption">
-                                    @(adImage?.ImagePath?.Replace(".jpg", ""))
+                                    @foreach (var item in Model.Item1.Where(s => s.StoreId == adImage.StoreId))
+                                    {
+                                        @item.RestaurantName
+                                    }
+                                    @*@(adImage?.ImagePath?.Replace(".jpg", ""))*@
                                 </span>
                             </span>
                         }
@@ -347,7 +352,11 @@
                                     <img src="~/Images/store/@(adImage?.ImagePath)" alt="Placeholder Image" height="400px" width="560px" id="left-img-element" />
                                 </a>
                                 <span class="carousel-caption">
-                                    @(adImage?.ImagePath?.Replace(".jpg", ""))
+                                    @foreach (var item in Model.Item1.Where(s => s.StoreId == adImage.StoreId))
+                                    {
+                                        @item.RestaurantName
+                                    }
+                                 @*   @(adImage?.ImagePath?.Replace(".jpg", ""))*@
                                 </span>
                             </span>
                         }
