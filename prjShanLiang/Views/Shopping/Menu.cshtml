@@ -133,7 +133,7 @@
 </div>
 
 <main id="main">       
-
+<div class="container aos-init " data-aos="fade-up">
         @*照片輪播*@
         <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel" >
             <div class="carousel-inner">          
@@ -175,7 +175,7 @@
             </button>
         </div>
 
-  <div class="container aos-init " data-aos="fade-up"> 
+   
 <!-- ======= Breadcrumbs ======= -->
         @*店家資訊*@   
           
@@ -186,10 +186,13 @@
               <p>@ViewBag.RestaurantPhone</p>             
              </div>
            </div>
-          
-         
+                  
+          <div style="background-color:deepskyblue;">
+              <h1 style="text-align:center;margin:10px;">人氣排行前6名</h1>
+              </div>
+       
         @*商品區塊*@
-             <h1>人氣排行前6名</h1>
+             
         <div class="row " >
             @{
                 int top = 0;
@@ -213,7 +216,7 @@
                     </div>
                         
                         
-                        <img src="~/Images/Menu/@item.MealImagePath" class="Meal-image rounded-4" style="margin-top:20px;">@*圖片*@
+                        <img src="~/Images/Menu/@item.MealImagePath" class="Meal-image rounded-4" style="margin-top:20px;height:200px;">@*圖片*@
 
                         <div class="card-body">
                             <h1 class=text-center>@item.MealName</h1>@*名稱*@
@@ -234,7 +237,7 @@
                 </div>
             }}
         </div>
-        <h1>所有餐點</h1>
+        <div style="background-color:deepskyblue;"><h1 style="text-align:center;">所有餐點</h1></div>              
         <div class="row">
             @{
                 
