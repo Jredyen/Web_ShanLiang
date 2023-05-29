@@ -296,8 +296,19 @@ namespace prjShanLiang.Controllers
                 (st, rt) => rt.TypeName).ToList(),
                     datasum,
                     like = _db.MemberActions
-                    .Where(ma => ma.StoreId == s.StoreId && ma.ActionId == 2)
-                    .Count()
+                        .Where(ma => ma.StoreId == s.StoreId && ma.ActionId == 2)
+                        .Count(),
+                    newReview = _db.StoreEvaluates
+                        .Where(se => se.StoreId == s.StoreId)
+                        .OrderByDescending(se => se.EvaluateNo)
+                        .Select(se => new
+                        {
+                            comments = se.Comments,
+                            rating = se.Rating,
+                            date = se.EvaluateDate.Value.ToString("yyyy-MM-dd"),
+                            memberName = se.Member.MemberName
+                        })
+                        .FirstOrDefault()
                 }).Skip(step * 10).Take(take);
 
                 //if (step > 0)
