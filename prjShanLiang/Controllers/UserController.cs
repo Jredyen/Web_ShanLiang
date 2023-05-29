@@ -247,7 +247,8 @@ namespace prjShanLiang.Controllers
                 Seats = vm.Seats,
                 StoreMail = vm.StoreMail,
                 Password = vm.AccountPassword,
-                AccountStatus = 0 //Jredyen:剛建立店家時給予待審核的帳號狀態
+                AccountStatus = 0, //Jredyen:剛建立店家時給予待審核的帳號狀態
+                Rating = 0,
 
             };
             string storeDistrict = vm.storeDistrict;

@@ -151,6 +151,20 @@ namespace prjShanLiang.Controllers
                 se1.Rating = se.Rating;
                 se1.EvaluateDate = se.EvaluateDate;
                 _db.SaveChanges();
+
+                var storeRating = _db.StoreEvaluates.Where(s => s.StoreId == se1.StoreId).Select(s => s.Rating);
+                int storeCount = storeRating.Count();
+                double avgRating = 0;
+                foreach(int s in storeRating)
+                {
+                    avgRating += s;
+                }
+                avgRating /= storeCount;
+                var store = _db.Stores.Where(s => s.StoreId == se1.StoreId).FirstOrDefault();
+                store.Rating = Convert.ToInt32(avgRating);
+                _db.Stores.Update(store);
+                _db.SaveChanges();
+
                 return Json(new { type = 2 });
                 //return RedirectToAction("Restaurant", "Store", new { id = se.StoreId });
             }// 有評論的場合:修改
