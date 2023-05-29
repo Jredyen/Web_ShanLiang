@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<prjShanLiang.Models.Blog>
 @{
-    ViewData["Title"] = "BloggerList";
+    ViewData["Title"] = "膳糧專欄";
 }
 @section Styles{
     <style>
@@ -46,19 +46,20 @@
 }
 <button type="button" id="BackTop" class="toTop-arrow"></button>   @*回到最上層按鈕*@
 <main id="main">
-    <div class="container aos-init aos-animate" data-aos="fade-up">
-        <!-- ======= Breadcrumbs ======= -->
-        <div class="breadcrumbs">
-            <div class="container">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h1 style="font-size:30px">膳糧專欄</h1>
-                    <p style ="font-size:20px">
-                        <img src="~/Images/Blog/blogwrite_icon.png" height="32px" />
-                        <a asp-action="BloggerCreate">我要投稿</a>
-                    </p>
-                </div>
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs" style="background-color:orange;">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>膳糧專欄</h2>
+                <p style="font-size:20px; ">
+                    <img src="~/Images/Blog/blogwrite_icon.png" height="32px" />
+                    <a asp-action="BloggerCreate">我要投稿</a>
+                </p>
             </div>
-        </div><!-- End Breadcrumbs -->
+        </div>
+    </div><!-- End Breadcrumbs -->
+
+    <div class="container aos-init " data-aos="fade-up">
         <div>
             <img src="~/Images/Blog/view_grid_list_icon.png" height="32px" />
             <a asp-action="BloggerCard" style="font-size:18px">文章總覽</a>
@@ -130,7 +131,8 @@
                 }}
             </tbody>
         </table>
-    </div>
+        </div>
+   
 </main>
 @section Scripts{
     <script>

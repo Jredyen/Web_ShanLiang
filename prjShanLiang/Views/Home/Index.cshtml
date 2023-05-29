@@ -185,6 +185,15 @@
             color: #5B5B5B;
             font-size: 14px;
             font-family: "標楷體", "Microsoft JhengHei", "PMingLiU", serif;
+
+        }
+
+        .Evaluate-Comments-Collect {
+            text-align: center;
+            color: #5B5B5B;
+            font-size: 14px;
+            font-family: "標楷體", "Microsoft JhengHei", "PMingLiU", serif;
+
         }
         #evaluate-bottom{
             margin-bottom:15px;
@@ -240,18 +249,18 @@
     <main id="main">
 
         <!-- ======= Breadcrumbs ======= -->
-        <div class="breadcrumbs">
+        @* <div class="breadcrumbs" style="background-color:orange;">
             <div class="container">
 
                 <div class="d-flex justify-content-between align-items-center">
                     <h2></h2>
                     <ol>
-                        @* <li><a a asp-controller="Home" asp-action="Index">Home</a></li>
-                        <li>Index</li>*@
+                         <li><a a asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li>Index</li>
                     </ol>
                 </div>
             </div>
-        </div><!-- End Breadcrumbs -->
+                        </div><!-- End Breadcrumbs -->*@
 
         <section class="sample-page">
 
@@ -272,21 +281,23 @@
 
                     <!-- 輪播內容 -->
                     <div class="carousel-inner" role="listbox">
-                        @foreach (var advertisement in Model.Item1.Take(4))
-                        {
-                            string imgName = advertisement.RestaurantName + ".jpg";
-                            <div class="item @(advertisement == Model.Item1.First() ? "active" : "")">
+                        @foreach (var adimage in Model.Item7.OrderBy(s=>s.StoreId).Take(4)){
+                       
+                         
+                            <div class="item @(adimage == Model.Item7.First() ? "active" : "")">
                                 <div class="image-container">
-                                    <a href="@Url.Action("Restaurant", "store", new { id = advertisement.StoreId })">
-                                        <img src="~/images/test/@imgName" class="carousel-image" />
+                                    <a href="@Url.Action("Restaurant", "store", new { id = adimage.StoreId })">
+
+                                            <img src="~/images/store/@adimage.ImagePath" class="carousel-image" />
+                                        
                                     </a>
                                 </div>
                                 <div class="carousel-caption">
-                                    <h3>@advertisement.RestaurantName</h3>
-                                    <p>@advertisement.RestaurantPhone</p>
+                                    <h3>@adimage.Store.RestaurantName</h3>
+                                    <p>@adimage.Store.RestaurantPhone</p>
                                 </div>
                             </div>
-                        }
+                            }
                     </div>
 
                     <!-- 左右箭頭 -->
@@ -299,6 +310,7 @@
                         <span class="sr-only">Next</span>
                     </a>
                 </div>
+
                 <div class="indexTitle">
                     <div class="iconStyle">
                         <span class="fa fa-hotjar fc-secondary fs-xxl"> </span>   <div class="titleIA fs-xl">行銷專欄</div> 
@@ -310,25 +322,14 @@
 
                 <div class="right-and-left-img">
                     @{
-                        int index = 0;
+                        int index = Model.Item7.Count - 1;
                     }
 
-                    @foreach (var advertisement in Model.Item1.Take(2))
+                    @for (int i = 0; i < 2 && index >= 0; i++)
                     {
                         var adImage = Model.Item7.ElementAtOrDefault(index);
 
-                        if (index == 0) // 左圖
-                        {
-                            <span class="left-img">
-                                <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
-                                    <img src="~/Images/store/@(adImage?.ImagePath)" alt="Placeholder Image" height="400px" width="560px" id="left-img-element" />
-                                </a>
-                                <span class="carousel-caption"  >
-                                    @(adImage?.ImagePath?.Replace(".jpg", ""))
-                                </span>
-                            </span>
-                        }
-                        else if (index == 1) // 右圖
+                        if (i == 1) // 左圖
                         {
                             <span class="right-img">
                                 <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
@@ -339,18 +340,51 @@
                                 </span>
                             </span>
                         }
+                        else if (i == 0) // 右圖
+                        {
+                            <span class="left-img">
+                                <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
+                                    <img src="~/Images/store/@(adImage?.ImagePath)" alt="Placeholder Image" height="400px" width="560px" id="left-img-element" />
+                                </a>
+                                <span class="carousel-caption">
+                                    @(adImage?.ImagePath?.Replace(".jpg", ""))
+                                </span>
+                            </span>
+                        }
 
-                        index++;
+                        index--;
                     }
-                </div>
-                   
 
-                <div class="indexTitle">
+                </div>
+
+              @*  <div class="indexTitle">
+                    <div class="iconStyle">
+                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span>  <div class="titleIA fs-xl">熱門關鍵字</div>
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach(var item in Model.Item1.Take(2)){
+                    <div class="col-sm-3">
+                        <div class="card zoom-card" style="width: 32rem;" id="evaluate-bottom">
+
+                          
+
+                                    <div id="storeType" data-aos="fade-up">
+                               
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    }
+                </div>*@
+
+                 <div class="indexTitle">
                     <div class="iconStyle">
                         <span class="fa fa-hotjar fc-secondary fs-xxl"></span>  <div class="titleIA fs-xl">熱門收藏</div>
-                    </div>
-                   
-                 
+                    </div>   
                 </div>
               
 
@@ -387,7 +421,7 @@
                                                     @member.MemberName
                                                 }
                                             </div>
-                                            <div class="Evaluate-Comments">
+                                            <div class="Evaluate-Comments-Collect">
                                                 
                                                 @Evaluate.Comments
                                             </div>
@@ -411,7 +445,7 @@
                     {
                         <div class="col-sm-3">
                             <div class="card zoom-card" style="width: 32rem;">
-                                <a href="@Url.Action("BloggerCard", "Blogger")">
+                                <a href="@Url.Action("BloggerDetail", "Blogger",new{id =ShanLiangBlog.BlogId})">
                                     <div class="image-wrapper">
 
                                         <img src="~/Images/Blog/@ShanLiangBlog.BlogPic" class="img-fluid carousel-image" alt="...">
@@ -477,6 +511,7 @@
                     }
                 </div>
             </div>
+          
 
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -517,11 +552,22 @@
                     }).scroll();
                 });
 
-
               
-                    
-               
-               
+                 
+                //const StoreType = document.querySelector('#storeType');
+
+                //async function getRtype() {
+                // const response = await fetch('@Url.Content("~/Store/GetRestaurantType/")' + 1)
+             
+                //const datas = await response.json();
+                //    const shop = datas.map(data => {
+                //        return (
+                //            StoreType.innerHTML += `<a style="margin-right:10px;" href="../../Store/searchRestaurantType/${data.restaurantTypeNum}"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
+                //        )
+                //    })
+                //}
+                //getRtype();
+                        
 
             </script>
 

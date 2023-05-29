@@ -1,7 +1,47 @@
 ﻿@{
-    ViewData["Title"] = "膳糧";
+    ViewData["Title"] = "搜尋餐廳";
 }
+<style>
+    .toTop-arrow {
+        width: 4.3rem;
+        height: 4.3rem;
+        padding: 0;
+        margin: 0;
+        border: 0;
+        border-radius: 33%;
+        opacity: 0.6;
+        background: #000;
+        cursor: pointer;
+        position: fixed;
+        right: 1rem;
+        bottom: 8rem;
+        display: none;
+    }
 
+        .toTop-arrow::before, .toTop-arrow::after {
+            width: 25px;
+            height: 6px;
+            border-radius: 3px;
+            background: #f90;
+            position: absolute;
+            content: "";
+        }
+
+        .toTop-arrow::before {
+            transform: rotate(-45deg) translate(0, -50%);
+            left: 0.42rem;
+        }
+
+        .toTop-arrow::after {
+            transform: rotate(45deg) translate(0, -50%);
+            right: 0.42rem;
+        }
+
+        .toTop-arrow:focus {
+            outline: none;
+        }
+    /*=====================以上是回到最上層的CSS=========================*/
+</style>
 <head>
     <meta charset="utf-8">
 
@@ -18,20 +58,16 @@
         }
     </style>
 </head>
-
+<button type="button" id="BackTop" class="toTop-arrow"></button>
 <body>
     <!--<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">-->
     <main id="main">
         <!-- ======= Breadcrumbs ======= -->
-        <div class="breadcrumbs">
+        <div class="breadcrumbs" style="background-color:orange;">
             <div class="container">
 
                 <div class="d-flex justify-content-between align-items-center">
-                    <h2>@ViewData["Title"]</h2>
-                    <ol>
-                        <li><a asp-controller="Store" asp-action="List">Store</a></li>
-                        <li>Latest</li>
-                    </ol>
+                    <h2>@ViewData["Title"]</h2>                    
                 </div>
 
             </div>
@@ -612,5 +648,17 @@
 
         window.initMap = initMap;
                 //====================================================GOOGLE=API======================================================================
+        $(function () {  //回到頂端
+            $('#BackTop').click(function () {
+                $('html,body').animate({ scrollTop: 0 }, 333);
+            });
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 300) {
+                    $('#BackTop').fadeIn(222);
+                } else {
+                    $('#BackTop').stop().fadeOut(222);
+                }
+            }).scroll();
+        });
     </script>
 }
