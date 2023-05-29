@@ -11,24 +11,44 @@ using prjShanLiang.ViewModels;
 using System.Runtime.CompilerServices;
 using System.Text;
 using Moq;
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.Security.Cryptography.X509Certificates;
+using System.Net;
+using System.Data;
+using System.Linq;
 
 namespace TestPrjShanLiang
 {
     [TestFixture]
     public class TestsStoreController
     {
+        Mock<HttpContext>? _mockHttpContext;
+        Mock<ISession>? _mockSession;
         StoreController _sc;
+
         public TestsStoreController()
         {
+            _mockHttpContext = new();
+            _mockSession = new();
+
             ShanLiang21Context db = new();
             _sc = new(db);
+
+            _mockHttpContext.SetupGet(x => x.Session).Returns(_mockSession.Object);
+
+            _sc.ControllerContext = new()
+            {
+                HttpContext = _mockHttpContext.Object
+            };
         }
+
         [Test]
         public void TestShowList()
         {
             var result = _sc.List();
             Assert.IsNotNull(result);
         }
+
         [Test]
         public void TestShowRestaurant()
         {
@@ -51,39 +71,43 @@ namespace TestPrjShanLiang
             Assert.IsNotNull(result);
         }
 
-        //[Test]
-        //public void TestShowFavorate()
-        //{
+        [Test]
+        public void TestShowFavorate()
+        {
+            IActionResult result = _sc.ShowFavorate(1);
+            Assert.IsNotNull(result);
+        }
 
-        //}
-        //[Test]
-        //public void TestShowFavorate()
-        //{
-        //    IActionResult result = _sc.ShowFavorate(1);
-        //    Assert.IsNotNull(result);
-        //}
+        [Test]
+        public void TestAddToFavorate()
+        {
+            IActionResult result = _sc.AddToFavorate(1);
+            Assert.IsNotNull(result);
+        }
 
-        //[Test]
-        //public void TestAddComment()
-        //{
-        //    StoreEvaluate se = new();
-        //    IActionResult result = _sc.AddComment(se);
-        //    Assert.IsNotNull(result);
-        //}
+        [Test]
+        public void TestAddComment()
+        {
+            int id = 1;
+            IActionResult result1 = _sc.AddComment(id);
+            Assert.IsNotNull(result1);
 
-        //[Test]
-        //public void TestReserveInt()
-        //{
-        //    IActionResult result = _sc.Reserve(1);
-        //    Assert.IsNotNull(result);
-        //}
-        //[Test]
-        //public void TestReservePost()
-        //{
-        //    StoreEvaluate se = new();
-        //    IActionResult result = _sc.Reserve(se);
-        //    Assert.IsNotNull(result);
-        //}
+            StoreEvaluate se = new();
+            IActionResult result2 = _sc.AddComment(se);
+            Assert.IsNotNull(result2);
+        }
+
+        [Test]
+        public void TestReserve()
+        {
+            int id = 1;
+            IActionResult result1 = _sc.Reserve(id);
+            Assert.IsNotNull(result1);
+
+            StoreReserved testData = new();
+            var result2 = _sc.Reserve(testData);
+            Assert.IsNotNull(result2);
+        }
 
         [Test]
         public void TestGetName()
@@ -151,30 +175,33 @@ namespace TestPrjShanLiang
     [TestFixture]
     public class TestsUserController
     {
-        private UserController _controller;
-        private Mock<IWebHostEnvironment> _mockEnvironment;
-        private Mock<HttpContext> _mockHttpContext;
-        private Mock<ISession> _mockSession;
+        Mock<HttpContext>? _mockHttpContext;
+        Mock<ISession>? _mockSession;
+        Mock<IWebHostEnvironment>? _mockEnvironment;
         UserController _uc;
+
         public TestsUserController()
         {
-            _mockEnvironment = new Mock<IWebHostEnvironment>();
-            _mockHttpContext = new Mock<HttpContext>();
-            _mockSession = new Mock<ISession>();
-            _controller = new UserController(_mockEnvironment.Object);
-            _controller.ControllerContext.HttpContext = _mockHttpContext.Object;
-            _mockHttpContext.SetupGet(c => c.Session).Returns(_mockSession.Object);
+            _mockHttpContext = new();
+            _mockSession = new();
+            _mockEnvironment = new();
 
-            var mockEnvironment = new Mock<IWebHostEnvironment>();
-            UserController uc = new(mockEnvironment.Object);
+            UserController uc = new(_mockEnvironment.Object);
             _uc = uc;
+
+            _mockHttpContext.SetupGet(x => x.Session).Returns(_mockSession.Object);
+
+            _uc.ControllerContext = new()
+            {
+                HttpContext = _mockHttpContext.Object
+            };
         }
 
         [Test]
         public void TestLogin()
         {
-            //IActionResult result0 = _uc.Login();
-            //Assert.IsNotNull(result0);
+            IActionResult result0 = _uc.Login();
+            Assert.IsNotNull(result0);
 
             CAccountPasswordViewModel vm = new()
             {
@@ -197,97 +224,408 @@ namespace TestPrjShanLiang
         [Test]
         public void TestlogOut()
         {
-            
+            IActionResult result1 = _uc.logOut();
+            Assert.IsNotNull(result1);
         }
         [Test]
         public void TestMemberManager()
         {
+            string? account = null;
+            IActionResult result1 = _uc.MemberManager(account);
+            Assert.IsNotNull(result1);
 
+            account = "NotFindMember@mail.com";
+            IActionResult result2 = _uc.MemberManager(account);
+            Assert.IsNotNull(result2);
+
+            account = "Adam";
+            IActionResult result3 = _uc.MemberManager(account);
+            Assert.IsNotNull(result3);
         }
         [Test]
         public void TestStoreManager()
         {
+            string? account = null;
+            IActionResult result1 = _uc.StoreManager(account);
+            Assert.IsNotNull(result1);
 
+            account = "NotFindStore";
+            IActionResult result2 = _uc.StoreManager(account);
+            Assert.IsNotNull(result2);
+
+            account = "ShanLiangBentou";
+            IActionResult result3 = _uc.StoreManager(account);
+            Assert.IsNotNull(result3);
         }
         [Test]
         public void TestMypage()
         {
-
+            IActionResult result1 = _uc.Mypage();
+            Assert.IsNotNull(result1);
         }
         [Test]
         public void TestEdit()
         {
+            string? account = null;
+            IActionResult result1 = _uc.Edit(account);
+            Assert.IsNotNull(result1);
 
+            account = "admin";
+            IActionResult result2 = _uc.Edit(account);
+            Assert.IsNotNull(result2);
         }
         [Test]
         public void TestSignup()
         {
+            ShanLiang21Context db = new();
 
+            //檢查註冊頁面是否正常跳轉
+            IActionResult result1 = _uc.Signup();
+            Assert.IsNotNull(result1);
+
+            //新增一筆測試資料
+            CCreateMemberAccountViewModel vm = new()
+            {
+                AccountName = "TestMember",
+                Memberphone = "TestPhone",
+                MemberName = "TestName",
+                Email = "Test@email.com",
+                BrithDate = DateTime.Now,
+                Address = "測試市單元區會員里",
+                AccountPassword = "TestPassword",
+                AccountPassword2= "TestPassword"
+            };
+            //將資料帶入Signup方法中，建立一筆測試資料
+            IActionResult result2 = _uc.Signup(vm);
+            Assert.IsNotNull(result2);
+            //檢查是否建立成功
+            bool result3 = db.Members.Where(x => x.AccountName == "TestMember" && x.Address == "測試市單元區會員里").Any();
+            Assert.IsTrue(result3);
+
+            //刪除測試資料
+            db.Members.Remove(db.Members.Where(x => x.AccountName == "TestMember" && x.Address == "測試市單元區會員里").First());
+            db.SaveChanges();
+            //檢查是否已刪除
+            bool result4 = db.Members.Where(x => x.AccountName == "TestMember" && x.Address == "測試市單元區會員里").Any();
+            Assert.IsFalse(result4);
         }
         [Test]
         public void TestSignupStore()
         {
+            ShanLiang21Context db = new();
 
+            IActionResult result1 = _uc.SignupStore();
+            Assert.IsNotNull(result1);
+
+            ViewResult? result2 = _uc.SignupStore() as ViewResult;
+            Assert.IsNotNull(result2);
+
+            Assert.IsNotNull(result2.ViewData["chosenCity"]);
+            string chosenCity = result2.ViewData["chosenCity"].ToString();
+            Assert.AreEqual("", chosenCity);
+
+            Assert.IsNotNull(result2.ViewData["chosenDistrict"]);
+            string chosenDistrict = result2.ViewData["chosenDistrict"].ToString();
+            Assert.AreEqual("", chosenDistrict);
+
+            CCreateStoreAccountViewModel vm = new()
+            {
+                AccountName = "TestStore",
+                TaxID = "00000000",
+                RestaurantName = "TestStoreName",
+                RestaurantAddress = "測試市單元區店家里",
+                RestaurantPhone = "(02)0000-0000",
+                Website = "www.TestStore.com",
+                Seats = 20,
+                StoreMail = "TsetStore@mail",
+                AccountPassword = "TestPassword",
+                storeDistrict = "大安區",
+            };
+            List<IFormFile> files = new();
+            Store vm2 = new()
+            {
+                OpeningTime = TimeSpan.FromHours(0),
+                ClosingTime = TimeSpan.FromHours(10),
+            };
+            IActionResult result3 = _uc.SignupStore(vm, files, vm2);
+            Assert.IsNotNull(result3);
+            //檢查是否建立成功
+            bool result4 = db.Stores.Where(x => x.AccountName == "TestStore" && x.RestaurantAddress == "測試市單元區店家里").Any();
+            Assert.IsTrue(result4);
+
+            //刪除測試資料
+            var datas = db.Stores.Where(x => x.AccountName == "TestStore");
+            foreach (var data in datas)
+            {
+                db.Stores.Remove(data);
+            }
+            //db.Stores.Remove(db.Stores.Where(x => x.AccountName == "TestStore").First());
+            db.SaveChanges();
+            //檢查是否已刪除
+            bool result5 = db.Stores.Where(x => x.AccountName == "TestStore" && x.RestaurantAddress == "測試市單元區店家里").Any();
+            Assert.IsFalse(result5);
         }
         [Test]
         public void TestMemberManagement()
         {
-
+            //IActionResult result = _uc.memberManagement();
+            //Assert.IsNotNull(result);
         }
         [Test]
         public void TestStoreManagement()
         {
-
+            //IActionResult result = _uc.storeManagement();
+            //Assert.IsNotNull(result);
         }
         [Test]
         public void TestMemberDataRevision()
         {
+            ShanLiang21Context db = new();
 
-        }
-        [Test]
-        public void TestGetCustomerLevel()
-        {
+            string email = "";
+            IActionResult result1 = _uc.memberDataRevision(email);
+            Assert.IsNotNull(result1);
 
+            Member testData = new()
+            {
+                Email = "Test@mail",
+                Password = "password",
+                CustomerLevel = 0
+            };
+            db.Members.Add(testData);
+            db.SaveChanges();
+
+            email = "Test@mail";
+            bool result2 = db.Members.Where(x => x.Email == email).Any();
+            Assert.IsTrue(result2);
+
+            IActionResult result3 = _uc.memberDataRevision(email);
+            Assert.IsNotNull(result3);
+            ViewResult result3_2 = result3 as ViewResult;
+            Assert.IsNotNull(result3_2.ViewData["CustomerLevel"]);
+            string CustomerLevel = result3_2.ViewData["CustomerLevel"].ToString();
+            Assert.That(CustomerLevel, Is.EqualTo("一般會員"));
+
+            testData.CustomerLevel = 1;
+            db.Members.Update(testData);
+            db.SaveChanges();
+            IActionResult result4 = _uc.memberDataRevision(email);
+            Assert.IsNotNull(result4);
+            ViewResult result4_2 = result3 as ViewResult;
+            Assert.IsNotNull(result4_2.ViewData["CustomerLevel"]);
+            CustomerLevel = result4_2.ViewData["CustomerLevel"].ToString();
+            Assert.That(CustomerLevel, Is.EqualTo("白金會員"));
+
+            testData.CustomerLevel = 2;
+            db.Members.Update(testData);
+            db.SaveChanges();
+            IActionResult result5 = _uc.memberDataRevision(email);
+            Assert.IsNotNull(result5);
+            ViewResult result5_2 = result3 as ViewResult;
+            Assert.IsNotNull(result5_2.ViewData["CustomerLevel"]);
+            CustomerLevel = result5_2.ViewData["CustomerLevel"].ToString();
+            Assert.That(CustomerLevel, Is.EqualTo("鑽石會員"));
+
+            db.Members.Remove(testData);
+            db.SaveChanges();
         }
         [Test]
         public void TestStoreDataRevision()
         {
+            string account = "";
+            IActionResult result1 = _uc.storeDataRevision(account);
+            Assert.IsNotNull(result1);
 
+            account = "ShanLiangBentou";
+            IActionResult result2 = _uc.storeDataRevision(account);
+            Assert.IsNotNull(result2);
+        }
+        [Test]
+        public void TestDelete()
+        {
+            string account = "";
+            IActionResult result = _uc.Delete(account);
+            Assert.IsNotNull(result);
         }
         [Test]
         public void TestMemberDataRevision2()
         {
+            ShanLiang21Context db = new();
+            //新增一筆測試資料
+            Member testData = new()
+            {
+                AccountName = "TestMember",
+                Memberphone = "TestPhone",
+                MemberName = "TestName",
+                Email = "Test@email.com",
+                BrithDate = DateTime.Now,
+                Address = "測試市單元區會員里",
+                Password = "TestPassword",
+            };
+            db.Members.Add(testData);
+            db.SaveChanges();
+            string Address = db.Members.Where(x => x.Email == "Test@email.com").Select(x => x.Address).First();
+            //確認其他資料是否為更改前的
+            Assert.That(Address, Is.EqualTo("測試市單元區會員里"));
 
-        }
+            //新增一筆用來更改的資料
+            CMemberWrap vm = new()
+            {
+                Email = "Test@email.com",
+                Memberphone = "0988888888",
+                MemberName = "EditName",
+                Address = "測試市單元區編輯里"
+            };
+            //測試不包含更改密碼
+            IActionResult result1 = _uc.memberDataRevision2(vm);
+            Assert.IsNotNull(result1);
+            Address = db.Members.Where(x => x.Email == "Test@email.com").Select(x => x.Address).First();
+            //確認其他資料是否已經更改
+            Assert.That(Address, Is.EqualTo("測試市單元區編輯里"));
+            //確認密碼是否為更改前的
+            string Password = db.Members.Where(x => x.Email == "Test@email.com").Select(x => x.Password).First();
+            Assert.That(Password, Is.EqualTo("TestPassword"));
+
+            //測試包含更改密碼
+            vm.Password = "EditPassword";
+            IActionResult result2 = _uc.memberDataRevision2(vm);
+            Assert.IsNotNull(result2);
+            Password = db.Members.Where(x => x.Email == "Test@email.com").Select(x => x.Password).First();
+            //確認密碼是否是已經更改
+            Assert.That(Password, Is.EqualTo("EditPassword"));
+
+            //刪除測試資料
+            db.Members.Remove(db.Members.Where(x => x.Email == "Test@email.com").First());
+            db.SaveChanges();
+        }   
         [Test]
         public void TestStoreDataRevision2()
         {
+            //ShanLiang21Context db = new();
+            //List<IFormFile> files = new();
+            ////新增一筆測試資料
+            //Store testData = new()
+            //{
+            //    AccountName = "TestStore",
+            //    DistrictId = 1,
+            //    TaxId = "00000000",
+            //    RestaurantName = "TestStoreName",
+            //    RestaurantAddress = "測試市單元區店家里",
+            //    RestaurantPhone = "(02)0000-0000",
+            //    Seats = 20,
+            //    OpeningTime = TimeSpan.FromHours(0),
+            //    ClosingTime = TimeSpan.FromHours(10),
+            //    Website = "www.TestStore.com",
+            //    StoreMail = "TsetStore@mail",
+            //    Password = "TestPassword"
+            //};
+            //db.Stores.Add(testData);
+            //db.SaveChanges();
+            //string Address = db.Stores.Where(x => x.AccountName == "TestStore").Select(x => x.RestaurantAddress).First();
+            ////確認其他資料是否為更改前的
+            //Assert.That(Address, Is.EqualTo("測試市單元區店家里"));
 
+            ////新增一筆更改的資料
+            //Store editData = new()
+            //{
+            //    AccountName = "EditStore",
+            //    TaxId = "88888888",
+            //    RestaurantName = "EditStoreName",
+            //    RestaurantAddress = "測試市單元區編輯里",
+            //    RestaurantPhone = "(02)8888-8888",
+            //    Seats = 10,
+            //    OpeningTime = TimeSpan.FromHours(1),
+            //    ClosingTime = TimeSpan.FromHours(9),
+            //    Website = "www.EditStore.com",
+            //    StoreMail = "EditStore@mail"
+            //};
+            //IActionResult result1 = _uc.storeDataRevision2(testData, files);
+            //Assert.IsNotNull(result1);
+            //Address = db.Stores.Where(x => x.AccountName == "TestStore").Select(x => x.RestaurantAddress).First();
+            ////確認其他資料是否已經更改
+            //Assert.That(Address, Is.EqualTo("測試市單元區編輯里"));
+            //string Password = db.Stores.Where(x => x.AccountName == "TestStore").Select(x => x.Password).First();
+            ////確認密碼是否為更改前的
+            //Assert.That(Password, Is.EqualTo("TestPassword"));
+
+            //editData.Password = "EditPassword";
+
+            //IActionResult result2 = _uc.storeDataRevision2(testData, files);
+            //Assert.IsNotNull(result2);
+            ////確認密碼是否為已經更改
+            //Assert.That(Password, Is.EqualTo("EditPassword"));
+
+            ////刪除測試資料
+            //db.Stores.Remove(db.Stores.Where(x => x.AccountName == "TestStore").First());
+            //db.SaveChanges();
         }
         [Test]
         public void TestGetCities()
         {
-
+            IActionResult result = _uc.GetCities();
+            Assert.IsNotNull(result);
         }
         [Test]
         public void TestGetDistricts()
         {
-
+            string cityName = "台北市";
+            IActionResult result = _uc.GetDistricts(cityName);
+            Assert.IsNotNull(result);
         }
         [Test]
         public void TestCheckName()
         {
-
+            string name = "NoFindMember";
+            IActionResult result = _uc.CheckName(name);
+            Assert.IsNotNull(result);
         }
         [Test]
         public void TestCheckStoreName()
         {
-
+            string name = "NoFindStore";
+            IActionResult result = _uc.CheckStoreName(name);
+            Assert.IsNotNull(result);
         }
         [Test]
         public void TestCheckLoginAccount()
         {
+            string name = "NoFindAll";
+            IActionResult result = _uc.CheckLoginAccount(name);
+            Assert.IsNotNull(result);
+        }
+        [Test]
+        public void TestForgetPwd()
+        {
+            IActionResult result = _uc.forgetPwd();
+            Assert.IsNotNull(result);
+        }
+        [Test]
+        public void TestSendEmail()
+        {
+            ShanLiang21Context db = new();
+            //新增一筆測試資料
+            Member testData = new()
+            {
+                AccountName = "TestMember",
+                Memberphone = "TestPhone",
+                MemberName = "TestName",
+                Email = "Test@email.com",
+                BrithDate = DateTime.Now,
+                Address = "測試市單元區會員里",
+                Password = "TestPassword",
+            };
+            db.Members.Add(testData);
+            db.SaveChanges();
 
+            IActionResult result1 = _uc.sendEmail("Test@email.com");
+            Assert.IsNotNull(result1);
+            //確認密碼是否已經被更改
+            bool isEditPwd = db.Members.Where(x => x.Email == "Test@email.com").Select(x => x.Password).Equals("TestPassword");
+            Assert.IsFalse(isEditPwd);
+
+            //刪除測試資料
+            db.Members.Remove(db.Members.Where(x => x.Email == "Test@email.com").First());
+            db.SaveChanges();
         }
     }
     [TestFixture]
@@ -359,57 +697,396 @@ namespace TestPrjShanLiang
     [TestFixture]
     public class TestsStoreAdminController
     {
-        StoreAdminController _sc;
+        Mock<HttpContext>? _mockHttpContext;
+        Mock<ISession>? _mockSession;
+        Mock<IWebHostEnvironment>? _mockEnvironment;
+        Mock<IEmailSender>? _mockEmailSender;
+        StoreAdminController _sac;
         public TestsStoreAdminController()
         {
-            var mockEnvironment = new Mock<IWebHostEnvironment>();
-            var mockEmailSender = new Mock<IEmailSender>();
-            StoreAdminController sc = new(mockEnvironment.Object,mockEmailSender.Object);
-            _sc = sc;
+            _mockHttpContext = new();
+            _mockSession = new();
+            _mockEnvironment = new();
+            _mockEmailSender = new();
+
+            StoreAdminController sac = new(_mockEnvironment.Object, _mockEmailSender.Object);
+            _sac = sac;
+
+            _mockHttpContext.SetupGet(x => x.Session).Returns(_mockSession.Object);
+
+            _sac.ControllerContext = new()
+            {
+                HttpContext = _mockHttpContext.Object
+            };
+            
         }
         [Test]
         public void TestList()
         {
-            IActionResult result = _sc.List();
+            IActionResult result = _sac.List();
             Assert.IsNotNull(result);
         }
+
         [Test]
-        public void Test2() { }
+        public void TestEdit()
+        {
+            ShanLiang21Context db = new();
+            int id = 99999999;
+
+            IActionResult result1 = _sac.Edit(id);
+            Assert.IsNotNull(result1);
+
+            id = 1;
+            IActionResult result2 = _sac.Edit(id);
+            Assert.IsNotNull(result2);
+
+            //新增一筆測試用資料
+            Store testData = new()
+            {
+                AccountName = "TestStore",
+                RestaurantName = "TestStoreName",
+                TaxId = "00000000",
+                RestaurantPhone = "(02)0000-0000",
+                RestaurantAddress = "測試市單元區店家里",
+                StoreMail = "TsetStore@mail",
+                Website = "www.TestStore.com",
+                Seats = 20,
+                OpeningTime = TimeSpan.FromHours(0),
+                ClosingTime = TimeSpan.FromHours(10),
+                Password = "TestPassword",
+                DistrictId = 1
+            };
+            db.Stores.Add(testData);
+            db.SaveChanges();
+
+            int storeID = db.Stores.Where(x => x.AccountName == "TestStore").First().StoreId;
+            string name = db.Stores.Where(x => x.StoreId == storeID).First().RestaurantName;
+            Assert.That(name, Is.EqualTo("TestStoreName"));
+
+            //新增一筆修改用資料
+            Store editData = new()
+            {
+                StoreId = storeID,
+                AccountName = "EditStore",
+                RestaurantName = "EditStoreName",
+                TaxId = "88888888",
+                RestaurantPhone = "(02)8888-8888",
+                RestaurantAddress = "測試市單元區編輯里",
+                StoreMail = "EditStore@mail",
+                Website = "www.EditStore.com",
+                Seats = 10,
+                OpeningTime = TimeSpan.FromHours(1),
+                ClosingTime = TimeSpan.FromHours(9),
+                Password = "EditPassword",
+                DistrictId = 2
+            };
+            IActionResult result3 = _sac.Edit(editData, null) ;
+            Assert.IsNotNull(result3);
+            //name = db.Stores.Where(x => x.StoreId == storeID).First().RestaurantName;
+            //Assert.That(name, Is.EqualTo("EditStoreName"));
+
+            db.Stores.Remove(db.Stores.Where(x => x.StoreId == storeID).First());
+            db.SaveChanges();
+        }
+
         [Test]
-        public void Test3() { }
+        public void TestVerify()
+        {
+            ShanLiang21Context db = new();
+            Store testData = new()
+            {
+                AccountName = "TestStore",
+                RestaurantName = "TestStoreName",
+                TaxId = "00000000",
+                RestaurantPhone = "(02)0000-0000",
+                RestaurantAddress = "測試市單元區店家里",
+                StoreMail = "TsetStore@mail",
+                Website = "www.TestStore.com",
+                Seats = 20,
+                OpeningTime = TimeSpan.FromHours(0),
+                ClosingTime = TimeSpan.FromHours(10),
+                Password = "TestPassword",
+                DistrictId = 1,
+                AccountStatus = 0
+            };
+            db.Stores.Add(testData);
+            db.SaveChanges();
+
+            int storeID = db.Stores.Where(x => x.AccountName == "TestStore").First().StoreId;
+
+            IActionResult result = _sac.Verify(storeID);
+            Assert.IsNotNull(result);
+
+            db.Stores.Remove(db.Stores.Where(x => x.StoreId == storeID).First());
+            db.SaveChanges();
+        }
+
         [Test]
-        public void Test4() { }
-        [Test]
-        public void Test5() { }
-        [Test]
-        public void Test6() { }
-        [Test]
-        public void Test7() { }
-        [Test]
-        public void Test8() { }
+        public void TestCompleteVerification()
+        {
+            ShanLiang21Context db = new();
+            Store testData = new()
+            {
+                AccountName = "TestStore",
+                RestaurantName = "TestStoreName",
+                TaxId = "00000000",
+                RestaurantPhone = "(02)0000-0000",
+                RestaurantAddress = "測試市單元區店家里",
+                StoreMail = "TsetStore@mail",
+                Website = "www.TestStore.com",
+                Seats = 20,
+                OpeningTime = TimeSpan.FromHours(0),
+                ClosingTime = TimeSpan.FromHours(10),
+                Password = "TestPassword",
+                DistrictId = 1,
+                AccountStatus = 0
+            };
+            db.Stores.Add(testData);
+            db.SaveChanges();
+
+            int storeID = db.Stores.Where(x => x.AccountName == "TestStore").First().StoreId;
+
+            IActionResult result1 = _sac.CompleteVerification(storeID);
+            Assert.IsNotNull(result1);
+
+            //int? storeStatus = db.Stores.Where(x => x.StoreId == storeID).First().AccountStatus;
+            //Assert.That(storeStatus, Is.EqualTo((int?)1));
+
+            IActionResult result2 = _sac.CompleteVerification(storeID);
+            Assert.IsNotNull(result2);
+
+            db.Stores.Remove(db.Stores.Where(x => x.StoreId == storeID).First());
+            db.SaveChanges();
+        }
     }
     [TestFixture]
     public class TestsShoppingController
     {
+        Mock<IWebHostEnvironment> _mockEnvironment;
+        Mock<HttpContext> _mockHttpContext;
+        Mock<ISession> _mockSession;
         ShoppingController _sc;
         public TestsShoppingController()
         {
-            var mockEnvironment = new Mock<IWebHostEnvironment>();
+            _mockEnvironment = new();
+            _mockHttpContext = new();
+            _mockSession = new();
+
             ShanLiang21Context db = new();
-            ShoppingController sc = new(db,mockEnvironment.Object);
+            ShoppingController sc = new(db,_mockEnvironment.Object);
             _sc = sc;
+
+            _mockHttpContext.SetupGet(x => x.Session).Returns(_mockSession.Object);
+
+            _sc.ControllerContext = new()
+            {
+                HttpContext = _mockHttpContext.Object
+            };
         }
+
         [Test]
         public void TestMenu()
         {
-            IActionResult result = _sc.Menu(1);
+            ShanLiang21Context db = new();
+            int id = 1;
+
+            IActionResult result1 = _sc.Menu(id);
+            Assert.IsNotNull(result1);
+
+            var store = db.Stores.Where(x => x.StoreId == id).Select(x => new { x.RestaurantAddress, x.RestaurantName, x.RestaurantPhone}).First();
+            string storeAddress = store.RestaurantAddress;
+            string storeName = store.RestaurantName;
+            string storePhone = store.RestaurantPhone;
+
+            ViewResult result2 = result1 as ViewResult;
+            Assert.IsNotNull(result2.ViewData["RestaurantAddress"]);
+            string RestaurantAddress = result2.ViewData["RestaurantAddress"].ToString();
+            Assert.IsNotNull(result2.ViewData["RestaurantName"]);
+            string AccountName = result2.ViewData["RestaurantName"].ToString();
+            Assert.IsNotNull(result2.ViewData["RestaurantPhone"]);
+            string RestaurantPhone = result2.ViewData["RestaurantPhone"].ToString();
+            Assert.That(RestaurantAddress, Is.EqualTo(storeAddress));
+            Assert.That(AccountName, Is.EqualTo(storeName));
+            Assert.That(RestaurantPhone, Is.EqualTo(storePhone));
+        }
+
+        [Test]
+        public void TestShowCartCount()
+        {
+            IActionResult result = _sc.ShowCartCount();
             Assert.IsNotNull(result);
         }
+
+        [Test]
+        public void TestAddToCart()
+        {
+            IActionResult result = _sc.AddToCart(1, 10);
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void TestCartView()
+        {
+            IActionResult result = _sc.CartView();
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void TestDelete()
+        {
+            int? id = null;
+            IActionResult result = _sc.Delete(id);
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void TestCheckoutCart()
+        {
+            IActionResult result = _sc.CheckoutCart();
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void TestCreateOrder()
+        {
+            int pay = 1;
+            string remark = "";
+            int paymethod = 1;
+            IActionResult result = _sc.CreateOrder(pay, remark, paymethod);
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void TestMyMealOrder()
+        {
+            IActionResult result = _sc.MyMealOrder(33);
+            Assert.IsNotNull(result);
+        }
+
         [Test]
         public void TestMyMealOrderDetail()
         {
             IActionResult result = _sc.MyMealOrderDetail(33);
             Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void TestStoreMenuList()
+        {
+            IActionResult result = _sc.StoreMenuList();
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void TestMealOrderList()
+        {
+            IActionResult result = _sc.MealOrderList();
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void TestCheckOrder()
+        {
+            int? orderID = null;
+            int? status = null;
+            IActionResult result1 = _sc.CheckOrder(orderID, status);
+            Assert.IsNotNull(result1);
+
+            orderID = 999999999;
+            IActionResult result2 = _sc.CheckOrder(orderID, status);
+            Assert.IsNotNull(result2);
+
+            orderID = 58;
+            status = 9;
+            IActionResult result3 = _sc.CheckOrder(orderID, status);
+            Assert.IsNotNull(result3);
+        }
+
+        [Test]
+        public void TestCreateMenu()
+        {
+            ShanLiang21Context db = new();
+
+            //IActionResult result1 = _sc.CreateMenu();
+            //Assert.IsNotNull(result1);
+
+            CMealViewModel testData = new()
+            {
+                MealName = "TestMeal",
+                MealPrice = 100,
+                Recommendation = "TestRecommendation",
+                StoreId = 1,
+            };
+            IActionResult result2 = _sc.CreateMenu(testData);
+            Assert.IsNotNull(result2);
+            int mealID = db.MealMenus.Where(x => x.MealName == "TestMeal").First().MealId;
+            bool isCreate = db.MealMenus.Where(x => x.MealId == mealID).Any();
+            Assert.IsTrue(isCreate);
+
+            db.MealMenus.Remove(db.MealMenus.Where(x => x.MealId == mealID).First());
+            db.SaveChanges();
+        }
+
+        [Test]
+        public void TestEditMenu()
+        {
+            ShanLiang21Context db = new();
+
+            MealMenu testData = new()
+            {
+                MealName = "TestMeal",
+                MealPrice = 100,
+                Recommendation = "TestRecommendation",
+                StoreId = 1,
+            };
+            db.MealMenus.Add(testData);
+            db.SaveChanges();
+            int mealID = 999999;
+            IActionResult result1 = _sc.EditMenu(mealID);
+            Assert.IsNotNull(result1);
+
+            mealID = db.MealMenus.Where(x => x.MealName == "TestMeal").First().MealId;
+            IActionResult result2 = _sc.EditMenu(mealID);
+            Assert.IsNotNull(result2);
+
+            CMealViewModel editData = new()
+            {
+                MealId = mealID,
+                MealName = "EditMeal",
+                MealPrice = 200,
+                Recommendation = "EditRecommendation"
+            };
+            IActionResult result3 = _sc.EditMenu(editData);
+            Assert.IsNotNull(result3);
+
+            //string name = db.MealMenus.Where(x => x.MealId == mealID).First().MealName;
+            //Assert.That(name, Is.EqualTo("EditMeal"));
+
+            db.MealMenus.Remove(db.MealMenus.Where(x => x.MealId == mealID).First());
+            db.SaveChanges();
+        }
+
+        [Test]
+        public void TestDeleteMenu()
+        {
+            ShanLiang21Context db = new();
+
+            MealMenu testData = new()
+            {
+                MealName = "TestMeal",
+                MealPrice = 100,
+                Recommendation = "TestRecommendation",
+                StoreId = 1,
+            };
+            db.MealMenus.Add(testData);
+            db.SaveChanges();
+
+            int mealID = db.MealMenus.Where(x => x.MealName == "TestMeal").First().MealId;
+
+            IActionResult result = _sc.DeleteMenu(mealID);
+            Assert.IsNotNull(result);
+            bool isDelete = db.MealMenus.Where(x => x.MealId == mealID).Any();
+            Assert.IsFalse(isDelete);
         }
     }
     [TestFixture]
@@ -438,6 +1115,38 @@ namespace TestPrjShanLiang
         public void TestError()
         {
             IActionResult result = _hc.Error();
+            Assert.IsNotNull(result);
+        }
+    }
+    [TestFixture]
+    public class TestChartAdminController
+    {
+        ChartAdminController _cac;
+        public TestChartAdminController()
+        {
+            ShanLiang21Context db = new();
+            ChartAdminController cac = new(db);
+            _cac = cac;
+        }
+
+        [Test]
+        public void TestIndex()
+        {
+            IActionResult result = _cac.Index();
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void TestGetStoreTypeCount()
+        {
+            IActionResult result = _cac.GetStoreTypeCount();
+            Assert.IsNotNull(result);
+        }
+
+        [Test]
+        public void TestGetStorePocketCount()
+        {
+            IActionResult result = _cac.GetStorePocketCount();
             Assert.IsNotNull(result);
         }
     }
@@ -534,17 +1243,83 @@ namespace TestPrjShanLiang
     public class TestsAdvertisementController
     {
         AdvertisementController _ac;
+        Mock<HttpContext>? _mockHttpContext;
+        Mock<ISession>? _mockSession;
+
         public TestsAdvertisementController()
         {
+            Mock<HttpContext> mockHttpContext = new();
+            _mockHttpContext = mockHttpContext;
+
+            Mock<ISession> mockSession = new();
+            _mockSession = mockSession;
+
             ShanLiang21Context db = new();
             AdvertisementController ac = new(db);
             _ac = ac;
+
+            _mockHttpContext.SetupGet(x => x.Session).Returns(_mockSession.Object);
+
+            _ac.ControllerContext = new()
+            {
+                HttpContext = _mockHttpContext.Object
+            };
         }
         [Test]
         public void TestBuyAdv()
         {
             IActionResult result = _ac.BuyAdv();
             Assert.IsNotNull(result);
+        }
+        [Test]
+        public void TestAddAdvToCart()
+        {
+            int? id = null;
+            IActionResult result1 = _ac.AddAdvToCart(id);
+            Assert.IsNotNull(result1);
+
+            id = 1;
+            IActionResult result2 = _ac.AddAdvToCart(id);
+            Assert.IsNotNull(result2);
+
+            ViewResult result3 = _ac.AddAdvToCart(id) as ViewResult;
+            string message = "";
+            foreach (var c in result3.ViewData.Values)
+            {
+                message += c.ToString();
+            }
+            Assert.AreEqual("1", message);
+
+            CAddAdvToCartViewModel vm = new()
+            {
+                txtCount = 1,
+                txtStoreID = 1
+            };
+            IActionResult result4 = _ac.AddAdvToCart(vm);
+            Assert.IsNotNull(result4);
+        }
+        [Test]
+        public void TestDelete()
+        {
+            int? id = null;
+            IActionResult result1 = _ac.Delete(id);
+            Assert.IsNotNull(result1);
+
+            //id = 1;
+            //IActionResult result2 = _ac.Delete(id);
+            //Assert.IsNotNull(result2);
+        }
+        [Test]
+        public void TestCartView()
+        {
+            IActionResult result = _ac.CartView();
+            Assert.IsNotNull(result);
+        }
+        [Test]
+        public void ConfirmADOrder()
+        {
+            //IActionResult result = _ac.ConfirmADOrder();
+            //Assert.IsNotNull(result);
         }
     }
     [TestFixture]
@@ -580,10 +1355,17 @@ namespace TestPrjShanLiang
             };
             IActionResult result2 = _ac.Create(a);
             Assert.IsNotNull(result2);
+            ViewResult result3 = _ac.Create(a) as ViewResult;
+            string message = "";
+            foreach(var c in result3.ViewData.Values)
+            {
+                message += c.ToString();
+            }
+            Assert.AreEqual("無法修改權限", message);
 
             a.IdentificationId = 3;
-            IActionResult result3 = _ac.Create(a);
-            Assert.IsNotNull(result3);
+            IActionResult result4 = _ac.Create(a);
+            Assert.IsNotNull(result4);
         }
         [Test]
         public void TestDelete()
@@ -629,6 +1411,35 @@ namespace TestPrjShanLiang
             Assert.IsNotNull(result3);
             db.Admins.Remove(a);
             db.SaveChanges();
+        }
+    }
+    [TestFixture]
+    public class TestsZ
+    {
+        public TestsZ()
+        {
+            ShanLiang21Context db = new();
+            var s = db.Stores.Where(x => x.AccountName == "TestStore" || x.AccountName == "EditStore");
+            foreach (var item in s)
+            {
+                db.Stores.Remove(item);
+            }
+            var m = db.Members.Where(x => x.Email == "TestMember@mail.com" || x.Email == "EditMember@mail.com");
+            foreach (var item in m)
+            {
+                db.Members.Remove(item);
+            }
+            var a = db.Accounts.Where(x => x.AccountName == "TestStore" || x.AccountName == "EditStore" || x.AccountName == "TestMember@mail.com" || x.AccountName == "EditMember@mail.com");
+            foreach (var item in a)
+            {
+                db.Accounts.Remove(item);
+            }
+            db.SaveChanges();
+        }
+        [Test]
+        public void Delete()
+        {
+
         }
     }
 }

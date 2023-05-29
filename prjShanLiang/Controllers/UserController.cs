@@ -159,7 +159,7 @@ namespace prjShanLiang.Controllers
                 return RedirectToAction("Index", "Home");
             return View(sto);
         }
-        public IActionResult Mypage(/*Account x*//*這裡要帶入使用者身分*/)  //5/8併完後，註解掉
+        public IActionResult Mypage()
         {
             if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "1")
             {
@@ -635,7 +635,7 @@ namespace prjShanLiang.Controllers
 
 
             //string link = string.Format("https://localhost:7131/User/Login/?AccountName={0}&AccountPassword={1}", AccountName,pwd);
-            string mailContent = AccountName + " 您好：<br><label>&emsp;&emsp;您已發出重設密碼請求，請於收到信件後，盡快登入平台，重新設定密碼。</label><br>" + "<label>&emsp;&emsp;帳號名稱：" + AccountName +"</label>"+ "<br>&emsp;&emsp;新密碼：" + "<Label style='color:red'>"+ pwd+ "<br><label>&emsp;&emsp;https://localhost:7131/User/Login</label>";
+            string mailContent = AccountName + " 您好：<br><label>&emsp;&emsp;您已發出重設密碼請求，請於收到信件後，盡快登入平台，重新設定密碼。</label><br>" + "<label>&emsp;&emsp;帳號名稱：" + AccountName +"</label>"+ "<br>&emsp;&emsp;新密碼：" + "<Label style='color:red'>"+ pwd+ "<br><label>&emsp;&emsp;https://karamucho.asuscomm.com/User/Login</label>";
 
 
             mms.Body = mailContent;
