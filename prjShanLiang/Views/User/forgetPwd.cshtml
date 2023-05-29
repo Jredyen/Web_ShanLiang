@@ -125,6 +125,7 @@
 
                                         <input id="btnAdminLoginDemo1" type="button" value="管理員登入Demo" class="btn btn-primary  mb-2 Demo" />
 
+                                        <input id="btnNNickLoginDemo1" type="button" value="尼克登入Demo" class="btn btn-primary  mb-2 Demo" />
                                     </div>
 
                                 </form>
@@ -151,8 +152,8 @@
                 const btnMemberLoginDemo = document.getElementById('btnMemberLoginDemo1');
                 const btnStoreLoginDemo = document.getElementById('btnStoreLoginDemo1');
                 const btnAdminLoginDemo = document.getElementById('btnAdminLoginDemo1');
-
-
+                const btnNNickLoginDemo1 = document.getElementById('btnNNickLoginDemo1');
+                
 
                 btnMemberLoginDemo.addEventListener('click', function () {
                     inpAccount.value = "chris@gmail.com"
@@ -169,6 +170,12 @@
                     InputAccountPassword.value = "1234"
 
                 })
+                btnNNickLoginDemo1.addEventListener('click', function () {
+                    inpAccount.value = "nispanc@myyahoo.com"                  
+
+                })
+
+
 
                 inpAccount.addEventListener('blur', async () => {
                     //  divAccount.innerHTML =inpAccount.value;
