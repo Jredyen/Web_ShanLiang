@@ -104,7 +104,7 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Store.RestaurantName)
                                 </td>
-                                <td>
+                                <td class="newdate">
                                     @Html.DisplayFor(modelItem => item.Date)
                                 </td>
                                 <td>
@@ -139,5 +139,13 @@
             htmlData = `<tr style="text-align:center;"><td>${v.orderId}</td><td>${v.restaurantName}</td><td>${v.total}</td><td>${v.orderDate}</td><td>${v.remark}</td></tr>`;
             dataTbody.innerHTML = htmlData;
         };
+        const newDate = document.querySelectorAll('.newdate');
+        for(let i = 0; i<newDate.length; i++){
+            if (newDate[i].innerHTML.length>47){
+                let item1 = newDate[i].innerHTML;                
+                item1 = item1.substring(0, 47);
+                newDate[i].innerHTML = item1;
+            }
+        }
     </script>
     }
