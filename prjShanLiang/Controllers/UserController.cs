@@ -41,7 +41,8 @@ namespace prjShanLiang.Controllers
                 //Account acc = db.Accounts.FirstOrDefault(a => a.AccountName == vm.AccountName && a.AccountPassword == vm.AccountPassword);
                 Admin admin = db.Admins.FirstOrDefault(a => a.AdminName == vm.AccountName && a.Passwoed == vm.AccountPassword);
 
-                ViewBag.user = "5";
+                
+                
                 if (sto != null&&sto.AccountStatus != 0  || mem != null || admin != null)
                 {
                     string json;
@@ -62,7 +63,7 @@ namespace prjShanLiang.Controllers
                     {
                         json = JsonSerializer.Serialize(admin);
                         HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "0");
-                        ViewBag.user = "3";
+                        ViewBag.user = "0";
                     }
                     
                     HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER, json);
@@ -549,9 +550,23 @@ namespace prjShanLiang.Controllers
 
         public IActionResult isPasswordCorrect(string name, string password)
         {
-            ShanLiang21Context sl = new ShanLiang21Context();
-            var exists = sl.Members.Any(m => m.Email == name);
-            return Content(exists.ToString());
+            
+            ShanLiang21Context db = new ShanLiang21Context();
+            Store sto = db.Stores.FirstOrDefault(a => a.AccountName == name && a.Password == password);
+            Member mem = db.Members.FirstOrDefault(a => a.Email == name && a.Password == password);
+            //Account acc = db.Accounts.FirstOrDefault(a => a.AccountName == vm.AccountName && a.AccountPassword == vm.AccountPassword);
+            Admin admin = db.Admins.FirstOrDefault(a => a.AdminName == name && a.Passwoed == password);
+            string exists;
+            if (sto != null || mem != null || admin != null){
+
+                exists = "true";
+            }
+            else {
+                exists = "false";
+            }
+
+           
+            return Content(exists);
         }
         public IActionResult CheckStoreName(string name)
         {
