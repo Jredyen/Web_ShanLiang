@@ -43,9 +43,9 @@
 
 </style>
 <main id="main">
-    <div class="container aos-init aos-animate" data-aos="fade-up">
+   
         <!-- ======= Breadcrumbs ======= -->
-        <div class="breadcrumbs">
+    <div class="breadcrumbs" style="background-color:orange;">
             <div class="container">
 
                 <div class="d-flex justify-content-between align-items-center">
@@ -58,7 +58,7 @@
 
             </div>
         </div><!-- End Breadcrumbs -->
-
+    <div class="container aos-init aos-animate" data-aos="fade-up">
         <hr />
         <h4>請輸入店家基本資料</h4>
         <hr />
@@ -212,9 +212,9 @@
 
 
                                                 <div class="form-group">
-                                                    <input type="submit" value="註冊" id="btnDataRevision" class="btn btn-primary" />
+                                                    <input type="submit" value="註冊" id="btnDataRevision" class="btn btn-primary" onclick="return alert('驗證程序進行中，驗證完成後將發送信件至您的信箱。')" />
                                                 </div>
-                                                <input type="button" id="btnStoreRegistrationDemo" value="店家註冊Demo" class="btn btn-primary Demo" onclick="return alert('驗證信件已送出，請查看您的信箱。')" />
+                                                <input type="button" id="btnStoreRegistrationDemo" value="店家註冊Demo" class="btn btn-primary Demo"  />
 
 
 
@@ -377,6 +377,9 @@
                 //     $("#preview_progressbarTW_imgs").append(noPictures);
                 //  }
                 //}
+
+                
+              
 
                 inpAccount.addEventListener('blur', async () => {
                     //  divAccount.innerHTML =inpAccount.value;

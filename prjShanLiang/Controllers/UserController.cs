@@ -40,6 +40,8 @@ namespace prjShanLiang.Controllers
                 Member mem = db.Members.FirstOrDefault(a => a.Email == vm.AccountName && a.Password == vm.AccountPassword);
                 //Account acc = db.Accounts.FirstOrDefault(a => a.AccountName == vm.AccountName && a.AccountPassword == vm.AccountPassword);
                 Admin admin = db.Admins.FirstOrDefault(a => a.AdminName == vm.AccountName && a.Passwoed == vm.AccountPassword);
+
+                ViewBag.user = "5";
                 if (sto != null&&sto.AccountStatus != 0  || mem != null || admin != null)
                 {
                     string json;
@@ -60,9 +62,9 @@ namespace prjShanLiang.Controllers
                     {
                         json = JsonSerializer.Serialize(admin);
                         HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER_ROLE, "0");
-                        ViewBag.user = "0";
+                        ViewBag.user = "3";
                     }
-
+                    
                     HttpContext.Session.SetString(CDictionary.SK_LOGINED_USER, json);
        
                     if (HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER_ROLE) == "0")
@@ -396,6 +398,29 @@ namespace prjShanLiang.Controllers
 
         }
 
+        public IActionResult deleteAction(int no, string Email)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            MemberAction ma =  sl.MemberActions.FirstOrDefault(m => m.No == no);
+
+
+            if (ma != null)
+            {
+
+                sl.MemberActions.Remove(ma);
+              
+                sl.SaveChanges();
+            }
+
+            var mem = sl.MemberActions.Include(m => m.Member).Include(s => s.Store).Include(a => a.Action).Where(ma => ma.Member.Email == Email).Where(m => m.ActionId == 2);
+
+
+            return View(mem);
+
+
+        }
+
+        
         public IActionResult memberDataRevision2(CMemberWrap m)
         {
             ShanLiang21Context sl = new ShanLiang21Context();
@@ -519,6 +544,15 @@ namespace prjShanLiang.Controllers
             var exists = sl.Members.Any(m => m.Email == name);
             return Content(exists.ToString());
         }
+
+
+
+        public IActionResult isPasswordCorrect(string name, string password)
+        {
+            ShanLiang21Context sl = new ShanLiang21Context();
+            var exists = sl.Members.Any(m => m.Email == name);
+            return Content(exists.ToString());
+        }
         public IActionResult CheckStoreName(string name)
         {
             ShanLiang21Context sl = new ShanLiang21Context();
@@ -550,7 +584,7 @@ namespace prjShanLiang.Controllers
 
             ShanLiang21Context sl = new ShanLiang21Context();
            
-            var mem = sl.MemberActions.Include(m=>m.Member).Include(s=>s.Store).Include(a=>a.Action).Where(ma => ma.Member.Email == Email);
+            var mem = sl.MemberActions.Include(m=>m.Member).Include(s=>s.Store).Include(a=>a.Action).Where(ma => ma.Member.Email == Email).Where(m=>m.ActionId == 2);
 
             //if (mem == null)
             //    return RedirectToAction("memberManagement");

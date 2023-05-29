@@ -35,7 +35,8 @@ namespace prjShanLiang.Controllers
             return View(sto);
         }
         [HttpPost]
-        public IActionResult Edit(Store s, IFormFile StoreImage)
+        //public IActionResult Edit(Store s, IFormFile StoreImage)
+        public IActionResult Edit(Store s)
         {
             ShanLiang21Context db = new ShanLiang21Context();
             Store sto = db.Stores.FirstOrDefault(sto => sto.StoreId == s.StoreId);
@@ -55,12 +56,12 @@ namespace prjShanLiang.Controllers
 
                 db.SaveChanges();
             }
-            if (StoreImage != null)
-            {
-                string photoName = s.RestaurantName + ".jpg";
-                string path = _enviro.WebRootPath + "/images/test/" + photoName;
-                StoreImage.CopyTo(new FileStream(path, FileMode.Create));
-            }
+            //if (StoreImage != null)
+            //{
+            //    string photoName = s.RestaurantName + ".jpg";
+            //    string path = _enviro.WebRootPath + "/images/test/" + photoName;
+            //    StoreImage.CopyTo(new FileStream(path, FileMode.Create));
+            //}
 
             return RedirectToAction("List");
         }
