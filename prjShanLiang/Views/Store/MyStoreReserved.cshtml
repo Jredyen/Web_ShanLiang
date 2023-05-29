@@ -134,13 +134,9 @@
         async function con(id) {
             const dataTbody = document.getElementById('table1')
             const res = await fetch('@Url.Content("~/Store/LinkMealOrder/")' + id);
-            console.log(res);
             const v = await res.json();
-            console.log(v);
-
-            return `<tr style="text-align:center;"><td>${v.orderId}</td><td>${v.restaurantName}</td><td>${v.total}</td><td>${v.orderDate}</td><td>${v.remark}</td></tr>`
-
-            dataTbody.innerHTML = htmlData.join("");
+            htmlData = `<tr style="text-align:center;"><td>${v.orderId}</td><td>${v.restaurantName}</td><td>${v.total}</td><td>${v.orderDate}</td><td>${v.remark}</td></tr>`;
+            dataTbody.innerHTML = htmlData;
         };
     </script>
     }
