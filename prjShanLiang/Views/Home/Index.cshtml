@@ -357,7 +357,29 @@
 
                 </div>
 
+              @*  <div class="indexTitle">
+                    <div class="iconStyle">
+                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span>  <div class="titleIA fs-xl">熱門關鍵字</div>
+                    </div>
+                </div>
+                <div class="row">
+                    @foreach(var item in Model.Item1.Take(2)){
+                    <div class="col-sm-3">
+                        <div class="card zoom-card" style="width: 32rem;" id="evaluate-bottom">
 
+                          
+
+                                    <div id="storeType" data-aos="fade-up">
+                               
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    }
+                </div>*@
 
                  <div class="indexTitle">
                     <div class="iconStyle">
@@ -489,8 +511,7 @@
                     }
                 </div>
             </div>
-
-
+          
 
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -531,11 +552,22 @@
                     }).scroll();
                 });
 
+              
+                 
+                //const StoreType = document.querySelector('#storeType');
 
-           
-                    
-               
-               
+                //async function getRtype() {
+                // const response = await fetch('@Url.Content("~/Store/GetRestaurantType/")' + 1)
+             
+                //const datas = await response.json();
+                //    const shop = datas.map(data => {
+                //        return (
+                //            StoreType.innerHTML += `<a style="margin-right:10px;" href="../../Store/searchRestaurantType/${data.restaurantTypeNum}"><i class="bi bi-shop-window" style="margin-right:5px;"></i>${data.typeName}</a>`
+                //        )
+                //    })
+                //}
+                //getRtype();
+                        
 
             </script>
 
