@@ -132,39 +132,37 @@
     </div>
 </div>
 
-<main id="main">
-    <div class="container aos-init aos-animate" data-aos="fade-up">
-        <!-- ======= Breadcrumbs ======= -->
+<main id="main">       
 
         @*照片輪播*@
         <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel" >
             <div class="carousel-inner">          
                 <div class="carousel-item active" data-bs-interval="2500">
-                    <img src="~/images/Menu//top/1.jpg" class="d-block w-100 "style="max-height: 580px;">
+                    <img src="~/images/Menu//top/1.jpg" class="d-block w-100 "style="max-height: 600px;">
                 </div>                
                 <div class="carousel-item" data-bs-interval="2500">
-                    <img src="~/images/Menu//top/2.jpg" class="d-block w-100 "style="max-height: 580px;">
+                    <img src="~/images/Menu//top/2.jpg" class="d-block w-100 "style="max-height: 600px;">
                 </div>
                 <div class="carousel-item" data-bs-interval="2500">
-                    <img src="~/images/Menu//top/3.jpg" class="d-block w-100 "style="max-height: 580px;">
+                    <img src="~/images/Menu//top/3.jpg" class="d-block w-100 "style="max-height: 600px;">
                 </div>
                 <div class="carousel-item" data-bs-interval="2500">
-                    <img src="~/images/Menu//top/4.jpg" class="d-block w-100 "style="max-height: 580px;">
+                    <img src="~/images/Menu//top/4.jpg" class="d-block w-100 "style="max-height: 600px;">
                 </div>
                 <div class="carousel-item" data-bs-interval="2500">
-                    <img src="~/images/Menu//top/5.jpg" class="d-block w-100 "style="max-height: 580px;">
+                    <img src="~/images/Menu//top/5.jpg" class="d-block w-100 "style="max-height: 600px;">
                 </div>
                 <div class="carousel-item" data-bs-interval="2500">
-                    <img src="~/images/Menu//top/6.jpg" class="d-block w-100 "style="max-height: 580px;">
+                    <img src="~/images/Menu//top/6.jpg" class="d-block w-100 "style="max-height: 600px;">
                 </div>
                 <div class="carousel-item" data-bs-interval="2500">
-                    <img src="~/images/Menu//top/7.jpg" class="d-block w-100 "style="max-height: 580px;">
+                    <img src="~/images/Menu//top/7.jpg" class="d-block w-100 "style="max-height: 600px;">
                 </div>
                 <div class="carousel-item" data-bs-interval="2500">
-                    <img src="~/images/Menu/top/8.jpg" class="d-block w-100 "style="max-height: 580px;">
+                    <img src="~/images/Menu/top/8.jpg" class="d-block w-100 "style="max-height: 600px;">
                 </div>
                 <div class="carousel-item" data-bs-interval="2500">
-                    <img src="~/images/Menu/top/9.jpg" class="d-block w-100 "style="max-height: 580px;">
+                    <img src="~/images/Menu/top/9.jpg" class="d-block w-100 "style="max-height: 600px;">
                 </div>               
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
@@ -176,17 +174,19 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-    
+
+  <div class="container aos-init " data-aos="fade-up"> 
+<!-- ======= Breadcrumbs ======= -->
         @*店家資訊*@   
-          <div>
-           <div class=" shadow p-3 mb-5 bg-white rounded rounded-pill custom-border " style="margin:20px 30px 0px 30px;">
+          
+           <div class=" shadow p-3 mb-5 rounded rounded-5 custom-border " style="margin:20px 30px 0px 30px;background-color:white;">
              <div style="text-align:center">
               <h1 style="font-size:40px;">@ViewBag.RestaurantName</h1>
               <p>@ViewBag.RestaurantAddress</p>
               <p>@ViewBag.RestaurantPhone</p>             
              </div>
            </div>
-        </div>  
+          
          
         @*商品區塊*@
              <h1>人氣排行前6名</h1>
