@@ -128,13 +128,13 @@ namespace prjShanLiang.Controllers
         {
             string jsonUser = HttpContext.Session.GetString(CDictionary.SK_LOGINED_USER);
             Store datas = JsonSerializer.Deserialize<Store>(jsonUser);
-            var adImages = _db.StoreAdImages.Where(x => x.StoreId == datas.StoreId).ToList();
+            var StoreDecorationImages = _db.StoreDecorationImages.Where(x => x.StoreId == datas.StoreId).ToList();
 
             bool isFirstTrueFound = false;
 
-            foreach (var image in adImages)
+            foreach (var image in StoreDecorationImages)
             {
-                if (image.ADColumn == "true")
+                if (image.ImageJudge == "true")
                 {
                     if (!isFirstTrueFound)
                     {
@@ -142,16 +142,16 @@ namespace prjShanLiang.Controllers
                     }
                     else
                     {
-                        image.ADColumn = "false";
-                        break; // 将第一个 "true" 的记录设置为 "false" 后，结束循环
+                        image.ImageJudge = "false";
+                        break; // 將第一個 "true" 的紀錄設置為 "false" 後，结束循環
                     }
                 }
             }
 
-            var adImage = adImages.FirstOrDefault(x => x.ADColumn != "true");
+            var adImage = StoreDecorationImages.FirstOrDefault(x => x.ImageJudge != "true");
             if (adImage != null)
             {
-                adImage.ADColumn = "true";
+                adImage.ImageJudge = "true";
                 _db.SaveChanges();
             }
             HttpContext.Session.Remove(CDictionary.SK_LOGINED_Adv);

@@ -319,25 +319,14 @@
 
                 <div class="right-and-left-img">
                     @{
-                        int index = 0;
+                        int index = Model.Item7.Count - 1;
                     }
 
-                    @foreach (var advertisement in Model.Item1.Take(2))
+                    @for (int i = 0; i < 2 && index >= 0; i++)
                     {
                         var adImage = Model.Item7.ElementAtOrDefault(index);
 
-                        if (index == 0) // 左圖
-                        {
-                            <span class="left-img">
-                                <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
-                                    <img src="~/Images/store/@(adImage?.ImagePath)" alt="Placeholder Image" height="400px" width="560px" id="left-img-element" />
-                                </a>
-                                <span class="carousel-caption"  >
-                                    @(adImage?.ImagePath?.Replace(".jpg", ""))
-                                </span>
-                            </span>
-                        }
-                        else if (index == 1) // 右圖
+                        if (i == 1) // 左圖
                         {
                             <span class="right-img">
                                 <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
@@ -348,18 +337,36 @@
                                 </span>
                             </span>
                         }
+                        else if (i == 0) // 右圖
+                        {
+                            <span class="left-img">
+                                <a href="@Url.Action("Restaurant", "store", new { id = adImage.StoreId })">
+                                    <img src="~/Images/store/@(adImage?.ImagePath)" alt="Placeholder Image" height="400px" width="560px" id="left-img-element" />
+                                </a>
+                                <span class="carousel-caption">
+                                    @(adImage?.ImagePath?.Replace(".jpg", ""))
+                                </span>
+                            </span>
+                        }
 
-                        index++;
+                        index--;
                     }
-                </div>
-                   
 
+                </div>
                 <div class="indexTitle">
                     <div class="iconStyle">
-                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span>  <div class="titleIA fs-xl">熱門收藏</div>
+                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span>  <div class="titleIA fs-xl">熱門關鍵字</div>
                     </div>
-                   
-                 
+                    <div class="accordion-body" id="storeType">
+                        @*會在剛載入網頁時使用 ShowType() 獲得所有類型*@
+                    </div>
+
+
+
+                        <div class="indexTitle">
+                    <div class="iconStyle">
+                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span>  <div class="titleIA fs-xl">熱門收藏</div>
+                    </div>   
                 </div>
               
 
@@ -487,6 +494,8 @@
                 </div>
             </div>
 
+
+
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
@@ -527,7 +536,16 @@
                 });
 
 
-              
+                    getType();
+                    async function getType() {
+                        const response = await fetch('@Url.Content("~/Store/GetType")')
+                        const datas = await response.json();
+                        const shop = datas.map(data => {
+                            return (
+                                StoreType.innerHTML += `<div class="checkbox"><label><input type="checkbox" class="icheck typeCheckbox" value="${data.restaurantTypeNum}"> ${data.typeName} (${data.qty})</label></div>`
+                            )
+                        })
+                    }
                     
                
                
