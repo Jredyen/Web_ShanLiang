@@ -281,21 +281,23 @@
 
                     <!-- 輪播內容 -->
                     <div class="carousel-inner" role="listbox">
-                        @foreach (var advertisement in Model.Item1.Take(4))
-                        {
-                            string imgName = advertisement.RestaurantName + ".jpg";
-                            <div class="item @(advertisement == Model.Item1.First() ? "active" : "")">
+                        @foreach (var adimage in Model.Item7.OrderBy(s=>s.StoreId).Take(4)){
+                       
+                         
+                            <div class="item @(adimage == Model.Item7.First() ? "active" : "")">
                                 <div class="image-container">
-                                    <a href="@Url.Action("Restaurant", "store", new { id = advertisement.StoreId })">
-                                        <img src="~/images/test/@imgName" class="carousel-image" />
+                                    <a href="@Url.Action("Restaurant", "store", new { id = adimage.StoreId })">
+
+                                            <img src="~/images/store/@adimage.ImagePath" class="carousel-image" />
+                                        
                                     </a>
                                 </div>
                                 <div class="carousel-caption">
-                                    <h3>@advertisement.RestaurantName</h3>
-                                    <p>@advertisement.RestaurantPhone</p>
+                                    <h3>@adimage.Store.RestaurantName</h3>
+                                    <p>@adimage.Store.RestaurantPhone</p>
                                 </div>
                             </div>
-                        }
+                            }
                     </div>
 
                     <!-- 左右箭頭 -->
