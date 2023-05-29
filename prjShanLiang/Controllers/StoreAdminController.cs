@@ -55,12 +55,12 @@ namespace prjShanLiang.Controllers
 
                 db.SaveChanges();
             }
-            if (StoreImage != null)
-            {
-                string photoName = s.RestaurantName + ".jpg";
-                string path = _enviro.WebRootPath + "/images/test/" + photoName;
-                StoreImage.CopyTo(new FileStream(path, FileMode.Create));
-            }
+            //if (StoreImage != null)
+            //{
+            //    string photoName = s.RestaurantName + ".jpg";
+            //    string path = _enviro.WebRootPath + "/images/test/" + photoName;
+            //    StoreImage.CopyTo(new FileStream(path, FileMode.Create));
+            //}
 
             return RedirectToAction("List");
         }

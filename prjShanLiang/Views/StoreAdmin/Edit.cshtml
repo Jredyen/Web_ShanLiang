@@ -73,16 +73,6 @@
                 <span asp-validation-for="DistrictId" class="text-danger"></span>
             </div>*@
             <div class="form-group">
-                @{
-                    string imageName = Model.RestaurantName + ".jpg";
-                }
-                <div id="previewImage"><img src="~/images/test/@imageName" alt="店家照片" width="200" height="180" /></div>
-                @*<div id="previewImage"></div>*@
-                <label asp-for="StoreImage" class="control-label" placeholder="">店家圖片</label>
-                <input asp-for="StoreImage" class="form-control" name="StoreImage" type="file" />
-                <span asp-validation-for="StoreImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="AccountStatus" class="control-label" placeholder="">狀態</label>
                 <select name="AccountStatus" asp-for="AccountStatus" class="form-control">
                     @{
@@ -109,7 +99,7 @@
 </div>
 
 @section Scripts {
-    <script>
+    @*<script>
         // 獲取文件選擇框
         var fileInput = document.querySelector('input[type="file"]');
 
@@ -140,7 +130,18 @@
             // 讀取文件內容
             reader.readAsDataURL(file);
         });
-    </script>
+    </script>*@
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+@*<div class="form-group">
+    @{
+        string imageName = Model.RestaurantName + ".jpg";
+    }
+    <div id="previewImage"><img src="~/images/test/@imageName" alt="店家照片" width="200" height="180" /></div>*@
+    @*<div id="previewImage"></div>*@
+@*    <label asp-for="StoreImage" class="control-label" placeholder="">店家圖片</label>
+    <input asp-for="StoreImage" class="form-control" name="StoreImage" type="file" />
+    <span asp-validation-for="StoreImage" class="text-danger"></span>
+</div>*@
