@@ -185,6 +185,15 @@
             color: #5B5B5B;
             font-size: 14px;
             font-family: "標楷體", "Microsoft JhengHei", "PMingLiU", serif;
+
+        }
+
+        .Evaluate-Comments-Collect {
+            text-align: center;
+            color: #5B5B5B;
+            font-size: 14px;
+            font-family: "標楷體", "Microsoft JhengHei", "PMingLiU", serif;
+
         }
         #evaluate-bottom{
             margin-bottom:15px;
@@ -387,7 +396,7 @@
                                                     @member.MemberName
                                                 }
                                             </div>
-                                            <div class="Evaluate-Comments">
+                                            <div class="Evaluate-Comments-Collect">
                                                 
                                                 @Evaluate.Comments
                                             </div>
@@ -411,7 +420,7 @@
                     {
                         <div class="col-sm-3">
                             <div class="card zoom-card" style="width: 32rem;">
-                                <a href="@Url.Action("BloggerCard", "Blogger")">
+                                <a href="@Url.Action("BloggerDetail", "Blogger",new{id =ShanLiangBlog.BlogId})">
                                     <div class="image-wrapper">
 
                                         <img src="~/Images/Blog/@ShanLiangBlog.BlogPic" class="img-fluid carousel-image" alt="...">
