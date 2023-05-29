@@ -203,7 +203,8 @@ namespace prjShanLiang.Controllers
                 BrithDate = vm.BrithDate,
                 Address = vm.Address,
                 CustomerLevel = 0,
-                Password = vm.AccountPassword
+                Password = vm.AccountPassword,
+                AccountStatus = 1
 
             };
             //Account acc = new Account()
