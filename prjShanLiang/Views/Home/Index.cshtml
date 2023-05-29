@@ -353,17 +353,10 @@
                     }
 
                 </div>
-                <div class="indexTitle">
-                    <div class="iconStyle">
-                        <span class="fa fa-hotjar fc-secondary fs-xxl"></span>  <div class="titleIA fs-xl">熱門關鍵字</div>
-                    </div>
-                    <div class="accordion-body" id="storeType">
-                        @*會在剛載入網頁時使用 ShowType() 獲得所有類型*@
-                    </div>
 
 
 
-                        <div class="indexTitle">
+                 <div class="indexTitle">
                     <div class="iconStyle">
                         <span class="fa fa-hotjar fc-secondary fs-xxl"></span>  <div class="titleIA fs-xl">熱門收藏</div>
                     </div>   
@@ -536,16 +529,7 @@
                 });
 
 
-                    getType();
-                    async function getType() {
-                        const response = await fetch('@Url.Content("~/Store/GetType")')
-                        const datas = await response.json();
-                        const shop = datas.map(data => {
-                            return (
-                                StoreType.innerHTML += `<div class="checkbox"><label><input type="checkbox" class="icheck typeCheckbox" value="${data.restaurantTypeNum}"> ${data.typeName} (${data.qty})</label></div>`
-                            )
-                        })
-                    }
+           
                     
                
                
