@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace prjShanLiang.Models;
 
@@ -74,8 +76,7 @@ public partial class ShanLiang21Context : DbContext
     public virtual DbSet<StoreType> StoreTypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=ShanLiang2.1;Integrated Security=True;Multiple Active Result Sets=True;Application Name=EntityFramework;MultipleActiveResultSets=True;TrustServerCertificate=true");
+        => optionsBuilder.UseSqlServer("Data Source = tcp:shanliang.life, 1433; Initial Catalog = ShanLiang2.1; User ID = ispan_304_a; Password=StarburstStream;TrustServerCertificate=true;MultipleActiveResultSets=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
